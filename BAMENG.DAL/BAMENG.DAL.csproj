@@ -50,6 +50,7 @@
     <Compile Include="CustomerDAL.cs" />
     <Compile Include="FocusPicDAL.cs" />
     <Compile Include="LogDAL.cs" />
+    <Compile Include="ManagerDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShopDAL.cs" />
     <Compile Include="SmsVerifyDAL.cs" />

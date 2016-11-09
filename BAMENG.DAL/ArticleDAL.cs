@@ -130,7 +130,7 @@ namespace BAMENG.DAL
                 {
                     //如果不是总后台身份
                     if (AuthorIdentity != 0)
-                        strSql += " and A.AuthorIdentity=@AuthorIdentity ";
+                        strSql += " and A.AuthorIdentity=@AuthorIdentity  and A.AuthorId=@AuthorId ";
                     else
                         strSql += " and A.ArticleStatus=1  and A.AuthorId=@AuthorId ";
                 }

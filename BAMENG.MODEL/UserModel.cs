@@ -801,6 +801,9 @@ namespace BAMENG.MODEL
 
         public int RoleId { get; set; }
 
+        public string RoleName { get; set; }
+
+
         public string UserName { get; set; }
 
         public string UserMobile { get; set; }
@@ -816,6 +819,8 @@ namespace BAMENG.MODEL
 
         public DateTime CreateTime { get; set; }
 
+
+
         /// <summary>
         /// 0集团，1总店，2分店
         /// </summary>
@@ -827,9 +832,10 @@ namespace BAMENG.MODEL
     /// <summary>
     /// 盟友奖励实体
     /// </summary>
-    public class RewardsSettingModel {
+    public class RewardsSettingModel
+    {
 
-        public int ID { get; set;}
+        public int ID { get; set; }
 
         public int UserId { get; set; }
 

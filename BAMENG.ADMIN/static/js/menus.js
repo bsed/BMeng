@@ -57,7 +57,7 @@ $(function () {
                         }
                     }
                     else {
-                        if (ret.status == 70034) {                            
+                        if (ret.status == 70034 || ret.status == 7003 || ret.status == 7002) {
                             swal({
                                 title: ret.statusText,
                                 text: "即将跳转登录页面.",

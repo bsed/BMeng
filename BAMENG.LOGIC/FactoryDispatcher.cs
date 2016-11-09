@@ -107,5 +107,15 @@ namespace BAMENG.LOGIC
             return new ConfigDAL();
         }
 
+
+        /// <summary>
+        /// 后台管理员
+        /// </summary>
+        /// <returns>IManagerDAL.</returns>
+        public static IManagerDAL ManagerFactory()
+        {
+            return new ManagerDAL();
+        }
+
     }
 }

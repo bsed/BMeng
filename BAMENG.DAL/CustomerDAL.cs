@@ -48,7 +48,7 @@ namespace BAMENG.DAL
         /// <param name="model"></param>
         /// <param name="isvalid">客户是否有效</param>
         /// <returns></returns>
-        public ResultPageModel GetCustomerList(SearchModel model, bool isvalid = true)
+        public ResultPageModel GetCustomerList(SearchModel model, int shopId, bool isvalid = true)
         {
             ResultPageModel result = new ResultPageModel();
             string strSql = APP_SELECT;
@@ -60,7 +60,8 @@ namespace BAMENG.DAL
             if (model.UserId > 0)
                 strSql += " and C.BelongTwo= @BelongOne";
 
-
+            if (shopId > 0)
+                strSql += " and C.ShopId= @ShopId";
 
             if (!string.IsNullOrEmpty(model.key))
             {
@@ -80,6 +81,7 @@ namespace BAMENG.DAL
 
             var param = new[] {
                 new SqlParameter("@BelongOne",model.UserId),
+                new SqlParameter("@ShopId",shopId),
                 new SqlParameter("@Mobile",model.key)
             };
             //生成sql语句
@@ -233,7 +235,7 @@ namespace BAMENG.DAL
         public bool UpdateInShopStatus(int customerId, int status)
         {
             string strSql = "update BM_CustomerManage set InShop=@InShop,InShopTime=getdate() where ID=@ID";
-            var param = new[] {                
+            var param = new[] {
                 new SqlParameter("@InShop",status),
                 new SqlParameter("@ID",customerId)
             };

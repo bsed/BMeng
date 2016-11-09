@@ -28,6 +28,8 @@ namespace BAMENG.ADMIN.handler
                 if (data.UserStatus == 1)
                 {
                     WriteCookies(data);
+                    if (data.UserIndentity == 0)
+                        ManagerLogic.UpdateLastLoginTime(data.ID);
                     json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
                 }
                 else

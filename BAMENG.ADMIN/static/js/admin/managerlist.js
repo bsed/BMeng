@@ -1,7 +1,6 @@
 ﻿/// <reference path="../plugins/sweetalert/sweetalert.min.js" />
 /// <reference path="../jquery.min.js" />
 /// <reference path="../plugins/hot/Jquery.util.js" />
-/// <reference path="../plugins/layui/layui.js" />
 
 /*
     版权所有:杭州火图科技有限公司
@@ -11,7 +10,7 @@
     2013-2016. All rights reserved.
 **/
 
-var shopHelper = {
+var managerHelper = {
     ajaxUrl: "/handler/HQ.ashx",
     loaclData: [],
     pageIndex: 1,
@@ -21,11 +20,9 @@ var shopHelper = {
         self.loaclData = [];
         this.pageIndex = page;
         var postData = {
-            action: "getshoplist",
+            action: "GetManagerList",
             pageIndex: page,
             pageSize: 20,
-            prov: $("#province").val(),
-            city: $("#city").val(),
             key: $("#keyword").val()
         }
         hotUtil.loading.show();
@@ -38,13 +35,13 @@ var shopHelper = {
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
                             tempHtml = tempHtml.replace("{LoginName}", item.LoginName);
-                            tempHtml = tempHtml.replace(/{ShopID}/gm, item.ShopID);
-                            tempHtml = tempHtml.replace("{ShopName}", item.ShopName);
-                            tempHtml = tempHtml.replace("{Contacts}", item.Contacts);
-                            tempHtml = tempHtml.replace("{ShopProv}", item.ShopProv + item.ShopCity + item.ShopArea + item.ShopAddress);
-                            tempHtml = tempHtml.replace("{ContactWay}", item.ContactWay);
-                            tempHtml = tempHtml.replace("{IsActive}", item.IsActive);
-                            tempHtml = tempHtml.replace("{ActiveStatus}", item.IsActive == 1 ? "<span style='color:red;'>激活</span>" : "已冻结")
+                            tempHtml = tempHtml.replace(/{UserId}/gm, item.ID);
+                            tempHtml = tempHtml.replace("{UserName}", item.UserName);
+                            tempHtml = tempHtml.replace(/{UserEmail}/g, item.UserEmail);
+                            tempHtml = tempHtml.replace("{UserMobile}", item.UserMobile);
+                            tempHtml = tempHtml.replace("{LastLoginTime}", item.LastLoginTime);
+                            tempHtml = tempHtml.replace("{RoleName}", item.RoleName);
+                            tempHtml = tempHtml.replace("{ActiveStatus}", item.UserStatus == 1 ? "<span style='color:red;'>激活</span>" : "已冻结")
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
@@ -53,7 +50,7 @@ var shopHelper = {
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
                         pageinate.init((p) => {
                             goTo(p, function (page) {
-                                shopHelper.loadList(page);
+                                managerHelper.loadList(page);
                             });
                         });
                     }
@@ -63,19 +60,17 @@ var shopHelper = {
         });
     },
     search: function () {
-        shopHelper.loadList(1);
+        managerHelper.loadList(1);
     },
     searchAll: function () {
         $("#keyword").val("");
-        $("#province").val("");
-        $("#city").val("");
-        shopHelper.loadList(1);
+        managerHelper.loadList(1);
     },
     getModel: function (dataId) {
         var model = null;
-        if (this.loaclData != null && this.loaclData.length > 0) {
+        if (!hotUtil.isNullOrEmpty(dataId) && this.loaclData != null && this.loaclData.length > 0) {
             $.each(this.loaclData, function (i, item) {
-                if (item.ShopID == dataId) {
+                if (item.ID == dataId) {
                     model = item;
                     return false;
                 }
@@ -85,13 +80,13 @@ var shopHelper = {
     },
     edit: function () {
         var param = hotUtil.serializeForm("#signupForm .form-control");
-        param.action = "updateShop";
+        param.action = "EditManager";
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
                     swal("提交成功！", "", "success");
-                    shopHelper.loadList(shopHelper.pageIndex);
+                    managerHelper.loadList(managerHelper.pageIndex);
                     $(".close").click();
                 }
                 else {
@@ -112,15 +107,15 @@ var shopHelper = {
             closeOnConfirm: false,
         }, function () {
             var param = {
-                action: "deleteshop",
-                shopId: dataId
+                action: "DeleteManager",
+                userid: dataId
             }
             hotUtil.loading.show();
-            hotUtil.ajaxCall(shopHelper.ajaxUrl, param, function (ret, err) {
+            hotUtil.ajaxCall(managerHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
                         swal("删除成功！", "您已经永久删除了这条信息。", "success");
-                        shopHelper.loadList(shopHelper.pageIndex);
+                        managerHelper.loadList(managerHelper.pageIndex);
                     }
                     else {
                         swal(ret.statusText, "", "warning");
@@ -132,16 +127,15 @@ var shopHelper = {
     },
     updateActive: function (dataId, active) {
         var param = {
-            action: "UPDATESHOPACTIVE",
-            shopId: dataId,
-            active: active == 1 ? 0 : 1
+            action: "SetManagerUserStatus",
+            userid: dataId
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
                     swal("提交成功！", "", "success");
-                    shopHelper.loadList(shopHelper.pageIndex);
+                    managerHelper.loadList(managerHelper.pageIndex);
                 }
                 else {
                     swal(ret.statusText, "", "warning");
@@ -155,98 +149,64 @@ var shopHelper = {
             this.reset.resetForm();
         var data = this.getModel(dataId);
         if (data != null) {
-            $("#modal-title").text("编辑");
-            $("#shopId").val(dataId);
-            $("#shopname").val(data.ShopName);
-            $("#shopprov").val(data.ShopProv);
-            $("#shopcity").val(data.ShopCity);
-            $("#username").val(data.Contacts);
-            $("#usermobile").val(data.ContactWay);
+            $("#modal-title").text("编辑管理员信息");
+            $("#userid").val(dataId);
+            $("#name").val(data.UserName);
+            $("#email").val(data.UserEmail);
+            $("#mobile").val(data.UserMobile);
             if (!hotUtil.isNullOrEmpty(data.LoginName))
-                $("#userloginname").val(data.LoginName).attr("readonly", "readonly");
+                $("#loginName").val(data.LoginName).attr("readonly", "readonly");
         }
         else {
-            $("#userloginname").removeAttr("readonly");
-            $("#modal-title").text("添加");
+            $("#loginName").removeAttr("readonly");
+            $("#modal-title").text("添加管理员信息");
             $("#signupForm input").val("");
         }
+    },
+    pageInit: function () {
+        managerHelper.loadList(managerHelper.pageIndex);
+        managerHelper.validate();
+    },
+    validate: function () {
+        var e = "<i class='fa fa-times-circle'></i> ";
+        this.reset = $("#signupForm").validate({
+            rules: {
+                name: {
+                    required: !0,
+                    minlength: 2
+                },
+                mobile: "required",
+                loginName: {
+                    required: !0,
+                    minlength: 5
+                },                
+                password: {
+                    minlength: 6
+                }
+            },
+            messages: {
+                name: {
+                    required: e + "请输入姓名",
+                    minlength: e + "联系人必须两个字符以上"
+                },
+                mobile: e + "请输入您的手机号码",
+                loginName: {
+                    required: e + "请输入您的登录名",
+                    minlength: e + "登录名必须5个字符以上"
+                },                
+                password: {
+                    minlength: e + "密码必须6个字符以上"
+                }
+            },
+            submitHandler: function (form) {
+                managerHelper.edit();
+            }
+        })
     }
 };
 
-
-$.validator.setDefaults({
-    highlight: function (e) {
-        $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
-    },
-    success: function (e) {
-        e.closest(".form-group").removeClass("has-error").addClass("has-success")
-    },
-    errorElement: "span",
-    errorPlacement: function (e, r) {
-        e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
-    },
-    errorClass: "help-block m-b-none",
-    validClass: "help-block m-b-none"
-});
-
-
 $(function () {
-    shopHelper.loadList(shopHelper.pageIndex);
-    var cityPicker = new IIInsomniaCityPicker({
-        data: cityData,//数据在citylist.js 中
-        target: '.cityChoice',
-        hideCityInput: "#city",
-        hideProvinceInput: "#province"
-    }).init();
-
-
-
-    new IIInsomniaCityPicker({
-        data: cityData,//数据在citylist.js 中
-        target: '.modal-cityChoice',
-        hideCityInput: "#shopcity",
-        hideProvinceInput: "#shopprov"
-    }).init();
-
-
-    var e = "<i class='fa fa-times-circle'></i> ";
-    shopHelper.reset = $("#signupForm").validate({
-        rules: {
-            shopname: "required",
-            shopcity: "required",
-            username: {
-                required: !0,
-                minlength: 2
-            },
-            usermobile: "required",
-            userloginname: {
-                required: !0,
-                minlength: 5
-            },
-            password: {
-                minlength: 6
-            }
-        },
-        messages: {
-            shopname: e + "请输入门店名称",
-            shopcity: e + "请选择所在城市",
-            username: {
-                required: e + "请输入联系人",
-                minlength: e + "联系人必须两个字符以上"
-            },
-            usermobile: e + "请输入您的手机号码",
-            userloginname: {
-                required: e + "请输入您的登录名",
-                minlength: e + "登录名必须5个字符以上"
-            },
-            password: {
-                minlength: e + "密码必须6个字符以上"
-            }
-        },
-        submitHandler: function (form) {
-            shopHelper.edit();
-        }
-    })
+    managerHelper.pageInit();
 });
 
 

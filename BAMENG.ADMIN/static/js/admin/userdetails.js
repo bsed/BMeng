@@ -71,6 +71,7 @@ var userdetailsHelper = {
                             tempHtml = tempHtml.replace("{MengBeans}", item.MengBeans - item.MengBeansLocked);
                             tempHtml = tempHtml.replace("{Score}", item.Score - item.ScoreLocked);
                             tempHtml = tempHtml.replace("{CustomerAmount}", item.CustomerAmount);
+                            tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);                            
                             if (!hotUtil.isNullOrEmpty(item.UserHeadImg))
                                 tempHtml = tempHtml.replace("{UserHeadImg}", item.UserHeadImg);
                             else

@@ -27,11 +27,11 @@ namespace BAMENG.LOGIC
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static ResultPageModel GetCustomerList(SearchModel model, bool isvalid = true)
+        public static ResultPageModel GetCustomerList(SearchModel model, int shopId, bool isvalid = true)
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
             {
-                return dal.GetCustomerList(model, isvalid);
+                return dal.GetCustomerList(model,shopId, isvalid);
             }
         }
 

@@ -105,6 +105,7 @@
     <Content Include="admin\userdetails.html" />
     <Content Include="admin\userlevel.html" />
     <Content Include="admin\customerlist.html" />
+    <Content Include="admin\managerlist.html" />
     <Content Include="admin\userlist.html" />
     <Content Include="article\details.html" />
     <Content Include="index.html" />
@@ -130,6 +131,7 @@
     <Content Include="static\js\admin\userlevel.js" />
     <Content Include="static\js\admin\customerlist.js" />
     <Content Include="static\js\admin\focuspic.js" />
+    <Content Include="static\js\admin\managerlist.js" />
     <Content Include="static\js\admin\userlist.js" />
     <Content Include="static\js\demoLeftData.js" />
     <Content Include="static\js\plugins\CtiyPicker\css\cityPicker.css" />

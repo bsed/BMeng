@@ -168,6 +168,7 @@ var userHelper = {
                 $("#userloginname").val(data.LoginName).attr("readonly", "readonly");
         }
         else {
+            $("#userloginname").removeAttr("readonly");
             $("#modal-title").text("添加盟主信息");
             $("#signupForm input").val("");
         }
@@ -207,10 +208,6 @@ var userHelper = {
                 usernickname: "required",
                 password: {
                     minlength: 6
-                },
-                confirm_password: {
-                    minlength: 6,
-                    equalTo: "#password"
                 }
             },
             messages: {
@@ -226,10 +223,6 @@ var userHelper = {
                 usernickname: e + "请输入昵称",
                 password: {
                     minlength: e + "密码必须6个字符以上"
-                },
-                confirm_password: {
-                    minlength: e + "密码必须6个字符以上",
-                    equalTo: e + "两次输入的密码不一致"
                 }
             },
             submitHandler: function (form) {

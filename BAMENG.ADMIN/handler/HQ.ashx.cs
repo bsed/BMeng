@@ -171,6 +171,22 @@ namespace BAMENG.ADMIN.handler
                     case "EDITCONFIG":
                         EditConfig();
                         break;
+
+
+                    case "EDITMANAGER":
+                        EditManager();
+                        break;
+                    case "DELETEMANAGER":
+                        DeleteManager();
+                        break;
+                    case "SETMANAGERUSERSTATUS":
+                        SetManagerUserStatus();
+                        break;
+                    case "GETMANAGERLIST":
+                        GetManagerList();
+                        break;
+
+
                     default:
                         break;
                 }
@@ -372,7 +388,7 @@ namespace BAMENG.ADMIN.handler
                 key = GetFormValue("key", ""),
                 searchType = GetFormValue("searchType", 0)
             };
-            var data = CustomerLogic.GetCustomerList(model);
+            var data = CustomerLogic.GetCustomerList(model, user.UserIndentity == 0 ? 0 : user.ID);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -649,13 +665,69 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void EditConfig()
         {
-            string config =HttpUtility.UrlDecode(GetFormValue("config", ""));
+            string config = HttpUtility.UrlDecode(GetFormValue("config", ""));
             if (!string.IsNullOrEmpty(config))
             {
                 List<ConfigModel> lst = JsonHelper.JsonDeserialize<List<ConfigModel>>(config);
                 ConfigLogic.UpdateValue(lst);
             }
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+
+
+
+        /// <summary>
+        /// Edits the user.
+        /// </summary>
+        private void EditManager()
+        {
+            bool flag = ManagerLogic.EditUser(new AdminLoginModel()
+            {
+                LoginName = GetFormValue("loginName", ""),
+                LoginPassword = EncryptHelper.MD5(GetFormValue("password", "")),
+                RoleId = GetFormValue("roleid", 0),
+                UserEmail = GetFormValue("email", ""),
+                UserMobile = GetFormValue("mobile", ""),
+                UserName = GetFormValue("name", ""),
+                UserStatus = 1,
+                ID = UserId
+            });
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+
+        /// <summary>
+        /// Deletes the manager.
+        /// </summary>
+        private void DeleteManager()
+        {
+            ManagerLogic.Delete(UserId);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+
+        /// <summary>
+        /// Sets the manager user status.
+        /// </summary>
+        private void SetManagerUserStatus()
+        {
+            ManagerLogic.SetUserStatus(UserId);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+
+        /// <summary>
+        /// 获取管理员列表
+        /// </summary>
+        private void GetManagerList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", "")
+            };
+            var data = ManagerLogic.GetManagerList(model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
     }
 }

@@ -20,10 +20,11 @@ namespace BAMENG.IDAL
         /// <summary>
         /// 根据用户ID，获取客户列表
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">The model.</param>
+        /// <param name="shopId">The shop identifier.</param>
         /// <param name="isvalid">是否是有效客户</param>
-        /// <returns></returns>
-        ResultPageModel GetCustomerList(SearchModel model, bool isvalid = true);
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetCustomerList(SearchModel model,int shopId, bool isvalid = true);
 
 
         /// <summary>

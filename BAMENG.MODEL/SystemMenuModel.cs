@@ -63,6 +63,11 @@ namespace BAMENG.MODEL
         /// <value>The item show.</value>
         public int ItemShow { get; set; }
 
+        /// <summary>
+        /// Gets or sets the item sort.
+        /// </summary>
+        /// <value>The item sort.</value>
+        public int ItemSort { get; set; }
 
         /// <summary>
         /// Gets or sets the item icons.

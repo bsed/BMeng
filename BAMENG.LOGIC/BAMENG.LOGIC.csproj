@@ -55,6 +55,7 @@
     <Compile Include="FactoryDispatcher.cs" />
     <Compile Include="FocusPicLogic.cs" />
     <Compile Include="LogLogic.cs" />
+    <Compile Include="ManagerLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShopLogic.cs" />
     <Compile Include="SmsLogic.cs" />

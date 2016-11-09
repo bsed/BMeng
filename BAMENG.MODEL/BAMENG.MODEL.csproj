@@ -49,6 +49,7 @@
     <Compile Include="ArticleModel.cs" />
     <Compile Include="CustomerModel.cs" />
     <Compile Include="FocusPicModel.cs" />
+    <Compile Include="ManagerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultModel.cs" />
     <Compile Include="ShopModel.cs" />

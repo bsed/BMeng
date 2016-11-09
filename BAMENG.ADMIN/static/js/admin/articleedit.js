@@ -86,8 +86,10 @@ var articleHelper = {
                 if (ret) {
                     if (ret.status == 200) {
                         swal("提交成功", "", "success");
-                        if (articleHelper.dataId == 0)
+                        if (articleHelper.dataId == 0) {
                             $("#signupForm")[0].reset();
+                            articleHelper.setEditContent("");
+                        }
                     }
                 }
                 hotUtil.loading.close();
