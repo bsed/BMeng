@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title>盟主管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeInRight tooltip-demo">
+        <!--search-->
+        <form role="form" class="search-panel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content p-m no-borders">
+                            <div class="form-inline">
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodName">搜索类型：</label>
+                                    <select class="form-control input-sm" name="stdType" id="stdType">
+                                        <option value="1">姓名</option>
+                                        <option value="2">昵称</option>
+                                        <option value="3">手机</option>
+                                        <option value="4">门店</option>
+                                    </select>
+                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="关键字" />
+                                </div>
+                            </div>
+                            <p style="height: 8px;"></p>
+                            <div class="form-inline" style="max-width: 926px; text-align: right;">
+                                <button type="button" onclick="focusHelper.search()" class="btn btn-success">筛选</button>
+                                <button type="button" onclick="focusHelper.searchAll()" class="btn btn-success">显示全部</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--search-->
+        <!--list-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">
+                            <div style="text-align:right;">
+                                <!-- 添加按钮 -->
+                                <button type="button" id="btnUser" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="focusHelper.dialog()">添加轮播图</button>
+                            </div>
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>图片</th>
+                                        <th>名称</th>
+                                        <th>说明</th>
+                                        <th>链接</th>
+                                        <th>状态</th>
+                                        <th>排序</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode"></tbody>
+                            </table>
+                            <p style="float: left; margin: 20px 0;">共<span class="pagination_recordCount">0</span>条记录，当前第<span class="pagination_pageIndex">1</span> /<span class="pagination_pageCount">1</span>，每页<span class="pagination_pageSize">20</span>条记录</p>
+                            <ul style="float: right;" class="pagination pagination-split"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="templist">
+        <tr>
+            <td>{NO}</td>
+            <td><img src="{PicUrl}" width="60" height="60" onerror="this.src='/static/img/bg.png'" /></td>
+            <td>{Title}</td>
+            <td>{Description}</td>
+            <td>{LinkUrl}</td>
+            <td>{IsEnable}</td>
+            <td>{Sort}</td>
+            <td>{CreateTime}</td>
+            <td>
+                <span class="cursor-point" onclick="focusHelper.dialog('{ID}');" data-toggle="modal" data-target="#myModal2">编辑</span>
+                &nbsp;
+                <span class="cursor-point" onclick="focusHelper.updateActive('{ID}')">{ActiveText}</span>
+                &nbsp;
+                <span class="cursor-point" onclick="focusHelper.del('{ID}')">删除</span>
+            </td>
+        </tr>
+    </template>
+
+
+    <!-- 添加/编辑店铺数据 模态窗 begin -->
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title"><span id="modal-title"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class="form-horizontal m-t" id="signupForm">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><span id="allyLable">标题</span>：</label>
+                                <div class="col-sm-8">
+                                    <input id="focusid" class="form-control" type="hidden" value="0" />
+                                    <input id="focustitle" name="focustitle" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">上传图片：</label>
+                                <div class="col-sm-8">
+                                    <input type="file" id="uploadfile" name="uploadfile" readonly="readonly" class="form-control">
+                                    <input type="hidden" id="focuspicurl" name="focuspicurl" value="" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">图片链接：</label>
+                                <div class="col-sm-8">
+                                    <input id="focuslinkurl" name="focuslinkurl" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">是否启用：</label>
+                                <div class="col-sm-8">
+                                    <input type="checkbox" id="focusenable" style="display:none;" class="js-switch" checked="checked" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">排序号：</label>
+                                <div class="col-sm-4">
+                                    <input id="focussort" name="focussort" class="form-control" type="number">
+                                    <span class="help-block"><i class="fa fa-info-circle"></i>排序号越大，越靠前</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">说明：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="focusdescription" name="focusdescription" class="form-control" cols="50" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-5">
+                                    <button class="btn btn-success" type="submit">提交</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 添加/编辑店铺数据 模态窗 end -->
+
+
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/content.min.js"></script>
+    <script src="/static/js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
+    <script src="/static/js/plugins/switchery/switchery.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/static/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="/static/js/plugins/hot/bootstrap.hot.extra-validate.js"></script>
+    <script src="/static/js/plugins/ajaxfileupload.js"></script>
+    <script src="/static/js/admin/focuspic.js"></script>
+</body>
+</html>

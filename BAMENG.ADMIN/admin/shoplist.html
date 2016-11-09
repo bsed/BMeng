@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title>门店管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeInRight tooltip-demo">
+        <!--search-->
+        <form role="form" class="search-panel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content p-m no-borders">
+                            <div class="form-inline">
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodName">所在城市：</label>
+                                    <input type="text" class="form-control input-sm mb10 cityChoice" id="province" name="province" placeholder="所在省份" readonly="readonly" />
+                                    <input type="text" class="form-control input-sm mb10 cityChoice" id="city" name="city" placeholder="所在城市" />
+
+                                </div>
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodBn">店铺名称：</label>
+                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="店铺名称" />
+                                </div>
+                            </div>
+                            <p style="height: 8px;"></p>
+                            <div class="form-inline" style="max-width: 926px; text-align: right;">
+                                <button type="button" onclick="shopHelper.search()" class="btn btn-success">筛选</button>
+                                <button type="button" onclick="shopHelper.searchAll()" class="btn btn-success">显示全部</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--search-->
+        <!--list-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">
+                            <div style="text-align:right;">
+                                <button type="button" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="shopHelper.dialog()">添加门店</button>
+                            </div>
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>登录名</th>
+                                        <th>总店名称</th>
+                                        <th>联系人</th>
+                                        <th>所在地</th>
+                                        <th>联系方式</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode"></tbody>
+                            </table>
+                            <p style="float: left; margin: 20px 0;">共<span class="pagination_recordCount">0</span>条记录，当前第<span class="pagination_pageIndex">1</span> /<span class="pagination_pageCount">1</span>，每页<span class="pagination_pageSize">20</span>条记录</p>
+                            <ul style="float: right;" class="pagination pagination-split"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="templist">
+        <tr>
+            <td>
+                {LoginName}
+            </td>
+            <td>{ShopName}</td>
+            <td>{Contacts}</td>
+            <td>{ShopProv}</td>
+            <td>{ContactWay}</td>
+            <td>{ActiveStatus}</td>
+            <td>
+                <span class="cursor-point" onclick="shopHelper.dialog({ShopID});" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
+                &nbsp;
+                <span class="cursor-point" onclick="shopHelper.del({ShopID})"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>
+                &nbsp;
+                <span class="cursor-point" onclick="shopHelper.updateActive({ShopID},{IsActive})"><i class="fa fa-cog tooltips" data-placement="top" data-toggle="tooltip" data-original-title="冻结/解冻"></i></span>
+            </td>
+        </tr>
+    </template>
+
+
+
+
+    <!-- 添加/编辑店铺数据 模态窗 begin -->
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title"><span id="modal-title"></span>门店信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class="form-horizontal m-t" id="signupForm">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">门店名称：</label>
+                                <div class="col-sm-8">
+                                    <input id="shopId" class="form-control" type="hidden" value="0" />
+                                    <input id="shopname" name="shopname" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">所在地：</label>
+                                <div class="col-sm-8" style="position:relative;">
+                                    <input type="text" style="width:100px;float:left;margin-top:0px;" class="form-control modal-cityChoice" aria-required="true" aria-invalid="false" id="shopprov" name="shopprov" placeholder="所在省份" />
+                                    <input type="text" style="width:100px;float:left;margin-left:10px;margin-top:0px;" class="form-control modal-cityChoice" aria-required="true" aria-invalid="false" id="shopcity" name="shopcity" placeholder="所在城市" />
+                                    <div style="clear:both;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">门店地址：</label>
+                                <div class="col-sm-8">
+                                    <input id="shopaddress" name="shopaddress" class="form-control error" type="text" aria-required="true" aria-invalid="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">联系人：</label>
+                                <div class="col-sm-8">
+                                    <input id="username" name="username" class="form-control error" type="text" aria-required="true" aria-invalid="true" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">联系手机：</label>
+                                <div class="col-sm-8">
+                                    <input id="usermobile" name="usermobile" class="form-control error" type="number" aria-required="true" aria-invalid="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">登录名：</label>
+                                <div class="col-sm-8">
+                                    <input id="userloginname" name="userloginname" class="form-control" type="text">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">登录密码：</label>
+                                <div class="col-sm-8">
+                                    <input id="password" name="password" class="form-control" type="password">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">再次密码：</label>
+                                <div class="col-sm-8">
+                                    <input id="confirm_password" name="confirm_password" class="form-control" type="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-5">
+                                    <button class="btn btn-primary" type="submit">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 添加/编辑店铺数据 模态窗 end -->
+
+
+
+
+    <link href="/static/js/plugins/CtiyPicker/css/cityPicker.css" rel="stylesheet" />
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/content.min.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/static/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="/static/js/plugins/CtiyPicker/js/cityList.js"></script>
+    <script src="/static/js/plugins/CtiyPicker/js/cityPicker.js"></script>
+    <script src="/static/js/admin/shoplist.js"></script>
+</body>
+</html>

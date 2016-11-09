@@ -1,0 +1,36 @@
+.bm .weui_article{
+	padding: 0px 15px;
+  font-size: 15px;
+}
+.bm .bmingyd{
+	vertical-align: middle;width:22px;margin-left: 10px;
+}/*go*/
+.lodinggo{
+  background-color: #e7e8e9;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.lodinggo .bacfff{
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16% 10% 16% 10%;
+  margin-top: 15%;
+  margin:22% 9%;
+}
+.lodinggo .textc{
+	text-align:center;
+}
+.lodinggo .fontone{
+	  font-size: 12px;
+  color: #bababb;
+  margin-top: 10px;
+}
+.lodinggo .fonttwo{
+	  font-size: 12px;
+  color: #bababb;
+  margin-top: 15px;
+}
+

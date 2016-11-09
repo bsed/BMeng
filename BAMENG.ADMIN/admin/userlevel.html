@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title>盟主管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeInRight tooltip-demo">        
+        <!--list-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">                            
+                            <div style="text-align:right;">
+                                <h2 style="float:left;"><strong>盟主等级</strong></h2>
+                                <!-- 添加按钮 -->
+                                <button type="button" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="levelHelper.dialog(0,1)">添加盟主等级</button>
+                            </div>                            
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>盟主等级</th>
+                                        <th>等级名称</th>
+                                        <th>升级条件</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p></p>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">
+                            <div style="text-align:right;">
+                                <h2 style="float:left;"><strong>盟友等级</strong></h2>
+                                <!-- 添加按钮 -->
+                                <button type="button" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="levelHelper.dialog(0,0)">添加盟友等级</button>
+                            </div>
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>盟友等级</th>
+                                        <th>等级名称</th>
+                                        <th>升级条件</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode2"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="templist">
+        <tr>            
+            <td>{Level}</td>
+            <td>{LevelName}</td>            
+            <td>{WhereTitle}数量累计达 <span style="color:red;">{MemberNum}</span> <span>{unit}</span></td>
+            <td>
+                <span class="cursor-point" onclick="levelHelper.dialog('{LevelId}', '{type}');" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
+                &nbsp;
+                <span class="cursor-point" onclick="levelHelper.del('{LevelId}', '{type}')"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>                                
+            </td>
+        </tr>
+    </template>
+
+
+
+
+
+
+
+    <!-- 添加/编辑店铺数据 模态窗 begin -->
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title"><span id="modal-title"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class="form-horizontal m-t" id="signupForm">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">等级名称：</label>
+                                <div class="col-sm-8">
+                                    <input id="levelid" class="form-control" type="hidden" value="0" />
+                                    <input id="leveltype" class="form-control" type="hidden" value="0" />
+                                    <input id="levelname" style="width:300px;" name="levelname" class="form-control error" aria-required="true" aria-invalid="true" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">升级条件：</label>
+                                <div class="col-sm-8">
+                                   <span id="modal-where-lable">盟友数量累计达</span> 
+                                   <input style="width:150px;display:inline-block;margin-top:0px;" id="levelmembernum" name="levelmembernum" class="form-control error" type="number" aria-required="true" aria-invalid="true" />
+                                   <span class="spanunit">人</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-5">
+                                    <button class="btn btn-primary" type="submit">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 添加/编辑店铺数据 模态窗 end -->
+
+
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/content.min.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/static/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="/static/js/admin/userlevel.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="/static/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="/static/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="/static/css/style.min.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>编辑资讯信息</h5>
+            </div>
+            <div class="ibox-content">
+                <form class="form-horizontal" id="signupForm">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">资讯标题</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="articleTitle" name="articleTitle" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">资讯简介</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="articleIntro" name="articleIntro" class="form-control" />
+                            <span class="help-block m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否置顶</label>
+                        <div class="col-sm-6">
+                            <input type="checkbox" id="articleTop" name="articleTop" style="display:none;" class="js-switch" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否发布</label>
+                        <div class="col-sm-6">
+                            <input type="checkbox" id="articlePublish" style="display:none;" class="js-switch" checked="checked" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">显示对象</label>
+                        <div class="col-sm-6">
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="inlineRadio1" value="0" name="radioInline" data-check="true" checked="checked">
+                                <label for="inlineRadio1">所有人</label>
+                            </div>
+                            <div class="radio radio-inline">
+                                <input type="radio" id="inlineRadio2" value="1" name="radioInline">
+                                <label for="inlineRadio2">盟主</label>
+                            </div>
+                            <div class="radio radio-inline">
+                                <input type="radio" id="inlineRadio3" value="2" name="radioInline">
+                                <label for="inlineRadio3">盟友</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上传封面</label>
+                        <div class="col-sm-6">
+                            <input type="hidden" id="txtcover" value="" />
+                            <input type="file" id="uploadfile" name="uploadfile" readonly="readonly" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">资讯内容</label>
+                        <div class="col-sm-8" id="eg">
+                            <div class="ibox-content no-padding">
+                                <div class="summernote" id="ArticleBody">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-5">
+                            <button class="btn btn-success btn-submit" type="submit">提交</button>
+                            <button class="btn btn-success btn-yes" onclick="articleHelper.updateStatus(1)" style="display:none;" type="button">同意</button>
+                            <button class="btn btn-success btn-no"  onclick="articleHelper.updateStatus(-1)" style="display:none;" type="button">拒绝</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/content.min.js"></script>
+    <script src="/static/js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
+    <script src="/static/js/plugins/switchery/switchery.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/static/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="/static/js/plugins/summernote/summernote.min.js"></script>
+    <script src="/static/js/plugins/summernote/summernote-zh-CN.js"></script>
+    <script src="/static/js/plugins/ajaxfileupload.js"></script>
+    <script src="/static/js/admin/articleedit.js"></script>
+
+</body>
+
+</html>
