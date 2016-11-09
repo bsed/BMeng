@@ -649,11 +649,11 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void EditConfig()
         {
-            string config = GetFormValue("config", "");
-            if (string.IsNullOrEmpty(config))
+            string config =HttpUtility.UrlDecode(GetFormValue("config", ""));
+            if (!string.IsNullOrEmpty(config))
             {
                 List<ConfigModel> lst = JsonHelper.JsonDeserialize<List<ConfigModel>>(config);
-                ConfigLogic.GetConfigList();
+                ConfigLogic.UpdateValue(lst);
             }
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
         }

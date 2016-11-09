@@ -31,14 +31,13 @@ namespace BAMENG.LOGIC
         /// <returns>List&lt;ConfigModel&gt;.</returns>
         public static List<ConfigModel> GetConfigList()
         {
-            string cacheKey = "";
             List<ConfigModel> lst = WebCacheHelper<List<ConfigModel>>.Get(cacheKey);
             if (lst == null)
             {
                 using (var dal = FactoryDispatcher.ConfigFactory())
                 {
                     lst = dal.List();
-                    WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey, WebCacheTimeOption.永久)));
+                    WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
                 }
             }
             return lst;
@@ -54,7 +53,12 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.ConfigFactory())
             {
-                return dal.UpdateValue(model);
+                bool flag = dal.UpdateValue(model);
+
+                if (flag)
+                    WebCacheHelper.RefreshCache(cacheKey);
+
+                return flag;
             }
         }
 
@@ -76,6 +80,7 @@ namespace BAMENG.LOGIC
                         Remark = item.Remark
                     });
                 }
+                WebCacheHelper.RefreshCache(cacheKey);
                 return true;
             }
         }

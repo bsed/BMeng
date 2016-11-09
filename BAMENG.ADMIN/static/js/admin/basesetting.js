@@ -80,6 +80,26 @@ var settingHelper = {
                 Code: "BindMobile",
                 Value: $("#BindMobile").val(),
                 Remark: "绑定手机,绑定后，总后台收到资讯审核及消息通知会收到短信通知"
+            },
+            {
+                Code: "EnableAppCoerceUpdate",
+                Value: $("#EnableAppCoerceUpdate").attr("checked") ? 1 : 0,
+                Remark: "是否启用强制更新"
+            },
+            {
+                Code: "AppVersion",
+                Value: $("#AppVersion").val(),
+                Remark: "最新版本号"
+            },
+            {
+                Code: "AppUpateUrl",
+                Value: $("#AppUpateUrl").val(),
+                Remark: "更新地址"
+            },
+            {
+                Code: "AppUpateContent",
+                Value: $("#AppUpateContent").val(),
+                Remark: "更新内容"
             }
         ];
 
@@ -103,7 +123,7 @@ var settingHelper = {
 $(function () {
 
 
-
+    settingHelper.load();
 
     $("#EnableSign,#EnableContinuousSign").change(function () {
         if ($(this).attr("checked"))
@@ -111,7 +131,7 @@ $(function () {
         else
             $(this).setChecked(true);
     });
-
+    var e = "<i class='fa fa-times-circle'></i> ";
     $("#signupForm").validate({
         rules: {
             articleTitle: {

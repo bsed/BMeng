@@ -32,7 +32,7 @@ namespace BAMENG.DAL
 
         private const string SQL_UPDATE_VALUE = @"IF EXISTS (SELECT * FROM BM_BaseConfig WHERE Code=@Code)  
                                             BEGIN
-                                                UPDATE BM_BaseConfig set Value=@Value where Code=@Code
+                                                UPDATE BM_BaseConfig set Value=@Value,Remark=@Remark where Code=@Code
                                             END
                                             ELSE 
                                             BEGIN
@@ -49,10 +49,10 @@ namespace BAMENG.DAL
         public bool UpdateValue(ConfigModel model)
         {
             var parm = new[]{
-                        new SqlParameter("@Code", model.Code),
-                        new SqlParameter("@Value", model.Value),
-                        new SqlParameter("@Remark", model.Value)
-                        };
+                new SqlParameter("@Code", model.Code),
+                new SqlParameter("@Value", model.Value),
+                new SqlParameter("@Remark", model.Remark)
+            };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, SQL_UPDATE_VALUE, parm) > 0;
         }
 
