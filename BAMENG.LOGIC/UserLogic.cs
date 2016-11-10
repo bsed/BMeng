@@ -250,6 +250,20 @@ namespace BAMENG.LOGIC
 
 
         /// <summary>
+        ///根据盟主，获取盟友奖励设置信息
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>RewardsSettingModel.</returns>
+        public static RewardsSettingModel GetRewardModel(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetRewardModel(userId);
+            }
+        }
+
+
+        /// <summary>
         /// 忘记密码
         /// </summary>
         /// <param name="mobile">The mobile.</param>

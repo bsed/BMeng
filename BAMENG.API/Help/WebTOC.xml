@@ -1,80 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <HelpTOC>
 
-  <HelpTOCNode Id="d307764e-38c1-41b6-8398-9a423caed3c4" Title="BAMENG.API Namespace" Url="html/637675408.htm">
-    <HelpTOCNode Id="8db1ff6a-4e6c-4fe4-99e0-8ebf57b71cbe" Title="ActionAuthorizeAttribute Class" Url="html/2047809791.htm">
+  <HelpTOCNode Id="0a6e5439-b7f7-4b3a-8b35-0181a31b9a2d" Title="BAMENG.API Namespace" Url="html/637675408.htm">
+    <HelpTOCNode Id="99a80d25-032a-424f-b34e-17dac3bfeba8" Title="ActionAuthorizeAttribute Class" Url="html/2047809791.htm">
       <HelpTOCNode Title="ActionAuthorizeAttribute Members" Url="html/1800047724.htm" />
-      <HelpTOCNode Id="f198d9d4-883f-49b1-a7e6-51bb29df6885" Title="ActionAuthorizeAttribute Methods" Url="html/160454957.htm">
+      <HelpTOCNode Id="775e34c4-4421-476a-bd93-c7b492b30f82" Title="ActionAuthorizeAttribute Methods" Url="html/160454957.htm">
         <HelpTOCNode Title="OnActionExecuting Method " Url="html/1396556448.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="6668a90c-ee8a-439c-8808-68ecc2c15118" Title="ActionAuthorizeAttribute Properties" Url="html/743967921.htm">
+      <HelpTOCNode Id="cfda62e2-460d-492a-8d21-3b33499d31cf" Title="ActionAuthorizeAttribute Properties" Url="html/743967921.htm">
         <HelpTOCNode Title="AllowCrossDomainVisit Property " Url="html/1037634721.htm" />
         <HelpTOCNode Title="AllowSites Property " Url="html/1529114025.htm" />
         <HelpTOCNode Title="AuthLogin Property " Url="html/1382712429.htm" />
         <HelpTOCNode Title="EnableSign Property " Url="html/578075365.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="16fa5d33-d3dc-4cc0-862b-27613a6df6b6" Title="AllowOriginAttribute Class" Url="html/1906550779.htm">
+    <HelpTOCNode Id="9de55e25-beee-49ed-b841-391e235b93db" Title="AllowOriginAttribute Class" Url="html/1906550779.htm">
       <HelpTOCNode Title="AllowOriginAttribute Members" Url="html/91645574.htm" />
-      <HelpTOCNode Id="6c31e1a5-c6ba-4a24-8bb6-784497c914d8" Title="AllowOriginAttribute Methods" Url="html/2039686959.htm">
+      <HelpTOCNode Id="9af65902-0e66-4660-8d3e-ac91a567f891" Title="AllowOriginAttribute Methods" Url="html/2039686959.htm">
         <HelpTOCNode Title="onExcute Method " Url="html/11959721.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="d690ed3d-c525-4ea2-ae5d-187a597a3703" Title="ApiAuthorizeAttribute Class" Url="html/390830376.htm">
+    <HelpTOCNode Id="343fc3e0-5e25-4b2c-af61-98031cb454b9" Title="ApiAuthorizeAttribute Class" Url="html/390830376.htm">
       <HelpTOCNode Title="ApiAuthorizeAttribute Members" Url="html/818321720.htm" />
-      <HelpTOCNode Id="34200c28-0c86-4cb0-83c1-9a66e23f6f47" Title="ApiAuthorizeAttribute Methods" Url="html/573200686.htm">
+      <HelpTOCNode Id="9cea02a0-e3b5-40de-8e9d-4940c3cda2d3" Title="ApiAuthorizeAttribute Methods" Url="html/573200686.htm">
         <HelpTOCNode Title="onExcute Method " Url="html/1224621496.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="32fe4ebb-89d5-4092-94d0-4c19e39375d9" Title="BaseController Class" Url="html/1186309129.htm">
+    <HelpTOCNode Id="679cec2d-50ab-4e0a-a4c9-da7c727bb01a" Title="BaseController Class" Url="html/1186309129.htm">
       <HelpTOCNode Title="BaseController Members" Url="html/1475909732.htm" />
-      <HelpTOCNode Id="aa133398-740a-4ffa-b5d7-612d7c82ee22" Title="BaseController Methods" Url="html/51963310.htm">
+      <HelpTOCNode Id="24f61067-a5ef-40b2-8cf8-86ccc0a21354" Title="BaseController Methods" Url="html/51963310.htm">
         <HelpTOCNode Title="GetAuthUserId Method " Url="html/584526837.htm" />
-        <HelpTOCNode Id="b538df2d-f4f5-4f55-b00a-87b6ca02097b" Title="GetQuery Method " Url="html/995054105.htm">
+        <HelpTOCNode Id="52fd10aa-5898-4ea9-b0a6-6e93f089b01f" Title="GetQuery Method " Url="html/995054105.htm">
           <HelpTOCNode Title="GetQuery Method (String, String)" Url="html/2134929448.htm" />
           <HelpTOCNode Title="GetQuery Method (String, Int32)" Url="html/118677713.htm" />
           <HelpTOCNode Title="GetQuery Method (String, Decimal)" Url="html/215742832.htm" />
         </HelpTOCNode>
         <HelpTOCNode Title="GetUserData Method " Url="html/811176191.htm" />
-        <HelpTOCNode Id="a77f2a91-79f3-4aeb-bf72-4b6df244dae4" Title="Json Method " Url="html/1100908338.htm">
+        <HelpTOCNode Id="3d6f81ff-6fe4-4a8a-be80-9b3fb5d255c0" Title="Json Method " Url="html/1100908338.htm">
           <HelpTOCNode Title="Json Method (Object, String, JsonRequestBehavior)" Url="html/639272096.htm" />
           <HelpTOCNode Title="Json Method (Object, JsonRequestBehavior)" Url="html/1952429590.htm" />
           <HelpTOCNode Title="Json Method (Object)" Url="html/220323750.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="e03e5431-5d78-4ce9-9c89-22213c96c62b" Title="BaseController Properties" Url="html/1633688026.htm">
+      <HelpTOCNode Id="cd739982-d350-44d9-a4d3-52bb8ef3f8aa" Title="BaseController Properties" Url="html/1633688026.htm">
         <HelpTOCNode Title="OS Property " Url="html/1907893045.htm" />
         <HelpTOCNode Title="timestamp Property " Url="html/849702230.htm" />
         <HelpTOCNode Title="Version Property " Url="html/1825185290.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
     <HelpTOCNode Title="MvcApplication Class" Url="html/1206166512.htm" />
-    <HelpTOCNode Id="995fce0e-2e48-47c6-95ed-e1f83d56e26e" Title="RouteConfig Class" Url="html/1289588769.htm">
+    <HelpTOCNode Id="2c4e499d-aab9-4a0b-8b74-66adfef5d73a" Title="RouteConfig Class" Url="html/1289588769.htm">
       <HelpTOCNode Title="RouteConfig Members" Url="html/942348326.htm" />
-      <HelpTOCNode Id="1691c80e-36eb-44f2-8e83-e84404a125a8" Title="RouteConfig Methods" Url="html/1584161221.htm">
+      <HelpTOCNode Id="66014255-c87e-498b-ae05-15618831837c" Title="RouteConfig Methods" Url="html/1584161221.htm">
         <HelpTOCNode Title="RegisterRoutes Method " Url="html/1281349232.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
   </HelpTOCNode>
-  <HelpTOCNode Id="2f5eaf0b-3145-4d6a-b0db-8f01d4aa04c6" Title="BAMENG.API.Base Namespace" Url="html/1216001482.htm">
-    <HelpTOCNode Id="6a9887f7-23b1-4f98-991d-022beacc278e" Title="CustomJsonResult Class" Url="html/129519254.htm">
+  <HelpTOCNode Id="edee675c-db0e-4f12-82a7-ff0bb63f8a8c" Title="BAMENG.API.Base Namespace" Url="html/1216001482.htm">
+    <HelpTOCNode Id="4dc4504f-39ec-4dea-b3d8-31d50e803c42" Title="CustomJsonResult Class" Url="html/129519254.htm">
       <HelpTOCNode Title="CustomJsonResult Members" Url="html/1186464645.htm" />
-      <HelpTOCNode Id="9ea5118a-c0f0-4fe4-b86b-e59d2ef987b8" Title="CustomJsonResult Methods" Url="html/1851843078.htm">
+      <HelpTOCNode Id="755d161e-a9dc-4ce9-8da0-33ddab442493" Title="CustomJsonResult Methods" Url="html/1851843078.htm">
         <HelpTOCNode Title="ExecuteResult Method " Url="html/984702548.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
   </HelpTOCNode>
-  <HelpTOCNode Id="c775944e-4c95-44b2-aae6-ce90a22ebfdc" Title="BAMENG.API.Controllers Namespace" Url="html/520899558.htm">
-    <HelpTOCNode Id="4a314c80-b7dc-423f-a2db-b29a94cf4472" Title="ArticleController Class" Url="html/301409786.htm">
+  <HelpTOCNode Id="82d62e89-ee0c-42c4-819d-b8f4c83c2409" Title="BAMENG.API.Controllers Namespace" Url="html/520899558.htm">
+    <HelpTOCNode Id="f169449c-6441-4b60-a644-0da317002588" Title="ArticleController Class" Url="html/301409786.htm">
       <HelpTOCNode Title="ArticleController Members" Url="html/443876571.htm" />
-      <HelpTOCNode Id="d03f7bc1-c760-4576-9138-4e706d8fd8ee" Title="ArticleController Methods" Url="html/1165731468.htm">
+      <HelpTOCNode Id="bf7e8668-ad0c-4ffa-a501-1af612ae9b83" Title="ArticleController Methods" Url="html/1165731468.htm">
         <HelpTOCNode Title="create Method " Url="html/1726901277.htm" />
         <HelpTOCNode Title="list Method " Url="html/1469276583.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="67192872-8eaf-471c-b393-ca22ed15d26d" Title="CustomerController Class" Url="html/2012287676.htm">
+    <HelpTOCNode Id="527e4df3-2ee8-42bb-8796-ee6f071eefef" Title="CustomerController Class" Url="html/2012287676.htm">
       <HelpTOCNode Title="CustomerController Members" Url="html/658576427.htm" />
-      <HelpTOCNode Id="942d2540-efcc-40b9-ae0b-f62fd5b8b86a" Title="CustomerController Methods" Url="html/1382789355.htm">
+      <HelpTOCNode Id="f7056609-0d10-454c-963c-2291a10d1223" Title="CustomerController Methods" Url="html/1382789355.htm">
         <HelpTOCNode Title="audit Method " Url="html/594224650.htm" />
         <HelpTOCNode Title="create Method " Url="html/1072587144.htm" />
         <HelpTOCNode Title="details Method " Url="html/115498989.htm" />
@@ -82,9 +82,9 @@
         <HelpTOCNode Title="UpdateInShop Method " Url="html/1891361703.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="a04b2f2f-00ac-44d0-9f5e-dff6e959d895" Title="OrderController Class" Url="html/877377203.htm">
+    <HelpTOCNode Id="68efacda-f085-4f93-b571-877f47776897" Title="OrderController Class" Url="html/877377203.htm">
       <HelpTOCNode Title="OrderController Members" Url="html/2002577577.htm" />
-      <HelpTOCNode Id="2d8a3252-1c2b-460c-badf-053ab8b15d94" Title="OrderController Methods" Url="html/2091281776.htm">
+      <HelpTOCNode Id="92f94223-bb62-4138-89b1-28d85aec5a1d" Title="OrderController Methods" Url="html/2091281776.htm">
         <HelpTOCNode Title="create Method " Url="html/1940181248.htm" />
         <HelpTOCNode Title="details Method " Url="html/1097731066.htm" />
         <HelpTOCNode Title="InstationMessageList Method " Url="html/1915719544.htm" />
@@ -95,9 +95,9 @@
         <HelpTOCNode Title="UploadSuccessVoucher Method " Url="html/182184699.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="85f1f4cc-884b-4156-95fb-fb150e05c2c0" Title="SysController Class" Url="html/2139681383.htm">
+    <HelpTOCNode Id="46eedf77-14da-448b-8c56-13e00023a0b6" Title="SysController Class" Url="html/2139681383.htm">
       <HelpTOCNode Title="SysController Members" Url="html/58458059.htm" />
-      <HelpTOCNode Id="9ed73d06-890d-467b-bc61-7859118455f6" Title="SysController Methods" Url="html/225501923.htm">
+      <HelpTOCNode Id="d1665781-73fe-4496-8f84-71d26b6d669d" Title="SysController Methods" Url="html/225501923.htm">
         <HelpTOCNode Title="CheckUpdate Method " Url="html/1272780759.htm" />
         <HelpTOCNode Title="FocusPic Method " Url="html/1742610911.htm" />
         <HelpTOCNode Title="Init Method " Url="html/1680306745.htm" />
@@ -105,9 +105,9 @@
         <HelpTOCNode Title="UploadPic Method " Url="html/956026533.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="e54d08a0-4b8a-422b-ba68-56c130800c7a" Title="UserController Class" Url="html/1377038746.htm">
+    <HelpTOCNode Id="14927b83-9f92-4cd6-8f2f-096a97f0ff23" Title="UserController Class" Url="html/1377038746.htm">
       <HelpTOCNode Title="UserController Members" Url="html/172694939.htm" />
-      <HelpTOCNode Id="8f471bff-a09b-47a4-a661-4c8343575049" Title="UserController Methods" Url="html/1409601422.htm">
+      <HelpTOCNode Id="2f131d47-324a-4489-becb-5484462fa48c" Title="UserController Methods" Url="html/1409601422.htm">
         <HelpTOCNode Title="AllyApply Method " Url="html/1707442692.htm" />
         <HelpTOCNode Title="AllyApplyAudit Method " Url="html/766765378.htm" />
         <HelpTOCNode Title="AllyApplylist Method " Url="html/1190151247.htm" />
@@ -122,6 +122,7 @@
         <HelpTOCNode Title="ConvertFlow Method " Url="html/22761005.htm" />
         <HelpTOCNode Title="ConvertToBean Method " Url="html/1410514150.htm" />
         <HelpTOCNode Title="ForgetPwd Method " Url="html/786985927.htm" />
+        <HelpTOCNode Title="GetAllyReward Method " Url="html/1070820940.htm" />
         <HelpTOCNode Title="Login Method " Url="html/471848062.htm" />
         <HelpTOCNode Title="MyBusiness Method " Url="html/174847964.htm" />
         <HelpTOCNode Title="MyCashCouponList Method " Url="html/360989239.htm" />
@@ -135,16 +136,17 @@
       </HelpTOCNode>
     </HelpTOCNode>
   </HelpTOCNode>
-  <HelpTOCNode Id="d0983a87-e24f-4968-823a-b4b2d99429aa" Title="BAMENG.MODEL Namespace" Url="html/1208868221.htm">
-    <HelpTOCNode Id="a1e5e27e-5428-4a32-ba75-0d02ab97f575" Title="AdminLoginModel Class" Url="html/1287355824.htm">
+  <HelpTOCNode Id="c3a2ac77-3640-433b-8937-0cbee94390c3" Title="BAMENG.MODEL Namespace" Url="html/1208868221.htm">
+    <HelpTOCNode Id="ab1a34d8-d7f8-4520-8412-89709e092223" Title="AdminLoginModel Class" Url="html/1287355824.htm">
       <HelpTOCNode Title="AdminLoginModel Members" Url="html/1765229466.htm" />
-      <HelpTOCNode Id="b65aac2d-33ad-461a-8e71-9a5ab29e6eb2" Title="AdminLoginModel Properties" Url="html/1928617054.htm">
+      <HelpTOCNode Id="19f9a352-d8ca-4b9d-9312-bb310b4630a7" Title="AdminLoginModel Properties" Url="html/1928617054.htm">
         <HelpTOCNode Title="CreateTime Property " Url="html/276317301.htm" />
         <HelpTOCNode Title="ID Property " Url="html/1199853341.htm" />
         <HelpTOCNode Title="LastLoginTime Property " Url="html/1938098831.htm" />
         <HelpTOCNode Title="LoginName Property " Url="html/1715483395.htm" />
         <HelpTOCNode Title="LoginPassword Property " Url="html/123747184.htm" />
         <HelpTOCNode Title="RoleId Property " Url="html/1563344410.htm" />
+        <HelpTOCNode Title="RoleName Property " Url="html/713649112.htm" />
         <HelpTOCNode Title="UserEmail Property " Url="html/534542177.htm" />
         <HelpTOCNode Title="UserIndentity Property " Url="html/1322336153.htm" />
         <HelpTOCNode Title="UserMobile Property " Url="html/77322225.htm" />
@@ -152,34 +154,34 @@
         <HelpTOCNode Title="UserStatus Property " Url="html/1232050973.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="7c655f78-f5dc-46d3-a7b1-3ea7746f79f3" Title="AppInitBaseSettting Class" Url="html/908939365.htm">
+    <HelpTOCNode Id="d7cbf0ba-eb8f-4769-a00e-fdcb0f4b8f9c" Title="AppInitBaseSettting Class" Url="html/908939365.htm">
       <HelpTOCNode Title="AppInitBaseSettting Members" Url="html/1186275510.htm" />
-      <HelpTOCNode Id="d09baa62-fd6a-4a6e-ac36-8ed0d4791603" Title="AppInitBaseSettting Properties" Url="html/438893667.htm">
+      <HelpTOCNode Id="995acf3e-0956-4a58-a899-e8104b63ce57" Title="AppInitBaseSettting Properties" Url="html/438893667.htm">
         <HelpTOCNode Title="aboutUrl Property " Url="html/60686439.htm" />
         <HelpTOCNode Title="agreementUrl Property " Url="html/156175122.htm" />
         <HelpTOCNode Title="userStatus Property " Url="html/809343728.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="1533b332-1b0a-4e3c-97d1-296af730fffc" Title="AppInitModel Class" Url="html/1427379039.htm">
+    <HelpTOCNode Id="1ab8950c-141a-4346-97b7-81fe1798c03a" Title="AppInitModel Class" Url="html/1427379039.htm">
       <HelpTOCNode Title="AppInitModel Members" Url="html/405696958.htm" />
-      <HelpTOCNode Id="de9c9783-484a-4bd3-8ad0-f9c63987ab75" Title="AppInitModel Properties" Url="html/220462539.htm">
+      <HelpTOCNode Id="1a06daa0-28ff-4fc1-bd33-4f0063f4394e" Title="AppInitModel Properties" Url="html/220462539.htm">
         <HelpTOCNode Title="baseData Property " Url="html/1451473541.htm" />
         <HelpTOCNode Title="userData Property " Url="html/1672420800.htm" />
         <HelpTOCNode Title="versionData Property " Url="html/1729629446.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="c3452b25-64c8-438a-aac6-101d369c93d0" Title="AppVersionModel Class" Url="html/830011081.htm">
+    <HelpTOCNode Id="f59c0ff0-e0aa-416a-87b8-86059a0f01c5" Title="AppVersionModel Class" Url="html/830011081.htm">
       <HelpTOCNode Title="AppVersionModel Members" Url="html/705737428.htm" />
-      <HelpTOCNode Id="bf5fdd67-7f95-468a-8463-fae347af8b3b" Title="AppVersionModel Properties" Url="html/591669041.htm">
+      <HelpTOCNode Id="0ccc1535-b449-4e31-b319-0a9235350bb4" Title="AppVersionModel Properties" Url="html/591669041.htm">
         <HelpTOCNode Title="serverVersion Property " Url="html/176796835.htm" />
         <HelpTOCNode Title="updateTip Property " Url="html/224083852.htm" />
         <HelpTOCNode Title="updateType Property " Url="html/1046973797.htm" />
         <HelpTOCNode Title="updateUrl Property " Url="html/1193008233.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="064fb186-872c-4a78-89bd-b20cdb56e46c" Title="ArticleBaseModel Class" Url="html/599261726.htm">
+    <HelpTOCNode Id="13f7a1c3-4697-49cb-b34c-bba979eaf9e5" Title="ArticleBaseModel Class" Url="html/599261726.htm">
       <HelpTOCNode Title="ArticleBaseModel Members" Url="html/1234105494.htm" />
-      <HelpTOCNode Id="8f6fde86-d9e2-44ad-acac-45f60c8c04af" Title="ArticleBaseModel Properties" Url="html/1255125680.htm">
+      <HelpTOCNode Id="6f0c2cd8-bcae-484d-bdce-e135695725e1" Title="ArticleBaseModel Properties" Url="html/1255125680.htm">
         <HelpTOCNode Title="ArticleCover Property " Url="html/1114452845.htm" />
         <HelpTOCNode Title="ArticleId Property " Url="html/2098567157.htm" />
         <HelpTOCNode Title="ArticleIntro Property " Url="html/1755530881.htm" />
@@ -190,9 +192,9 @@
         <HelpTOCNode Title="PublishTime Property " Url="html/920972481.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="2cf71ed2-ba70-4610-a33c-199e5a90ce69" Title="ArticleModel Class" Url="html/1727275304.htm">
+    <HelpTOCNode Id="67954d4b-e364-4c06-9ca2-7e74f50571c7" Title="ArticleModel Class" Url="html/1727275304.htm">
       <HelpTOCNode Title="ArticleModel Members" Url="html/1187981931.htm" />
-      <HelpTOCNode Id="989b3dfc-acc6-4968-9489-430159c7c3b0" Title="ArticleModel Properties" Url="html/2065288098.htm">
+      <HelpTOCNode Id="33d884f5-53ce-4b98-9d2f-afb5c04a1eff" Title="ArticleModel Properties" Url="html/2065288098.htm">
         <HelpTOCNode Title="ArticleBody Property " Url="html/1099926818.htm" />
         <HelpTOCNode Title="ArticleClassify Property " Url="html/1345015110.htm" />
         <HelpTOCNode Title="ArticleSort Property " Url="html/61900543.htm" />
@@ -213,9 +215,29 @@
         <HelpTOCNode Title="UpdateTime Property " Url="html/2032331905.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="b7314190-770f-417a-96af-b190723fc5c9" Title="CustomerModel Class" Url="html/5296242.htm">
+    <HelpTOCNode Id="4b93c35c-49b2-4911-b182-937b1b8be4a4" Title="CashCouponModel Class" Url="html/1287369879.htm">
+      <HelpTOCNode Title="CashCouponModel Members" Url="html/351131385.htm" />
+      <HelpTOCNode Id="e60d8835-d489-4ba4-87ad-64a7fa14c0a4" Title="CashCouponModel Properties" Url="html/2107399927.htm">
+        <HelpTOCNode Title="CouponId Property " Url="html/601826225.htm" />
+        <HelpTOCNode Title="CreateTime Property " Url="html/1421946164.htm" />
+        <HelpTOCNode Title="EndTime Property " Url="html/439441964.htm" />
+        <HelpTOCNode Title="IsEnable Property " Url="html/296262322.htm" />
+        <HelpTOCNode Title="Money Property " Url="html/1029963108.htm" />
+        <HelpTOCNode Title="StartTime Property " Url="html/733532283.htm" />
+        <HelpTOCNode Title="Title Property " Url="html/1147088287.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="63e53371-9721-4bbc-be98-c5ed462ec6cf" Title="ConfigModel Class" Url="html/665108514.htm">
+      <HelpTOCNode Title="ConfigModel Members" Url="html/138642779.htm" />
+      <HelpTOCNode Id="1ef5fd81-f2e7-417f-b2bb-5b8f9c810320" Title="ConfigModel Properties" Url="html/1714824040.htm">
+        <HelpTOCNode Title="Code Property " Url="html/419592467.htm" />
+        <HelpTOCNode Title="Remark Property " Url="html/332758414.htm" />
+        <HelpTOCNode Title="Value Property " Url="html/588660019.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="a8b41c6a-7303-4e8c-b479-3c3de0e68b5c" Title="CustomerModel Class" Url="html/5296242.htm">
       <HelpTOCNode Title="CustomerModel Members" Url="html/1920630265.htm" />
-      <HelpTOCNode Id="bdf45680-75f6-4bc1-a755-44344d5a99f0" Title="CustomerModel Properties" Url="html/197358749.htm">
+      <HelpTOCNode Id="72a11020-fec0-4e54-831d-254852b2cbb5" Title="CustomerModel Properties" Url="html/197358749.htm">
         <HelpTOCNode Title="Addr Property " Url="html/306502829.htm" />
         <HelpTOCNode Title="BelongOne Property " Url="html/46736255.htm" />
         <HelpTOCNode Title="BelongOneName Property " Url="html/1709778310.htm" />
@@ -233,9 +255,9 @@
         <HelpTOCNode Title="Status Property " Url="html/36795829.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="13628ff6-bf0f-4d43-a113-ed41815f3b37" Title="FocusPicModel Class" Url="html/1377326191.htm">
+    <HelpTOCNode Id="35d4b11a-1f5b-4ec7-826e-90196250d7f6" Title="FocusPicModel Class" Url="html/1377326191.htm">
       <HelpTOCNode Title="FocusPicModel Members" Url="html/1354669437.htm" />
-      <HelpTOCNode Id="c9b395b0-4bd8-453d-9dd2-371b393ad6dd" Title="FocusPicModel Properties" Url="html/1560615505.htm">
+      <HelpTOCNode Id="38f94285-d471-45d8-8b77-446c5976abd7" Title="FocusPicModel Properties" Url="html/1560615505.htm">
         <HelpTOCNode Title="CreateTime Property " Url="html/1928788389.htm" />
         <HelpTOCNode Title="Description Property " Url="html/550668959.htm" />
         <HelpTOCNode Title="ID Property " Url="html/1055544601.htm" />
@@ -247,9 +269,9 @@
         <HelpTOCNode Title="Type Property " Url="html/181787237.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="89526535-0fef-4b30-9b35-4c4e92d4877a" Title="MallUserLevelModel Class" Url="html/1031270406.htm">
+    <HelpTOCNode Id="c3c1ef2f-ca44-4e93-9dbd-a91f14cf9402" Title="MallUserLevelModel Class" Url="html/1031270406.htm">
       <HelpTOCNode Title="MallUserLevelModel Members" Url="html/2034886545.htm" />
-      <HelpTOCNode Id="f069d6bb-c854-4fd3-897c-2012e6774356" Title="MallUserLevelModel Properties" Url="html/1387883180.htm">
+      <HelpTOCNode Id="31ad91a6-ae71-41ad-ba06-f5d170574c62" Title="MallUserLevelModel Properties" Url="html/1387883180.htm">
         <HelpTOCNode Title="IntegralPreID Property " Url="html/1866305920.htm" />
         <HelpTOCNode Title="PricePreID Property " Url="html/541148342.htm" />
         <HelpTOCNode Title="UL_BelongOne_Content Property " Url="html/39583938.htm" />
@@ -272,9 +294,10 @@
         <HelpTOCNode Title="UL_Type Property " Url="html/147199033.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="2017d833-aad5-4801-91fd-40895e36363e" Title="MemberChangeLogModel Class" Url="html/1888520613.htm">
+    <HelpTOCNode Title="ManagerModel Class" Url="html/1156999153.htm" />
+    <HelpTOCNode Id="651eb504-701d-433e-9200-ba685b3bebda" Title="MemberChangeLogModel Class" Url="html/1888520613.htm">
       <HelpTOCNode Title="MemberChangeLogModel Members" Url="html/11315061.htm" />
-      <HelpTOCNode Id="9771a99e-bd72-4f74-bedc-5256293b021c" Title="MemberChangeLogModel Properties" Url="html/429996586.htm">
+      <HelpTOCNode Id="0634e061-d395-4ef1-8a15-8be42b5ab9de" Title="MemberChangeLogModel Properties" Url="html/429996586.htm">
         <HelpTOCNode Title="Add_Time Property " Url="html/572528330.htm" />
         <HelpTOCNode Title="BeforeBelongOne Property " Url="html/640120736.htm" />
         <HelpTOCNode Title="BeforeBelongThree Property " Url="html/354701903.htm" />
@@ -298,9 +321,9 @@
         <HelpTOCNode Title="Target_RelId Property " Url="html/1253208887.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="066162ef-4ab4-4711-ba30-6ad391b67de6" Title="ReadLogModel Class" Url="html/573661557.htm">
+    <HelpTOCNode Id="bb79c725-d96b-416b-9b9c-b7ba3038eae5" Title="ReadLogModel Class" Url="html/573661557.htm">
       <HelpTOCNode Title="ReadLogModel Members" Url="html/2032996062.htm" />
-      <HelpTOCNode Id="e881ca0e-4306-4869-b156-66a8a41a0506" Title="ReadLogModel Properties" Url="html/491421526.htm">
+      <HelpTOCNode Id="40c049aa-6f60-4871-b6ab-2622d93d0b22" Title="ReadLogModel Properties" Url="html/491421526.htm">
         <HelpTOCNode Title="ArticleId Property " Url="html/1994320814.htm" />
         <HelpTOCNode Title="ClientIp Property " Url="html/1322694837.htm" />
         <HelpTOCNode Title="cookie Property " Url="html/2141820492.htm" />
@@ -311,24 +334,24 @@
         <HelpTOCNode Title="UserId Property " Url="html/1259657272.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="c5a97bfd-d005-4c6f-8705-8435a1d5b429" Title="ResultModel Class" Url="html/106230129.htm">
+    <HelpTOCNode Id="bf2dc705-f0cb-42eb-9503-341b9e3fa443" Title="ResultModel Class" Url="html/106230129.htm">
       <HelpTOCNode Title="ResultModel Members" Url="html/1847465402.htm" />
-      <HelpTOCNode Id="0c177eb8-ad7d-4ae1-a17a-65b6a9bf7284" Title="ResultModel Constructor " Url="html/524460440.htm">
+      <HelpTOCNode Id="d923c62f-e2d1-4dfc-8309-ff39a2cb006a" Title="ResultModel Constructor " Url="html/524460440.htm">
         <HelpTOCNode Title="ResultModel Constructor " Url="html/1454496612.htm" />
         <HelpTOCNode Title="ResultModel Constructor (ApiStatusCode)" Url="html/279931051.htm" />
         <HelpTOCNode Title="ResultModel Constructor (ApiStatusCode, String)" Url="html/1191903537.htm" />
         <HelpTOCNode Title="ResultModel Constructor (ApiStatusCode, String, Object)" Url="html/61899569.htm" />
         <HelpTOCNode Title="ResultModel Constructor (ApiStatusCode, Object)" Url="html/552379218.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="72c2aef4-bb55-45dd-8ab4-a15ed411c85f" Title="ResultModel Properties" Url="html/850491219.htm">
+      <HelpTOCNode Id="08e5d7e1-8a71-412c-8b79-4d075eb2d3bf" Title="ResultModel Properties" Url="html/850491219.htm">
         <HelpTOCNode Title="data Property " Url="html/553320065.htm" />
         <HelpTOCNode Title="status Property " Url="html/1461017100.htm" />
         <HelpTOCNode Title="statusText Property " Url="html/117028651.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="a0a41c43-089a-4cd1-950f-fb49dd8a2ae4" Title="ResultPageModel Class" Url="html/1329542132.htm">
+    <HelpTOCNode Id="bacb2d3c-6197-4f7c-bf42-4326f0c593f9" Title="ResultPageModel Class" Url="html/1329542132.htm">
       <HelpTOCNode Title="ResultPageModel Members" Url="html/711620967.htm" />
-      <HelpTOCNode Id="0bf52281-fb37-4d1e-a19c-19d412bcf4e7" Title="ResultPageModel Properties" Url="html/117915465.htm">
+      <HelpTOCNode Id="c4c3f904-cd51-41e5-9564-5e8da5433dea" Title="ResultPageModel Properties" Url="html/117915465.htm">
         <HelpTOCNode Title="PageCount Property " Url="html/481385444.htm" />
         <HelpTOCNode Title="PageIndex Property " Url="html/1958763796.htm" />
         <HelpTOCNode Title="PageSize Property " Url="html/2022202647.htm" />
@@ -336,9 +359,9 @@
         <HelpTOCNode Title="Total Property " Url="html/1068767518.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="1270196c-98e6-490d-9bec-eee2cecb06c5" Title="RewardsSettingModel Class" Url="html/2005722200.htm">
+    <HelpTOCNode Id="044c5eb8-fd52-433a-b902-41564ce01719" Title="RewardsSettingModel Class" Url="html/2005722200.htm">
       <HelpTOCNode Title="RewardsSettingModel Members" Url="html/2002933644.htm" />
-      <HelpTOCNode Id="22cdef3b-6ab4-45d7-875c-559f18d46f7a" Title="RewardsSettingModel Properties" Url="html/1439115761.htm">
+      <HelpTOCNode Id="f63c5ec9-4cbf-41b4-9107-5b5368b0963f" Title="RewardsSettingModel Properties" Url="html/1439115761.htm">
         <HelpTOCNode Title="CreateTime Property " Url="html/1692413499.htm" />
         <HelpTOCNode Title="CustomerReward Property " Url="html/676112986.htm" />
         <HelpTOCNode Title="ID Property " Url="html/1599023918.htm" />
@@ -348,9 +371,9 @@
         <HelpTOCNode Title="UserId Property " Url="html/820265277.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="6f8880e1-42ee-4ea4-a406-a7a494efffcd" Title="SearchModel Class" Url="html/1711580278.htm">
+    <HelpTOCNode Id="de5e7461-7dc9-4541-a966-ce7b2f85bf51" Title="SearchModel Class" Url="html/1711580278.htm">
       <HelpTOCNode Title="SearchModel Members" Url="html/143328474.htm" />
-      <HelpTOCNode Id="32377c24-3940-4b62-beed-6d5ec7185a1c" Title="SearchModel Properties" Url="html/2025197357.htm">
+      <HelpTOCNode Id="4ff88748-8282-418c-a0ef-121501d15790" Title="SearchModel Properties" Url="html/2025197357.htm">
         <HelpTOCNode Title="city Property " Url="html/754829505.htm" />
         <HelpTOCNode Title="endTime Property " Url="html/1955043412.htm" />
         <HelpTOCNode Title="key Property " Url="html/2068542391.htm" />
@@ -367,9 +390,9 @@
         <HelpTOCNode Title="UserId Property " Url="html/1110097838.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="6202d3a2-78fa-4d1e-88f3-79fb71dcd396" Title="ShopModel Class" Url="html/1609249563.htm">
+    <HelpTOCNode Id="f5c338a6-ab64-4ba4-af95-816953113d15" Title="ShopModel Class" Url="html/1609249563.htm">
       <HelpTOCNode Title="ShopModel Members" Url="html/297450056.htm" />
-      <HelpTOCNode Id="b58d880d-f9fa-4221-944d-c45597408bd6" Title="ShopModel Properties" Url="html/272850247.htm">
+      <HelpTOCNode Id="4e3901e0-752c-4a2b-9676-c4593ff9e950" Title="ShopModel Properties" Url="html/272850247.htm">
         <HelpTOCNode Title="Contacts Property " Url="html/1172879088.htm" />
         <HelpTOCNode Title="ContactWay Property " Url="html/1504972773.htm" />
         <HelpTOCNode Title="CreateTime Property " Url="html/2088482913.htm" />
@@ -386,9 +409,9 @@
         <HelpTOCNode Title="ShopType Property " Url="html/1546543413.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="8f2f91db-4eb8-4382-a33f-302dbac84f43" Title="SwtSmsVerificationModel Class" Url="html/1237448551.htm">
+    <HelpTOCNode Id="e6bb8e46-2d26-4203-b771-2077728cab33" Title="SwtSmsVerificationModel Class" Url="html/1237448551.htm">
       <HelpTOCNode Title="SwtSmsVerificationModel Members" Url="html/963069154.htm" />
-      <HelpTOCNode Id="4d79d887-b001-4fa0-b61e-150d4bcb3046" Title="SwtSmsVerificationModel Properties" Url="html/1672023588.htm">
+      <HelpTOCNode Id="b02af200-bbc2-4282-ae12-5b4161743870" Title="SwtSmsVerificationModel Properties" Url="html/1672023588.htm">
         <HelpTOCNode Title="SSV_AddTime Property " Url="html/574732756.htm" />
         <HelpTOCNode Title="SSV_CustomerId Property " Url="html/1601563900.htm" />
         <HelpTOCNode Title="SSV_ID Property " Url="html/808662180.htm" />
@@ -397,17 +420,17 @@
         <HelpTOCNode Title="SSV_Verification Property " Url="html/477029537.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="319296cd-b32c-419c-85c9-9167b67a8f4b" Title="SystemLeftModel Class" Url="html/1954729102.htm">
+    <HelpTOCNode Id="ef7db30b-8834-4899-9669-5ebf2af1470b" Title="SystemLeftModel Class" Url="html/1954729102.htm">
       <HelpTOCNode Title="SystemLeftModel Members" Url="html/757839907.htm" />
-      <HelpTOCNode Id="976ec707-4a04-40a4-8a42-1368a2be0d41" Title="SystemLeftModel Properties" Url="html/47562545.htm">
+      <HelpTOCNode Id="1cd0940f-1ec6-4d9a-bc12-6d54b9807fcc" Title="SystemLeftModel Properties" Url="html/47562545.htm">
         <HelpTOCNode Title="authority Property " Url="html/60150107.htm" />
         <HelpTOCNode Title="menuData Property " Url="html/1771119041.htm" />
         <HelpTOCNode Title="userData Property " Url="html/558646672.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="2e3a2426-e611-4f10-b377-c9b397cfac48" Title="SystemMenuModel Class" Url="html/1193423763.htm">
+    <HelpTOCNode Id="51a61973-1d5a-4387-91c0-c68de7a99ba4" Title="SystemMenuModel Class" Url="html/1193423763.htm">
       <HelpTOCNode Title="SystemMenuModel Members" Url="html/988569704.htm" />
-      <HelpTOCNode Id="a999b31f-3faf-4038-bd5a-ffd0fcb3f280" Title="SystemMenuModel Properties" Url="html/1261950150.htm">
+      <HelpTOCNode Id="31c6ab7e-457c-4e4d-a076-4c94bfd40125" Title="SystemMenuModel Properties" Url="html/1261950150.htm">
         <HelpTOCNode Title="CreateTime Property " Url="html/1627513966.htm" />
         <HelpTOCNode Title="ID Property " Url="html/2146047408.htm" />
         <HelpTOCNode Title="ItemCode Property " Url="html/36930719.htm" />
@@ -415,13 +438,14 @@
         <HelpTOCNode Title="ItemNavLabel Property " Url="html/1385070828.htm" />
         <HelpTOCNode Title="ItemParentCode Property " Url="html/802385049.htm" />
         <HelpTOCNode Title="ItemShow Property " Url="html/240994428.htm" />
+        <HelpTOCNode Title="ItemSort Property " Url="html/1326990058.htm" />
         <HelpTOCNode Title="ItemType Property " Url="html/1445034835.htm" />
         <HelpTOCNode Title="ItemUrl Property " Url="html/973843656.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="5e72d0cd-ab28-4574-b085-d03590fde275" Title="UserBaseInfoModel Class" Url="html/873114990.htm">
+    <HelpTOCNode Id="520592a9-c19a-479c-8867-e59016ab74ae" Title="UserBaseInfoModel Class" Url="html/873114990.htm">
       <HelpTOCNode Title="UserBaseInfoModel Members" Url="html/649485449.htm" />
-      <HelpTOCNode Id="fa7d16f0-2fce-45b5-b81c-823bcc31a0b3" Title="UserBaseInfoModel Properties" Url="html/1625202341.htm">
+      <HelpTOCNode Id="2584bfe4-7dc3-44c5-b8de-6bed82e4ad96" Title="UserBaseInfoModel Properties" Url="html/1625202341.htm">
         <HelpTOCNode Title="BelongName Property " Url="html/374909418.htm" />
         <HelpTOCNode Title="EnabledPayPassword Property " Url="html/1518650662.htm" />
         <HelpTOCNode Title="ExtParameterValues Property " Url="html/4219674.htm" />
@@ -490,9 +514,9 @@
         <HelpTOCNode Title="WxNickName Property " Url="html/1318018672.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="eb020be8-4c1b-4903-870d-5f27f538acf7" Title="UserModel Class" Url="html/1415190418.htm">
+    <HelpTOCNode Id="ae740fb6-6843-4047-8f72-5c5427ea1674" Title="UserModel Class" Url="html/1415190418.htm">
       <HelpTOCNode Title="UserModel Members" Url="html/244663532.htm" />
-      <HelpTOCNode Id="e3abf1f5-303e-4a9b-96f1-3892e4c18550" Title="UserModel Properties" Url="html/2002449599.htm">
+      <HelpTOCNode Id="4e61b8ed-50c3-414f-a6d3-ccb522af544a" Title="UserModel Properties" Url="html/2002449599.htm">
         <HelpTOCNode Title="BelongOne Property " Url="html/693118093.htm" />
         <HelpTOCNode Title="CreateTime Property " Url="html/768199879.htm" />
         <HelpTOCNode Title="CustomerAmount Property " Url="html/1127827331.htm" />
@@ -518,9 +542,9 @@
         <HelpTOCNode Title="UserMobile Property " Url="html/409812677.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="e6e6757c-9b3a-4d05-8737-c6d421574c31" Title="UserRegisterModel Class" Url="html/2141478052.htm">
+    <HelpTOCNode Id="7f3be9d0-4748-4325-a8fc-3992c34ee893" Title="UserRegisterModel Class" Url="html/2141478052.htm">
       <HelpTOCNode Title="UserRegisterModel Members" Url="html/1907561016.htm" />
-      <HelpTOCNode Id="c1b2fae2-0262-44bd-b2ea-8215762b4c88" Title="UserRegisterModel Properties" Url="html/222301576.htm">
+      <HelpTOCNode Id="5ac3a4f4-aa67-4988-a906-8569fe5f1687" Title="UserRegisterModel Properties" Url="html/222301576.htm">
         <HelpTOCNode Title="belongOne Property " Url="html/1842364763.htm" />
         <HelpTOCNode Title="loginName Property " Url="html/1176128407.htm" />
         <HelpTOCNode Title="loginPassword Property " Url="html/421631673.htm" />
@@ -533,9 +557,9 @@
         <HelpTOCNode Title="username Property " Url="html/792955624.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="76f422e5-9a38-4321-900f-da4785cd9492" Title="UserRelationViewEntity Class" Url="html/769656610.htm">
+    <HelpTOCNode Id="3cf714f2-d4f7-4f1f-b419-8a5e1b92e9fe" Title="UserRelationViewEntity Class" Url="html/769656610.htm">
       <HelpTOCNode Title="UserRelationViewEntity Members" Url="html/1796940080.htm" />
-      <HelpTOCNode Id="22aeb69e-317f-4faa-817e-29ff1890edcb" Title="UserRelationViewEntity Properties" Url="html/170577003.htm">
+      <HelpTOCNode Id="3f3a477c-e6a8-4839-839f-605ace968627" Title="UserRelationViewEntity Properties" Url="html/170577003.htm">
         <HelpTOCNode Title="BelongOne Property " Url="html/690129387.htm" />
         <HelpTOCNode Title="BelongThree Property " Url="html/638284457.htm" />
         <HelpTOCNode Title="BelongTwo Property " Url="html/829359146.htm" />

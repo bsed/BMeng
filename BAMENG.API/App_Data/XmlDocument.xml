@@ -387,6 +387,12 @@
             <param name="shopreward">客户进店奖励</param>
             <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         </member>
+        <member name="M:BAMENG.API.Controllers.UserController.GetAllyReward">
+            <summary>
+            获取盟主的盟友奖励设置
+            </summary>
+            <returns>ActionResult.</returns>
+        </member>
         <member name="M:BAMENG.API.Controllers.UserController.scoreList">
             <summary>
             积分列表 POST: user/scoreList

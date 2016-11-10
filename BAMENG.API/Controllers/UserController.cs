@@ -169,6 +169,19 @@ namespace BAMENG.API.Controllers
             else
                 return Json(new ResultModel(ApiStatusCode.无操作权限));
         }
+
+        /// <summary>
+        /// 获取盟主的盟友奖励设置
+        /// </summary>
+        /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
+        public ActionResult GetAllyReward()
+        {
+            var data = UserLogic.GetRewardModel(GetAuthUserId());
+            return Json(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
         /// <summary>
         /// 积分列表 POST: user/scoreList
         /// </summary>
