@@ -100,7 +100,10 @@
     <Content Include="admin\articleedit.html" />
     <Content Include="admin\articlelist.html" />
     <Content Include="admin\basesetting.html" />
+    <Content Include="admin\cashcouponlist.html" />
     <Content Include="admin\focuspic.html" />
+    <Content Include="admin\messagelist.html" />
+    <Content Include="admin\orderlist.html" />
     <Content Include="admin\shoplist.html" />
     <Content Include="admin\userdetails.html" />
     <Content Include="admin\userlevel.html" />

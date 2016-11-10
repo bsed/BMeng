@@ -117,5 +117,15 @@ namespace BAMENG.LOGIC
             return new ManagerDAL();
         }
 
+
+        /// <summary>
+        /// 优惠券
+        /// </summary>
+        /// <returns>ICouponDAL.</returns>
+        public static ICouponDAL CouponFactory()
+        {
+            return new CouponDAL();
+        }
+
     }
 }

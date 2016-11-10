@@ -187,6 +187,17 @@ namespace BAMENG.ADMIN.handler
                         break;
 
 
+                    case "GETCASHCOUPONLIST":
+                        GetCashCouponList();
+                        break;
+                    case "DELETECASHCOUPON":
+                        DeleteCashCoupon();
+                        break;
+                    case "EDITCASHCOUPON":
+                        EditCashCoupon();
+                        break;
+
+
                     default:
                         break;
                 }
@@ -728,6 +739,52 @@ namespace BAMENG.ADMIN.handler
             };
             var data = ManagerLogic.GetManagerList(model);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        /// 获取现金券
+        /// </summary>
+        private void GetCashCouponList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+                Status = GetFormValue("status", -100)
+            };
+            var data = CouponLogic.GetCashCouponList(user.ID, model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+        /// <summary>
+        /// 删除现金券
+        /// </summary>
+        private void DeleteCashCoupon()
+        {
+            int couponId = GetFormValue("couponId", 0);
+            CouponLogic.DeleteCashCoupon(couponId);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+        /// <summary>
+        /// 编辑优惠券
+        /// </summary>
+        private void EditCashCoupon()
+        {
+            bool flag = CouponLogic.EditCashCoupon(new CashCouponModel()
+            {
+                CouponId = GetFormValue("couponId", 0),
+                Money = GetFormValue("money", 0),
+                Title = GetFormValue("title", ""),
+                StartTime = Convert.ToDateTime(GetFormValue("starttime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))),
+                EndTime = Convert.ToDateTime(GetFormValue("endtime", DateTime.Now.AddDays(5).ToString("yyyy-MM-dd HH:mm:ss"))),
+                ShopId = user.ID,
+                IsEnable = GetFormValue("isenable", 1)
+            });
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
         }
     }
 }

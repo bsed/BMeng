@@ -47,6 +47,7 @@
     <Compile Include="AbstractDAL.cs" />
     <Compile Include="ArticleDAL.cs" />
     <Compile Include="ConfigDAL.cs" />
+    <Compile Include="CouponDAL.cs" />
     <Compile Include="CustomerDAL.cs" />
     <Compile Include="FocusPicDAL.cs" />
     <Compile Include="LogDAL.cs" />

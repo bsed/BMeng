@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IArticleDAL.cs" />
     <Compile Include="IConfigDAL.cs" />
+    <Compile Include="ICouponDAL.cs" />
     <Compile Include="ICustomerDAL.cs" />
     <Compile Include="IFocusPicDAL.cs" />
     <Compile Include="ILogDAL.cs" />

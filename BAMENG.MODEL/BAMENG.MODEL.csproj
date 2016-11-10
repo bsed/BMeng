@@ -47,6 +47,7 @@
     <Compile Include="AppLogModel.cs" />
     <Compile Include="AppVersionModel.cs" />
     <Compile Include="ArticleModel.cs" />
+    <Compile Include="CouponModel.cs" />
     <Compile Include="CustomerModel.cs" />
     <Compile Include="FocusPicModel.cs" />
     <Compile Include="ManagerModel.cs" />

@@ -51,6 +51,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ConfigLogic.cs" />
+    <Compile Include="CouponLogic.cs" />
     <Compile Include="CustomerLogic.cs" />
     <Compile Include="FactoryDispatcher.cs" />
     <Compile Include="FocusPicLogic.cs" />
