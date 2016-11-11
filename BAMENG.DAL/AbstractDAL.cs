@@ -98,7 +98,8 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, querySql, commandParameters))
             {
                 lst = DbHelperSQLP.GetEntityList<T>(dr);
-                callback?.Invoke(lst);
+                //callback?.Invoke(lst);
+                callback.Invoke(lst);
             }
 
             int pageCount = recordCount / PageSize;
@@ -173,7 +174,8 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, querySql))
             {
                 lst = DbHelperSQLP.GetEntityList<T>(dr);
-                callback?.Invoke(lst);
+                //callback?.Invoke(lst);
+                callback.Invoke(lst);
             }
 
             int pageCount = recordCount / PageSize;
