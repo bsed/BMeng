@@ -9,6 +9,7 @@
 
 using BAMENG.CONFIG;
 using BAMENG.MODEL;
+using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -288,7 +289,14 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                return dal.ChanagePassword(userId, oldPassword, password);
+                bool flag = dal.ChanagePassword(userId, oldPassword, password);
+                string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
+                if (dal.IsAuthTokenExist(userId))
+                    dal.UpdateUserAuthToken(userId, token);
+                else
+                    dal.AddUserAuthToken(userId, token);
+
+                return flag;
             }
         }
     }
