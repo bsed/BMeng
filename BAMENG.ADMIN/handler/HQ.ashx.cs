@@ -197,6 +197,9 @@ namespace BAMENG.ADMIN.handler
                         EditCashCoupon();
                         break;
 
+                    case "SETCOUPONENABLE":
+                        SetCouponEnable();
+                        break;
 
                     default:
                         break;
@@ -776,15 +779,26 @@ namespace BAMENG.ADMIN.handler
         {
             bool flag = CouponLogic.EditCashCoupon(new CashCouponModel()
             {
-                CouponId = GetFormValue("couponId", 0),
-                Money = GetFormValue("money", 0),
-                Title = GetFormValue("title", ""),
-                StartTime = Convert.ToDateTime(GetFormValue("starttime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))),
-                EndTime = Convert.ToDateTime(GetFormValue("endtime", DateTime.Now.AddDays(5).ToString("yyyy-MM-dd HH:mm:ss"))),
+                CouponId = GetFormValue("couponid", 0),
+                Money = GetFormValue("couponmoney", 0),
+                Title = GetFormValue("coupontitle", ""),
+                StartTime = Convert.ToDateTime(GetFormValue("couponstarttime", DateTime.Now.ToString("yyyy-MM-dd"))),
+                EndTime = Convert.ToDateTime(GetFormValue("couponendtime", DateTime.Now.AddDays(5).ToString("yyyy-MM-dd"))),
                 ShopId = user.ID,
-                IsEnable = GetFormValue("isenable", 1)
+                IsEnable = GetFormValue("couponenable", 1)
             });
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+
+        /// <summary>
+        /// Sets the coupon enable.
+        /// </summary>
+        private void SetCouponEnable()
+        {
+            if (CouponLogic.SetCouponEnable(GetFormValue("couponId", 0)))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.操作失败));
         }
     }
 }

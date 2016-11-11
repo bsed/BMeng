@@ -28,7 +28,7 @@ namespace BAMENG.IDAL
         /// <param name="shopId">门店ID</param>
         /// <param name="model">The model.</param>
         /// <returns>ResultPageModel.</returns>
-        ResultPageModel GetCashCouponList(int shopId,SearchModel model);
+        ResultPageModel GetCashCouponList(int shopId, SearchModel model);
 
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace BAMENG.IDAL
         /// <param name="couponId">The coupon identifier.</param>
         /// <param name="couponNo">The coupon no.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        bool UpdateGetStatus(int couponId,string couponNo);
+        bool UpdateGetStatus(int couponId, string couponNo);
 
 
         /// <summary>
@@ -71,6 +71,11 @@ namespace BAMENG.IDAL
         /// <returns>true if XXXX, false otherwise.</returns>
         bool UpdateUseStatus(int couponId);
 
-
+        /// <summary>
+        ///设置优惠券启用和禁用
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool SetCouponEnable(int couponId);
     }
 }

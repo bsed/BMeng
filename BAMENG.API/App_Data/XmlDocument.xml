@@ -300,6 +300,14 @@
             </summary>
             <returns><![CDATA[{ picurl:"/resource/bameng/image/xxxxx.jpg" }]]></returns>
         </member>
+        <member name="M:BAMENG.API.Controllers.SysController.MyLocation(System.String,System.String)">
+            <summary>
+            我的位置
+            </summary>
+            <param name="mylocation">我的位置</param>
+            <param name="lnglat">经纬度,精度和纬度，用英文逗号隔开</param>
+            <returns>ActionResult.</returns>
+        </member>
         <member name="T:BAMENG.API.Controllers.UserController">
             <summary>
             用户相关接口
@@ -500,7 +508,12 @@
         <member name="T:BAMENG.API.ApiAuthorizeAttribute">
             <summary>
             验证签名
-            </summary>
+            </summary>    
+            <example>
+            <code><![CDATA[固定参数：os(android or iphone),version,timestamp]]></code>
+            <code><![CDATA[签名格式：md5(key=value&key2=value2....+SECRET_KEY)]]></code>
+            <code><![CDATA[请求方式：GET,POST,如无特殊说明，都按POST方式请求]]></code>
+            </example>
         </member>
         <member name="M:BAMENG.API.ApiAuthorizeAttribute.onExcute(System.Web.Mvc.ActionExecutingContext)">
             <summary>

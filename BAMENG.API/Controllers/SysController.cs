@@ -70,7 +70,7 @@ namespace BAMENG.API.Controllers
         /// <param name="mobile">The mobile.</param>
         /// <param name="type">1普通短信  2语音短信</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult SendSms(string mobile,int type)
+        public ActionResult SendSms(string mobile, int type)
         {
             ApiStatusCode apiCode;
             SmsLogic.SendSms(type, mobile, out apiCode);
@@ -111,6 +111,18 @@ namespace BAMENG.API.Controllers
         }
 
 
+
+        /// <summary>
+        /// 我的位置
+        /// </summary>
+        /// <param name="mylocation">我的位置</param>
+        /// <param name="lnglat">经纬度,精度和纬度，用英文逗号隔开</param>
+        /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
+        public ActionResult MyLocation(string mylocation, string lnglat)
+        {
+            return Json(new ResultModel(ApiStatusCode.OK));
+        }
 
 
     }

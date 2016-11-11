@@ -123,5 +123,18 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 设置优惠券启用和禁用
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool SetCouponEnable(int couponId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.SetCouponEnable(couponId);
+            }
+        }
+
     }
 }

@@ -19,6 +19,7 @@ using System.Data.SqlClient;
 using BAMENG.CONFIG;
 using HotCoreUtils.DB;
 using System.Data;
+using HotCoreUtils.Helper;
 
 namespace BAMENG.DAL
 {
@@ -203,6 +204,7 @@ namespace BAMENG.DAL
                 {
                     item.ArticleUrl = string.Format("{0}/article/details.html?articleId={1}&idt={2}", WebConfig.articleDetailsDomain(), item.ArticleId, AuthorIdentity);
                     item.ArticleCover = WebConfig.reswebsite() + item.ArticleCover;
+                    item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString());
                 });
             });
         }

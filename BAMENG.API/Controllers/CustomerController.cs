@@ -24,7 +24,7 @@ namespace BAMENG.API.Controllers
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
         public ActionResult list(int type, int pageIndex, int pageSize)
-        {            
+        {
             UserModel user = GetUserData();
             if (user != null)
             {

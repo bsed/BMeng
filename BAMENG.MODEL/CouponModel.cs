@@ -73,6 +73,12 @@ namespace BAMENG.MODEL
 
 
         /// <summary>
+        /// 状态名称
+        /// </summary>
+        /// <value>The name of the status.</value>
+        public string StatusName { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         /// <value>The create time.</value>

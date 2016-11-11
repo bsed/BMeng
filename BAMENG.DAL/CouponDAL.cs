@@ -87,6 +87,12 @@ namespace BAMENG.DAL
 
             strSql += " and ShopId=@ShopId ";
 
+            if(model.Status!=-100)
+            {
+                strSql += " and IsEnable=@IsEnable";
+            }
+
+
             if (!string.IsNullOrEmpty(model.startTime))
                 strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)>=@startTime ";
             if (!string.IsNullOrEmpty(model.endTime))
@@ -94,10 +100,25 @@ namespace BAMENG.DAL
             var param = new[] {
                 new SqlParameter("@startTime", model.startTime),
                 new SqlParameter("@endTime", model.endTime),
-                new SqlParameter("@ShopId", shopId)
+                new SqlParameter("@ShopId", shopId),
+                new SqlParameter("@IsEnable", model.Status)
             };
             //生成sql语句
-            return getPageData<CashCouponModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", false, param);
+            return getPageData<CashCouponModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param,((items)=> {
+                items.ForEach((item) => {
+                    if (DateTime.Compare(item.EndTime, DateTime.Now) > 0)
+                    {
+                        if(item.IsEnable==1)
+                            item.StatusName = "启用";
+                        else
+                            item.StatusName = "未启用";
+                    }
+                    else
+                    item.StatusName = "已过期";
+
+
+                });
+            }));
         }
 
         /// <summary>
@@ -141,6 +162,21 @@ namespace BAMENG.DAL
         public bool UpdateUseStatus(int couponId)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 设置优惠券启用和禁用
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public bool SetCouponEnable(int couponId)
+        {
+            string strSql = "update BM_CashCoupon set IsEnable=ABS(IsEnable-1) where CouponId=@CouponId";
+            var parm = new[] {
+                new SqlParameter("@CouponId",couponId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
     }
 }

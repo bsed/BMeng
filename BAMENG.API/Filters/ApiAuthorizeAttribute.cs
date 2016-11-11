@@ -53,7 +53,12 @@ namespace BAMENG.API
 
     /// <summary>
     /// 验证签名
-    /// </summary>
+    /// </summary>    
+    /// <example>
+    /// <code><![CDATA[固定参数：os(android or iphone),version,timestamp]]></code>
+    /// <code><![CDATA[签名格式：md5(key=value&key2=value2....+SECRET_KEY)]]></code>
+    /// <code><![CDATA[请求方式：GET,POST,如无特殊说明，都按POST方式请求]]></code>
+    /// </example>
     public class ApiAuthorizeAttribute
     {
         HttpContextBase ctx = null;

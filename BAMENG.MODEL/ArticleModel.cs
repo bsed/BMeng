@@ -52,6 +52,12 @@ namespace BAMENG.MODEL
         public DateTime PublishTime { get; set; }
 
         /// <summary>
+        ///发布时间的友好提示
+        /// </summary>
+        /// <value>The publish time text.</value>
+        public string PublishTimeText { get; set; }
+
+        /// <summary>
         /// 资讯详情地址
         /// </summary>
         /// <value>The article URL.</value>

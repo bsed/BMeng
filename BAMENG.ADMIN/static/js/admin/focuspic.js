@@ -179,10 +179,12 @@ var focusHelper = {
             $("#modal-title").text("添加轮播图");
             $("#signupForm input").val("");
         }
+
     },
     pageInit: function () {
         focusHelper.loadList(focusHelper.pageIndex);
         focusHelper.validate();
+        this.initCheck();
     },
     validate: function () {
         var e = "<i class='fa fa-times-circle'></i> ";
@@ -222,14 +224,16 @@ var focusHelper = {
         else
             callback();
     },
+    initCheck: function () {
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+        elems.forEach(function (html) {
+            var switchery = new Switchery(html);
+        });
+    }
 };
 
 $(function () {
     focusHelper.pageInit();
-    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-    elems.forEach(function (html) {
-        var switchery = new Switchery(html);
-    });
 
     $('input[type="file"]').prettyFile();
 

@@ -43,8 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HotCoreUtils">
-      <HintPath>..\..\Hot.Lib\HotCoreUtils.dll</HintPath>
+    <Reference Include="HotCoreUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\HotCoreUtils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -136,6 +137,7 @@
     <Content Include="static\js\admin\focuspic.js" />
     <Content Include="static\js\admin\managerlist.js" />
     <Content Include="static\js\admin\userlist.js" />
+    <Content Include="static\js\admin\cashcouponlist.js" />
     <Content Include="static\js\demoLeftData.js" />
     <Content Include="static\js\plugins\CtiyPicker\css\cityPicker.css" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityList.js" />
@@ -365,18 +367,6 @@
     <Content Include="static\js\plugins\jsTree\jstree.min.js" />
     <Content Include="static\js\plugins\jvectormap\jquery-jvectormap-1.2.2.min.js" />
     <Content Include="static\js\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
-    <Content Include="static\js\plugins\laydate\laydate.js" />
-    <Content Include="static\js\plugins\laydate\need\laydate.css" />
-    <Content Include="static\js\plugins\laydate\skins\dahong\icon.png" />
-    <Content Include="static\js\plugins\laydate\skins\dahong\laydate.css" />
-    <Content Include="static\js\plugins\laydate\skins\danlan\icon.png" />
-    <Content Include="static\js\plugins\laydate\skins\danlan\laydate.css" />
-    <Content Include="static\js\plugins\laydate\skins\default\icon.png" />
-    <Content Include="static\js\plugins\laydate\skins\default\laydate.css" />
-    <Content Include="static\js\plugins\laydate\skins\molv\icon.png" />
-    <Content Include="static\js\plugins\laydate\skins\molv\laydate.css" />
-    <Content Include="static\js\plugins\laydate\skins\yalan\icon.png" />
-    <Content Include="static\js\plugins\laydate\skins\yalan\laydate.css" />
     <Content Include="static\js\plugins\layer\laydate\laydate.js" />
     <Content Include="static\js\plugins\layer\layer.js" />
     <Content Include="static\js\plugins\layer\layer.min.js" />
@@ -496,6 +486,18 @@
     <Content Include="static\js\plugins\metisMenu\jquery.metisMenu.js" />
     <Content Include="static\js\plugins\morris\morris.js" />
     <Content Include="static\js\plugins\morris\raphael-2.1.0.min.js" />
+    <Content Include="static\js\plugins\My97Datepicker\calendar.js" />
+    <Content Include="static\js\plugins\My97Datepicker\lang\en.js" />
+    <Content Include="static\js\plugins\My97Datepicker\lang\zh-cn.js" />
+    <Content Include="static\js\plugins\My97Datepicker\lang\zh-tw.js" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\datePicker.gif" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\default\datepicker.css" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\default\img.gif" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\WdatePicker.css" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\whyGreen\bg.jpg" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\whyGreen\datepicker.css" />
+    <Content Include="static\js\plugins\My97Datepicker\skin\whyGreen\img.gif" />
+    <Content Include="static\js\plugins\My97Datepicker\WdatePicker.js" />
     <Content Include="static\js\plugins\nestable\jquery.nestable.js" />
     <Content Include="static\js\plugins\nouslider\jquery.nouislider.min.js" />
     <Content Include="static\js\plugins\pace\pace.min.js" />
