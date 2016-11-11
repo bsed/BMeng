@@ -24,5 +24,14 @@ namespace BAMENG.IDAL
         /// <param name="type">0总后台菜单，1总门店菜单，2分店菜单</param>
         /// <returns></returns>
         List<SystemMenuModel> GetMenuList(int type);
+
+        /// <summary>
+        /// 添加我的位置
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="myLocation">My location.</param>
+        /// <param name="lnglat">The lnglat.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddMyLocation(int userId, string myLocation, string lnglat);
     }
 }

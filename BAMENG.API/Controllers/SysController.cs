@@ -121,6 +121,7 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyLocation(string mylocation, string lnglat)
         {
+            SystemLogic.AddMyLocation(GetAuthUserId(), mylocation, lnglat);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 

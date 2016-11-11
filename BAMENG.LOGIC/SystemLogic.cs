@@ -50,5 +50,20 @@ namespace BAMENG.LOGIC
         }
 
 
+        /// <summary>
+        /// 添加我的位置
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="myLocation">My location.</param>
+        /// <param name="lnglat">The lnglat.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddMyLocation(int userId, string myLocation, string lnglat)
+        {
+            using (var dal = FactoryDispatcher.SystemFactory())
+            {
+                return dal.AddMyLocation(userId, myLocation, lnglat);
+            }
+        }
+
     }
 }

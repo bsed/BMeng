@@ -232,6 +232,7 @@ namespace BAMENG.DAL
                     {
                         item.ArticleUrl = WebConfig.articleDetailsDomain() + "/article/details.html?articleId=" + item.ArticleId;
                         item.ArticleCover = WebConfig.reswebsite() + item.ArticleCover;
+                        item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString());
                     });
                 }
                 return data;

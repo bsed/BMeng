@@ -40,5 +40,23 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<SystemMenuModel>(dr);
             }
         }
+
+        /// <summary>
+        /// 添加我的位置
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="myLocation">My location.</param>
+        /// <param name="lnglat">The lnglat.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddMyLocation(int userId, string myLocation, string lnglat)
+        {
+            string strSql = "insert into BM_MyLocation(UserId,MyLocation,lnglat) values(@UserId,@MyLocation,@lnglat)";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@MyLocation",myLocation),
+                new SqlParameter("@lnglat",lnglat)
+            };
+           return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param)>0;
+        }
     }
 }
