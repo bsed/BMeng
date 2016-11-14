@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace BAMENG.MODEL
 {
+    /// <summary>
+    /// 现金券实体
+    /// </summary>
     public class CashCouponModel
     {
         /// <summary>
@@ -84,4 +87,82 @@ namespace BAMENG.MODEL
         /// <value>The create time.</value>
         public DateTime CreateTime { get; set; }
     }
+
+
+
+    /// <summary>
+    /// 现金券领取记录实体
+    /// </summary>
+    public class CashCouponLogModel
+    {
+        /// <summary>
+        /// 现金券码ID 
+        /// </summary>
+        /// <value>The identifier.</value>
+        public int ID { get; set; }
+
+
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        /// <value>The user identifier.</value>
+        public int UserId { get; set; }
+
+
+        /// <summary>
+        /// 现金券码
+        /// </summary>
+        /// <value>The coupon no.</value>
+        public int CouponNo { get; set; }
+
+
+        /// <summary>
+        /// 现金券规则ID
+        /// </summary>
+        /// <value>The coupon identifier.</value>
+        public int CouponId { get; set; }
+
+        /// <summary>
+        /// 客户名称
+        /// </summary>
+        /// <value>The name.</value>
+        public string Name { get; set; }
+        /// <summary>
+        /// 客户手机号码
+        /// </summary>
+        /// <value>The mobile.</value>
+        public int Mobile { get; set; }
+
+        /// <summary>
+        /// 是否获取
+        /// </summary>
+        /// <value>The is get.</value>
+        public int IsGet { get; set; }
+
+        /// <summary>
+        /// 获取时间
+        /// </summary>
+        /// <value>The get time.</value>
+        public int GetTime { get; set; }
+
+        /// <summary>
+        /// 是否使用
+        /// </summary>
+        /// <value>The is use.</value>
+        public int IsUse { get; set; }
+
+        /// <summary>
+        /// 使用时间
+        /// </summary>
+        /// <value>The use time.</value>
+        public DateTime UseTime { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        /// <value>The create time.</value>
+        public DateTime CreateTime { get; set; }
+    }
+
+
 }

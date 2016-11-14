@@ -45,6 +45,12 @@ namespace BAMENG.MODEL
         public int IsActive { get; set; }
 
         /// <summary>
+        /// 性别 男M 女F 未知
+        /// </summary>
+        /// <value>The user sex.</value>
+        public string UserGender { get; set; }
+
+        /// <summary>
         /// Gets or sets the score.
         /// </summary>
         /// <value>The score.</value>

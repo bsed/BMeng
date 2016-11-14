@@ -31,6 +31,7 @@ namespace BAMENG.ADMIN.handler
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
                 context.Response.ContentType = "application/json";
                 context.Response.Write(json);
+                context.Response.End();
             }
             ArticleModel data = ArticleLogic.GetModel(articleId);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -39,7 +40,7 @@ namespace BAMENG.ADMIN.handler
             //相同的资讯是否被一个人浏览（cookie + Ip）
             string clientip = GetClientIP;
             string cookie = CookieHelper.GetCookieVal("HOTBMUSER");
-            if (cookie == "")
+            if (string.IsNullOrEmpty(cookie))
             {
                 cookie = Guid.NewGuid().ToString("n");
                 CookieHelper.SetCookieValByCurrentDomain("HOTBMUSER", 1, cookie);

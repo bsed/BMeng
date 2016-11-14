@@ -9,12 +9,6 @@
  * 2013-2016. All rights reserved. 
 **/
 
-//if (/(Authorization)/i.test(navigator.userAgent))
-//    swal(navigator.userAgent.split("(Authorization)")[0]);
-//else
-//    swal("令牌无效")
-
-
 var articleInfoHelper = {
     idt: hotUtil.getQuery("idt"),
     auth: function () {
@@ -26,8 +20,7 @@ var articleInfoHelper = {
         $("#loadBox").show();
     },
     hide: function () {
-        $("#loadBox").hide();
-        $(".bodyContent").show();
+        $("#loadBox").hide();        
     },
     load: function () {
         var self = this;
@@ -36,13 +29,14 @@ var articleInfoHelper = {
             articleId: hotUtil.getQuery("articleId")
         }
         self.show();
-        hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {
+        hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {            
             if (ret) {
                 if (ret.status == 200) {
                     $(".demos-title").text(ret.data.ArticleTitle);
                     $("#articleTime").text(ret.data.PublishTime);
                     $("#articleAmount").text(ret.data.BrowseAmount);
                     $("#articleInfo").html(ret.data.ArticleBody);
+                    $(".bodyContent").show();
                 }
                 else
                     swal(ret.statusText);

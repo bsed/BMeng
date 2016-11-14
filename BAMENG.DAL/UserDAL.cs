@@ -28,7 +28,7 @@ namespace BAMENG.DAL
         /// <summary>
         /// 获取用户基本信息SQL 语句
         /// </summary>
-        private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
+        private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
                             ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne
                              from BM_User_extend ue

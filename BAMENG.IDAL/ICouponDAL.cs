@@ -77,5 +77,32 @@ namespace BAMENG.IDAL
         /// <param name="couponId">The coupon identifier.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         bool SetCouponEnable(int couponId);
+
+
+
+        /// <summary>
+        /// 创建用户现金券(盟主分享现金券时调用)
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        int CreateUserCashCouponLog(int userId, int couponId);
+
+        /// <summary>
+        /// 更新现金券的领取记录
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateUserCashCouponGetLog(CashCouponLogModel model);
+
+        /// <summary>
+        /// 获取现金券领取列表
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetUserCashCouponLogList(int couponId, SearchModel model);
+
+
     }
 }

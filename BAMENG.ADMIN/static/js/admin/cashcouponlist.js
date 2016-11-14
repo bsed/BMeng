@@ -45,9 +45,10 @@ var couponHelper = {
                             tempHtml = tempHtml.replace(/{CouponId}/gm, item.CouponId);
                             tempHtml = tempHtml.replace("{Title}", item.Title);
                             tempHtml = tempHtml.replace("{Money}", item.Money);
-                            tempHtml = tempHtml.replace("{StatusName}", item.StatusName);
+                            tempHtml = tempHtml.replace("{StatusName}", "<span style='color:red;'>" + item.StatusName + "</span>");
                             tempHtml = tempHtml.replace("{Time}", item.StartTime + " 至 " + item.EndTime);
 
+                            tempHtml = tempHtml.replace("{ActiveText}", item.IsEnable == 1 ? "禁用" : "启用");
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
@@ -137,7 +138,7 @@ var couponHelper = {
         $(obj).text("禁用");
         var param = {
             action: "SetCouponEnable",
-            focusid: dataId
+            couponId: dataId
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {

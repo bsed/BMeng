@@ -98,8 +98,8 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, querySql, commandParameters))
             {
                 lst = DbHelperSQLP.GetEntityList<T>(dr);
-                //callback?.Invoke(lst);
-                callback.Invoke(lst);
+                callback?.Invoke(lst);
+                //callback.Invoke(lst);
             }
 
             int pageCount = recordCount / PageSize;
@@ -126,10 +126,38 @@ namespace BAMENG.DAL
         /// <param name="orderby"></param>
         /// <param name="commandParameters"></param>
         /// <returns></returns>
-        public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, bool orderby = false, params SqlParameter[] commandParameters) where T : new()
+        public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, bool orderby, params SqlParameter[] commandParameters) where T : new()
         {
             PageSize = PageSize > 0 ? PageSize : 20;
             string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+            string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
+
+            ResultPageModel result = new ResultPageModel();
+            int recordCount = Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, recordCountSql, commandParameters));
+            List<T> lst = new List<T>();
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, querySql, commandParameters))
+            {
+                lst = DbHelperSQLP.GetEntityList<T>(dr);
+            }
+
+            int pageCount = recordCount / PageSize;
+            if (recordCount % PageSize != 0)
+            {
+                ++pageCount;
+            }
+            result.PageIndex = PageIndex;
+            result.PageSize = PageSize;
+            result.Total = recordCount;
+            result.PageCount = pageCount;
+            result.Rows = lst;
+            return result;
+        }
+
+
+        public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField,params SqlParameter[] commandParameters) where T : new()
+        {
+            PageSize = PageSize > 0 ? PageSize : 20;
+            string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField);
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
             ResultPageModel result = new ResultPageModel();
@@ -174,8 +202,8 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, querySql))
             {
                 lst = DbHelperSQLP.GetEntityList<T>(dr);
-                //callback?.Invoke(lst);
-                callback.Invoke(lst);
+                callback?.Invoke(lst);
+                //callback.Invoke(lst);
             }
 
             int pageCount = recordCount / PageSize;

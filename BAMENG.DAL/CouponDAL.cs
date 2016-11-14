@@ -49,7 +49,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@IsEnable", model.IsEnable),
                 new SqlParameter("@ShopId", model.ShopId)
             };
-            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) ;
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
         }
 
         /// <summary>
@@ -87,16 +87,16 @@ namespace BAMENG.DAL
 
             strSql += " and ShopId=@ShopId ";
 
-            if(model.Status!=-100)
+            if (model.Status != -100)
             {
                 strSql += " and IsEnable=@IsEnable";
             }
 
 
             if (!string.IsNullOrEmpty(model.startTime))
-                strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)>=@startTime ";
+                strSql += " and CONVERT(nvarchar(10),CreateTime,121)>=@startTime ";
             if (!string.IsNullOrEmpty(model.endTime))
-                strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)<=@endTime ";
+                strSql += " and CONVERT(nvarchar(10),CreateTime,121)<=@endTime ";
             var param = new[] {
                 new SqlParameter("@startTime", model.startTime),
                 new SqlParameter("@endTime", model.endTime),
@@ -104,17 +104,19 @@ namespace BAMENG.DAL
                 new SqlParameter("@IsEnable", model.Status)
             };
             //生成sql语句
-            return getPageData<CashCouponModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param,((items)=> {
-                items.ForEach((item) => {
+            return getPageData<CashCouponModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param, ((items) =>
+            {
+                items.ForEach((item) =>
+                {
                     if (DateTime.Compare(item.EndTime, DateTime.Now) > 0)
                     {
-                        if(item.IsEnable==1)
+                        if (item.IsEnable == 1)
                             item.StatusName = "启用";
                         else
                             item.StatusName = "未启用";
                     }
                     else
-                    item.StatusName = "已过期";
+                        item.StatusName = "已过期";
 
 
                 });
@@ -177,6 +179,66 @@ namespace BAMENG.DAL
                 new SqlParameter("@CouponId",couponId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+        }
+
+        /// <summary>
+        /// 创建用户现金券(盟主分享现金券时调用)
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public int CreateUserCashCouponLog(int userId, int couponId)
+        {
+            string strSql = "insert into BM_GetCashCouponLog(UserId,CouponNo,CouponId) values(@UserId,@CouponId);select @@IDENTITY";
+            var parm = new[] {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@CouponId", couponId)
+            };
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            return 0;
+        }
+
+        /// <summary>
+        /// 获取现金券领取列表
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetUserCashCouponLogList(int couponId, SearchModel model)
+        {
+            ResultPageModel result = new ResultPageModel();
+            if (model == null)
+                return result;
+            string strSql = "select L.ID,L.UserId,L.CouponNo,L.CouponId,L.Name,L.Mobile,L.IsGet,L.GetTime,L.IsUse,L.UseTime,L.CreateTime from BM_GetCashCouponLog L with(nolock) where 1=1 ";
+
+
+            strSql += " and CouponId=@CouponId ";
+
+
+            if (!string.IsNullOrEmpty(model.startTime))
+                strSql += " and CONVERT(nvarchar(10),CreateTime,121)>=@startTime ";
+            if (!string.IsNullOrEmpty(model.endTime))
+                strSql += " and CONVERT(nvarchar(10),CreateTime,121)<=@endTime ";
+            var param = new[] {
+                new SqlParameter("@startTime", model.startTime),
+                new SqlParameter("@endTime", model.endTime),
+                new SqlParameter("@CouponId", couponId)
+            };
+            //生成sql语句
+            return getPageData<CashCouponLogModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param);
+        }
+
+        /// <summary>
+        /// 更新现金券的领取记录
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public bool UpdateUserCashCouponGetLog(CashCouponLogModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }
