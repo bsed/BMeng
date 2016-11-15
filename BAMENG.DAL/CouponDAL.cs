@@ -230,6 +230,28 @@ namespace BAMENG.DAL
             return getPageData<CashCouponLogModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param);
         }
 
+
+        /// <summary>
+        /// 获取可用的优惠卷信息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="cashNo"></param>
+        /// <returns></returns>
+        public CashCouponLogModel getEnableCashCouponLogModel(string mobile,string cashNo)
+        {
+
+            CashCouponLogModel model = new CashCouponLogModel();
+            string strSql = "select * from BM_GetCashCouponLog wehre CouponNo=@CouponNo and Mobile=@Mobile and IsGet=0 and IsDel=0 and IsUse=0";
+            var parms = new[] {
+               new SqlParameter("@CouponNo",cashNo),
+               new SqlParameter("@Mobile",mobile)
+           };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms)) {
+                model = DbHelperSQLP.GetEntity<CashCouponLogModel>(dr);
+            }
+            return model;
+        }
+
         /// <summary>
         /// 更新现金券的领取记录
         /// </summary>

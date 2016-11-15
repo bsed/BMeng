@@ -242,5 +242,27 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
 
         }
+
+
+        /// <summary>
+        /// 获得客户信息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public CustomerModel getCustomerModel(string mobile, string address)
+        {
+            CustomerModel model = new CustomerModel();
+            string strSql = "select * from BM_CustomerManage wehre Addr=@Addr and Mobile=@Mobile";
+            var parms = new[] {
+               new SqlParameter("@Addr",address),
+               new SqlParameter("@Mobile",mobile)
+           };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms))
+            {
+                model = DbHelperSQLP.GetEntity<CustomerModel>(dr);
+            }
+            return model;
+        }
     }
 }

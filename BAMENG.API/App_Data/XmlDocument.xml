@@ -213,23 +213,31 @@
             </summary>
             <seealso cref="T:System.Web.Mvc.Controller" />
         </member>
-        <member name="M:BAMENG.API.Controllers.OrderController.myList">
+        <member name="M:BAMENG.API.Controllers.OrderController.myList(System.Int32,System.Int64)">
             <summary>
             我的订单列表 POST: order/myList
             </summary>
-            <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+            <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
+            <param name="lastId">最后的时间</param>
+            <returns></returns>
         </member>
-        <member name="M:BAMENG.API.Controllers.OrderController.details">
+        <member name="M:BAMENG.API.Controllers.OrderController.details(System.Int32)">
             <summary>
             订单详情 POST: order/details
             </summary>
-            <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+            <param name="id">订单id</param>
+            <returns></returns>
         </member>
-        <member name="M:BAMENG.API.Controllers.OrderController.create">
+        <member name="M:BAMENG.API.Controllers.OrderController.create(System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            创建订单 POST: order/create
+             创建订单 POST: order/create
             </summary>
-            <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+            <param name="userName">客户名</param>
+            <param name="mobile">手机号</param>
+            <param name="address">客户地址</param>
+            <param name="cashNo">现金卷编号</param>
+            <param name="memo">备注</param>
+            <returns></returns>
         </member>
         <member name="M:BAMENG.API.Controllers.OrderController.update">
             <summary>
@@ -464,7 +472,8 @@
         </member>
         <member name="M:BAMENG.API.Controllers.UserController.MyBusiness">
             <summary>
-            我的业务 POST: user/MyBusiness
+            我的业务 POST: user/MyBusiness 
+            todo
             </summary>
             <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         </member>

@@ -162,6 +162,29 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The create time.</value>
         public DateTime CreateTime { get; set; }
+
+
+        /// <summary>
+        /// 现金券额度
+        /// </summary>
+        /// <value>The money.</value>
+        public decimal Money { get; set; }
+
+
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        /// <value>The start time.</value>
+        public DateTime StartTime { get; set; }
+
+
+
+        /// <summary>
+        /// 过期时间
+        /// </summary>
+        /// <value>The end time.</value>
+        public DateTime EndTime { get; set; }
     }
 
 

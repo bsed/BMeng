@@ -151,5 +151,13 @@ namespace BAMENG.LOGIC
                 return dal.UpdateInShopStatus(customerId, status);
             }
         }
+
+        public static CustomerModel getCustomerModel(string mobile ,string address)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.getCustomerModel(mobile,address );
+            }
+        }
     }
 }
