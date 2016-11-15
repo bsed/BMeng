@@ -151,7 +151,7 @@ namespace BAMENG.API.Controllers
         }
 
         /// <summary>
-        /// 设置盟友奖励 POST: user/setallyaward
+        /// 设置盟友奖励 POST: user/setallyraward
         /// </summary>
         /// <param name="creward">客户资料提交奖励</param>
         /// <param name="orderreward">订单成交奖励</param>
@@ -221,23 +221,37 @@ namespace BAMENG.API.Controllers
         /// todo 
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        [ActionAuthorize(AuthLogin =false,EnableSign =false)]
-        public ActionResult AllyApply(int userId,string mobile,string password
-            ,string nickname,string userName
-            ,int sex )
+        [ActionAuthorize(AuthLogin = false, EnableSign = false)]
+        public ActionResult AllyApply(int userId, string mobile, string password
+            , string nickname, string userName
+            , int sex)
         {
             ApiStatusCode apiCode = ApiStatusCode.OK;
-            UserLogic.AllyApply(userId,mobile,password,nickname,userName,sex,ref apiCode);
+            UserLogic.AllyApply(userId, mobile, password, nickname, userName, sex, ref apiCode);
             return Json(new ResultModel(apiCode));
         }
         /// <summary>
         /// 盟友申请列表 POST: user/AllyApplylist
         /// </summary>
+        /// <param name="type">0盟友申请，1盟友列表</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult AllyApplylist()
+        public ActionResult AllyApplylist(int type, int pageIndex, int pageSize)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            if (type == 1)
+            {
+                var data = UserLogic.GetAllyList(new SearchModel()
+                {
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    UserId = GetAuthUserId()
+                });
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            else
+                return Json(new ResultModel(ApiStatusCode.OK));
         }
         /// <summary>
         /// 盟友申请审核 POST: user/AllyApplyAudit
@@ -297,7 +311,7 @@ namespace BAMENG.API.Controllers
         {
             var userId = GetAuthUserId();
             var data = "";
-            return Json(new ResultModel(ApiStatusCode.OK),data);
+            return Json(new ResultModel(ApiStatusCode.OK), data);
         }
 
         /// <summary>
