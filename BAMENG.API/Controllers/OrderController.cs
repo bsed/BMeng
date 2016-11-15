@@ -18,10 +18,14 @@ namespace BAMENG.API.Controllers
         /// <summary>
         /// 我的订单列表 POST: order/myList
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult myList()
+        /// <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
+        /// <param name="lastId">最后的时间</param>
+        /// <returns></returns>
+        public ActionResult myList(int type,long lastId)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+            var data = Order
+            return Json(new ResultModel(ApiStatusCode.OK,data));
         }
         /// <summary>
         /// 订单详情 POST: order/details

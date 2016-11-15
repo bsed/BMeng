@@ -299,5 +299,28 @@ namespace BAMENG.LOGIC
                 return flag;
             }
         }
+
+
+        public static bool AllyApply(int userId, string mobile, string password
+            , string nickname, string userName
+            , int sex,ref ApiStatusCode apiCode)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                if (dal.ExistApplyFriend(mobile))
+                {
+                    apiCode = ApiStatusCode.你已申请请耐心等到审核;
+                }
+                else if (dal.UserExist(mobile, ConstConfig.storeId))
+                {
+                    apiCode = ApiStatusCode.手机用户已存在;
+                }
+                else {
+                    dal.SaveApplyFriend(userId, mobile, EncryptHelper.MD5(password), nickname, userName, sex);
+                    apiCode = ApiStatusCode.OK;
+                }
+                return true;
+            }
+        }
     }
 }

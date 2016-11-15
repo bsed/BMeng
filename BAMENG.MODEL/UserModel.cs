@@ -881,4 +881,25 @@ namespace BAMENG.MODEL
     }
 
 
+    public class ApplyFriendModel
+    {
+
+        public int ID { get; set; }
+        public int UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public int Sex { get; set; }
+
+        public string Mobile { get; set; }
+
+        public int Status { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public string NickNname { get; set; }
+
+        public string Password { get; set; }
+
+    }
 }

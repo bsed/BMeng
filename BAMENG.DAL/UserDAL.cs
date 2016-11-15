@@ -389,7 +389,7 @@ namespace BAMENG.DAL
         /// <param name="mobile"></param>
         /// <param name="storeId"></param>
         /// <returns></returns>
-        private bool UserExist(string mobile, int storeId)
+        public bool UserExist(string mobile, int storeId)
         {
             string strSql = "select COUNT(1) from Hot_UserBaseInfo with(nolock) where UB_UserLoginName=@LoginName and UB_CustomerID=@CustomerID";
             var param = new[] {
@@ -974,5 +974,78 @@ namespace BAMENG.DAL
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
+
+        /// <summary>
+        /// 注册申请保存
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="mobile"></param>
+        /// <param name="password"></param>
+        /// <param name="nickname"></param>
+        /// <param name="userName"></param>
+        /// <param name="sex"></param>
+        /// <returns></returns>
+        public int SaveApplyFriend(int userId, string mobile, string password
+            , string nickname, string userName
+            , int sex)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into BM_ApplyFriend(");
+            strSql.Append("UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname,Password)");
+            strSql.Append(" values (");
+            strSql.Append("@UserId,@UserName,@Sex,@Mobile,@Status,@CreateTime,@NickNname,@Password)");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@UserId", userId),
+                    new SqlParameter("@UserName",userName),
+                    new SqlParameter("@Sex", sex),
+                    new SqlParameter("@Mobile", mobile),
+                    new SqlParameter("@Status", 0),
+                    new SqlParameter("@CreateTime", DateTime.Now),
+                    new SqlParameter("@NickNname", nickname),
+                    new SqlParameter("@Password", password)
+            };
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        /// <summary>
+        /// 存在申请
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <returns></returns>
+        public bool ExistApplyFriend(string mobile)
+        {
+            string strSql = "select COUNT(1) from BM_ApplyFriend with(nolock) where Mobile=@Mobile";
+            var param = new[] {
+                new SqlParameter("@Mobile",mobile)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
+        }
+
+
+        /// <summary>
+        /// 计算订单数
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int CountOrders(int userId)
+        {
+            string strSql = "select count(*) from BM_Orders where UserId=@UserId";
+            var param = new[] {
+                new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+
+        }
+
+        
     }
 }

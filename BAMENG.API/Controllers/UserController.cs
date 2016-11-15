@@ -217,12 +217,17 @@ namespace BAMENG.API.Controllers
 
         /// <summary>
         /// 申请盟友接口 POST: user/AllyApply
+        /// todo 
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        [ActionAuthorize]
-        public ActionResult AllyApply()
+        [ActionAuthorize(AuthLogin =false,EnableSign =false)]
+        public ActionResult AllyApply(int userId,string mobile,string password
+            ,string nickname,string userName
+            ,int sex )
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            ApiStatusCode apiCode = ApiStatusCode.OK;
+            UserLogic.AllyApply(userId,mobile,password,nickname,userName,sex,ref apiCode);
+            return Json(new ResultModel(apiCode));
         }
         /// <summary>
         /// 盟友申请列表 POST: user/AllyApplylist
@@ -282,13 +287,16 @@ namespace BAMENG.API.Controllers
             return Json(new ResultModel(ApiStatusCode.OK));
         }
         /// <summary>
-        /// 我的业务 POST: user/MyBusiness
+        /// 我的业务 POST: user/MyBusiness 
+        /// todo
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
         public ActionResult MyBusiness()
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            var userId = GetAuthUserId();
+            var data = "";
+            return Json(new ResultModel(ApiStatusCode.OK),data);
         }
 
         /// <summary>

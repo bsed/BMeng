@@ -47,6 +47,7 @@
     <Compile Include="IFocusPicDAL.cs" />
     <Compile Include="ILogDAL.cs" />
     <Compile Include="IManagerDAL.cs" />
+    <Compile Include="IOrderDAL.cs" />
     <Compile Include="IShopDAL.cs" />
     <Compile Include="ISmsProvider.cs" />
     <Compile Include="ISystemDAL.cs" />

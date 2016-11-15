@@ -420,9 +420,10 @@
             <param name="userid">盟友用户ID</param>
             <returns>JsonResult.</returns>
         </member>
-        <member name="M:BAMENG.API.Controllers.UserController.AllyApply">
+        <member name="M:BAMENG.API.Controllers.UserController.AllyApply(System.Int32,System.String,System.String,System.String,System.String,System.Int32)">
             <summary>
             申请盟友接口 POST: user/AllyApply
+            todo 
             </summary>
             <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         </member>

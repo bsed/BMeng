@@ -235,5 +235,34 @@ namespace BAMENG.IDAL
         /// <param name="password">The password.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         bool ChanagePassword(int userId,string oldPassword, string password);
+        
+        /// <summary>
+        /// 注册申请保存
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="mobile"></param>
+        /// <param name="password"></param>
+        /// <param name="nickname"></param>
+        /// <param name="userName"></param>
+        /// <param name="sex"></param>
+        /// <returns></returns>
+        int SaveApplyFriend(int userId, string mobile, string password
+           , string nickname, string userName
+           , int sex);
+
+        /// <summary>
+        /// 判断用户是否存在
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
+        bool UserExist(string mobile, int storeId);
+
+        /// <summary>
+        /// 存在申请
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <returns></returns>
+        bool ExistApplyFriend(string mobile);
     }
 }
