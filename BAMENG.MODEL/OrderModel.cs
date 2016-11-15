@@ -101,7 +101,7 @@ namespace BAMENG.MODEL
         /// <summary>
         /// 盟豆
         /// </summary>
-        public int money { get; set; }
+        public decimal money { get; set; }
 
         /// <summary>
         /// 订单状态 0 未成交 1 已成交 2退单

@@ -127,5 +127,11 @@ namespace BAMENG.LOGIC
             return new CouponDAL();
         }
 
+
+        public static IOrderDAL OrderFactory()
+        {
+            return new OrderDAL();
+        }
+
     }
 }

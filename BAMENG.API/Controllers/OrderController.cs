@@ -1,4 +1,5 @@
 ﻿using BAMENG.CONFIG;
+using BAMENG.LOGIC;
 using BAMENG.MODEL;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace BAMENG.API.Controllers
         public ActionResult myList(int type,long lastId)
         {
             int userId = GetAuthUserId();
-            var data = Order
+            var data = OrderLogic.GetMyOrderList(userId,type,lastId);
             return Json(new ResultModel(ApiStatusCode.OK,data));
         }
         /// <summary>

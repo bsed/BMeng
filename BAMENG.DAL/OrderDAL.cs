@@ -2,6 +2,7 @@
 using BAMENG.IDAL;
 using BAMENG.MODEL;
 using HotCoreUtils.DB;
+using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,8 +16,37 @@ namespace BAMENG.DAL
  public   class OrderDAL: AbstractDAL, IOrderDAL
     {
 
-        //public  GetOrderList( int userId,int status, long lastId)
-        //{ }
+        public List<OrderModel> GetOrderList( int userId,int status, long lastId)
+        {
+        
+            string strSql = "select * from BM_Orders where UserId=@UserId";
+            if (status > 0) strSql += " and OrderStatus="+status;
+            if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
+            SqlParameter[] parameters = {
+                    new SqlParameter("@UserId", userId) 
+            };
+           
+            List<OrderModel> list = new List<OrderModel>();
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
+            {
+                list = DbHelperSQLP.GetEntityList<OrderModel>(dr);
+            }
+            return list;
+        }
+
+        public DateTime ConvertIntDatetime(double utc)
+        {            
+            try
+            {
+                DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+                startTime = startTime.AddSeconds(utc);
+                return startTime;
+            }
+            catch (Exception)
+            {
+                return DateTime.Parse("1979-01-01 00:00:00");
+            }
+        }
 
 
 
