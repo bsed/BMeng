@@ -5,6 +5,7 @@ using HotCoreUtils.Helper;
 using HotCoreUtils.Uploader;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 //using System.Web.Http;
@@ -103,11 +104,20 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
             string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
-            oFile.SaveAs(fileName);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["picurl"] = fileName;
+            Stream stream = oFile.InputStream;
+            byte[] bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+            // 设置当前流的位置为流的开始
+            stream.Seek(0, SeekOrigin.Begin);
+            if (FileUploadHelper.UploadFile(bytes, fileName))
+            {
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["picurl"] = fileName;
 
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            else
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
         }
 
 
