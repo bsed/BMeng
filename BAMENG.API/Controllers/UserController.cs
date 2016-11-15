@@ -179,6 +179,7 @@ namespace BAMENG.API.Controllers
         {
             var data = UserLogic.GetRewardModel(GetAuthUserId());
             return Json(new ResultModel(ApiStatusCode.OK, data));
+
         }
 
 
