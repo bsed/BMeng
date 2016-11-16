@@ -15,6 +15,7 @@
   <HelpKINode Title="ActionAuthorizeAttribute.EnableSign property" Url="html/578075365.htm" />
   <HelpKINode Title="ActionAuthorizeAttribute.OnActionExecuting method" Url="html/1396556448.htm" />
   <HelpKINode Title="Addr property" Url="html/306502829.htm" />
+  <HelpKINode Title="address property" Url="html/368699113.htm" />
   <HelpKINode Title="Add_Time property" Url="html/572528330.htm" />
   <HelpKINode Title="AdminLoginModel class">
     <HelpKINode Title="AdminLoginModel Class" Url="html/1287355824.htm" />
@@ -175,7 +176,10 @@
   <HelpKINode Title="AuthorId property" Url="html/383795098.htm" />
   <HelpKINode Title="AuthorIdentity property" Url="html/269594430.htm" />
   <HelpKINode Title="authority property" Url="html/60150107.htm" />
-  <HelpKINode Title="AuthorName property" Url="html/1049271978.htm" />
+  <HelpKINode Title="AuthorName property">
+    <HelpKINode Title="AuthorName Property " Url="html/1049271978.htm" />
+    <HelpKINode Title="AuthorName Property " Url="html/2144960989.htm" />
+  </HelpKINode>
   <HelpKINode Title="BAMENG.API namespace" Url="html/637675408.htm" />
   <HelpKINode Title="BAMENG.API.ActionAuthorizeAttribute class">
     <HelpKINode Title="ActionAuthorizeAttribute Class" Url="html/2047809791.htm" />
@@ -282,6 +286,14 @@
     <HelpKINode Title="MemberChangeLogModel Class" Url="html/1888520613.htm" />
     <HelpKINode Title="MemberChangeLogModel Members" Url="html/11315061.htm" />
   </HelpKINode>
+  <HelpKINode Title="BAMENG.MODEL.MessageModel class">
+    <HelpKINode Title="MessageModel Class" Url="html/145576745.htm" />
+    <HelpKINode Title="MessageModel Members" Url="html/1538212268.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BAMENG.MODEL.OrderDetailModel class">
+    <HelpKINode Title="OrderDetailModel Class" Url="html/1267596449.htm" />
+    <HelpKINode Title="OrderDetailModel Members" Url="html/1933204337.htm" />
+  </HelpKINode>
   <HelpKINode Title="BAMENG.MODEL.OrderListModel class">
     <HelpKINode Title="OrderListModel Class" Url="html/244066310.htm" />
     <HelpKINode Title="OrderListModel Members" Url="html/112400272.htm" />
@@ -367,21 +379,21 @@
   <HelpKINode Title="BeforeParentId property" Url="html/140446232.htm" />
   <HelpKINode Title="BelongName property" Url="html/374909418.htm" />
   <HelpKINode Title="BelongOne property">
-    <HelpKINode Title="BelongOne Property " Url="html/693118093.htm" />
-    <HelpKINode Title="BelongOne Property " Url="html/690129387.htm" />
     <HelpKINode Title="BelongOne Property " Url="html/726641202.htm" />
     <HelpKINode Title="BelongOne Property " Url="html/46736255.htm" />
+    <HelpKINode Title="BelongOne Property " Url="html/690129387.htm" />
+    <HelpKINode Title="BelongOne Property " Url="html/693118093.htm" />
   </HelpKINode>
   <HelpKINode Title="belongOne property" Url="html/1842364763.htm" />
   <HelpKINode Title="BelongOneName property" Url="html/1709778310.htm" />
   <HelpKINode Title="BelongThree property">
-    <HelpKINode Title="BelongThree Property " Url="html/2072240106.htm" />
     <HelpKINode Title="BelongThree Property " Url="html/638284457.htm" />
+    <HelpKINode Title="BelongThree Property " Url="html/2072240106.htm" />
   </HelpKINode>
   <HelpKINode Title="BelongTwo property">
+    <HelpKINode Title="BelongTwo Property " Url="html/1713000.htm" />
     <HelpKINode Title="BelongTwo Property " Url="html/829359146.htm" />
     <HelpKINode Title="BelongTwo Property " Url="html/580055717.htm" />
-    <HelpKINode Title="BelongTwo Property " Url="html/1713000.htm" />
   </HelpKINode>
   <HelpKINode Title="BelongTwoName property" Url="html/35380607.htm" />
   <HelpKINode Title="BrowseAmount property" Url="html/555112686.htm" />
@@ -397,12 +409,15 @@
   <HelpKINode Title="CashCouponLogModel.CouponId property" Url="html/903323501.htm" />
   <HelpKINode Title="CashCouponLogModel.CouponNo property" Url="html/903782260.htm" />
   <HelpKINode Title="CashCouponLogModel.CreateTime property" Url="html/484299530.htm" />
+  <HelpKINode Title="CashCouponLogModel.EndTime property" Url="html/468967366.htm" />
   <HelpKINode Title="CashCouponLogModel.GetTime property" Url="html/1245697392.htm" />
   <HelpKINode Title="CashCouponLogModel.ID property" Url="html/1553844473.htm" />
   <HelpKINode Title="CashCouponLogModel.IsGet property" Url="html/1049595571.htm" />
   <HelpKINode Title="CashCouponLogModel.IsUse property" Url="html/1904660598.htm" />
   <HelpKINode Title="CashCouponLogModel.Mobile property" Url="html/524327734.htm" />
+  <HelpKINode Title="CashCouponLogModel.Money property" Url="html/820615297.htm" />
   <HelpKINode Title="CashCouponLogModel.Name property" Url="html/508220090.htm" />
+  <HelpKINode Title="CashCouponLogModel.StartTime property" Url="html/1311571421.htm" />
   <HelpKINode Title="CashCouponLogModel.UserId property" Url="html/876414942.htm" />
   <HelpKINode Title="CashCouponLogModel.UseTime property" Url="html/793062507.htm" />
   <HelpKINode Title="CashCouponModel class">
@@ -446,29 +461,30 @@
   <HelpKINode Title="ConvertToBean method" Url="html/1410514150.htm" />
   <HelpKINode Title="cookie property" Url="html/2141820492.htm" />
   <HelpKINode Title="CouponId property">
-    <HelpKINode Title="CouponId Property " Url="html/601826225.htm" />
     <HelpKINode Title="CouponId Property " Url="html/903323501.htm" />
+    <HelpKINode Title="CouponId Property " Url="html/601826225.htm" />
   </HelpKINode>
   <HelpKINode Title="CouponNo property" Url="html/903782260.htm" />
   <HelpKINode Title="create method">
     <HelpKINode Title="create Method " Url="html/1726901277.htm" />
+    <HelpKINode Title="create Method " Url="html/166510124.htm" />
     <HelpKINode Title="create Method " Url="html/1072587144.htm" />
-    <HelpKINode Title="create Method " Url="html/1940181248.htm" />
   </HelpKINode>
   <HelpKINode Title="CreateTime property">
-    <HelpKINode Title="CreateTime Property " Url="html/1928788389.htm" />
-    <HelpKINode Title="CreateTime Property " Url="html/1907185772.htm" />
-    <HelpKINode Title="CreateTime Property " Url="html/889572110.htm" />
     <HelpKINode Title="CreateTime Property " Url="html/1627513966.htm" />
     <HelpKINode Title="CreateTime Property " Url="html/484299530.htm" />
-    <HelpKINode Title="CreateTime Property " Url="html/1692413499.htm" />
-    <HelpKINode Title="CreateTime Property " Url="html/276317301.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/1236197169.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/1928788389.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/1907185772.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/768199879.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/1916657864.htm" />
     <HelpKINode Title="CreateTime Property " Url="html/2088482913.htm" />
     <HelpKINode Title="CreateTime Property " Url="html/1421946164.htm" />
-    <HelpKINode Title="CreateTime Property " Url="html/1916657864.htm" />
-    <HelpKINode Title="CreateTime Property " Url="html/768199879.htm" />
     <HelpKINode Title="CreateTime Property " Url="html/1496616978.htm" />
     <HelpKINode Title="CreateTime Property " Url="html/1700128306.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/889572110.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/276317301.htm" />
+    <HelpKINode Title="CreateTime Property " Url="html/1692413499.htm" />
   </HelpKINode>
   <HelpKINode Title="Ct_Address property" Url="html/480797132.htm" />
   <HelpKINode Title="Ct_BelongId property" Url="html/416457057.htm" />
@@ -524,14 +540,17 @@
   <HelpKINode Title="Description property" Url="html/550668959.htm" />
   <HelpKINode Title="details method">
     <HelpKINode Title="details Method " Url="html/115498989.htm" />
-    <HelpKINode Title="details Method " Url="html/1097731066.htm" />
+    <HelpKINode Title="details Method " Url="html/1928887527.htm" />
   </HelpKINode>
   <HelpKINode Title="EnabledPayPassword property" Url="html/1518650662.htm" />
   <HelpKINode Title="EnablePublish property" Url="html/2124723303.htm" />
   <HelpKINode Title="EnableSign property" Url="html/578075365.htm" />
   <HelpKINode Title="EnableTop property" Url="html/1160003471.htm" />
+  <HelpKINode Title="EndTime property">
+    <HelpKINode Title="EndTime Property " Url="html/468967366.htm" />
+    <HelpKINode Title="EndTime Property " Url="html/439441964.htm" />
+  </HelpKINode>
   <HelpKINode Title="endTime property" Url="html/1955043412.htm" />
-  <HelpKINode Title="EndTime property" Url="html/439441964.htm" />
   <HelpKINode Title="ExecuteResult method" Url="html/984702548.htm" />
   <HelpKINode Title="ExtParameterValues property" Url="html/4219674.htm" />
   <HelpKINode Title="FianlAmount property" Url="html/332668348.htm" />
@@ -561,14 +580,15 @@
   <HelpKINode Title="GroupId property" Url="html/1456147460.htm" />
   <HelpKINode Title="id field" Url="html/1294975436.htm" />
   <HelpKINode Title="ID property">
-    <HelpKINode Title="ID Property " Url="html/2146047408.htm" />
-    <HelpKINode Title="ID Property " Url="html/1599023918.htm" />
-    <HelpKINode Title="ID Property " Url="html/1199853341.htm" />
-    <HelpKINode Title="ID Property " Url="html/1325968574.htm" />
-    <HelpKINode Title="ID Property " Url="html/1055544601.htm" />
-    <HelpKINode Title="ID Property " Url="html/2087392605.htm" />
-    <HelpKINode Title="ID Property " Url="html/881136003.htm" />
     <HelpKINode Title="ID Property " Url="html/1553844473.htm" />
+    <HelpKINode Title="ID Property " Url="html/2087392605.htm" />
+    <HelpKINode Title="ID Property " Url="html/1599023918.htm" />
+    <HelpKINode Title="ID Property " Url="html/1325968574.htm" />
+    <HelpKINode Title="ID Property " Url="html/1930684711.htm" />
+    <HelpKINode Title="ID Property " Url="html/2146047408.htm" />
+    <HelpKINode Title="ID Property " Url="html/881136003.htm" />
+    <HelpKINode Title="ID Property " Url="html/1199853341.htm" />
+    <HelpKINode Title="ID Property " Url="html/1055544601.htm" />
   </HelpKINode>
   <HelpKINode Title="Init method" Url="html/1680306745.htm" />
   <HelpKINode Title="InShop property" Url="html/1398677196.htm" />
@@ -579,8 +599,8 @@
     <HelpKINode Title="IsActive Property " Url="html/1467504983.htm" />
   </HelpKINode>
   <HelpKINode Title="IsDel property">
-    <HelpKINode Title="IsDel Property " Url="html/100708825.htm" />
     <HelpKINode Title="IsDel Property " Url="html/263249341.htm" />
+    <HelpKINode Title="IsDel Property " Url="html/100708825.htm" />
   </HelpKINode>
   <HelpKINode Title="IsEnable property">
     <HelpKINode Title="IsEnable Property " Url="html/1607713107.htm" />
@@ -588,9 +608,11 @@
   </HelpKINode>
   <HelpKINode Title="IsGet property" Url="html/1049595571.htm" />
   <HelpKINode Title="IsRead property">
-    <HelpKINode Title="IsRead Property " Url="html/388132245.htm" />
     <HelpKINode Title="IsRead Property " Url="html/1620717034.htm" />
+    <HelpKINode Title="IsRead Property " Url="html/84602339.htm" />
+    <HelpKINode Title="IsRead Property " Url="html/388132245.htm" />
   </HelpKINode>
+  <HelpKINode Title="IsSend property" Url="html/1481481587.htm" />
   <HelpKINode Title="IsUse property" Url="html/1904660598.htm" />
   <HelpKINode Title="ItemCode property" Url="html/36930719.htm" />
   <HelpKINode Title="ItemIcons property" Url="html/2048540044.htm" />
@@ -606,25 +628,25 @@
   <HelpKINode Title="level property" Url="html/838928799.htm" />
   <HelpKINode Title="LevelId property" Url="html/999544210.htm" />
   <HelpKINode Title="LevelName property">
-    <HelpKINode Title="LevelName Property " Url="html/1304190963.htm" />
     <HelpKINode Title="LevelName Property " Url="html/88842023.htm" />
+    <HelpKINode Title="LevelName Property " Url="html/1304190963.htm" />
   </HelpKINode>
   <HelpKINode Title="LinkUrl property" Url="html/1531130366.htm" />
   <HelpKINode Title="list method">
-    <HelpKINode Title="list Method " Url="html/1469276583.htm" />
     <HelpKINode Title="list Method " Url="html/1740702007.htm" />
+    <HelpKINode Title="list Method " Url="html/1469276583.htm" />
   </HelpKINode>
   <HelpKINode Title="Login method" Url="html/471848062.htm" />
-  <HelpKINode Title="loginName property" Url="html/1176128407.htm" />
   <HelpKINode Title="LoginName property">
+    <HelpKINode Title="LoginName Property " Url="html/63790044.htm" />
     <HelpKINode Title="LoginName Property " Url="html/1321547194.htm" />
     <HelpKINode Title="LoginName Property " Url="html/282617283.htm" />
-    <HelpKINode Title="LoginName Property " Url="html/63790044.htm" />
     <HelpKINode Title="LoginName Property " Url="html/1715483395.htm" />
   </HelpKINode>
+  <HelpKINode Title="loginName property" Url="html/1176128407.htm" />
   <HelpKINode Title="LoginPassword property">
-    <HelpKINode Title="LoginPassword Property " Url="html/123747184.htm" />
     <HelpKINode Title="LoginPassword Property " Url="html/981708179.htm" />
+    <HelpKINode Title="LoginPassword Property " Url="html/123747184.htm" />
   </HelpKINode>
   <HelpKINode Title="loginPassword property" Url="html/421631673.htm" />
   <HelpKINode Title="Log_Id property" Url="html/2021364519.htm" />
@@ -693,17 +715,37 @@
   <HelpKINode Title="MengBeansLocked property" Url="html/288516613.htm" />
   <HelpKINode Title="menuData property" Url="html/1771119041.htm" />
   <HelpKINode Title="MerchantID property" Url="html/740520117.htm" />
+  <HelpKINode Title="MessageBody property" Url="html/1119892200.htm" />
+  <HelpKINode Title="MessageModel class">
+    <HelpKINode Title="MessageModel Class" Url="html/145576745.htm" />
+    <HelpKINode Title="MessageModel Members" Url="html/1538212268.htm" />
+    <HelpKINode Title="about MessageModel class" Url="html/145576745.htm" />
+    <HelpKINode Title="all members" Url="html/1538212268.htm" />
+    <HelpKINode Title="properties" Url="html/41159953.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MessageModel.AuthorName property" Url="html/2144960989.htm" />
+  <HelpKINode Title="MessageModel.CreateTime property" Url="html/1236197169.htm" />
+  <HelpKINode Title="MessageModel.ID property" Url="html/1930684711.htm" />
+  <HelpKINode Title="MessageModel.IsRead property" Url="html/84602339.htm" />
+  <HelpKINode Title="MessageModel.IsSend property" Url="html/1481481587.htm" />
+  <HelpKINode Title="MessageModel.MessageBody property" Url="html/1119892200.htm" />
+  <HelpKINode Title="MessageModel.SendTargetIds property" Url="html/2040017979.htm" />
+  <HelpKINode Title="MessageModel.Title property" Url="html/1658328774.htm" />
+  <HelpKINode Title="mobile property">
+    <HelpKINode Title="mobile Property " Url="html/951376595.htm" />
+    <HelpKINode Title="mobile Property " Url="html/1760751280.htm" />
+    <HelpKINode Title="mobile Property " Url="html/1373773733.htm" />
+  </HelpKINode>
   <HelpKINode Title="Mobile property">
     <HelpKINode Title="Mobile Property " Url="html/1656815134.htm" />
-    <HelpKINode Title="Mobile Property " Url="html/524327734.htm" />
     <HelpKINode Title="Mobile Property " Url="html/1809837031.htm" />
-  </HelpKINode>
-  <HelpKINode Title="mobile property">
-    <HelpKINode Title="mobile Property " Url="html/1373773733.htm" />
-    <HelpKINode Title="mobile Property " Url="html/1760751280.htm" />
+    <HelpKINode Title="Mobile Property " Url="html/524327734.htm" />
   </HelpKINode>
   <HelpKINode Title="money property" Url="html/1399924077.htm" />
-  <HelpKINode Title="Money property" Url="html/1029963108.htm" />
+  <HelpKINode Title="Money property">
+    <HelpKINode Title="Money Property " Url="html/820615297.htm" />
+    <HelpKINode Title="Money Property " Url="html/1029963108.htm" />
+  </HelpKINode>
   <HelpKINode Title="MvcApplication class">
     <HelpKINode Title="MvcApplication Class" Url="html/1206166512.htm" />
     <HelpKINode Title="about MvcApplication class" Url="html/1206166512.htm" />
@@ -718,8 +760,8 @@
     <HelpKINode Title="Name Property " Url="html/508220090.htm" />
     <HelpKINode Title="Name Property " Url="html/1512603379.htm" />
   </HelpKINode>
-  <HelpKINode Title="NickName property" Url="html/1151616844.htm" />
   <HelpKINode Title="nickname property" Url="html/1522988494.htm" />
+  <HelpKINode Title="NickName property" Url="html/1151616844.htm" />
   <HelpKINode Title="NickNname property" Url="html/358311208.htm" />
   <HelpKINode Title="OnActionExecuting method" Url="html/1396556448.htm" />
   <HelpKINode Title="onExcute method">
@@ -733,14 +775,30 @@
     <HelpKINode Title="all members" Url="html/2002577577.htm" />
     <HelpKINode Title="methods" Url="html/2091281776.htm" />
   </HelpKINode>
-  <HelpKINode Title="OrderController.create method" Url="html/1940181248.htm" />
-  <HelpKINode Title="OrderController.details method" Url="html/1097731066.htm" />
+  <HelpKINode Title="OrderController.create method" Url="html/166510124.htm" />
+  <HelpKINode Title="OrderController.details method" Url="html/1928887527.htm" />
   <HelpKINode Title="OrderController.InstationMessageList method" Url="html/1915719544.htm" />
   <HelpKINode Title="OrderController.myList method" Url="html/469405795.htm" />
   <HelpKINode Title="OrderController.SendInstationMessage method" Url="html/1977964690.htm" />
   <HelpKINode Title="OrderController.success method" Url="html/218821523.htm" />
-  <HelpKINode Title="OrderController.update method" Url="html/749859190.htm" />
-  <HelpKINode Title="OrderController.UploadSuccessVoucher method" Url="html/182184699.htm" />
+  <HelpKINode Title="OrderController.update method" Url="html/1028269417.htm" />
+  <HelpKINode Title="OrderController.UploadSuccessVoucher method" Url="html/243886913.htm" />
+  <HelpKINode Title="OrderDetailModel class">
+    <HelpKINode Title="OrderDetailModel Class" Url="html/1267596449.htm" />
+    <HelpKINode Title="OrderDetailModel Members" Url="html/1933204337.htm" />
+    <HelpKINode Title="about OrderDetailModel class" Url="html/1267596449.htm" />
+    <HelpKINode Title="all members" Url="html/1933204337.htm" />
+    <HelpKINode Title="fields" Url="html/2084891531.htm" />
+    <HelpKINode Title="properties" Url="html/777951542.htm" />
+  </HelpKINode>
+  <HelpKINode Title="OrderDetailModel.address property" Url="html/368699113.htm" />
+  <HelpKINode Title="OrderDetailModel.mobile property" Url="html/951376595.htm" />
+  <HelpKINode Title="OrderDetailModel.orderId field" Url="html/1258845222.htm" />
+  <HelpKINode Title="OrderDetailModel.orderTime field" Url="html/772524282.htm" />
+  <HelpKINode Title="OrderDetailModel.pictureUrl property" Url="html/1437882132.htm" />
+  <HelpKINode Title="OrderDetailModel.status property" Url="html/1305438659.htm" />
+  <HelpKINode Title="OrderDetailModel.userName property" Url="html/1968708199.htm" />
+  <HelpKINode Title="orderId field" Url="html/1258845222.htm" />
   <HelpKINode Title="orderId property" Url="html/1280859306.htm" />
   <HelpKINode Title="OrderImg property" Url="html/1788791469.htm" />
   <HelpKINode Title="OrderListModel class">
@@ -783,23 +841,27 @@
   <HelpKINode Title="OrderReward property" Url="html/952092015.htm" />
   <HelpKINode Title="OrderStatus property" Url="html/480686383.htm" />
   <HelpKINode Title="OrderSuccessAmount property" Url="html/2040889296.htm" />
+  <HelpKINode Title="orderTime field" Url="html/772524282.htm" />
   <HelpKINode Title="orderTime property" Url="html/353949498.htm" />
   <HelpKINode Title="Orignal_RelId property" Url="html/204518651.htm" />
   <HelpKINode Title="OS property" Url="html/1907893045.htm" />
   <HelpKINode Title="PageCount property" Url="html/481385444.htm" />
   <HelpKINode Title="PageIndex property">
-    <HelpKINode Title="PageIndex Property " Url="html/627260342.htm" />
     <HelpKINode Title="PageIndex Property " Url="html/1958763796.htm" />
+    <HelpKINode Title="PageIndex Property " Url="html/627260342.htm" />
   </HelpKINode>
   <HelpKINode Title="PageSize property">
-    <HelpKINode Title="PageSize Property " Url="html/1724070837.htm" />
     <HelpKINode Title="PageSize Property " Url="html/2022202647.htm" />
+    <HelpKINode Title="PageSize Property " Url="html/1724070837.htm" />
   </HelpKINode>
   <HelpKINode Title="ParentId property" Url="html/47333193.htm" />
   <HelpKINode Title="ParentName property" Url="html/1615040683.htm" />
   <HelpKINode Title="Password property" Url="html/875276434.htm" />
   <HelpKINode Title="PayPassword property" Url="html/1313837646.htm" />
-  <HelpKINode Title="pictureUrl property" Url="html/1756996436.htm" />
+  <HelpKINode Title="pictureUrl property">
+    <HelpKINode Title="pictureUrl Property " Url="html/1756996436.htm" />
+    <HelpKINode Title="pictureUrl Property " Url="html/1437882132.htm" />
+  </HelpKINode>
   <HelpKINode Title="PicUrl property" Url="html/1127534934.htm" />
   <HelpKINode Title="PricePreID property" Url="html/541148342.htm" />
   <HelpKINode Title="province property" Url="html/634303624.htm" />
@@ -826,8 +888,8 @@
   <HelpKINode Title="RegisterRoutes method" Url="html/1281349232.htm" />
   <HelpKINode Title="Remark property">
     <HelpKINode Title="Remark Property " Url="html/305165783.htm" />
-    <HelpKINode Title="Remark Property " Url="html/332758414.htm" />
     <HelpKINode Title="Remark Property " Url="html/1379455505.htm" />
+    <HelpKINode Title="Remark Property " Url="html/332758414.htm" />
     <HelpKINode Title="Remark Property " Url="html/1207436978.htm" />
   </HelpKINode>
   <HelpKINode Title="ResultModel class">
@@ -907,6 +969,7 @@
   <HelpKINode Title="SendInstationMessage method" Url="html/1977964690.htm" />
   <HelpKINode Title="SendSms method" Url="html/1153017077.htm" />
   <HelpKINode Title="SendTargetId property" Url="html/333207002.htm" />
+  <HelpKINode Title="SendTargetIds property" Url="html/2040017979.htm" />
   <HelpKINode Title="SendType property" Url="html/2053017630.htm" />
   <HelpKINode Title="serverVersion property" Url="html/176796835.htm" />
   <HelpKINode Title="setallyRaward method" Url="html/1660233586.htm" />
@@ -915,17 +978,17 @@
   <HelpKINode Title="ShopArea property" Url="html/376557324.htm" />
   <HelpKINode Title="ShopBelongId property" Url="html/913555684.htm" />
   <HelpKINode Title="ShopCity property">
-    <HelpKINode Title="ShopCity Property " Url="html/872078044.htm" />
     <HelpKINode Title="ShopCity Property " Url="html/1321030951.htm" />
+    <HelpKINode Title="ShopCity Property " Url="html/872078044.htm" />
   </HelpKINode>
+  <HelpKINode Title="ShopID property" Url="html/1500412166.htm" />
   <HelpKINode Title="ShopId property">
-    <HelpKINode Title="ShopId Property " Url="html/1422010172.htm" />
-    <HelpKINode Title="ShopId Property " Url="html/1272113002.htm" />
     <HelpKINode Title="ShopId Property " Url="html/224296769.htm" />
     <HelpKINode Title="ShopId Property " Url="html/1573615243.htm" />
     <HelpKINode Title="ShopId Property " Url="html/549807629.htm" />
+    <HelpKINode Title="ShopId Property " Url="html/1272113002.htm" />
+    <HelpKINode Title="ShopId Property " Url="html/1422010172.htm" />
   </HelpKINode>
-  <HelpKINode Title="ShopID property" Url="html/1500412166.htm" />
   <HelpKINode Title="ShopModel class">
     <HelpKINode Title="ShopModel Class" Url="html/1609249563.htm" />
     <HelpKINode Title="ShopModel Members" Url="html/297450056.htm" />
@@ -949,13 +1012,13 @@
   <HelpKINode Title="ShopModel.ShopType property" Url="html/1546543413.htm" />
   <HelpKINode Title="ShopName property">
     <HelpKINode Title="ShopName Property " Url="html/1245115974.htm" />
+    <HelpKINode Title="ShopName Property " Url="html/395214768.htm" />
     <HelpKINode Title="ShopName Property " Url="html/841525846.htm" />
     <HelpKINode Title="ShopName Property " Url="html/361825805.htm" />
-    <HelpKINode Title="ShopName Property " Url="html/395214768.htm" />
   </HelpKINode>
   <HelpKINode Title="ShopProv property">
-    <HelpKINode Title="ShopProv Property " Url="html/2043490537.htm" />
     <HelpKINode Title="ShopProv Property " Url="html/2094181038.htm" />
+    <HelpKINode Title="ShopProv Property " Url="html/2043490537.htm" />
   </HelpKINode>
   <HelpKINode Title="ShopReward property" Url="html/1193732794.htm" />
   <HelpKINode Title="ShopType property" Url="html/1546543413.htm" />
@@ -969,15 +1032,19 @@
   <HelpKINode Title="SSV_Phone property" Url="html/1957409719.htm" />
   <HelpKINode Title="SSV_Verification property" Url="html/477029537.htm" />
   <HelpKINode Title="startTime property" Url="html/241669172.htm" />
-  <HelpKINode Title="StartTime property" Url="html/733532283.htm" />
-  <HelpKINode Title="Status property">
-    <HelpKINode Title="Status Property " Url="html/36795829.htm" />
-    <HelpKINode Title="Status Property " Url="html/591831056.htm" />
-    <HelpKINode Title="Status Property " Url="html/736766492.htm" />
+  <HelpKINode Title="StartTime property">
+    <HelpKINode Title="StartTime Property " Url="html/1311571421.htm" />
+    <HelpKINode Title="StartTime Property " Url="html/733532283.htm" />
   </HelpKINode>
   <HelpKINode Title="status property">
-    <HelpKINode Title="status Property " Url="html/1461017100.htm" />
     <HelpKINode Title="status Property " Url="html/597937666.htm" />
+    <HelpKINode Title="status Property " Url="html/1305438659.htm" />
+    <HelpKINode Title="status Property " Url="html/1461017100.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Status property">
+    <HelpKINode Title="Status Property " Url="html/591831056.htm" />
+    <HelpKINode Title="Status Property " Url="html/736766492.htm" />
+    <HelpKINode Title="Status Property " Url="html/36795829.htm" />
   </HelpKINode>
   <HelpKINode Title="StatusName property" Url="html/1796082691.htm" />
   <HelpKINode Title="statusText property" Url="html/117028651.htm" />
@@ -1042,8 +1109,9 @@
   <HelpKINode Title="TempSettleBeanList method" Url="html/281716424.htm" />
   <HelpKINode Title="timestamp property" Url="html/849702230.htm" />
   <HelpKINode Title="Title property">
-    <HelpKINode Title="Title Property " Url="html/1301311314.htm" />
     <HelpKINode Title="Title Property " Url="html/1147088287.htm" />
+    <HelpKINode Title="Title Property " Url="html/1301311314.htm" />
+    <HelpKINode Title="Title Property " Url="html/1658328774.htm" />
   </HelpKINode>
   <HelpKINode Title="token property" Url="html/1074444194.htm" />
   <HelpKINode Title="TopTime property" Url="html/854442723.htm" />
@@ -1056,8 +1124,8 @@
   <HelpKINode Title="UB_BelongTo property" Url="html/2136309649.htm" />
   <HelpKINode Title="UB_BelongTwo property" Url="html/300903742.htm" />
   <HelpKINode Title="UB_CustomerID property">
-    <HelpKINode Title="UB_CustomerID Property " Url="html/1347625279.htm" />
     <HelpKINode Title="UB_CustomerID Property " Url="html/27677495.htm" />
+    <HelpKINode Title="UB_CustomerID Property " Url="html/1347625279.htm" />
   </HelpKINode>
   <HelpKINode Title="UB_DownloadAppStatus property" Url="html/1215890830.htm" />
   <HelpKINode Title="UB_GroupId property" Url="html/1648589625.htm" />
@@ -1128,18 +1196,18 @@
   <HelpKINode Title="UL_OpenLevel_One property" Url="html/1731847827.htm" />
   <HelpKINode Title="UL_OpenLevel_Two property" Url="html/135862644.htm" />
   <HelpKINode Title="UL_Type property" Url="html/147199033.htm" />
-  <HelpKINode Title="update method" Url="html/749859190.htm" />
+  <HelpKINode Title="update method" Url="html/1028269417.htm" />
   <HelpKINode Title="UpdateInfo method" Url="html/833989253.htm" />
   <HelpKINode Title="UpdateInShop method" Url="html/1891361703.htm" />
   <HelpKINode Title="UpdateTime property">
-    <HelpKINode Title="UpdateTime Property " Url="html/2032331905.htm" />
     <HelpKINode Title="UpdateTime Property " Url="html/807319755.htm" />
+    <HelpKINode Title="UpdateTime Property " Url="html/2032331905.htm" />
   </HelpKINode>
   <HelpKINode Title="updateTip property" Url="html/224083852.htm" />
   <HelpKINode Title="updateType property" Url="html/1046973797.htm" />
   <HelpKINode Title="updateUrl property" Url="html/1193008233.htm" />
   <HelpKINode Title="UploadPic method" Url="html/956026533.htm" />
-  <HelpKINode Title="UploadSuccessVoucher method" Url="html/182184699.htm" />
+  <HelpKINode Title="UploadSuccessVoucher method" Url="html/243886913.htm" />
   <HelpKINode Title="UserAllArea property" Url="html/752682870.htm" />
   <HelpKINode Title="UserBaseInfoModel class">
     <HelpKINode Title="UserBaseInfoModel Class" Url="html/873114990.htm" />
@@ -1254,19 +1322,19 @@
   <HelpKINode Title="UserGender property" Url="html/1174538679.htm" />
   <HelpKINode Title="UserHeadImg property" Url="html/1540129700.htm" />
   <HelpKINode Title="UserId property">
-    <HelpKINode Title="UserId Property " Url="html/1793094078.htm" />
-    <HelpKINode Title="UserId Property " Url="html/820265277.htm" />
-    <HelpKINode Title="UserId Property " Url="html/119949448.htm" />
+    <HelpKINode Title="UserId Property " Url="html/1641216379.htm" />
+    <HelpKINode Title="UserId Property " Url="html/1110097838.htm" />
     <HelpKINode Title="UserId Property " Url="html/7723446.htm" />
     <HelpKINode Title="UserId Property " Url="html/876414942.htm" />
+    <HelpKINode Title="UserId Property " Url="html/820265277.htm" />
+    <HelpKINode Title="UserId Property " Url="html/119949448.htm" />
     <HelpKINode Title="UserId Property " Url="html/1259657272.htm" />
-    <HelpKINode Title="UserId Property " Url="html/1110097838.htm" />
-    <HelpKINode Title="UserId Property " Url="html/1641216379.htm" />
     <HelpKINode Title="UserId Property " Url="html/451923989.htm" />
+    <HelpKINode Title="UserId Property " Url="html/1793094078.htm" />
   </HelpKINode>
   <HelpKINode Title="UserIdentity property">
-    <HelpKINode Title="UserIdentity Property " Url="html/1669033255.htm" />
     <HelpKINode Title="UserIdentity Property " Url="html/101186644.htm" />
+    <HelpKINode Title="UserIdentity Property " Url="html/1669033255.htm" />
   </HelpKINode>
   <HelpKINode Title="UserIndentity property" Url="html/1322336153.htm" />
   <HelpKINode Title="UserMobile property">
@@ -1304,12 +1372,15 @@
   <HelpKINode Title="UserModel.UserId property" Url="html/7723446.htm" />
   <HelpKINode Title="UserModel.UserIdentity property" Url="html/101186644.htm" />
   <HelpKINode Title="UserModel.UserMobile property" Url="html/409812677.htm" />
-  <HelpKINode Title="username property" Url="html/792955624.htm" />
   <HelpKINode Title="UserName property">
     <HelpKINode Title="UserName Property " Url="html/1452044385.htm" />
     <HelpKINode Title="UserName Property " Url="html/241935609.htm" />
   </HelpKINode>
-  <HelpKINode Title="userName property" Url="html/1442712142.htm" />
+  <HelpKINode Title="userName property">
+    <HelpKINode Title="userName Property " Url="html/1968708199.htm" />
+    <HelpKINode Title="userName Property " Url="html/1442712142.htm" />
+  </HelpKINode>
+  <HelpKINode Title="username property" Url="html/792955624.htm" />
   <HelpKINode Title="UserRegisterModel class">
     <HelpKINode Title="UserRegisterModel Class" Url="html/2141478052.htm" />
     <HelpKINode Title="UserRegisterModel Members" Url="html/1907561016.htm" />
@@ -1341,8 +1412,8 @@
   <HelpKINode Title="UserRelationViewEntity.LoginName property" Url="html/63790044.htm" />
   <HelpKINode Title="UserRelationViewEntity.UB_CustomerID property" Url="html/1347625279.htm" />
   <HelpKINode Title="UserRelationViewEntity.UserId property" Url="html/119949448.htm" />
-  <HelpKINode Title="UserStatus property" Url="html/1232050973.htm" />
   <HelpKINode Title="userStatus property" Url="html/809343728.htm" />
+  <HelpKINode Title="UserStatus property" Url="html/1232050973.htm" />
   <HelpKINode Title="UseTime property" Url="html/793062507.htm" />
   <HelpKINode Title="Value property" Url="html/588660019.htm" />
   <HelpKINode Title="Version property" Url="html/1825185290.htm" />

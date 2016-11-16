@@ -128,9 +128,21 @@ namespace BAMENG.LOGIC
         }
 
 
+        /// <summary>
+        /// 订单
+        /// </summary>
+        /// <returns>IOrderDAL.</returns>
         public static IOrderDAL OrderFactory()
         {
             return new OrderDAL();
+        }
+        /// <summary>
+        /// 消息
+        /// </summary>
+        /// <returns>IMessageDAL.</returns>
+        public static IMessageDAL MessageFactory()
+        {
+            return new MessageDAL();
         }
 
     }

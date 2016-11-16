@@ -47,7 +47,7 @@ namespace BAMENG.IDAL
         /// </summary>
         /// <param name="messageId">The message identifier.</param>
         /// <returns>System.Int32.</returns>
-        int DeleteMessageInfo(int messageId);
+        bool DeleteMessageInfo(int messageId);
 
 
         /// <summary>
