@@ -24,8 +24,24 @@ namespace BAMENG.IDAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-         bool Update(OrderModel model);
+         bool Update(string orderId, int status, string memo);
 
         OrderModel GetModel(string orderId);
+
+        /// <summary>
+        /// 计算订单数
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        int CountOrders(int userId);
+
+
+        /// <summary>
+        /// 计算订单数
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="orderStatus">订单状态</param>
+        /// <returns></returns>
+        int CountOrders(int userId, int orderStatus);
     }
 }

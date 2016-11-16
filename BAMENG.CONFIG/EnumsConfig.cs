@@ -109,7 +109,18 @@ namespace BAMENG.CONFIG
 
         [Description("请上传图片")]
         请上传图片 = 71000,
+        [Description("请上传凭证")]
+        请上传凭证 = 71001,
 
+        [Description("订单状态为已成交后上传")]
+        订单状态为已成交后上传 = 71002,
+
+
+
+        [Description("订单存在问题")]
+        订单存在问题 = 71003,
+        [Description("订单目前状态存在异常")]
+        订单目前状态存在异常 = 71004,
 
 
         /// <summary>

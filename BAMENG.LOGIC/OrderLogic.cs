@@ -90,7 +90,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-               return toOrderDetail(dal.GetModel(id));
+                return toOrderDetail(dal.GetModel(id));
             }
         }
 
@@ -109,6 +109,71 @@ namespace BAMENG.LOGIC
                 result.address = order.Ct_Address;
             }
             return result;
-         }
+        }
+
+        public static bool Update(int userId,string orderId, int status, string memo, ref ApiStatusCode code)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                OrderModel orderModel = dal.GetModel(orderId);
+                if (orderModel == null || orderModel.UserId!=userId)
+                {
+                    code = ApiStatusCode.订单存在问题;
+                    return false;
+                }
+                if (orderModel.OrderStatus != 0)
+                {
+                    code = ApiStatusCode.订单目前状态存在异常;
+                    return false;
+                }
+
+                //改订单为已处理
+                if (status == 1 &&orderModel.Ct_BelongId>0)
+                {
+                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(userId);                    
+                    //给盟友加盟豆
+                    UserLogic.addUserMoney(userId, rewardSettingModel.OrderReward);
+                    //更新用户等级
+                    UserLogic.userUpdate(userId);
+                }
+
+                return dal.Update(orderId, status, memo);
+            }
+        }
+
+        public static OrderModel GetModel(string orderId)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return GetModel(orderId);
+            }
+        }
+
+        /// <summary>
+        /// 计算订单数
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static int CountOrders(int userId)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return CountOrders(userId);
+            }
+        }
+
+        /// <summary>
+        /// 计算订单数
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="orderStatus">订单状态</param>
+        /// <returns></returns>
+        public static int CountOrders(int userId, int orderStatus)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return CountOrders(userId, orderStatus);
+            }
+        }
     }
 }

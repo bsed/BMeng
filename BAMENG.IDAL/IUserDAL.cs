@@ -264,5 +264,32 @@ namespace BAMENG.IDAL
         /// <param name="mobile"></param>
         /// <returns></returns>
         bool ExistApplyFriend(string mobile);
+
+
+        /// <summary>
+        /// 添加用户余额
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        int addUserMoney(int userId, decimal money);
+
+        /// <summary>
+        /// 获得用户等级列表
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        List<MallUserLevelModel> GeUserLevelList(int storeId, int type);
+
+        int updateUserLevel(int userId, int levelId);
+
+
+        /// <summary>
+        /// 获得用户的下线数量
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        int countByBelongOne(int userId);
     }
 }

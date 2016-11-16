@@ -78,13 +78,20 @@ namespace BAMENG.API.Controllers
             else
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
         }
+
         /// <summary>
         /// 修改订单 POST: order/update
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult update()
+        /// <param name="orderId">订单号</param>
+        /// <param name="note">说明</param>
+        /// <param name="status">状态  0 未成交 1 已成交 2退单</param>
+        /// <returns></returns>
+        public ActionResult update(string orderId,string note,int status)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+            ApiStatusCode code = ApiStatusCode.OK;
+            OrderLogic.Update(userId,orderId, status, note,ref code);
+            return Json(new ResultModel(code));
         }
 
 
@@ -101,9 +108,33 @@ namespace BAMENG.API.Controllers
         /// 上传成交凭证 POST: order/UploadSuccessVoucher
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult UploadSuccessVoucher()
+        public ActionResult UploadSuccessVoucher(string orderId)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            OrderModel orderModel = OrderLogic.GetModel(orderId);
+            if (orderModel.OrderStatus != 1)
+            {
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
+            }
+
+
+            string imgContent = string.Empty;
+            HttpPostedFileBase oFile = Request.Files[0];
+            if (oFile == null)
+            {
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
+            }
+            string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+            Stream stream = oFile.InputStream;
+            byte[] bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+            // 设置当前流的位置为流的开始
+            stream.Seek(0, SeekOrigin.Begin);
+            if (FileUploadHelper.UploadFile(bytes, fileName))
+            {
+                return Json(new ResultModel(ApiStatusCode.OK));
+            }
+            else
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
         }
 
 
@@ -125,7 +156,6 @@ namespace BAMENG.API.Controllers
         }
 
 
-
-
+        
     }
 }

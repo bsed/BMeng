@@ -303,7 +303,7 @@ namespace BAMENG.LOGIC
 
         public static bool AllyApply(int userId, string mobile, string password
             , string nickname, string userName
-            , int sex,ref ApiStatusCode apiCode)
+            , int sex, ref ApiStatusCode apiCode)
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
@@ -315,11 +315,70 @@ namespace BAMENG.LOGIC
                 {
                     apiCode = ApiStatusCode.手机用户已存在;
                 }
-                else {
+                else
+                {
                     dal.SaveApplyFriend(userId, mobile, EncryptHelper.MD5(password), nickname, userName, sex);
                     apiCode = ApiStatusCode.OK;
                 }
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// 给用户加盟豆
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public static int addUserMoney(int userId, decimal money)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.addUserMoney(userId, money);
+            }
+        }
+
+
+        /// <summary>
+        /// 更新盟友等级
+        /// </summary>
+        /// <param name="userId"></param>
+        public static void userUpdate(int userId)
+        {
+            int amount = OrderLogic.CountOrders(userId);
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId,0);
+                foreach (MallUserLevelModel level in levels)
+                {
+                    if (amount > level.UL_MemberNum)
+                    {
+                        //更新用户等级
+                        dal.updateUserLevel(userId,level.UL_ID);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新盟主等级
+        /// </summary>
+        /// <param name="userId"></param>
+        public static void masterUpdate(int userId)
+        {
+            
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                int amount = dal.countByBelongOne(userId);
+                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId, 0);
+                foreach (MallUserLevelModel level in levels)
+                {
+                    if (amount > level.UL_MemberNum)
+                    {
+                        //更新用户等级
+                        dal.updateUserLevel(userId, level.UL_ID);
+                    }
+                }
             }
         }
     }

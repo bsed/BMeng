@@ -963,7 +963,7 @@ namespace BAMENG.DAL
         /// <param name="oldPassword">The old password.</param>
         /// <param name="password">The password.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public bool ChanagePassword(int userId,string oldPassword, string password)
+        public bool ChanagePassword(int userId, string oldPassword, string password)
         {
             string strSql = "update Hot_UserBaseInfo set UB_UserLoginPassword=@UB_UserLoginPassword where UB_CustomerID=@UB_CustomerID and UB_UserID=@UB_UserID and UB_UserLoginPassword=@OldPassword ";
             SqlParameter[] param = {
@@ -1031,21 +1031,77 @@ namespace BAMENG.DAL
         }
 
 
+
+
         /// <summary>
-        /// 计算订单数
+        /// 添加用户余额
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public int addUserMoney(int userId, decimal money)
+        {
+            string strSql = "update BM_User_extend set MengBeans=MengBeans+@money where UserId=@UserId";
+            var parms = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@money",money)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
+
+
+        /// <summary>
+        /// 获得用户等级列表
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public List<MallUserLevelModel> GeUserLevelList(int storeId, int type)
+        {
+            List<MallUserLevelModel> list = new List<MallUserLevelModel>();
+            string strSql = @"select * from Mall_UserLevel where UL_CustomerID=@UL_CustomerID and UL_Type=@UL_Type order by UL_MemberNum desc";
+            var param = new[] {
+                    new SqlParameter("@UL_CustomerID", storeId),
+                    new SqlParameter("@UL_Type", type)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                list = DbHelperSQLP.GetEntityList<MallUserLevelModel>(dr);
+            }
+            return list;
+        }
+
+
+        /// <summary>
+        /// 更新用户等级
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="levelId"></param>
+        /// <returns></returns>
+        public int updateUserLevel(int userId, int levelId)
+        {
+            string strSql = "update Hot_UserBaseInfo set UB_LevelID=@UB_LevelID where UB_UserID=@UB_UserID";
+            var parms = new[] {
+                new SqlParameter("@UB_UserID",userId),
+                new SqlParameter("@UB_LevelID",levelId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
+
+
+        /// <summary>
+        /// 获得用户的下线数量
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public int CountOrders(int userId)
+        public int countByBelongOne(int userId)
         {
-            string strSql = "select count(*) from BM_Orders where UserId=@UserId";
+            string strSql = "select count(*) from Hot_UserBaseInfo where UB_BelongOne=@UserId";
             var param = new[] {
                 new SqlParameter("@UserId",userId)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
 
-        }
-
-        
+        }        
     }
 }
