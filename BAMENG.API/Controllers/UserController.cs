@@ -144,9 +144,11 @@ namespace BAMENG.API.Controllers
         /// <summary>
         /// 修改用户信息 POST: user/UpdateInfo
         /// </summary>
+        /// <param name="type">修改内容类型</param>
+        /// <param name="content">修改内容</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult UpdateInfo()
+        public ActionResult UpdateInfo(int type,string content)
         {
             return Json(new ResultModel(ApiStatusCode.OK));
         }
