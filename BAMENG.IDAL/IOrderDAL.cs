@@ -26,6 +26,6 @@ namespace BAMENG.IDAL
         /// </summary>
          bool Update(OrderModel model);
 
-        OrderModel GetModel(int id);
+        OrderModel GetModel(string orderId);
     }
 }

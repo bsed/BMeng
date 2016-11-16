@@ -38,7 +38,7 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <param name="id">订单id</param>
         /// <returns></returns>
-        public ActionResult details(int id)
+        public ActionResult details(string id)
         {
             var data = OrderLogic.getOrderDetail(id);
             return Json(new ResultModel(ApiStatusCode.OK, data));

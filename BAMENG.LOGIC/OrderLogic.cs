@@ -86,7 +86,7 @@ namespace BAMENG.LOGIC
         }
 
 
-        public static OrderDetailModel getOrderDetail(int id)
+        public static OrderDetailModel getOrderDetail(string id)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
