@@ -96,7 +96,13 @@ namespace BAMENG.IDAL
         bool IsExist(string mobile, string addr);
 
 
-
+        /// <summary>
+        /// 获得客户信息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        CustomerModel getCustomerModel(string mobile, string address);
 
     }
 }

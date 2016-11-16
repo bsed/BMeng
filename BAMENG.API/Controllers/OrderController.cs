@@ -1,8 +1,11 @@
 ﻿using BAMENG.CONFIG;
 using BAMENG.LOGIC;
 using BAMENG.MODEL;
+using HotCoreUtils.Helper;
+using HotCoreUtils.Uploader;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -28,21 +31,52 @@ namespace BAMENG.API.Controllers
             var data = OrderLogic.GetMyOrderList(userId,type,lastId);
             return Json(new ResultModel(ApiStatusCode.OK,data));
         }
+
+
         /// <summary>
         /// 订单详情 POST: order/details
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult details()
+        /// <param name="id">订单id</param>
+        /// <returns></returns>
+        public ActionResult details(int id)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            var data = OrderLogic.getOrderDetail(id);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
+
+
         /// <summary>
-        /// 创建订单 POST: order/create
+        ///  创建订单 POST: order/create
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult create()
+        /// <param name="userName">客户名</param>
+        /// <param name="mobile">手机号</param>
+        /// <param name="address">客户地址</param>
+        /// <param name="cashNo">现金卷编号</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        public ActionResult create(string userName,string mobile,string address, string cashNo,string memo)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+
+            string imgContent = string.Empty;
+            HttpPostedFileBase oFile = Request.Files[0];
+            if (oFile == null)
+            {
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
+            }
+            string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+            Stream stream = oFile.InputStream;
+            byte[] bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+            // 设置当前流的位置为流的开始
+            stream.Seek(0, SeekOrigin.Begin);
+            if (FileUploadHelper.UploadFile(bytes, fileName))
+            {
+                OrderLogic.saveOrder(userId,userName,  mobile,  address,  cashNo,  memo, fileName);
+                return Json(new ResultModel(ApiStatusCode.OK));
+            }
+            else
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
         }
         /// <summary>
         /// 修改订单 POST: order/update
@@ -89,6 +123,9 @@ namespace BAMENG.API.Controllers
         {
             return Json(new ResultModel(ApiStatusCode.OK));
         }
+
+
+
 
     }
 }

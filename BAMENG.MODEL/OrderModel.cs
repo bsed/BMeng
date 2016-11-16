@@ -108,4 +108,44 @@ namespace BAMENG.MODEL
         /// </summary>
         public int status { get; set; }
     }
+
+
+    public class OrderDetailModel
+    {
+        /// <summary>
+        /// 订单号
+        /// </summary>
+        public string orderId;
+        /// <summary>
+        /// 下单时间
+        /// </summary>
+        public long orderTime;
+
+        /// <summary>
+        /// 图片地址
+        /// </summary>
+        public string pictureUrl { get; set; }
+        /// <summary>
+        /// 用户
+        /// </summary>
+        public string userName { get; set; }
+
+        /// <summary>
+        /// 联系方式
+        /// </summary>
+        public string mobile { get; set; }
+
+        /// <summary>
+        /// 用户地址
+        /// </summary>
+        public string address { get; set; }
+
+ 
+        /// <summary>
+        /// 订单状态 0 未成交 1 已成交 2退单
+        /// </summary>
+        public int status { get; set; }
+
+       
+    }
 }

@@ -103,6 +103,8 @@ namespace BAMENG.IDAL
         /// <returns>ResultPageModel.</returns>
         ResultPageModel GetUserCashCouponLogList(int couponId, SearchModel model);
 
+        CashCouponLogModel getEnableCashCouponLogModel(string mobile, string cashNo);
+
 
     }
 }
