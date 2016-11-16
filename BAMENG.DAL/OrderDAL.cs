@@ -187,5 +187,22 @@ namespace BAMENG.DAL
                 return false;
             }
         }
+
+
+        public OrderModel GetModel(int id)
+        {
+            string strSql = "select * from BM_Orders where orderId=@orderId";
+
+            SqlParameter[] parameters = {
+                    new SqlParameter("@orderId", id)
+            };
+
+            OrderModel model = null;
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
+            {
+                model = DbHelperSQLP.GetEntity<OrderModel>(dr);
+            }
+            return model;
+        }
     }
 }
