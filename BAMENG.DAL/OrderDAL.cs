@@ -189,12 +189,20 @@ namespace BAMENG.DAL
         }
 
 
+<<<<<<< HEAD
         public OrderModel GetModel(int id)
+=======
+        public OrderModel GetModel(string orderId)
+>>>>>>> 70354882c4d18cf436575698e3dc993116a827c4
         {
             string strSql = "select * from BM_Orders where orderId=@orderId";
 
             SqlParameter[] parameters = {
+<<<<<<< HEAD
                     new SqlParameter("@orderId", id)
+=======
+                    new SqlParameter("@orderId", orderId)
+>>>>>>> 70354882c4d18cf436575698e3dc993116a827c4
             };
 
             OrderModel model = null;
