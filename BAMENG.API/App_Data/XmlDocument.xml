@@ -213,11 +213,13 @@
             </summary>
             <seealso cref="T:System.Web.Mvc.Controller" />
         </member>
-        <member name="M:BAMENG.API.Controllers.OrderController.myList">
+        <member name="M:BAMENG.API.Controllers.OrderController.myList(System.Int32,System.Int64)">
             <summary>
             我的订单列表 POST: order/myList
             </summary>
-            <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+            <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
+            <param name="lastId">最后的时间</param>
+            <returns></returns>
         </member>
         <member name="M:BAMENG.API.Controllers.OrderController.details">
             <summary>
@@ -388,7 +390,7 @@
         </member>
         <member name="M:BAMENG.API.Controllers.UserController.setallyRaward(System.Decimal,System.Decimal,System.Decimal)">
             <summary>
-            设置盟友奖励 POST: user/setallyaward
+            设置盟友奖励 POST: user/setallyraward
             </summary>
             <param name="creward">客户资料提交奖励</param>
             <param name="orderreward">订单成交奖励</param>
@@ -427,10 +429,13 @@
             </summary>
             <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         </member>
-        <member name="M:BAMENG.API.Controllers.UserController.AllyApplylist">
+        <member name="M:BAMENG.API.Controllers.UserController.AllyApplylist(System.Int32,System.Int32,System.Int32)">
             <summary>
             盟友申请列表 POST: user/AllyApplylist
             </summary>
+            <param name="type">0盟友申请，1盟友列表</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pageSize">Size of the page.</param>
             <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         </member>
         <member name="M:BAMENG.API.Controllers.UserController.AllyApplyAudit">
@@ -464,7 +469,8 @@
         </member>
         <member name="M:BAMENG.API.Controllers.UserController.MyBusiness">
             <summary>
-            我的业务 POST: user/MyBusiness
+            我的业务 POST: user/MyBusiness 
+            todo
             </summary>
             <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         </member>

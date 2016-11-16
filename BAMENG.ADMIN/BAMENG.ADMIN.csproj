@@ -131,6 +131,7 @@
     <Content Include="static\js\admin\articlelist.js" />
     <Content Include="static\js\admin\basesetting.js" />
     <Content Include="static\js\admin\Login.js" />
+    <Content Include="static\js\admin\messagelist.js" />
     <Content Include="static\js\admin\userdetails.js" />
     <Content Include="static\js\admin\userlevel.js" />
     <Content Include="static\js\admin\customerlist.js" />
