@@ -18,33 +18,7 @@
 
     <div class="wrapper wrapper-content animated fadeInRight tooltip-demo">
         <!--search-->
-        <form role="form" class="search-panel">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-content p-m no-borders">
-                            <div class="form-inline">
-                                <div class="form-group m-r-sm">
-                                    <label class="control-label" for="goodName">搜索类型：</label>
-                                    <select class="form-control input-sm" name="stdType" id="stdType">
-                                        <option value="1">姓名</option>
-                                        <option value="2">昵称</option>
-                                        <option value="3">手机</option>
-                                        <option value="4">门店</option>
-                                    </select>
-                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="关键字" />
-                                </div>
-                            </div>
-                            <p style="height: 8px;"></p>
-                            <div class="form-inline" style="max-width: 926px; text-align: right;">
-                                <button type="button" onclick="messageHelper.search()" class="btn btn-success">筛选</button>
-                                <button type="button" onclick="messageHelper.searchAll()" class="btn btn-success">显示全部</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+
         <!--search-->
         <!--list-->
         <div class="row">
@@ -54,7 +28,7 @@
                         <div class="panel-body">
                             <div style="text-align:right;">
                                 <!-- 添加按钮 -->
-                                <button type="button" id="btnUser" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="messageHelper.dialog()">添加轮播图</button>
+                                <button type="button" id="btnUser" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="messageHelper.edit(0)">添加消息</button>
                             </div>
                             <table class="table table-bordered table-hover table-center">
                                 <thead>
@@ -86,9 +60,7 @@
             <td>{CreateTime}</td>
             <td>{StatusText}</td>
             <td>
-                <span class="cursor-point" onclick="messageHelper.dialog('{ID}');" data-toggle="modal" data-target="#myModal2">编辑</span>
-                &nbsp;
-                <span class="cursor-point" onclick="messageHelper.updateActive('{ID}')">{ActiveText}</span>
+                <span class="cursor-point" onclick="messageHelper.edit('{ID}');" data-toggle="modal" data-target="#myModal2">编辑</span>                
                 &nbsp;
                 <span class="cursor-point" onclick="messageHelper.del('{ID}')">删除</span>
             </td>
@@ -99,13 +71,9 @@
 
     <script src="/static/js/jquery.min.js?v=2.1.4"></script>
     <script src="/static/js/plugins/hot/Jquery.util.js"></script>
-    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
-    <script src="/static/js/content.min.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>    
     <script src="/static/js/plugins/layer/layer.min.js"></script>
-    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="/static/js/plugins/validate/jquery.validate.min.js"></script>
-    <script src="/static/js/plugins/validate/messages_zh.min.js"></script>
-    <script src="/static/js/plugins/hot/bootstrap.hot.extra-validate.js"></script>
-    <script src="/static/js/admin/focuspic.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>    
+    <script src="/static/js/admin/messagelist.js"></script>
 </body>
 </html>

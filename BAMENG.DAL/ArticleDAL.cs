@@ -181,13 +181,16 @@ namespace BAMENG.DAL
                                  where a.IsDel=0 and a.EnableTop=0 and A.ArticleStatus=1";
 
             string whereSql = string.Empty, wherefield = string.Empty;
-            if (AuthorIdentity == 3)
+            string orderbyField = "A.ArticleSort";
+            if (AuthorIdentity == 4)
             {
+                orderbyField = "A.CreateTime";
                 //TODO:
                 strSql += " and A.SendTargetId=@SendTargetId";
             }
-            else if (AuthorIdentity == 4)
+            else if (AuthorIdentity == 3)
             {
+                orderbyField = "A.CreateTime";
                 wherefield = ",ISNULL(R.IsRead,0) as IsRead";
                 whereSql = " left join BM_ReadLog R with(nolock) on R.ArticleId=A.ArticleId and R.UserId=@SendTargetId ";
             }
@@ -198,7 +201,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@SendTargetId", userId),
             };
             //生成sql语句
-            return getPageData<ArticleBaseModel>(pageSize, pageindex, strSql, "A.ArticleSort", param, (items) =>
+            return getPageData<ArticleBaseModel>(pageSize, pageindex, strSql, orderbyField, param, (items) =>
             {
                 items.ForEach((item) =>
                 {

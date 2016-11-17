@@ -26,7 +26,7 @@ namespace BAMENG.DAL
     {
 
 
-        private const string SELECT_SQL = "select ID,Title,AuthorName,SendTargetIds,MessageBody,IsSend,CreateTime from BM_MessageManage where IsDel=0 ";
+        private const string SELECT_SQL = "select ID,Title,AuthorName,IsSendBelongShopId,SendTargetIds,MessageBody,IsSend,CreateTime from BM_MessageManage where IsDel=0 ";
 
         /// <summary>
         /// 添加消息
@@ -36,16 +36,39 @@ namespace BAMENG.DAL
         /// <exception cref="NotImplementedException"></exception>
         public int AddMessageInfo(MessageModel model)
         {
-            string strSql = "insert into BM_MessageManage(Title,AuthorName,SendTargetIds,MessageBody,IsSend) values(@Title,@AuthorName,@SendTargetIds,@MessageBody,@IsSend)";
+            string strSql = "insert into BM_MessageManage(Title,AuthorName,SendTargetIds,MessageBody,IsSend,IsSendBelongShopId) values(@Title,@AuthorName,@SendTargetIds,@MessageBody,@IsSend,@IsSendBelongShopId);select @@IDENTITY";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
                 new SqlParameter("@AuthorName", model.AuthorName),
                 new SqlParameter("@SendTargetIds", model.SendTargetIds),
                 new SqlParameter("@MessageBody", model.MessageBody),
-                new SqlParameter("@IsSend", model.IsSend)
+                new SqlParameter("@IsSend", model.IsSend),
+                new SqlParameter("@IsSendBelongShopId",model.IsSendBelongShopId)
             };
-            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            else
+                return 0;
         }
+
+        /// <summary>
+        /// 添加消息发送目标
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <param name="SendTargetShopId">如果是总店往总后台发布信息通知，则值为-1</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddMessageSendTarget(int messageId, int SendTargetShopId)
+        {
+            string strSql = "insert into BM_MessageSendTarget(MessageId,SendTargetShopId) values(@MessageId,@SendTargetShopId)";
+            var parm = new[] {
+                new SqlParameter("@MessageId", messageId),
+                new SqlParameter("@SendTargetShopId",SendTargetShopId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+        }
+
+
 
         /// <summary>
         /// 删除消息
@@ -80,8 +103,7 @@ namespace BAMENG.DAL
             {
                 strSql = SELECT_SQL;
                 if (!string.IsNullOrEmpty(model.key))
-                    strSql += string.Format(" and Title like '%{0}%' ", model.key);
-                strSql += " and ShopId=@ShopId ";
+                    strSql += string.Format(" and Title like '%{0}%' ", model.key);                
                 if (!string.IsNullOrEmpty(model.startTime))
                     strSql += " and CONVERT(nvarchar(10),CreateTime,121)>=@startTime ";
                 if (!string.IsNullOrEmpty(model.endTime))
@@ -146,10 +168,9 @@ namespace BAMENG.DAL
         /// <exception cref="NotImplementedException"></exception>
         public bool UpdateMessageInfo(MessageModel model)
         {
-            string strSql = "update BM_MessageManage set Title=@Title,AuthorName=@AuthorName,MessageBody=@MessageBody,IsSend=@IsSend where ID=@ID";
+            string strSql = "update BM_MessageManage set Title=@Title,MessageBody=@MessageBody,IsSend=@IsSend where ID=@ID";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
-                new SqlParameter("@AuthorName", model.AuthorName),
                 new SqlParameter("@MessageBody", model.MessageBody),
                 new SqlParameter("@IsSend", model.IsSend),
                 new SqlParameter("@ID", model.ID)

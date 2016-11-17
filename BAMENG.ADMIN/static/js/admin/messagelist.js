@@ -24,10 +24,11 @@ var messageHelper = {
         self.loaclData = [];
         this.pageIndex = page;
         var postData = {
-            action: "GetFocusPicList",
+            action: "getMessageList",
             pageIndex: page,
             pageSize: 20,
-            key: $("#keyword").val()            
+            key: $("#keyword").val(),
+            type: this.type
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, postData, function (ret, err) {
@@ -41,17 +42,8 @@ var messageHelper = {
                             tempHtml = tempHtml.replace("{NO}", (i + 1));
                             tempHtml = tempHtml.replace("{Title}", item.Title);
                             tempHtml = tempHtml.replace(/{ID}/gm, item.ID);
-                            tempHtml = tempHtml.replace("{Description}", item.Description);
-                            tempHtml = tempHtml.replace(/{LinkUrl}/g, item.LinkUrl);
-                            tempHtml = tempHtml.replace("{Sort}", item.Sort);
                             tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);
-                            if (!hotUtil.isNullOrEmpty(item.PicUrl))
-                                tempHtml = tempHtml.replace("{PicUrl}", item.PicUrl);
-                            else
-                                tempHtml = tempHtml.replace("{PicUrl}", "/static/img/bg.png");
-
-                            tempHtml = tempHtml.replace("{IsEnable}", item.IsEnable == 1 ? "<span style='color:red;'>已启用</span>" : "已禁用")                            
-
+                            tempHtml = tempHtml.replace("{StatusText}", item.IsSend == 1 ? "<span style='color:red;'>已发送</span>" : "未发送")
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
@@ -88,27 +80,13 @@ var messageHelper = {
         }
         return model;
     },
-    edit: function () {
-        var self = this;
-        this.upload(function () {
-            var postData = hotUtil.serializeForm("#signupForm .form-control");
-            postData.action = "EditFocusPic";
-            postData.type = self.type;
-            postData.focusenable = $("#focusenable").attr("checked") ? 1 : 0;
-            hotUtil.loading.show();
-            hotUtil.ajaxCall(self.ajaxUrl, postData, function (ret, err) {
-                if (ret) {
-                    if (ret.status == 200) {
-                        messageHelper.loadList(messageHelper.pageIndex);
-                        swal("提交成功", "", "success");
-                        $(".close").click();
-                    }
-                    else
-                        swal(ret.statusText, "", "warning");
-                }
-                hotUtil.loading.close();
-            });
-        });
+    edit: function (dataId) {
+        var url = "admin/messageedit.html?messageid=" + dataId;
+        var data = this.getModel(dataId);
+        if (data != null)
+            hotUtil.newTab(url, "编辑消息通知[" + data.Title + "]");
+        else
+            hotUtil.newTab(url, "添加消息通知");
     },
     del: function (dataId) {
         swal({
@@ -121,8 +99,8 @@ var messageHelper = {
             closeOnConfirm: false,
         }, function () {
             var param = {
-                action: "DeleteFocusPic",
-                userid: dataId
+                action: "DeleteMessage",
+                messageid: dataId
             }
             hotUtil.loading.show();
             hotUtil.ajaxCall(messageHelper.ajaxUrl, param, function (ret, err) {
@@ -139,108 +117,13 @@ var messageHelper = {
             });
         });
     },
-    updateActive: function (dataId, obj) {
-        $(obj).text("禁用");
-        var param = {
-            action: "SetFocusEnable",
-            focusid: dataId
-        }
-        hotUtil.loading.show();
-        hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
-            if (ret) {
-                if (ret.status == 200) {
-                    swal("设置成功！", "", "success");
-                    messageHelper.loadList(messageHelper.pageIndex);
-                }
-                else {
-                    swal(ret.statusText, "", "warning");
-                }
-            }
-            hotUtil.loading.close();
-        });
-    },
-    dialog: function (dataId) {
-        if (this.reset)
-            this.reset.resetForm();
-        var data = this.getModel(dataId);
-        if (data != null) {
-            $("#modal-title").text("编辑轮播图");
-            $("#focusid").val(dataId);
-            $("#focustitle").val(data.Title);
-            $("#focuspicurl").val(data.PicUrl);
-            $("#focuslinkurl").val(data.LinkUrl);
-            $("#focusdescription").val(data.Description);
-            $("#focussort").val(data.Sort);
-            $("#focusenable").setChecked(data.IsEnable == 1);
-        }
-        else {
-            $("#modal-title").text("添加轮播图");
-            $("#signupForm input").val("");
-        }
-
-    },
     pageInit: function () {
         messageHelper.loadList(messageHelper.pageIndex);
-        messageHelper.validate();
-        this.initCheck();
-    },
-    validate: function () {
-        var e = "<i class='fa fa-times-circle'></i> ";
-        this.reset = $("#signupForm").validate({
-            rules: {
-                focustitle: "required",
-                focuspicurl: "required",
-                focussort: "required",
-                focusdescription: "required"
-            },
-            messages: {
-                focustitle: e + "请输入标题",
-                focuspicurl: e + "请上传图片",
-                focussort: e + "请输入排序号",
-                focusdescription: e + "请输入说明",
-
-            },
-            submitHandler: function (form) {
-                messageHelper.edit();
-            }
-        })
-    },
-    upload: function (callback) {
-        if (!hotUtil.isNullOrEmpty($("#uploadfile").val())) {
-            hotUtil.loading.show();
-            hotUtil.uploadImg("uploadfile", this.picDir, function (url) {
-                hotUtil.loading.close();
-                if (url) {
-                    $("#focuspicurl").val(url);
-                    callback();
-
-                }
-                else
-                    swal("图片上传失败", "请检查图片格式是否正确", "warning");
-            });
-        }
-        else
-            callback();
-    },
-    initCheck: function () {
-        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-        elems.forEach(function (html) {
-            var switchery = new Switchery(html);
-        });
     }
 };
 
 $(function () {
     messageHelper.pageInit();
-
-    $('input[type="file"]').prettyFile();
-
-    $("#focusenable").change(function () {
-        if ($(this).attr("checked"))
-            $(this).setChecked(false);
-        else
-            $(this).setChecked(true);
-    });
 });
 
 

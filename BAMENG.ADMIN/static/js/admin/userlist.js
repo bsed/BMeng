@@ -90,6 +90,7 @@ var userHelper = {
     edit: function () {
         var param = hotUtil.serializeForm("#signupForm .form-control");
         param.action = "editUser";
+        param.ally = this.isAlly == 1 ? 0 : 1;
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {

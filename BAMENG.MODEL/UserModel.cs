@@ -22,16 +22,18 @@ namespace BAMENG.MODEL
     public class UserModel
     {
         /// <summary>
-        /// 
+        /// Gets or sets the user identifier.
         /// </summary>
+        /// <value>The user identifier.</value>
         public int UserId { get; set; }
         /// <summary>
         /// 用户身份，0盟友  1盟主
         /// </summary>
         public int UserIdentity { get; set; }
         /// <summary>
-        /// 
+        /// Gets or sets the merchant identifier.
         /// </summary>
+        /// <value>The merchant identifier.</value>
         public int MerchantID { get; set; }
         /// <summary>
         /// 
@@ -51,6 +53,12 @@ namespace BAMENG.MODEL
         public string UserGender { get; set; }
 
         /// <summary>
+        /// Gets or sets the user city.
+        /// </summary>
+        /// <value>The user city.</value>
+        public string UserCity { get; set; }
+
+        /// <summary>
         /// Gets or sets the score.
         /// </summary>
         /// <value>The score.</value>
@@ -64,11 +72,20 @@ namespace BAMENG.MODEL
         /// <summary>
         /// 盟豆
         /// </summary>
+        /// <value>The meng beans.</value>
         public decimal MengBeans { get; set; }
         /// <summary>
         /// 锁定盟豆
         /// </summary>
+        /// <value>The meng beans locked.</value>
         public decimal MengBeansLocked { get; set; }
+
+
+        /// <summary>
+        /// 待结算盟豆
+        /// </summary>
+        /// <value>The temporary meng beans.</value>
+        public decimal TempMengBeans { get; set; }
 
         /// <summary>
         /// Gets or sets the create time.
@@ -819,6 +836,8 @@ namespace BAMENG.MODEL
 
         public string UserEmail { get; set; }
 
+
+        public int ShopBelongId { get; set; }
 
         public DateTime LastLoginTime { get; set; }
 

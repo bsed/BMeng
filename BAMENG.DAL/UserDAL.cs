@@ -28,7 +28,7 @@ namespace BAMENG.DAL
         /// <summary>
         /// 获取用户基本信息SQL 语句
         /// </summary>
-        private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
+        private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
                             ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne
                              from BM_User_extend ue
@@ -750,9 +750,9 @@ namespace BAMENG.DAL
         {
             string strSql = string.Empty;
             if (!IsShop)
-                strSql = "select ID,LoginName,LoginPassword,RoleId,UserName,UserMobile,UserStatus,UserEmail,LastLoginTime,CreateTime,0 as UserIndentity from BM_Manager where LoginName=@LoginName and LoginPassword=@LoginPassword";
+                strSql = "select ID,LoginName,LoginPassword,0 as ShopBelongId,RoleId,UserName,UserMobile,UserStatus,UserEmail,LastLoginTime,CreateTime,0 as UserIndentity from BM_Manager where LoginName=@LoginName and LoginPassword=@LoginPassword";
             else
-                strSql = "select ShopID as ID,LoginName,LoginPassword,0 as ReloId,ShopName as UserName,ContactWay as UserMobile,IsActive as UserStatus,'' as UserEmail ,CreateTime,ShopType as UserIndentity from BM_ShopManage where LoginName =@LoginName and LoginPassword =@LoginPassword";
+                strSql = "select ShopID as ID,LoginName,LoginPassword,ShopBelongId,0 as ReloId,ShopName as UserName,ContactWay as UserMobile,IsActive as UserStatus,'' as UserEmail ,CreateTime,ShopType as UserIndentity from BM_ShopManage where LoginName =@LoginName and LoginPassword =@LoginPassword";
             SqlParameter[] parm = {
                    new SqlParameter("@LoginName", loginName),
                    new SqlParameter("@LoginPassword", loginPassword)

@@ -138,7 +138,8 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyInfo()
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            var data = GetUserData();
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace BAMENG.API.Controllers
         /// <param name="content">修改内容</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult UpdateInfo(int type,string content)
+        public ActionResult UpdateInfo(int type, string content)
         {
             return Json(new ResultModel(ApiStatusCode.OK));
         }

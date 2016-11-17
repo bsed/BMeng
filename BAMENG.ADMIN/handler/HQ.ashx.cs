@@ -201,6 +201,21 @@ namespace BAMENG.ADMIN.handler
                         SetCouponEnable();
                         break;
 
+                    case "GETMESSAGELIST":
+                        GetMessageList();
+                        break;
+                    case "EDITMESSAGE":
+                        EditMessage();
+                        break;
+                    case "DELETEMESSAGE":
+                        DeleteMessage();
+                        break;
+                    case "GETMESSAGEINFO":
+                        GetMessageInfo();
+                        break;
+                    case "GETMESSAGESHOPLIST":
+                        GetMessageShopList();
+                        break;
                     default:
                         break;
                 }
@@ -333,7 +348,7 @@ namespace BAMENG.ADMIN.handler
                 mobile = GetFormValue("usermobile", ""),
                 storeId = ConstConfig.storeId,
                 ShopId = user.ID,
-                UserIdentity = user.UserIndentity,
+                UserIdentity = GetFormValue("ally", 1),
                 UserId = UserId
             }, ref apiCode);
             if (flag)
@@ -800,5 +815,82 @@ namespace BAMENG.ADMIN.handler
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.操作失败));
         }
+
+
+        /// <summary>
+        /// 获取消息列表
+        /// </summary>
+        private void GetMessageList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+                type = GetFormValue("type", 1)
+            };
+
+            var data = MessageLogic.GetMessageList(user.UserIndentity == 0 ? 0 : user.ID, model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        ///修改消息
+        /// </summary>
+        private void EditMessage()
+        {
+
+            string sendtarget = GetFormValue("sendtarget", "");
+
+            bool flag = MessageLogic.EditMessage(user.UserIndentity, user.ShopBelongId, new MessageModel()
+            {
+                ID = GetFormValue("messageid", 0),
+                MessageBody = HttpUtility.UrlDecode(GetFormValue("content", "")),
+                Title = HttpUtility.UrlDecode(GetFormValue("title", "")),
+                AuthorName = user.UserName,
+                IsSend = GetFormValue("issend", 1),
+                IsSendBelongShopId = GetFormValue("issend", 0),
+                SendTargetIds = GetFormValue("sendtarget", "")
+            });
+            if (flag)
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.操作失败));
+        }
+        /// <summary>
+        /// 删除信息
+        /// </summary>
+        private void DeleteMessage()
+        {
+            if (MessageLogic.DeleteMessageInfo(GetFormValue("messageid", 0)))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.删除失败));
+        }
+
+
+        /// <summary>
+        /// 获取消息通知
+        /// </summary>
+        private void GetMessageInfo()
+        {
+            var data = MessageLogic.GetModel(GetFormValue("messageid", 0));
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        /// 消息通知页面的门店列表
+        /// </summary>
+        private void GetMessageShopList()
+        {
+            var data = ShopLogic.GetShopList(user.UserIndentity == 0 ? 1 : 2, user.ID);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+
+        }
+
     }
 }
