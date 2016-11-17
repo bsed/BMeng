@@ -2,13 +2,16 @@
 using BAMENG.LOGIC;
 using BAMENG.MODEL;
 using HotCoreUtils.Helper;
+using HotCoreUtils.Uploader;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BAMENG.API.Controllers
@@ -122,7 +125,7 @@ namespace BAMENG.API.Controllers
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
         public ActionResult ConvertAuditList(int lastId)
-        {            
+        {
             int userId = GetAuthUserId();
             var data = UserLogic.getMasterConvertFlow(userId, lastId);
             return Json(new ResultModel(ApiStatusCode.OK, data));
@@ -135,11 +138,11 @@ namespace BAMENG.API.Controllers
         /// <param name="status">1同意2拒绝</param>
         /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult ConvertAudit(int id,int status)
+        public ActionResult ConvertAudit(int id, int status)
         {
             ApiStatusCode code = ApiStatusCode.OK;
             int userId = GetAuthUserId();
-            UserLogic.ConvertAudit(userId,id, status,ref code);
+            UserLogic.ConvertAudit(userId, id, status, ref code);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 
@@ -151,6 +154,8 @@ namespace BAMENG.API.Controllers
         public ActionResult MyInfo()
         {
             var data = GetUserData();
+            if (data != null)
+                data.UserHeadImg = WebConfig.reswebsite() + data.UserHeadImg;
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -163,7 +168,54 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult UpdateInfo(int type, string content)
         {
+            UserModel userInfo = new UserModel();
+            switch (type)
+            {
+                case (int)UserPropertyOptions.USER_1:
+                    {
+                        HttpPostedFileBase oFile = Request.Files[0];
+                        if (oFile == null)
+                            return Json(new ResultModel(ApiStatusCode.请上传图片));
+                        string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+                        Stream stream = oFile.InputStream;
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                        // 设置当前流的位置为流的开始
+                        stream.Seek(0, SeekOrigin.Begin);
+                        if (FileUploadHelper.UploadFile(bytes, fileName))
+                            userInfo.UserHeadImg = fileName;
+                        else
+                            return Json(new ResultModel(ApiStatusCode.请上传图片));
+                    }
+                    break;
+                case (int)UserPropertyOptions.USER_2:
+                    userInfo.NickName = content;
+                    break;
+                case (int)UserPropertyOptions.USER_3:
+                    {
+
+                        userInfo.UserMobile = content;
+                    }
+                    break;
+                case (int)UserPropertyOptions.USER_4:
+                    userInfo.RealName = content;
+                    break;
+                case (int)UserPropertyOptions.USER_5:
+                    userInfo.UserGender = content;
+                    break;
+                case (int)UserPropertyOptions.USER_6:
+                    userInfo.UserCity = content;
+                    break;
+            }
+
+            //支付配置信息
+            UserPropertyOptions opt;
+            bool flg = Enum.TryParse(type.ToString(), out opt);
+
+            UserLogic.UpdateUserInfo(opt, userInfo);
             return Json(new ResultModel(ApiStatusCode.OK));
+
+
         }
 
         /// <summary>
@@ -276,11 +328,11 @@ namespace BAMENG.API.Controllers
         /// <param name="status">1成功2拒绝</param>
         /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult ApllyApplyAudit(int id,int status)
+        public ActionResult ApllyApplyAudit(int id, int status)
         {
             ApiStatusCode code = ApiStatusCode.OK;
             int userId = GetAuthUserId();
-            UserLogic.AllyApplyAudit(userId, id, status,ref code);
+            UserLogic.AllyApplyAudit(userId, id, status, ref code);
             return Json(new ResultModel(ApiStatusCode.OK, code));
         }
         /// <summary>

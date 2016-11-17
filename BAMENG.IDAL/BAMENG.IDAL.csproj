@@ -56,6 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BAMENG.CONFIG\BAMENG.CONFIG.csproj">
+      <Project>{595dc6ee-7ef1-46be-95ec-e0b1cfc84562}</Project>
+      <Name>BAMENG.CONFIG</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BAMENG.MODEL\BAMENG.MODEL.csproj">
       <Project>{CCF1E45A-25EE-4CAE-8E26-0E631E59F400}</Project>
       <Name>BAMENG.MODEL</Name>

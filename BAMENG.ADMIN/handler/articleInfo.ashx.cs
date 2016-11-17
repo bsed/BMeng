@@ -25,10 +25,17 @@ namespace BAMENG.ADMIN.handler
             if (!string.IsNullOrEmpty(auth))
             {
                 userId = UserLogic.GetUserIdByAuthToken(auth);
+                if(userId==0)
+                {
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.用户信息丢失));
+                    context.Response.ContentType = "application/json";
+                    context.Response.Write(json);
+                    context.Response.End();
+                }
             }
             else
             {
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.用户信息丢失));
                 context.Response.ContentType = "application/json";
                 context.Response.Write(json);
                 context.Response.End();

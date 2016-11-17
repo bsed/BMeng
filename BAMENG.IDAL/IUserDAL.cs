@@ -6,6 +6,7 @@
     2013-2016. All rights reserved.
 **/
 
+using BAMENG.CONFIG;
 using BAMENG.MODEL;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,13 @@ namespace BAMENG.IDAL
         /// <param name="model"></param>
         /// <returns></returns>
         bool UpdateUserInfo(UserRegisterModel model);
-
+        /// <summary>
+        /// APP修改用户信息
+        /// </summary>
+        /// <param name="opt">The opt.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateUserInfo(UserPropertyOptions opt, UserModel model);
 
         /// <summary>
         /// 获取用户实体信息
@@ -301,7 +308,6 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         int insertBeansConvert(int userId, int userMasterId, decimal amount);
 
-        UserModel getUser(int userId);
 
         /// <summary>
         /// 增加用户锁定盟豆

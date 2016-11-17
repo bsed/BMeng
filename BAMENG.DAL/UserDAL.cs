@@ -513,6 +513,47 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
 
+        public bool UpdateUserInfo(UserPropertyOptions opt, UserModel model)
+        {
+            string strSql = "update Hot_UserBaseInfo set ";
+
+            switch (opt)
+            {
+                case UserPropertyOptions.USER_1:
+                    strSql += " UB_WxHeadImg=@UB_WxHeadImg";
+                    break;
+                case UserPropertyOptions.USER_2:
+                    strSql += " UB_UserNickName=@UB_UserNickName";
+                    break;
+                case UserPropertyOptions.USER_3:
+                    strSql += " UB_UserMobile=@UB_UserMobile";
+                    break;
+                case UserPropertyOptions.USER_4:
+                    strSql += " UB_UserRealName=@UB_UserRealName";
+                    break;
+                case UserPropertyOptions.USER_5:
+                    strSql += " UB_UserGender=@UB_UserGender";
+                    break;
+                case UserPropertyOptions.USER_6:
+                    strSql += " UB_UserCity=@UB_UserCity";
+                    break;
+                default:
+                    strSql += " UB_UserAge=UB_UserAge";
+                    break;
+            }
+            strSql += " where UB_UserID=@UserID";
+            var parm = new[] {
+                new SqlParameter("@UB_WxHeadImg", model.UserHeadImg),
+                new SqlParameter("@UB_UserNickName", model.NickName),
+                new SqlParameter("@UB_UserMobile", model.UserMobile),
+                new SqlParameter("@UB_UserRealName", model.RealName),
+                new SqlParameter("@UB_UserCity", model.UserCity),
+                new SqlParameter("@UB_UserGender", model.UserGender),
+                new SqlParameter("@UserID", model.UserId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+        }
+
 
         /// <summary>
         /// 冻结/解冻账户
@@ -1147,21 +1188,6 @@ namespace BAMENG.DAL
 
             return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
 
-        }
-
-        public UserModel getUser(int userId)
-        {
-            UserModel userModel = null;
-            string strSql = APP_USER_SELECT;
-            var parms = new[] {
-                   new SqlParameter("@UserId",userId)
-            };
-
-            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
-            {
-                userModel = DbHelperSQLP.GetEntity<UserModel>(dr);
-            }
-            return userModel;
         }
 
 

@@ -393,7 +393,7 @@ namespace BAMENG.LOGIC
             UserModel userModel = null;
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                userModel = dal.getUser(userId);
+                userModel = dal.GetUserModel(userId);
             }
 
             decimal userAmount = userModel.MengBeans - userModel.MengBeansLocked;
@@ -451,12 +451,12 @@ namespace BAMENG.LOGIC
         /// <param name="id"></param>
         /// <param name="status">1同意2拒绝</param>
         /// <returns></returns>
-        public static bool ConvertAudit(int userId, int id, int status,ref ApiStatusCode code)
+        public static bool ConvertAudit(int userId, int id, int status, ref ApiStatusCode code)
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 BeansConvertModel model = dal.getBeansConvertModel(id);
-                if (model == null || model.Status != 0 || model.UserMasterId!=userId)
+                if (model == null || model.Status != 0 || model.UserMasterId != userId)
                 {
                     code = ApiStatusCode.兑换审核存在异常;
                     return false;
@@ -470,7 +470,7 @@ namespace BAMENG.LOGIC
                 }
                 else if (status == 2)
                 {
-                    dal.addMengBeansLocked(model.UserId,-model.Amount);
+                    dal.addMengBeansLocked(model.UserId, -model.Amount);
                     dal.updateBeansConvertStatus(id, 2);
                 }
 
@@ -487,12 +487,12 @@ namespace BAMENG.LOGIC
         /// <param name="id"></param>
         /// <param name="status">1成功2拒绝</param>
         /// <returns></returns>
-        public static bool AllyApplyAudit(int userId, int id, int status,ref ApiStatusCode code)
+        public static bool AllyApplyAudit(int userId, int id, int status, ref ApiStatusCode code)
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 ApplyFriendModel model = dal.getApplyFriendModel(id);
-                if(model==null || model.UserId!=userId)
+                if (model == null || model.UserId != userId)
                 {
                     code = ApiStatusCode.操作失败;
                     return false;
@@ -505,13 +505,13 @@ namespace BAMENG.LOGIC
                     UserRegisterModel register = new UserRegisterModel();
                     register.belongOne = userId;
                     register.loginName = model.Mobile;
-                    register.loginPassword =model.Password;
+                    register.loginPassword = model.Password;
                     register.mobile = model.Mobile;
                     register.nickname = model.NickNname;
                     register.ShopId = dal.getUserShopId(userId);
-                    register.storeId = ConstConfig.storeId;                
-                    register.UserIdentity =0;
-                    register.username =model.UserName;
+                    register.storeId = ConstConfig.storeId;
+                    register.UserIdentity = 0;
+                    register.username = model.UserName;
                     dal.AddUserInfo(register);
                 }
                 else if (status == 2)
@@ -521,5 +521,22 @@ namespace BAMENG.LOGIC
             }
             return true;
         }
+
+
+        /// <summary>
+        /// APP端修改用户信息
+        /// </summary>
+        /// <param name="opt">The opt.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateUserInfo(UserPropertyOptions opt, UserModel model)
+        {
+
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.UpdateUserInfo(opt, model);
+            }
+        }
+
     }
 }
