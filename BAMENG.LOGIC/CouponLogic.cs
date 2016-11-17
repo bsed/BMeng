@@ -136,5 +136,19 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        /// <summary>
+        /// 我的现金券数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public static int GetMyCashCouponCount(int userId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.GetMyCashCouponCount(userId);
+            }
+        }
+
     }
 }

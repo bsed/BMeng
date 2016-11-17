@@ -106,5 +106,55 @@ namespace BAMENG.LOGIC
             else
                 return "";
         }
+
+
+        /// <summary>
+        /// 获取签到配置
+        /// </summary>
+        /// <returns>SignInConfig.</returns>
+        public static SignInConfig GetSignInConfig()
+        {
+            SignInConfig model = new SignInConfig();
+
+            string v = GetValue("EnableSign");
+            if (string.IsNullOrEmpty(v))
+                model.EnableSign = false;
+            else
+                model.EnableSign = Convert.ToInt32(v) == 0;
+
+
+            string v1= GetValue("EnableContinuousSign");
+            if (string.IsNullOrEmpty(v1))
+                model.EnableContinuousSign = false;
+            else
+                model.EnableContinuousSign = Convert.ToInt32(v1) == 0;
+
+
+
+            string v2 = GetValue("ContinuousSignDay");
+            if (string.IsNullOrEmpty(v2))
+                model.ContinuousSignDay = 0;
+            else
+                model.ContinuousSignDay = Convert.ToInt32(v2);
+
+
+            string v3 = GetValue("ContinuousSignRewardScore");
+            if (string.IsNullOrEmpty(v3))
+                model.ContinuousSignRewardScore = 0;
+            else
+                model.ContinuousSignRewardScore = Convert.ToInt32(v3);
+
+
+            string v4 = GetValue("SignScore");
+            if (string.IsNullOrEmpty(v4))
+                model.SignScore = 0;
+            else
+                model.SignScore = Convert.ToInt32(v4);
+
+
+            return model;
+
+        }
+
     }
 }

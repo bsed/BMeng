@@ -237,7 +237,7 @@ namespace BAMENG.DAL
         /// <param name="mobile"></param>
         /// <param name="cashNo"></param>
         /// <returns></returns>
-        public CashCouponLogModel getEnableCashCouponLogModel(string mobile,string cashNo)
+        public CashCouponLogModel getEnableCashCouponLogModel(string mobile, string cashNo)
         {
 
             CashCouponLogModel model = new CashCouponLogModel();
@@ -246,7 +246,8 @@ namespace BAMENG.DAL
                new SqlParameter("@CouponNo",cashNo),
                new SqlParameter("@Mobile",mobile)
            };
-            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms)) {
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms))
+            {
                 model = DbHelperSQLP.GetEntity<CashCouponLogModel>(dr);
             }
             return model;
@@ -262,5 +263,20 @@ namespace BAMENG.DAL
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// 我的现金券数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public int GetMyCashCouponCount(int userId)
+        {
+            string strSql = "select COUNT(1) from BM_GetCashCouponLog where UserId=@UserId and IsGet=0 ";
+            var param = new[] {
+                new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        }
+
     }
 }

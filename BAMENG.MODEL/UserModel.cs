@@ -957,4 +957,106 @@ namespace BAMENG.MODEL
         public string UserRealName { get; set; }
 
     }
+
+
+    /// <summary>
+    /// 我的业务实体
+    /// </summary>
+    public class MyUserBusinessModel
+    {
+        /// <summary>
+        /// 订单数量
+        /// </summary>
+        /// <value>The order amount.</value>
+        public int orderAmount { get; set; }
+
+
+        /// <summary>
+        /// 兑换数量
+        /// </summary>
+        /// <value>The exchange amount.</value>
+        public int exchangeAmount { get; set; }
+
+
+        /// <summary>
+        /// 客户数量
+        /// </summary>
+        /// <value>The customer amount.</value>
+        public int customerAmount { get; set; }
+
+
+        /// <summary>
+        /// 现金券数量
+        /// </summary>
+        /// <value>The cash coupon amount.</value>
+        public int cashCouponAmount { get; set; }
+    }
+
+
+    public  class MemberSignModel
+    {
+        public MemberSignModel()
+        { }
+        #region Model
+        private int _id;        
+        private int _memberid = 0;
+        private DateTime _lastsigntime = DateTime.Now;
+        private int _signcount = 0;
+        private DateTime _createtime = DateTime.Now;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ID
+        {
+            set { _id = value; }
+            get { return _id; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int UserId
+        {
+            set { _memberid = value; }
+            get { return _memberid; }
+        }
+        /// <summary>
+        /// 最后签名时间 格式 yyyy-MM-dd
+        /// </summary>
+        public DateTime lastSignTime
+        {
+            set { _lastsigntime = value; }
+            get { return _lastsigntime; }
+        }
+        /// <summary>
+        /// 连续签到天
+        /// </summary>
+        public int SignCount
+        {
+            set { _signcount = value; }
+            get { return _signcount; }
+        }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime
+        {
+            set { _createtime = value; }
+            get { return _createtime; }
+        }
+
+        /// <summary>
+        /// 累计签到获取积分数
+        /// </summary>
+        public int TotalSignIntegral { get; set; }
+        /// <summary>
+        /// 累计签到天数
+        /// </summary>
+        public int TotalSignDays { get; set; }
+
+        #endregion Model
+
+    }
+
+
 }

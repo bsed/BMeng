@@ -111,12 +111,12 @@ namespace BAMENG.LOGIC
             return result;
         }
 
-        public static bool Update(int userId,string orderId, int status, string memo, ref ApiStatusCode code)
+        public static bool Update(int userId, string orderId, int status, string memo, ref ApiStatusCode code)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
                 OrderModel orderModel = dal.GetModel(orderId);
-                if (orderModel == null || orderModel.UserId!=userId)
+                if (orderModel == null || orderModel.UserId != userId)
                 {
                     code = ApiStatusCode.订单存在问题;
                     return false;
@@ -128,9 +128,9 @@ namespace BAMENG.LOGIC
                 }
 
                 //改订单为已处理
-                if (status == 1 &&orderModel.Ct_BelongId>0)
+                if (status == 1 && orderModel.Ct_BelongId > 0)
                 {
-                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(userId);                    
+                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(userId);
                     //给盟友加盟豆
                     UserLogic.addUserMoney(userId, rewardSettingModel.OrderReward);
                     //更新用户等级
@@ -141,6 +141,11 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// Gets the model.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>OrderModel.</returns>
         public static OrderModel GetModel(string orderId)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
@@ -177,13 +182,30 @@ namespace BAMENG.LOGIC
         }
 
         /// <summary>
+        /// 根据盟友ID，获取盟友的订单数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="orderStatus">订单状态0 未成交 1 已成交 2退单</param>
+        /// <returns>System.Int32.</returns>
+        public static int CountOrdersByAllyUserId(int userId, int orderStatus)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return dal.CountOrdersByAllyUserId(userId, orderStatus);
+            }
+        }
+
+
+
+        /// <summary>
         /// 获取盟友的订单列表
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="status"></param>
         /// <param name="lastId"></param>
         /// <returns></returns>
-        public static List<OrderModel> GetUserOrderList(int userId, int status, long lastId) {
+        public static List<OrderModel> GetUserOrderList(int userId, int status, long lastId)
+        {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
                 return GetUserOrderList(userId, status, lastId);

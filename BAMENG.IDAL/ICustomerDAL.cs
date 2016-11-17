@@ -24,7 +24,7 @@ namespace BAMENG.IDAL
         /// <param name="shopId">The shop identifier.</param>
         /// <param name="isvalid">是否是有效客户</param>
         /// <returns>ResultPageModel.</returns>
-        ResultPageModel GetCustomerList(SearchModel model,int shopId, bool isvalid = true);
+        ResultPageModel GetCustomerList(SearchModel model, int shopId, bool isvalid = true);
 
 
         /// <summary>
@@ -103,6 +103,16 @@ namespace BAMENG.IDAL
         /// <param name="address"></param>
         /// <returns></returns>
         CustomerModel getCustomerModel(string mobile, string address);
+
+
+        /// <summary>
+        /// 获取用户的客户数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="status"> 0 审核中，1已同意  2已拒绝</param>
+        /// <returns>System.Int32.</returns>
+        int GetCustomerCount(int userId, int userIdentity, int status);
 
     }
 }

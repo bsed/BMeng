@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppInitModel.cs" />
+    <Compile Include="AppSystemModel.cs" />
     <Compile Include="AppLogModel.cs" />
     <Compile Include="AppVersionModel.cs" />
     <Compile Include="ArticleModel.cs" />

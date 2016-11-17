@@ -31,7 +31,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
             {
-                return dal.GetCustomerList(model,shopId, isvalid);
+                return dal.GetCustomerList(model, shopId, isvalid);
             }
         }
 
@@ -152,11 +152,28 @@ namespace BAMENG.LOGIC
             }
         }
 
-        public static CustomerModel getCustomerModel(string mobile ,string address)
+        public static CustomerModel getCustomerModel(string mobile, string address)
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
             {
-                return dal.getCustomerModel(mobile,address );
+                return dal.getCustomerModel(mobile, address);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取用户的客户数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userIdentity">0盟友 1盟主</param>
+        /// <param name="status"> 0 审核中，1已同意  2已拒绝</param>
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public static int GetCustomerCount(int userId, int userIdentity, int status)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.GetCustomerCount(userId, userIdentity, status);
             }
         }
     }

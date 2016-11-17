@@ -1296,5 +1296,44 @@ namespace BAMENG.DAL
             return Int32.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms).ToString());
         }
 
+        /// <summary>
+        /// 获取兑换数量(只对盟主)
+        /// </summary>
+        /// <param name="userid">The userid.</param>
+        /// <param name="status">状态 0,未审核 1已审核 2,拒绝</param>
+        /// <returns>System.Int32.</returns>
+        public int GetConvertCount(int userid, int status)
+        {
+            string strSql = "select COUNT(1) from BM_BeansConvert where UserMasterId=@UserId and Status=@Status";
+            var param = new[] {
+                new SqlParameter("@UserId",userid),
+                new SqlParameter("@Status",status)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        }
+
+
+
+
+        /// <summary>
+        /// 获取会员签到实体
+        /// </summary>
+        //public MemberSignModel GetMemberSignModel(int customerId, int userId)
+        //{
+
+        //    StringBuilder strSql = new StringBuilder();
+        //    strSql.Append("select  top 1 Id,CustomerId,MemberId,lastSignTime,SignCount,CreateTime,TotalSignIntegral,TotalSignDays from Mall_MemberSign ");
+        //    strSql.Append(" where CustomerId=@CustomerId and MemberId=@MemberId");
+        //    SqlParameter[] parameters = {
+        //            new SqlParameter("@CustomerId", SqlDbType.Int,4),
+        //            new SqlParameter("@MemberId", SqlDbType.Int,4)
+        //    };
+        //    parameters[0].Value = customerId;
+        //    parameters[1].Value = userId;
+   
+    
+        //}
+
+
     }
 }

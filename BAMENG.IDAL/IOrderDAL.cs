@@ -37,6 +37,14 @@ namespace BAMENG.IDAL
 
 
         /// <summary>
+        /// 根据盟友ID，获取盟友的订单数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="orderStatus">0 未成交 1 已成交 2退单</param>
+        /// <returns>System.Int32.</returns>
+        int CountOrdersByAllyUserId(int userId,int orderStatus);
+
+        /// <summary>
         /// 计算订单数
         /// </summary>
         /// <param name="userId"></param>

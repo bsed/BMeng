@@ -370,7 +370,7 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 int amount = dal.countByBelongOne(userId);
-                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId, 0);
+                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId, 1);
                 foreach (MallUserLevelModel level in levels)
                 {
                     if (amount > level.UL_MemberNum)
@@ -382,6 +382,13 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 盟豆兑换
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="code">The code.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
         public static bool ConvertToBean(int userId, int amount, ref ApiStatusCode code)
         {
             if (amount < 100)
@@ -536,6 +543,82 @@ namespace BAMENG.LOGIC
             {
                 return dal.UpdateUserInfo(opt, model);
             }
+        }
+
+
+        /// <summary>
+        /// 获取兑换数量(只对盟主)
+        /// </summary>
+        /// <param name="userid">The userid.</param>
+        /// <param name="status">状态 0,未审核 1已审核 2,拒绝</param>
+        /// <returns>System.Int32.</returns>
+        public static int GetConvertCount(int userid, int status)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetConvertCount(userid, status);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 我的业务汇总
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userIdentity">用户身份0盟友 1盟主</param>
+        /// <returns>MyUserBusinessModel.</returns>
+        public static MyUserBusinessModel MyBusinessAmount(int userId, int userIdentity)
+        {
+            MyUserBusinessModel model = new MyUserBusinessModel();
+
+            //订单数量
+            model.orderAmount = OrderLogic.CountOrdersByAllyUserId(userId, 0);
+
+            //客户数量
+            model.customerAmount = CustomerLogic.GetCustomerCount(userId, 0, 0);
+
+            //兑换数量
+            model.exchangeAmount = GetConvertCount(userId, 0);
+
+            //现金券数量
+            model.cashCouponAmount = CouponLogic.GetMyCashCouponCount(userId);
+
+            return model;
+        }
+
+
+        public static bool SignIn(int userId)
+        {
+            string outputMsg = string.Empty;
+            /**
+            * 输出签到积分，从区间中随机获取
+            */
+            int Integral = 0;
+            /**
+             * 输出签到额外奖励积分
+             */
+            int RewardIntegral = 0;
+
+
+            /**
+            * 获取商家签到配置信息
+            */
+            SignInConfig signConfig = ConfigLogic.GetSignInConfig();
+
+            /**
+             * 判断商户是否开启签到功能
+             */
+            if (signConfig == null || !signConfig.EnableSign)
+            {                
+                return false;
+            }
+
+
+            // bool flag = SignMemberBLL.Instance.TrySignIn(this.CustomerId, this.UserId, out Integral, out RewardIntegral, out outputMsg);
+
+
+            return false;
         }
 
     }

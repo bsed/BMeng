@@ -106,5 +106,14 @@ namespace BAMENG.IDAL
         CashCouponLogModel getEnableCashCouponLogModel(string mobile, string cashNo);
 
 
+
+        /// <summary>
+        /// 我的现金券数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        int GetMyCashCouponCount(int userId);
+
+
     }
 }

@@ -169,6 +169,7 @@ namespace BAMENG.API.Controllers
         public ActionResult UpdateInfo(int type, string content)
         {
             UserModel userInfo = new UserModel();
+            userInfo.UserId = GetAuthUserId();
             switch (type)
             {
                 case (int)UserPropertyOptions.USER_1:
@@ -375,16 +376,15 @@ namespace BAMENG.API.Controllers
             return Json(new ResultModel(ApiStatusCode.OK));
         }
         /// <summary>
-        /// 我的业务 POST: user/MyBusiness 
-        /// todo
+        /// 我的业务 POST: user/MyBusiness         
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
         public ActionResult MyBusiness()
         {
-            var userId = GetAuthUserId();
-            var data = "";
-            return Json(new ResultModel(ApiStatusCode.OK), data);
+            var user = GetUserData();
+            var data = UserLogic.MyBusinessAmount(user.UserId, user.UserIdentity);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
         /// <summary>

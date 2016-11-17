@@ -48,6 +48,15 @@ namespace BAMENG.LOGIC
             data.baseData.agreementUrl = "http://wwww.xx.com/about.html";
             data.baseData.userStatus = 1;
 
+            string v = ConfigLogic.GetValue("EnableSign");
+            if (string.IsNullOrEmpty(v))
+                data.baseData.enableSignIn = 0;
+            else
+                data.baseData.enableSignIn = Convert.ToInt32(v);
+
+
+
+
             return data;
         }
 
@@ -97,7 +106,10 @@ namespace BAMENG.LOGIC
                         apiCode = ApiStatusCode.OK;
                         string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
                         if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
+                        {
                             model.token = token;
+                            model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
+                        }
                         return model;
                     }
                     else

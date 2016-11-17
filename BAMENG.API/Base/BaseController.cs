@@ -221,6 +221,7 @@ namespace BAMENG.API
                         int UserId = UserLogic.GetUserIdByAuthToken(Authorization);
                         UserModel user = UserLogic.GetModel(UserId);
                         user.token = Authorization;
+                        user.UserHeadImg = WebConfig.reswebsite() + user.UserHeadImg;
                         return user;
                     }
                 }

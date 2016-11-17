@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BAMENG.DAL
 {
- public class OrderDAL: AbstractDAL, IOrderDAL
+    public class OrderDAL : AbstractDAL, IOrderDAL
     {
 
         /// <summary>
@@ -23,16 +23,16 @@ namespace BAMENG.DAL
         /// <param name="status"></param>
         /// <param name="lastId"></param>
         /// <returns></returns>
-        public List<OrderModel> GetOrderList( int masterUserId,int status, long lastId)
+        public List<OrderModel> GetOrderList(int masterUserId, int status, long lastId)
         {
-        
+
             string strSql = "select top 10 * from BM_Orders where UserId=@UserId";
-            if (status > 0) strSql += " and OrderStatus="+status;
+            if (status > 0) strSql += " and OrderStatus=" + status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
             SqlParameter[] parameters = {
-                    new SqlParameter("@UserId", masterUserId) 
+                    new SqlParameter("@UserId", masterUserId)
             };
-           
+
             List<OrderModel> list = new List<OrderModel>();
             using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
             {
@@ -68,7 +68,7 @@ namespace BAMENG.DAL
         }
 
         public DateTime ConvertIntDatetime(double utc)
-        {            
+        {
             try
             {
                 DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
@@ -95,7 +95,7 @@ namespace BAMENG.DAL
                     new SqlParameter("@orderId", SqlDbType.NVarChar,50)         };
             parameters[0].Value = orderId;
 
-            return Int32.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters).ToString())>0;
+            return Int32.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters).ToString()) > 0;
         }
 
 
@@ -156,18 +156,18 @@ namespace BAMENG.DAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(string orderId,int status,string memo)
+        public bool Update(string orderId, int status, string memo)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("update BM_Orders set "); 
+            strSql.Append("update BM_Orders set ");
             strSql.Append("Memo=@Memo,OrderStatus=@OrderStatus");
             strSql.Append(" where orderId=@orderId ");
             SqlParameter[] parameters = {
                     new SqlParameter("@Memo", memo),
-                    new SqlParameter("@OrderStatus", status),                   
-                    new SqlParameter("@orderId", orderId)};     
+                    new SqlParameter("@OrderStatus", status),
+                    new SqlParameter("@orderId", orderId)};
 
-            int rows = DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text,strSql.ToString(), parameters);
+            int rows = DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
             if (rows > 0)
             {
                 return true;
@@ -179,7 +179,7 @@ namespace BAMENG.DAL
         }
 
 
- 
+
         public OrderModel GetModel(string orderId)
         {
             string strSql = "select * from BM_Orders where orderId=@orderId";
@@ -211,12 +211,29 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
+        /// 根据盟友ID，获取盟友的订单数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="orderStatus">0 未成交 1 已成交 2退单</param>
+        /// <returns>System.Int32.</returns>
+        public int CountOrdersByAllyUserId(int userId, int orderStatus)
+        {
+            string strSql = "select count(*) from BM_Orders where Ct_BelongId=@UserId and OrderStatus=@OrderStatus";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@OrderStatus",orderStatus)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        }
+
+
+        /// <summary>
         /// 计算订单数
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="orderStatus">订单状态</param>
         /// <returns></returns>
-        public int CountOrders(int userId,int orderStatus)
+        public int CountOrders(int userId, int orderStatus)
         {
             string strSql = "select count(*) from BM_Orders where UserId=@UserId and OrderStatus=@OrderStatus";
             var param = new[] {

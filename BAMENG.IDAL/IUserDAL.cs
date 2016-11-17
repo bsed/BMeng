@@ -345,5 +345,18 @@ namespace BAMENG.IDAL
         int updateApplyFriendStatus(int id, int status);
 
         int getUserShopId(int userId);
+
+
+
+        /// <summary>
+        /// 获取兑换数量(只对盟主)
+        /// </summary>
+        /// <param name="userid">The userid.</param>
+        /// <param name="status">状态 0,未审核 1已审核 2,拒绝</param>
+        /// <returns>System.Int32.</returns>
+        int GetConvertCount(int userid, int status);
+
+
+
     }
 }
