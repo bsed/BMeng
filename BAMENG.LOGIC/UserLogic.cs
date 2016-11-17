@@ -348,13 +348,13 @@ namespace BAMENG.LOGIC
             int amount = OrderLogic.CountOrders(userId);
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId,0);
+                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId, 0);
                 foreach (MallUserLevelModel level in levels)
                 {
                     if (amount > level.UL_MemberNum)
                     {
                         //更新用户等级
-                        dal.updateUserLevel(userId,level.UL_ID);
+                        dal.updateUserLevel(userId, level.UL_ID);
                     }
                 }
             }
@@ -366,7 +366,7 @@ namespace BAMENG.LOGIC
         /// <param name="userId"></param>
         public static void masterUpdate(int userId)
         {
-            
+
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 int amount = dal.countByBelongOne(userId);
@@ -380,6 +380,146 @@ namespace BAMENG.LOGIC
                     }
                 }
             }
+        }
+
+        public static bool ConvertToBean(int userId, int amount, ref ApiStatusCode code)
+        {
+            if (amount < 100)
+            {
+                code = ApiStatusCode.兑换的盟豆数量不能少于100;
+                return false;
+            }
+
+            UserModel userModel = null;
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                userModel = dal.getUser(userId);
+            }
+
+            decimal userAmount = userModel.MengBeans - userModel.MengBeansLocked;
+            if (userAmount < amount)
+            {
+                code = ApiStatusCode.你的盟豆不够;
+                return false;
+            }
+
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                dal.addMengBeansLocked(userId, amount);
+                dal.insertBeansConvert(userId, userModel.BelongOne, amount);
+                code = ApiStatusCode.OK;
+            }
+            return true;
+        }
+
+        public static List<ConvertFlowModel> getMasterConvertFlow(int masterUserId, int lastId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return toConvertFlowModel(dal.getBeansConvertListByMasterModel(masterUserId, lastId));
+            }
+        }
+
+        public static List<ConvertFlowModel> getConvertFlow(int userId, int lastId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return toConvertFlowModel(dal.getBeansConvertListModel(userId, lastId));
+            }
+        }
+
+        private static List<ConvertFlowModel> toConvertFlowModel(List<BeansConvertModel> list)
+        {
+            List<ConvertFlowModel> result = new List<ConvertFlowModel>();
+            foreach (BeansConvertModel convert in list)
+            {
+                ConvertFlowModel convertFlow = new ConvertFlowModel();
+                convertFlow.money = convert.Amount;
+                convertFlow.name = convert.UserRealName;
+                convertFlow.time = StringHelper.GetUTCTime(convert.CreateTime);
+                convertFlow.status = convert.Status;
+
+                result.Add(convertFlow);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 兑换审核
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="id"></param>
+        /// <param name="status">1同意2拒绝</param>
+        /// <returns></returns>
+        public static bool ConvertAudit(int userId, int id, int status,ref ApiStatusCode code)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                BeansConvertModel model = dal.getBeansConvertModel(id);
+                if (model == null || model.Status != 0 || model.UserMasterId!=userId)
+                {
+                    code = ApiStatusCode.兑换审核存在异常;
+                    return false;
+                }
+
+                if (status == 1)
+                {
+                    dal.addMengBeansLocked(model.UserId, -model.Amount);
+                    dal.addUserMoney(model.UserId, -model.Amount);
+                    dal.updateBeansConvertStatus(id, 1);
+                }
+                else if (status == 2)
+                {
+                    dal.addMengBeansLocked(model.UserId,-model.Amount);
+                    dal.updateBeansConvertStatus(id, 2);
+                }
+
+                dal.updateBeansConvertStatus(id, status);
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        ///   盟友申请审核
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="id"></param>
+        /// <param name="status">1成功2拒绝</param>
+        /// <returns></returns>
+        public static bool AllyApplyAudit(int userId, int id, int status,ref ApiStatusCode code)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                ApplyFriendModel model = dal.getApplyFriendModel(id);
+                if(model==null || model.UserId!=userId)
+                {
+                    code = ApiStatusCode.操作失败;
+                    return false;
+                }
+
+                if (status == 1)
+                {
+                    dal.updateApplyFriendStatus(id, 1);
+
+                    UserRegisterModel register = new UserRegisterModel();
+                    register.belongOne = userId;
+                    register.loginName = model.Mobile;
+                    register.loginPassword =model.Password;
+                    register.mobile = model.Mobile;
+                    register.nickname = model.NickNname;
+                    register.ShopId = dal.getUserShopId(userId);
+                    register.storeId = ConstConfig.storeId;                
+                    register.UserIdentity =0;
+                    register.username =model.UserName;
+                    dal.AddUserInfo(register);
+                }
+                else if (status == 2)
+                {
+                    dal.updateApplyFriendStatus(id, 2);
+                }
+            }
+            return true;
         }
     }
 }

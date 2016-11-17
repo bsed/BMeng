@@ -234,8 +234,8 @@ namespace BAMENG.IDAL
         /// <param name="oldPassword">The old password.</param>
         /// <param name="password">The password.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        bool ChanagePassword(int userId,string oldPassword, string password);
-        
+        bool ChanagePassword(int userId, string oldPassword, string password);
+
         /// <summary>
         /// 注册申请保存
         /// </summary>
@@ -291,5 +291,53 @@ namespace BAMENG.IDAL
         /// <param name="userId"></param>
         /// <returns></returns>
         int countByBelongOne(int userId);
+
+        /// <summary>
+        /// 添加盟豆兑换
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userMasterId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        int insertBeansConvert(int userId, int userMasterId, decimal amount);
+
+        UserModel getUser(int userId);
+
+        /// <summary>
+        /// 增加用户锁定盟豆
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        int addMengBeansLocked(int userId, decimal money);
+
+
+        /// <summary>
+        /// 获取兑换列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        List<BeansConvertModel> getBeansConvertListModel(int userId, int lastId);
+
+
+        /// <summary>
+        /// 获取兑换列表
+        /// </summary>
+        /// <param name="userMasterId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId);
+
+
+        int updateBeansConvertStatus(int id, int status);
+
+        BeansConvertModel getBeansConvertModel(int id);
+
+        ApplyFriendModel getApplyFriendModel(int id);
+
+        int updateApplyFriendStatus(int id, int status);
+
+        int getUserShopId(int userId);
     }
 }

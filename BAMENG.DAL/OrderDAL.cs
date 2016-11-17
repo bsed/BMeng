@@ -19,7 +19,7 @@ namespace BAMENG.DAL
         public List<OrderModel> GetOrderList( int userId,int status, long lastId)
         {
         
-            string strSql = "select * from BM_Orders where UserId=@UserId";
+            string strSql = "select top 10 * from BM_Orders where UserId=@UserId";
             if (status > 0) strSql += " and OrderStatus="+status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
             SqlParameter[] parameters = {
@@ -62,7 +62,7 @@ namespace BAMENG.DAL
                     new SqlParameter("@orderId", SqlDbType.NVarChar,50)         };
             parameters[0].Value = orderId;
 
-            return Int32.Parse(DbHelperSQL.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters).ToString())>0;
+            return Int32.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters).ToString())>0;
         }
 
 
@@ -175,7 +175,6 @@ namespace BAMENG.DAL
                 new SqlParameter("@UserId",userId)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
-
         }
 
         /// <summary>
@@ -192,7 +191,6 @@ namespace BAMENG.DAL
                 new SqlParameter("@OrderStatus",orderStatus)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
-
         }
 
 

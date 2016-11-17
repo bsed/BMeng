@@ -71,26 +71,32 @@ namespace BAMENG.API.Controllers
         {
             return Json(new ResultModel(ApiStatusCode.OK));
         }
-
         /// <summary>
         /// 兑换盟豆 POST: user/ConvertToBean
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult ConvertToBean()
+        public ActionResult ConvertToBean(int amount)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+            ApiStatusCode code = ApiStatusCode.OK;
+            UserLogic.ConvertToBean(userId, amount, ref code);
+            return Json(new ResultModel(code));
         }
 
 
         /// <summary>
         /// 兑换记录流水 POST: user/ConvertFlow
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult ConvertFlow()
+        public ActionResult ConvertFlow(int lastId)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+            var data = UserLogic.getConvertFlow(userId, lastId);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
         /// <summary>
         /// 盟友列表 POST: user/allylist
@@ -115,19 +121,25 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult ConvertAuditList()
-        {
-
-            return Json(new ResultModel(ApiStatusCode.OK));
+        public ActionResult ConvertAuditList(int lastId)
+        {            
+            int userId = GetAuthUserId();
+            var data = UserLogic.getMasterConvertFlow(userId, lastId);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
         /// <summary>
         /// 兑换审核 POST: user/ConvertAudit
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        /// <param name="id">兑换转换记录Id</param>
+        /// <param name="status">1同意2拒绝</param>
+        /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult ConvertAudit()
+        public ActionResult ConvertAudit(int id,int status)
         {
+            ApiStatusCode code = ApiStatusCode.OK;
+            int userId = GetAuthUserId();
+            UserLogic.ConvertAudit(userId,id, status,ref code);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 
@@ -257,11 +269,16 @@ namespace BAMENG.API.Controllers
         /// <summary>
         /// 盟友申请审核 POST: user/AllyApplyAudit
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        /// <param name="id"></param>
+        /// <param name="status">1成功2拒绝</param>
+        /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult AllyApplyAudit()
+        public ActionResult ApllyApplyAudit(int id,int status)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            ApiStatusCode code = ApiStatusCode.OK;
+            int userId = GetAuthUserId();
+            UserLogic.AllyApplyAudit(userId, id, status,ref code);
+            return Json(new ResultModel(ApiStatusCode.OK, code));
         }
         /// <summary>
         /// 修改密码 POST: user/ChanagePassword

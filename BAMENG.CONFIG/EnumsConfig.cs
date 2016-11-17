@@ -107,6 +107,10 @@ namespace BAMENG.CONFIG
         [Description("你的账号已在另一台设备登录。如非本人操作，则密码可能已泄露，建议修改密码。")]
         令牌失效 = 70035,
 
+        [Description("兑换审核存在异常")]
+        兑换审核存在异常 = 70036,
+
+
         [Description("请上传图片")]
         请上传图片 = 71000,
         [Description("请上传凭证")]
@@ -121,7 +125,10 @@ namespace BAMENG.CONFIG
         订单存在问题 = 71003,
         [Description("订单目前状态存在异常")]
         订单目前状态存在异常 = 71004,
-
+        [Description("兑换的盟豆数量不能少于100")]
+        兑换的盟豆数量不能少于100 = 71005,
+        [Description("你的盟豆不够")]
+        你的盟豆不够 = 71006,
 
         /// <summary>
         /// 操作过于频繁

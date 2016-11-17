@@ -902,4 +902,40 @@ namespace BAMENG.MODEL
         public string Password { get; set; }
 
     }
+
+    public class ConvertFlowModel
+    {
+        /// <summary>
+        /// 客户
+        /// </summary>
+        public string name;
+        public decimal money;
+        public long time;
+        /// <summary>
+        /// 审核状态 0未审核 1已审核 2,拒绝
+        /// </summary>
+        public int status;
+    }
+
+    public class BeansConvertModel
+    {
+        public int ID { get; set; }
+     
+        public int UserId { get; set; }
+
+        public int UserMasterId { get; set; }
+
+        public int Amount { get; set; }
+
+
+        public int Status { get; set; }
+
+        public DateTime UpdateTime { get; set; }
+
+
+        public DateTime CreateTime { get; set; }
+
+        public string UserRealName { get; set; }
+
+    }
 }

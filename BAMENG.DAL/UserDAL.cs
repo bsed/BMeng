@@ -1051,6 +1051,23 @@ namespace BAMENG.DAL
 
 
         /// <summary>
+        /// 增加用户锁定盟豆
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public int addMengBeansLocked(int userId, decimal money)
+        {
+            string strSql = "update BM_User_extend set MengBeansLocked=MengBeansLocked+@money where UserId=@UserId";
+            var parms = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@money",money)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
+
+
+        /// <summary>
         /// 获得用户等级列表
         /// </summary>
         /// <param name="storeId"></param>
@@ -1102,6 +1119,156 @@ namespace BAMENG.DAL
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
 
-        }        
+        }
+
+        /// <summary>
+        /// 添加盟豆兑换
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userMasterId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public int insertBeansConvert(int userId, int userMasterId, decimal amount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into BM_BeansConvert(");
+            strSql.Append("UserId,UserMasterId,Amount,Status,UpdateTime,CreateTime)");
+            strSql.Append(" values (");
+            strSql.Append("@UserId,@UserMasterId,@Amount,@Status,@UpdateTime,@CreateTime)");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@UserId",userId),
+                    new SqlParameter("@UserMasterId", userMasterId),
+                    new SqlParameter("@Amount", amount),
+                    new SqlParameter("@Status", 0),
+                    new SqlParameter("@UpdateTime",DateTime.Now),
+                    new SqlParameter("@CreateTime", DateTime.Now)};
+
+
+            return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+
+        }
+
+        public UserModel getUser(int userId)
+        {
+            UserModel userModel = null;
+            string strSql = APP_USER_SELECT;
+            var parms = new[] {
+                   new SqlParameter("@UserId",userId)
+            };
+
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
+            {
+                userModel = DbHelperSQLP.GetEntity<UserModel>(dr);
+            }
+            return userModel;
+        }
+
+
+        /// <summary>
+        /// 获取兑换列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public List<BeansConvertModel> getBeansConvertListModel(int userId, int lastId)
+        {
+            string strSql = "select top 10 convert.*,UB_UserRealName as UserRealName from BM_BeansConvert as convert "
+                + " left join Hot_UserBaseInfo as user on user.UB_UserID=convert.UserId  where convert.UserId=@UserId";
+            if (lastId > 0) strSql += " and id<" + lastId;
+            var parms = new[] {
+                   new SqlParameter("@UserId",userId)
+            };
+
+            List<BeansConvertModel> list = new List<BeansConvertModel>();
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
+            {
+                list = DbHelperSQLP.GetEntityList<BeansConvertModel>(dr);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取兑换列表
+        /// </summary>
+        /// <param name="userMasterId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId)
+        {
+            string strSql = "select top 10 convert.*,UB_UserRealName as UserRealName from BM_BeansConvert as convert "
+                + " left join Hot_UserBaseInfo as user on user.UB_UserID=convert.UserId where UserMasterId=@UserMasterId";
+            if (lastId > 0) strSql += " and id<" + lastId;
+            var parms = new[] {
+                   new SqlParameter("@UserMasterId",userMasterId)
+            };
+
+            List<BeansConvertModel> list = new List<BeansConvertModel>();
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
+            {
+                list = DbHelperSQLP.GetEntityList<BeansConvertModel>(dr);
+            }
+            return list;
+        }
+
+        public int updateBeansConvertStatus(int id, int status)
+        {
+            string strSql = "update BM_BeansConvert set Status=@Status where Id=@Id";
+            var parms = new[] {
+                  new SqlParameter("@Status",status),
+                  new SqlParameter("@Id",id)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
+
+        public BeansConvertModel getBeansConvertModel(int id)
+        {
+            string strSql = "select * from BM_BeansConvert where id=@id";
+            var parms = new[] {
+                   new SqlParameter("@id",id)
+            };
+
+            BeansConvertModel model = null;
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
+            {
+                model = DbHelperSQLP.GetEntity<BeansConvertModel>(dr);
+            }
+            return model;
+        }
+
+        public ApplyFriendModel getApplyFriendModel(int id)
+        {
+            string strSql = "select * from BM_ApplyFriend where id=@id";
+            var parms = new[] {
+                   new SqlParameter("@id",id)
+            };
+            ApplyFriendModel model = null;
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
+            {
+                model = DbHelperSQLP.GetEntity<ApplyFriendModel>(dr);
+            }
+            return model;
+        }
+
+        public int updateApplyFriendStatus(int id, int status)
+        {
+            string strSql = "update BM_ApplyFriend set status=@status where id=@id";
+            var parms = new[] {
+                   new SqlParameter("@id",id),
+                    new SqlParameter("@status",status)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
+
+
+        public int getUserShopId(int userId)
+        {
+            string strSql = "select ShopId from BM_User_extend where id=@id";
+            var parms = new[] {
+                   new SqlParameter("@id",userId)
+            };
+            return Int32.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms).ToString());
+        }
+
     }
 }
