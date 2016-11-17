@@ -9,7 +9,7 @@ namespace BAMENG.IDAL
 {
     public interface IOrderDAL :IDisposable
     {
-      List<OrderModel> GetOrderList(int userId, int status, long lastId);
+      List<OrderModel> GetOrderList(int masterUserId, int status, long lastId);
 
 
         /// <summary>
@@ -43,5 +43,15 @@ namespace BAMENG.IDAL
         /// <param name="orderStatus">订单状态</param>
         /// <returns></returns>
         int CountOrders(int userId, int orderStatus);
+
+
+        /// <summary>
+        /// 获取盟友的订单列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="status"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        List<OrderModel> GetUserOrderList(int userId, int status, long lastId);
     }
 }

@@ -155,7 +155,18 @@ namespace BAMENG.API.Controllers
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 
+        /// <summary>
+        /// 客户订单列表 POST: order/customerOrderList
+        /// </summary>
+        /// <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
+        /// <param name="lastId">最后的时间</param>
+        /// <returns></returns>
+        public ActionResult customerOrderList(int type, long lastId)
+        {
+            int userId = GetAuthUserId();
+            var data = OrderLogic.GetUserOrderList(userId, type, lastId);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
+        }
 
-        
     }
 }

@@ -145,7 +145,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return GetModel(orderId);
+                return dal.GetModel(orderId);
             }
         }
 
@@ -158,7 +158,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return CountOrders(userId);
+                return dal.CountOrders(userId);
             }
         }
 
@@ -172,7 +172,21 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return CountOrders(userId, orderStatus);
+                return dal.CountOrders(userId, orderStatus);
+            }
+        }
+
+        /// <summary>
+        /// 获取盟友的订单列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="status"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public static List<OrderModel> GetUserOrderList(int userId, int status, long lastId) {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return GetUserOrderList(userId, status, lastId);
             }
         }
     }

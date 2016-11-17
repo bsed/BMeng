@@ -13,19 +13,52 @@ using System.Threading.Tasks;
 
 namespace BAMENG.DAL
 {
- public   class OrderDAL: AbstractDAL, IOrderDAL
+ public class OrderDAL: AbstractDAL, IOrderDAL
     {
 
-        public List<OrderModel> GetOrderList( int userId,int status, long lastId)
+        /// <summary>
+        /// 获取盟主的订单列表
+        /// </summary>
+        /// <param name="masterUserId"></param>
+        /// <param name="status"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public List<OrderModel> GetOrderList( int masterUserId,int status, long lastId)
         {
         
             string strSql = "select top 10 * from BM_Orders where UserId=@UserId";
             if (status > 0) strSql += " and OrderStatus="+status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
             SqlParameter[] parameters = {
-                    new SqlParameter("@UserId", userId) 
+                    new SqlParameter("@UserId", masterUserId) 
             };
            
+            List<OrderModel> list = new List<OrderModel>();
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
+            {
+                list = DbHelperSQLP.GetEntityList<OrderModel>(dr);
+            }
+            return list;
+        }
+
+
+        /// <summary>
+        /// 获取盟友的订单列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="status"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public List<OrderModel> GetUserOrderList(int userId, int status, long lastId)
+        {
+
+            string strSql = "select top 10 * from BM_Orders where Ct_BelongId=@UserId";
+            if (status > 0) strSql += " and OrderStatus=" + status;
+            if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
+            SqlParameter[] parameters = {
+                    new SqlParameter("@UserId", userId)
+            };
+
             List<OrderModel> list = new List<OrderModel>();
             using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
             {
