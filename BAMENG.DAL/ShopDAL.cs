@@ -188,5 +188,32 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
 
+
+
+
+        /// <summary>
+        /// 获取门店列表
+        /// </summary>
+        /// <param name="shopType">1 总店 2分店</param>
+        /// <param name="shopId">门店ID，如果shopType为总店时，shopId无效</param>
+        /// <returns>List&lt;ShopModel&gt;.</returns>
+        public List<ShopModel> GetShopList(int shopType, int shopId)
+        {
+            string strSql = "select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,CreateTime,IsActive from BM_ShopManage where 1=1 ";
+
+            strSql += " and ShopType=@ShopType";
+            if (shopType == 2)
+                strSql += " and ShopBelongId=@ShopBelongId";
+            var param = new[] {
+                        new SqlParameter("@ShopType", shopType),
+                        new SqlParameter("@ShopBelongId", shopId)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<ShopModel>(dr);
+            }
+        }
+
+
     }
 }

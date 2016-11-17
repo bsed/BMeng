@@ -58,6 +58,7 @@
     <Compile Include="FocusPicLogic.cs" />
     <Compile Include="LogLogic.cs" />
     <Compile Include="ManagerLogic.cs" />
+    <Compile Include="MessageLogic.cs" />
     <Compile Include="OrderLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShopLogic.cs" />

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace BAMENG.IDAL
 {
-    public interface IMessageDAL:IDisposable
+    public interface IMessageDAL : IDisposable
     {
         /// <summary>
         /// 获取消息列表
@@ -41,13 +41,19 @@ namespace BAMENG.IDAL
         /// <returns>System.Int32.</returns>
         int AddMessageInfo(MessageModel model);
 
-
+        /// <summary>
+        /// 添加消息发送目标
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <param name="SendTargetShopId">如果是总店往总后台发布信息通知，则值为-1</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddMessageSendTarget(int messageId, int SendTargetShopId);
         /// <summary>
         /// 删除消息
         /// </summary>
         /// <param name="messageId">The message identifier.</param>
         /// <returns>System.Int32.</returns>
-        int DeleteMessageInfo(int messageId);
+        bool DeleteMessageInfo(int messageId);
 
 
         /// <summary>

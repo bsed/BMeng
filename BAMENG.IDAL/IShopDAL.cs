@@ -53,5 +53,15 @@ namespace BAMENG.IDAL
         /// <param name="shopId"></param>
         /// <returns></returns>
         bool DeleltShopInfo(int shopId);
+
+
+        /// <summary>
+        /// 获取门店列表
+        /// </summary>
+        /// <param name="shopType">1 总店 2分店</param>
+        /// <param name="shopId">门店ID，如果shopType为总店时，shopId无效</param>
+        /// <returns>List&lt;ShopModel&gt;.</returns>
+        List<ShopModel> GetShopList(int shopType, int shopId);
+
     }
 }

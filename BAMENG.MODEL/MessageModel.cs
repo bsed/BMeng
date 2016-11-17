@@ -49,6 +49,12 @@ namespace BAMENG.MODEL
 
 
         /// <summary>
+        /// 是否给总后台发消息通知
+        /// </summary>
+        /// <value>The is send belong shop identifier.</value>
+        public int IsSendBelongShopId { get; set;}
+
+        /// <summary>
         /// 是否已发送
         /// </summary>
         /// <value>The is send.</value>

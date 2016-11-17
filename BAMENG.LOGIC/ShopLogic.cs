@@ -98,6 +98,18 @@ namespace BAMENG.LOGIC
                 return dal.UpdateShopActive(shopId, active);
             }
         }
-
+        /// <summary>
+        /// 获取门店列表
+        /// </summary>
+        /// <param name="shopType">1 总店 2分店</param>
+        /// <param name="shopId">门店ID，如果shopType为总店时，shopId无效</param>
+        /// <returns>List&lt;ShopModel&gt;.</returns>
+        public static List<ShopModel> GetShopList(int shopType, int shopId)
+        {
+            using (var dal = FactoryDispatcher.ShopFactory())
+            {
+                return dal.GetShopList(shopType, shopId);
+            }
+        }
     }
 }

@@ -165,4 +165,45 @@ namespace BAMENG.CONFIG
         android,
         iphone
     }
+
+    /// <summary>
+    /// 用户属性枚举
+    /// </summary>
+    public enum UserPropertyOptions
+    {
+        /// <summary>
+        /// The use 头像
+        /// </summary>
+        USER_1 = 1,
+        /// <summary>
+        /// The use 昵称
+        /// </summary>
+        USER_2 = 2,
+
+        /// <summary>
+        /// The use 手机
+        /// </summary>
+        USER_3 = 3,
+
+        /// <summary>
+        /// The use 姓名
+        /// </summary>
+        USER_4 = 4,
+
+        /// <summary>
+        /// The use 性别
+        /// </summary>
+        USER_5 = 5,
+
+        /// <summary>
+        /// The use 地区
+        /// </summary>
+        USER_6 = 6,
+
+        /// <summary>
+        /// The use 其他扩展
+        /// </summary>
+        USER_7 = 7,
+
+    }
 }
