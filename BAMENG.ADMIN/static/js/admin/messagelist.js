@@ -43,7 +43,16 @@ var messageHelper = {
                             tempHtml = tempHtml.replace("{Title}", item.Title);
                             tempHtml = tempHtml.replace(/{ID}/gm, item.ID);
                             tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);
-                            tempHtml = tempHtml.replace("{StatusText}", item.IsSend == 1 ? "<span style='color:red;'>已发送</span>" : "未发送")
+                            tempHtml = tempHtml.replace("{SendTarget}", item.SendTargetName);
+
+                            if (self.type != 2) {
+                                tempHtml = tempHtml.replace("{editText}", "编辑");
+                                tempHtml = tempHtml.replace("{StatusText}", item.IsSend == 1 ? "<span style='color:red;'>已发送</span>" : "未发送")
+                            }
+                            else {
+                                tempHtml = tempHtml.replace("{editText}", "查看");
+                                tempHtml = tempHtml.replace("{StatusText}", item.IsRead == 1 ? "<span style='color:red;'>已阅读</span>" : "未读")
+                            }
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
@@ -81,7 +90,7 @@ var messageHelper = {
         return model;
     },
     edit: function (dataId) {
-        var url = "admin/messageedit.html?messageid=" + dataId;
+        var url = "admin/messageedit.html?messageid=" + dataId + "&type=" + this.type;
         var data = this.getModel(dataId);
         if (data != null)
             hotUtil.newTab(url, "编辑消息通知[" + data.Title + "]");
@@ -100,7 +109,8 @@ var messageHelper = {
         }, function () {
             var param = {
                 action: "DeleteMessage",
-                messageid: dataId
+                messageid: dataId,
+                type: messageHelper.type
             }
             hotUtil.loading.show();
             hotUtil.ajaxCall(messageHelper.ajaxUrl, param, function (ret, err) {
@@ -119,6 +129,12 @@ var messageHelper = {
     },
     pageInit: function () {
         messageHelper.loadList(messageHelper.pageIndex);
+
+        if (parseInt(messageHelper.type) == 2) {
+            $("#btnMessage").hide();
+        }
+
+
     }
 };
 

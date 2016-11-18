@@ -22,9 +22,10 @@ namespace BAMENG.IDAL
         /// 获取消息列表
         /// </summary>
         /// <param name="shopId">门店ID 0总后台，</param>
+        /// <param name="AuthorIdentity">作者身份 0总后台，1总店，2分店</param>
         /// <param name="model">The model.</param>
         /// <returns>ResultPageModel.</returns>
-        ResultPageModel GetMessageList(int shopId, SearchModel model);
+        ResultPageModel GetMessageList(int shopId, int AuthorIdentity, SearchModel model);
 
 
         /// <summary>
@@ -52,8 +53,10 @@ namespace BAMENG.IDAL
         /// 删除消息
         /// </summary>
         /// <param name="messageId">The message identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="type">The type.</param>
         /// <returns>System.Int32.</returns>
-        bool DeleteMessageInfo(int messageId);
+        bool DeleteMessageInfo(int messageId, int shopId, int type);
 
 
         /// <summary>
@@ -62,6 +65,15 @@ namespace BAMENG.IDAL
         /// <param name="messageId">The message identifier.</param>
         /// <returns>MessageModel.</returns>
         MessageModel GetModel(int messageId);
+
+
+        /// <summary>
+        /// 修改阅读状态
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateReadStatus(int messageId, int shopId);
 
 
     }

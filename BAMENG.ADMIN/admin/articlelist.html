@@ -101,13 +101,13 @@
             <td>{EnablePublish}</td>
             <td>{EnableTop}</td>
             <td>
-                <span class="cursor-point" onclick="articleHelper.edit('{ArticleId}');" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
+                <span class="cursor-point" onclick="articleHelper.edit('{ArticleId}');" data-toggle="modal" data-target="#myModal2">编辑</span>
                 &nbsp;
-                <span class="cursor-point" onclick="articleHelper.del('{ArticleId}')"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>
+                <span class="cursor-point" onclick="articleHelper.del('{ArticleId}')">删除</span>
                 &nbsp;
-                <span class="cursor-point" onclick="articleHelper.enablePublish('{ArticleId}', '{publish}')"><i id="enablePublish_{ArticleId}" class="fa fa-cog tooltips" data-placement="top" data-toggle="tooltip" data-original-title="{publishText}"></i></span>
+                <span class="cursor-point" onclick="articleHelper.enablePublish('{ArticleId}', '{publish}')" id="enablePublish_{ArticleId}">{publishText}</span>
                 &nbsp;
-                <span class="cursor-point" onclick="articleHelper.enableTop('{ArticleId}', '{top}')"><i id="enableTop_{ArticleId}" class="fa fa-cog tooltips" data-placement="top" data-toggle="tooltip" data-original-title="{topText}"></i></span>
+                <span class="cursor-point" onclick="articleHelper.enableTop('{ArticleId}', '{top}')" id="enableTop_{ArticleId}" >{topText}</span>
             </td>
         </tr>
     </template>
@@ -122,14 +122,14 @@
             <td>{SendTarget}</td>
             <td>{ArticleStatus}</td>
             <td>
-                <span class="cursor-point" onclick="articleHelper.audit('{ArticleId}');"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
+                <span class="cursor-point" onclick="articleHelper.audit('{ArticleId}');">详情</span>
                 <hot style="{display}">                    
                     &nbsp;
-                    <span class="cursor-point" onclick="articleHelper.updateStatus('{ArticleId}',1)"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="同意"></i></span>                        
+                    <span class="cursor-point" onclick="articleHelper.updateStatus('{ArticleId}',1)">同意</span>                        
                 </hot>
                 <hot style="{display}">
                     &nbsp;
-                    <span class="cursor-point" onclick="articleHelper.updateStatus('{ArticleId}',-1)"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="拒绝"></i></span>
+                    <span class="cursor-point" onclick="articleHelper.updateStatus('{ArticleId}',-1)">拒绝</span>
                 </hot>
             </td>
         </tr>

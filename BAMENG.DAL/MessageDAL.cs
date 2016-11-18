@@ -26,7 +26,7 @@ namespace BAMENG.DAL
     {
 
 
-        private const string SELECT_SQL = "select ID,Title,AuthorName,IsSendBelongShopId,SendTargetIds,MessageBody,IsSend,CreateTime from BM_MessageManage where IsDel=0 ";
+        private const string SELECT_SQL = "select ID,Title,AuthorId,AuthorName,IsSendBelongShopId,SendTargetIds,MessageBody,IsSend,CreateTime,AuthorIdentity from BM_MessageManage where IsDel=0 ";
 
         /// <summary>
         /// 添加消息
@@ -36,14 +36,16 @@ namespace BAMENG.DAL
         /// <exception cref="NotImplementedException"></exception>
         public int AddMessageInfo(MessageModel model)
         {
-            string strSql = "insert into BM_MessageManage(Title,AuthorName,SendTargetIds,MessageBody,IsSend,IsSendBelongShopId) values(@Title,@AuthorName,@SendTargetIds,@MessageBody,@IsSend,@IsSendBelongShopId);select @@IDENTITY";
+            string strSql = "insert into BM_MessageManage(Title,AuthorName,SendTargetIds,MessageBody,IsSend,IsSendBelongShopId,AuthorIdentity,AuthorId) values(@Title,@AuthorName,@SendTargetIds,@MessageBody,@IsSend,@IsSendBelongShopId,@AuthorIdentity,@AuthorId);select @@IDENTITY";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
                 new SqlParameter("@AuthorName", model.AuthorName),
                 new SqlParameter("@SendTargetIds", model.SendTargetIds),
                 new SqlParameter("@MessageBody", model.MessageBody),
                 new SqlParameter("@IsSend", model.IsSend),
-                new SqlParameter("@IsSendBelongShopId",model.IsSendBelongShopId)
+                new SqlParameter("@IsSendBelongShopId",model.IsSendBelongShopId),
+                new SqlParameter("@AuthorIdentity",model.AuthorIdentity),
+                new SqlParameter("@AuthorId",model.AuthorId)
             };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
             if (obj != null)
@@ -74,13 +76,22 @@ namespace BAMENG.DAL
         /// 删除消息
         /// </summary>
         /// <param name="messageId">The message identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="type">The type.</param>
         /// <returns>System.Int32.</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool DeleteMessageInfo(int messageId)
+        public bool DeleteMessageInfo(int messageId, int shopId, int type)
         {
-            string strSql = "update BM_MessageManage  set IsDel=1 where  ID=@ID";
+            string strSql = string.Empty;
+            if (type == 1)
+                strSql = "update BM_MessageManage  set IsDel=1 where  ID=@ID";
+            else
+                strSql = "delete from BM_MessageSendTarget where MessageId=@ID and SendTargetShopId=@ShopID";
+
+
             var parm = new[] {
-                new SqlParameter("@ID",messageId)
+                new SqlParameter("@ID",messageId),
+                new SqlParameter("@ShopID",shopId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
@@ -89,10 +100,11 @@ namespace BAMENG.DAL
         /// 获取消息列表
         /// </summary>
         /// <param name="shopId">门店ID 0总后台，</param>
+        /// <param name="AuthorIdentity">作者身份 0总后台，1总店，2分店</param>
         /// <param name="model">The model.</param>
         /// <returns>ResultPageModel.</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public ResultPageModel GetMessageList(int shopId, SearchModel model)
+        public ResultPageModel GetMessageList(int shopId, int AuthorIdentity, SearchModel model)
         {
             ResultPageModel result = new ResultPageModel();
             if (model == null)
@@ -101,20 +113,40 @@ namespace BAMENG.DAL
             string strSql = string.Empty;
             if (model.type == 1)
             {
-                strSql = SELECT_SQL;
+                strSql = SELECT_SQL + " and AuthorIdentity=@AuthorIdentity";
                 if (!string.IsNullOrEmpty(model.key))
-                    strSql += string.Format(" and Title like '%{0}%' ", model.key);                
+                    strSql += string.Format(" and Title like '%{0}%' ", model.key);
                 if (!string.IsNullOrEmpty(model.startTime))
                     strSql += " and CONVERT(nvarchar(10),CreateTime,121)>=@startTime ";
                 if (!string.IsNullOrEmpty(model.endTime))
                     strSql += " and CONVERT(nvarchar(10),CreateTime,121)<=@endTime ";
+
+
+                if (AuthorIdentity != 0)
+                    strSql += " and AuthorId=@AuthorId";
+
                 var param = new[] {
                     new SqlParameter("@startTime", model.startTime),
                     new SqlParameter("@endTime", model.endTime),
-                    new SqlParameter("@ShopId", shopId)
+                    new SqlParameter("@AuthorIdentity", AuthorIdentity),
+                    new SqlParameter("@AuthorId", shopId)
                 };
                 //生成sql语句
-                return getPageData<MessageModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param);
+                return getPageData<MessageModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param, ((items) =>
+                {
+                    items.ForEach((item) =>
+                    {
+                        if (item.AuthorIdentity == 2)
+                            item.SendTargetName = GetMessageShopName(item.AuthorId);
+                        else
+                        {
+                            item.SendTargetName = GetMessageShopName(item.SendTargetIds);
+                            if (item.IsSendBelongShopId == 1)
+                                item.SendTargetName += " /总站";
+                        }
+
+                    });
+                }));
             }
             else
             {
@@ -135,10 +167,47 @@ namespace BAMENG.DAL
                     new SqlParameter("@ShopId", shopId)
                 };
                 //生成sql语句
-                return getPageData<MessageModel>(model.PageSize, model.PageIndex, strSql, "M.CreateTime", param);
+                return getPageData<MessageModel>(model.PageSize, model.PageIndex, strSql, "M.CreateTime", param, ((items) =>
+                {
+                    items.ForEach((item) =>
+                    {
+                        item.SendTargetName = item.AuthorName;
+                    });
+                }));
 
             }
         }
+
+
+
+        /// <summary>
+        /// 根据多个门店ID，获取门店名称，并拼接在一起
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <returns>System.String.</returns>
+        private string GetMessageShopName(string ids)
+        {
+            var arr = ids.Split(',');
+            string strSql = string.Format("select stuff((select '/'+ShopName from BM_ShopManage where ShopID in ({0}) for xml path('')),1,1,'')", string.Join(",", arr));
+
+            return DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql).ToString();
+        }
+
+
+        /// <summary>
+        /// 根据门店ID，获取门店名称
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>System.String.</returns>
+        private string GetMessageShopName(int shopId)
+        {
+            string strSql = "select ShopName from BM_ShopManage where ShopID=@ShopID";
+            var parms = new[] {
+               new SqlParameter("@ShopID",shopId)
+            };
+            return DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms).ToString();
+        }
+
 
         /// <summary>
         /// 获取消息信息
@@ -176,6 +245,24 @@ namespace BAMENG.DAL
                 new SqlParameter("@ID", model.ID)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+        }
+
+
+        /// <summary>
+        /// 修改阅读状态
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateReadStatus(int messageId, int shopId)
+        {
+            string strSql = "update BM_MessageSendTarget set IsRead=1,ReadTime=GETDATE() where MessageId=@MessageId and SendTargetShopId=@SendTargetShopId";
+            var parm = new[] {
+                new SqlParameter("@MessageId",messageId),
+                new SqlParameter("@SendTargetShopId",shopId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+
         }
     }
 }

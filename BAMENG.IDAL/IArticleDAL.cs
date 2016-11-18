@@ -37,16 +37,20 @@ namespace BAMENG.IDAL
         /// <param name="pageindex">The pageindex.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
         /// <returns>ResultPageModel.</returns>
-        ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId);
+        ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId,int shopId, int userIdentity);
 
 
         /// <summary>
         /// 获取置顶资讯数据
         /// </summary>
         /// <param name="AuthorIdentity">The author identity.</param>
+        /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
+        /// <param name="shopId">The shop identifier.</param>
         /// <returns>List&lt;ArticleBaseModel&gt;.</returns>
-        List<ArticleBaseModel> GetAppTopArticleList(int AuthorIdentity);
+        List<ArticleBaseModel> GetAppTopArticleList(int AuthorIdentity, int userIdentity, int shopId);
 
         /// <summary>
         /// 获取资讯信息

@@ -26,6 +26,11 @@ namespace BAMENG.MODEL
         /// <value>The title.</value>
         public string Title { get; set; }
 
+        /// <summary>
+        /// 作者ID
+        /// </summary>
+        /// <value>The author identifier.</value>
+        public int AuthorId { get; set; }
 
         /// <summary>
         /// 作者名称
@@ -33,6 +38,11 @@ namespace BAMENG.MODEL
         /// <value>The name of the author.</value>
         public string AuthorName { get; set; }
 
+        /// <summary>
+        /// 作者身份 0总后台，1总店，2分店
+        /// </summary>
+        /// <value>The author identity.</value>
+        public int AuthorIdentity { get; set; }
 
         /// <summary>
         /// 目标ID，多个用|隔开
@@ -40,6 +50,12 @@ namespace BAMENG.MODEL
         /// <value>The send target ids.</value>
         public string SendTargetIds { get; set; }
 
+
+        /// <summary>
+        /// 发送对象名称
+        /// </summary>
+        /// <value>The name of the send target.</value>
+        public string SendTargetName { get; set; }
 
         /// <summary>
         /// 消息正文
@@ -66,6 +82,9 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The is read.</value>
         public int IsRead { get; set; }
+
+
+
 
 
         /// <summary>

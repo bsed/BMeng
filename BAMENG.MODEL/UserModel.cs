@@ -7,6 +7,7 @@
 **/
 
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,6 +161,19 @@ namespace BAMENG.MODEL
         /// <value>The belong one.</value>
         public int BelongOne { get; set; }
 
+
+        /// <summary>
+        /// 所属门店类型1总店  2分店
+        /// </summary>
+        /// <value>The type of the shop.</value>
+        public int ShopType { get; set; }
+
+        /// <summary>
+        ///门店所属总店ID
+        /// </summary>
+        /// <value>The shop belong identifier.</value>
+        [JsonIgnore()]
+        public int ShopBelongId { get; set; }
     }
 
 

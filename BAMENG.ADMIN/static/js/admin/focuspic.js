@@ -221,8 +221,12 @@ var focusHelper = {
                     swal("图片上传失败", "请检查图片格式是否正确", "warning");
             });
         }
-        else
-            callback();
+        else {
+            if (!hotUtil.isNullOrEmpty($("#focuspicurl").val()))
+                callback();
+            else
+                swal("请上传焦点图", "", "warning");
+        }
     },
     initCheck: function () {
         var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));

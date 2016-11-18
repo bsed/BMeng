@@ -112,9 +112,6 @@ namespace BAMENG.DAL
                         break;
                 }
             }
-            //if (AuthorId > 0)
-            //    strSql += " and A.AuthorId=@AuthorId ";
-
             if (model.Status != -100)
             {
                 /* 总后台下
@@ -133,7 +130,7 @@ namespace BAMENG.DAL
                     if (AuthorIdentity != 0)
                         strSql += " and A.AuthorIdentity=@AuthorIdentity  and A.AuthorId=@AuthorId ";
                     else
-                        strSql += " and A.ArticleStatus=1  and A.AuthorId=@AuthorId ";
+                        strSql += " and A.ArticleStatus=1  and A.AuthorIdentity=0 ";
                 }
                 else if (model.Status == 0)
                 {
@@ -171,8 +168,10 @@ namespace BAMENG.DAL
         /// <param name="pageindex">The pageindex.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
         /// <returns>ResultPageModel.</returns>
-        public ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId)
+        public ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId, int shopId, int userIdentity)
         {
             ResultPageModel result = new ResultPageModel();
             string strSql = @"select A.ArticleId,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.BrowseAmount,a.PublishTime {1}
@@ -181,24 +180,29 @@ namespace BAMENG.DAL
                                  where a.IsDel=0 and a.EnableTop=0 and A.ArticleStatus=1";
 
             string whereSql = string.Empty, wherefield = string.Empty;
-            string orderbyField = "A.ArticleSort";
-            if (AuthorIdentity == 4)
+            string orderbyField = "A.PublishTime";
+
+            if (AuthorIdentity == 3 || AuthorIdentity == 4)
             {
-                orderbyField = "A.CreateTime";
-                //TODO:
-                strSql += " and A.SendTargetId=@SendTargetId";
-            }
-            else if (AuthorIdentity == 3)
-            {
-                orderbyField = "A.CreateTime";
+
                 wherefield = ",ISNULL(R.IsRead,0) as IsRead";
-                whereSql = " left join BM_ReadLog R with(nolock) on R.ArticleId=A.ArticleId and R.UserId=@SendTargetId ";
+                whereSql = " left join BM_ReadLog R with(nolock) on R.ArticleId=A.ArticleId and R.UserId=@UserId ";
+            }
+            else
+            {
+                strSql += " and (A.SendTargetId=0 or A.SendTargetId=@SendTargetId) ";
+                if (shopId > 0)
+                    strSql += " and A.AuthorId=@AuthorId";
             }
             strSql += " and A.AuthorIdentity=@AuthorIdentity";
+
+
             strSql = string.Format(strSql, whereSql, wherefield);
             var param = new[] {
                 new SqlParameter("@AuthorIdentity", AuthorIdentity),
-                new SqlParameter("@SendTargetId", userId),
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@SendTargetId",  userIdentity==1?1:2),
+                new SqlParameter("@AuthorId", shopId),
             };
             //生成sql语句
             return getPageData<ArticleBaseModel>(pageSize, pageindex, strSql, orderbyField, param, (items) =>
@@ -215,16 +219,28 @@ namespace BAMENG.DAL
         /// <summary>
         /// 获取置顶资讯数据
         /// </summary>
-        /// <param name="AuthorIdentity">The author identity.</param>
+        /// <param name="AuthorIdentity">资讯类型</param>
+        /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
+        /// <param name="shopId">The shop identifier.</param>
         /// <returns>List&lt;ArticleBaseModel&gt;.</returns>
-        public List<ArticleBaseModel> GetAppTopArticleList(int AuthorIdentity)
+        public List<ArticleBaseModel> GetAppTopArticleList(int AuthorIdentity, int userIdentity, int shopId)
         {
             string strSql = @"select A.ArticleId,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.BrowseAmount,a.PublishTime
                                  from BM_ArticleList A with(nolock)
-                                where a.IsDel=0 and a.EnableTop=1 and A.ArticleStatus=1  and A.AuthorIdentity=@AuthorIdentity  order by A.ArticleSort desc";
+                                where a.IsDel=0 and a.EnableTop=1 and A.ArticleStatus=1 and A.AuthorIdentity=@AuthorIdentity and (A.SendTargetId=0 or A.SendTargetId=@SendTargetId)";
+
+
+
+            if (shopId > 0)
+                strSql += " and A.AuthorId=@AuthorId";
+
+            strSql += " order by A.PublishTime desc";
+
 
             var param = new[] {
                 new SqlParameter("@AuthorIdentity", AuthorIdentity),
+                new SqlParameter("@AuthorId", shopId),
+                new SqlParameter("@SendTargetId", userIdentity==1?1:2),
             };
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {

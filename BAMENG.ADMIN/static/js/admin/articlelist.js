@@ -51,12 +51,16 @@ var articleHelper = {
                             tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);
                             tempHtml = tempHtml.replace("{SendTargetId}", item.SendTargetId == 0 ? "所有人" : item.SendTargetId == 1 ? "盟主" : "盟友");
                             tempHtml = tempHtml.replace("{EnableTop}", item.EnableTop == 1 ? "<span style='color:red;'>已置顶</span>" : "未置顶")
-                            if (item.ArticleStatus==1)
+                            if (item.ArticleStatus == 1) {
                                 tempHtml = tempHtml.replace("{EnablePublish}", item.EnablePublish == 1 ? "<span style='color:red;'>已发布</span>" : "未发布")
-                            else
+                                tempHtml = tempHtml.replace("{publishText}", item.EnablePublish == 1 ? "撤回发布" : "发布");
+                                tempHtml = tempHtml.replace("{topText}", item.EnableTop == 1 ? "取消置顶" : "置顶");
+                            }
+                            else {
                                 tempHtml = tempHtml.replace("{EnablePublish}", item.ArticleStatus == 0 ? "审核中" : "审核失败")
-                            tempHtml = tempHtml.replace("{publishText}", item.EnablePublish == 1 ? "撤回" : "发布");
-                            tempHtml = tempHtml.replace("{topText}", item.EnableTop == 1 ? "取消置顶" : "设置置顶");
+                                tempHtml = tempHtml.replace("{publishText}", "");
+                                tempHtml = tempHtml.replace("{topText}", "");
+                            }
                             tempHtml = tempHtml.replace("{publish}", item.EnablePublish);
                             tempHtml = tempHtml.replace("{top}", item.EnableTop);
 
@@ -159,7 +163,7 @@ var articleHelper = {
             if (ret) {
                 if (ret.status == 200) {
                     swal("设置成功！", "", "success");
-                    $("#enablePublish_" + dataId).attr('data-original-title', active == 1 ? "撤回" : "发布");
+                    $("#enablePublish_" + dataId).text(active == 1 ? "撤回发布" : "发布");
                     articleHelper.loadList(articleHelper.pageIndex);
                 }
                 else {
@@ -181,7 +185,7 @@ var articleHelper = {
             if (ret) {
                 if (ret.status == 200) {
                     swal("设置成功！", "", "success");
-                    $("#enableTop_" + dataId).attr('data-original-title', active == 0 ? "取消置顶" : "设置置顶");
+                    $("#enableTop_" + dataId).text(active == 0 ? "取消置顶" : "置顶");
                     articleHelper.loadList(articleHelper.pageIndex);
                 }
                 else {

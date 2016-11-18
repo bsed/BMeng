@@ -34,7 +34,7 @@ namespace BAMENG.DAL
         /// </summary>
         private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
-                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne
+                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId
                              from BM_User_extend ue
                             inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID =ue.UserId
                             left join BM_ShopManage S with(nolock) on S.ShopID=ue.ShopId
