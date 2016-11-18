@@ -275,7 +275,7 @@ namespace BAMENG.DAL
         /// <exception cref="System.NotImplementedException"></exception>
         public int GetCustomerCount(int userId, int userIdentity,int status)
         {
-            string strSql = "select count(*) from BM_Orders where IsDel=0 and Status=@Status";
+            string strSql = "select count(*) from BM_CustomerManage where IsDel=0 and Status=@Status";
             if (userIdentity == 1)            
                 strSql += " and BelongTwo=@UserId";
             else

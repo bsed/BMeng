@@ -356,7 +356,40 @@ namespace BAMENG.IDAL
         /// <returns>System.Int32.</returns>
         int GetConvertCount(int userid, int status);
 
+        /// <summary>
+        /// 获取会员签到实体
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>MemberSignModel.</returns>
+        MemberSignModel GetMemberSignModel(int userId);
 
 
+        /// <summary>
+        /// 增加一条签到数据
+        /// </summary>
+        int AddMemberSignInfo(MemberSignModel model);
+        /// <summary>
+        /// 更新会员签到信息
+        /// </summary>
+        bool UpdateMemberSignInfo(MemberSignModel model);
+
+
+
+
+        /// <summary>
+        /// 添加用户积分
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        int addUserIntegral(int userId, decimal money);
+
+        /// <summary>
+        /// 添加用户锁定积分
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="money">The money.</param>
+        /// <returns>System.Int32.</returns>
+        int addUserLockedIntegral(int userId, decimal money);
     }
 }

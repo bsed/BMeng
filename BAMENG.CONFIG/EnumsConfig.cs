@@ -106,7 +106,7 @@ namespace BAMENG.CONFIG
         没有登录 = 70034,
         [Description("你的账号已在另一台设备登录。如非本人操作，则密码可能已泄露，建议修改密码。")]
         令牌失效 = 70035,
-        
+
         [Description("兑换审核存在异常")]
         兑换审核存在异常 = 70036,
 
@@ -147,6 +147,17 @@ namespace BAMENG.CONFIG
         [Description("无效验证码")]
         无效验证码 = 72002,
 
+
+
+
+
+        [Description("签到功能未开启")]
+        签到功能未开启 = 74001,
+
+        [Description("今日已签到")]
+        今日已签到 = 74002,
+        [Description("签到异常, 请重新签到")]
+        请重新签到 = 74003,
     }
 
 

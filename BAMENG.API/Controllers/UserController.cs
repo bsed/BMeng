@@ -42,6 +42,8 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SignIn()
         {
+            ApiStatusCode apiCode = ApiStatusCode.OK;
+            UserLogic.SignIn(GetAuthUserId(), ref apiCode);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 

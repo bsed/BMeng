@@ -62,8 +62,7 @@ var messageHelper = {
         });
     },
     edit: function () {
-        var sendtarget =$("#sendtarget").val();        
-        console.log(sendtarget.toString());
+        var sendtarget =$("#sendtarget").val();                
         var self = this;
         var postData = {
             action: "EditMessage",

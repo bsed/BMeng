@@ -9,6 +9,7 @@
 
 using BAMENG.CONFIG;
 using BAMENG.MODEL;
+using HotCoreUtils.Caching;
 using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
@@ -588,38 +589,203 @@ namespace BAMENG.LOGIC
         }
 
 
-        public static bool SignIn(int userId)
+        /// <summary>
+        /// 签到功能
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="apiCode">The API code.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool SignIn(int userId, ref ApiStatusCode apiCode)
         {
-            string outputMsg = string.Empty;
-            /**
-            * 输出签到积分，从区间中随机获取
-            */
-            int Integral = 0;
-            /**
-             * 输出签到额外奖励积分
-             */
-            int RewardIntegral = 0;
+            try
+            {
+                string outputMsg = string.Empty;
+                /**
+                * 输出签到积分，从区间中随机获取
+                */
+                int Integral = 0;
+                /**
+                 * 输出签到额外奖励积分
+                 */
+                int RewardIntegral = 0;
+
+                /**
+                 * 日期格式
+                 */
+                string dateFormat = "yyyy-MM-dd";
+                /**
+                * 获取商家签到配置信息
+                */
+                SignInConfig signCfg = ConfigLogic.GetSignInConfig();
+
+                /**
+                 * 判断商户是否开启签到功能
+                 */
+                if (signCfg == null || !signCfg.EnableSign)
+                {
+                    apiCode = ApiStatusCode.签到功能未开启;
+                    return false;
+                }
+
+                Integral = signCfg.SignScore;
+
+                /**
+                 * 连续签到天数，默认0
+                 */
+                int SignCount = 0;
+                MemberSignModel memberSign = GetMemberSignModel(userId);
+                if (memberSign == null)
+                {
+                    memberSign = new MemberSignModel();
+                    memberSign.UserId = userId;
+                }
+                else
+                {
+                    /**
+                     * 判断今天是否签到过
+                     */
+                    if (memberSign.lastSignTime.ToString(dateFormat).Equals(DateTime.Now.ToString(dateFormat)))
+                    {
+                        apiCode = ApiStatusCode.今日已签到;
+                        return false;
+                    }
+                }
 
 
-            /**
-            * 获取商家签到配置信息
-            */
-            SignInConfig signConfig = ConfigLogic.GetSignInConfig();
+                /**
+                 * 判断是否开启连续签到功能
+                 * 如果开启，则判断连续签到逻辑
+                 */
+                if (signCfg.EnableContinuousSign)
+                {
+                    /**
+                       * 判断昨天是否已经满足奖励条件
+                       * 如果满足，则连续签到天数置0，重新计数
+                       */
+                    if (memberSign.SignCount >= signCfg.ContinuousSignDay)
+                    {
+                        RewardIntegral = signCfg.ContinuousSignRewardScore;
+                        //重新计数
+                        memberSign.SignCount = 0;
+                    }
+                    /**
+                     * 当前已签到天数
+                     */
+                    SignCount = memberSign.SignCount;
 
-            /**
-             * 判断商户是否开启签到功能
-             */
-            if (signConfig == null || !signConfig.EnableSign)
-            {                
-                return false;
+                    /**
+                    * 连续签到天数是否大于0
+                    */
+                    if (SignCount > 0)
+                    {
+                        /**
+                         * 判断昨天是否签到，如果签到过，则连续签到天数加1
+                         * 否则，连续签到天数置1
+                         */
+                        if (memberSign.lastSignTime.ToString(dateFormat).Equals(DateTime.Now.AddDays(-1).ToString(dateFormat)))
+                            SignCount += 1;
+                        else
+                            SignCount = 1;
+                    }
+                    else
+                        SignCount = 1;
+
+                    /**
+                        * 判断连续签到天数是否满足奖励条件
+                        * 满足条件后，获取奖励积分，并且连续签到天数置0
+                        */
+                    if (SignCount >= signCfg.ContinuousSignDay)
+                        RewardIntegral = signCfg.ContinuousSignRewardScore;
+
+
+                }
+                else
+                    SignCount = 0;
+
+
+                using (var dal = FactoryDispatcher.UserFactory())
+                {
+
+                    /**
+                     * 更新会员签到数据
+                     */
+                    memberSign.SignCount = SignCount;
+                    memberSign.TotalSignIntegral += (Integral + RewardIntegral);
+                    memberSign.lastSignTime = DateTime.Now;
+                    memberSign.TotalSignDays += 1;
+                    if (memberSign.ID > 0)
+                        dal.UpdateMemberSignInfo(memberSign);
+                    else
+                        memberSign.ID = dal.AddMemberSignInfo(memberSign);
+
+                    /**
+                     * 更新签到缓存
+                     */
+                    RefreshMemberSignCache(userId, memberSign);
+
+
+                    /**
+                     * 添加签到日志
+                     */
+
+
+                    //将签到获得积分，冲入用户积分账号中
+                    if (dal.addUserIntegral(userId, Integral + RewardIntegral) > 0)
+                    {
+                        apiCode = ApiStatusCode.OK;
+                    }
+
+                }
+                return true;
             }
+            catch (Exception ex)
+            {
+                apiCode = ApiStatusCode.请重新签到;
+                LogHelper.Log(string.Format("SignIn-->StackTrace:{0},Message:{1},MemberId:{2}", ex.StackTrace, ex.Message, ex, userId));
+                return false;
 
-
-            // bool flag = SignMemberBLL.Instance.TrySignIn(this.CustomerId, this.UserId, out Integral, out RewardIntegral, out outputMsg);
-
-
-            return false;
+            }
         }
 
+
+        /// <summary>
+        /// 获取签到信息
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <returns>MemberSignModel.</returns>
+        public static MemberSignModel GetMemberSignModel(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                string cacheKey = GetMemberSignCacheKey(userId);
+                MemberSignModel model = WebCacheHelper<MemberSignModel>.Get(cacheKey);
+                if (model == null)
+                {
+                    model = dal.GetMemberSignModel(userId);
+                    if (model == null) return null;
+                    WebCacheHelper.Insert(cacheKey, model, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                }
+                return model;
+            }
+        }
+        /// <summary>
+        /// 更新缓存
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <param name="memberSign">签到数据</param>
+        private static void RefreshMemberSignCache(int userId, MemberSignModel memberSign)
+        {
+            string cacheKey = GetMemberSignCacheKey(userId);
+            WebCacheHelper.Insert(cacheKey, memberSign, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+        }
+        /// <summary>
+        /// 得到签到缓存KEY
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private static string GetMemberSignCacheKey(int userId)
+        {
+            return string.Format("BMSIGN{0}{1}", userId, DateTime.Now.ToString("yyyyMMdd"));
+        }
     }
 }
