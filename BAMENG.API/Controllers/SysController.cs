@@ -98,7 +98,7 @@ namespace BAMENG.API.Controllers
         public ActionResult UploadPic()
         {
             string imgContent = string.Empty;
-            HttpPostedFileBase oFile = Request.Files[0];
+            HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
             if (oFile == null)
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));

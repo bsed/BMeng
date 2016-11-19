@@ -110,20 +110,33 @@ var articleHelper = {
     },
     upload: function (callback) {
         if (!hotUtil.isNullOrEmpty($("#uploadfile").val())) {
-            hotUtil.loading.show();
-            hotUtil.uploadImg("uploadfile", this.picDir, function (url) {
-                hotUtil.loading.close();
-                if (url) {
-                    $("#txtcover").val(url);
-                    callback();
-
+            if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent())).length==0) {
+                swal("资讯内容不能为空", "", "warning")
+            }
+            else {
+                hotUtil.loading.show();
+                hotUtil.uploadImg("uploadfile", this.picDir, function (url) {
+                    hotUtil.loading.close();
+                    if (url) {
+                        $("#txtcover").val(url);
+                        callback();
+                    }
+                    else
+                        swal("图片上传失败", "请检查图片格式是否正确", "warning");
+                });
+            }
+        }
+        else {
+            if (!hotUtil.isNullOrEmpty($("#txtcover").val()).length == 0) {
+                if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent()))) {
+                    swal("资讯内容不能为空", "", "warning")
                 }
                 else
-                    swal("图片上传失败", "请检查图片格式是否正确", "warning");
-            });
+                    callback();
+            }
+            else
+                swal("请上传封面", "", "warning");
         }
-        else
-            callback();
     },
     updateStatus: function (code) {
         swal({

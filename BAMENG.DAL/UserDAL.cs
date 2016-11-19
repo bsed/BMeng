@@ -25,12 +25,16 @@ namespace BAMENG.DAL
 {
     public class UserDAL : AbstractDAL, IUserDAL
     {
+        
+        private static OrderDAL order = new OrderDAL();
+        private static CustomerDAL cus = new CustomerDAL();
+
         /// <summary>
         /// 获取用户基本信息SQL 语句
         /// </summary>
         private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
-                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne
+                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId
                              from BM_User_extend ue
                             inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID =ue.UserId
                             left join BM_ShopManage S with(nolock) on S.ShopID=ue.ShopId
@@ -141,11 +145,10 @@ namespace BAMENG.DAL
             //生成sql语句
             return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, "ue.CreateTime", param, (items) =>
             {
-                //TODO:暂时写死
                 items.ForEach((item) =>
                 {
-                    item.CustomerAmount = 100;
-                    item.OrderSuccessAmount = 10;
+                    item.CustomerAmount = cus.GetCustomerCount(item.UserId, item.UserIdentity, 1);
+                    item.OrderSuccessAmount = item.UserIdentity == 1 ? order.CountOrders(item.UserId, 1) : order.CountOrdersByAllyUserId(item.UserId, 1);
                 });
             });
         }
@@ -165,10 +168,11 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {
                 var data = DbHelperSQLP.GetEntity<UserModel>(dr);
-
-                //TODO:
-                data.CustomerAmount = 100;
-                data.OrderSuccessAmount = 10;
+                if (data != null)
+                {                    
+                    data.CustomerAmount = cus.GetCustomerCount(data.UserId, data.UserIdentity,1); 
+                    data.OrderSuccessAmount = data.UserIdentity == 1 ? order.CountOrders(data.UserId, 1) : order.CountOrdersByAllyUserId(data.UserId, 1);
+                }
                 return data;
             }
 
@@ -599,14 +603,14 @@ namespace BAMENG.DAL
             var param = new[] {
                 new SqlParameter("@UB_BelongOne",model.UserId),
             };
+
             //生成sql语句
             return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, "ue.CreateTime", param, (items) =>
             {
-                //TODO:暂时写死
                 items.ForEach((item) =>
                 {
-                    item.CustomerAmount = 100;
-                    item.OrderSuccessAmount = 10;
+                    item.CustomerAmount = cus.GetCustomerCount(item.UserId, item.UserIdentity, 1);
+                    item.OrderSuccessAmount = item.UserIdentity == 1 ? order.CountOrders(item.UserId, 1) : order.CountOrdersByAllyUserId(item.UserId, 1);
                 });
             });
         }
@@ -1407,6 +1411,106 @@ namespace BAMENG.DAL
 
         //}
 
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>MemberSignModel.</returns>
+        public MemberSignModel GetMemberSignModel(int userId)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select  top 1 ID,UserId,lastSignTime,SignCount,CreateTime,TotalSignIntegral,TotalSignDays from BM_UserSign ");
+            strSql.Append(" where UserId=@UserId");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@UserId",userId)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
+            {
+                return DbHelperSQLP.GetEntity<MemberSignModel>(dr);
+            }
+        }
+
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public int AddMemberSignInfo(MemberSignModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into BM_UserSign(");
+            strSql.Append("UserId,lastSignTime,SignCount,TotalSignIntegral,TotalSignDays)");
+            strSql.Append(" values (");
+            strSql.Append("@UserId,@lastSignTime,@SignCount,@TotalSignIntegral,@TotalSignDays)");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@lastSignTime",model.lastSignTime),
+                    new SqlParameter("@SignCount", model.SignCount),
+                    new SqlParameter("@UserId", model.UserId),
+                    new SqlParameter("@TotalSignIntegral", model.TotalSignIntegral),
+                    new SqlParameter("@TotalSignDays",model.TotalSignDays)
+                                        };
+            object obj = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+        /// <summary>
+        /// 更新会员签到信息
+        /// </summary>
+        public bool UpdateMemberSignInfo(MemberSignModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update BM_UserSign set ");
+            strSql.Append("lastSignTime=@lastSignTime,");
+            strSql.Append("SignCount=@SignCount, ");
+            strSql.Append("TotalSignIntegral=@TotalSignIntegral, ");
+            strSql.Append("TotalSignDays=@TotalSignDays ");
+            strSql.Append(" where ID=@Id and UserId=@UserId");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@lastSignTime",model.lastSignTime),
+                    new SqlParameter("@SignCount", model.SignCount),
+                    new SqlParameter("@Id", model.ID),
+                    new SqlParameter("@UserId", model.UserId),
+                    new SqlParameter("@TotalSignIntegral", model.TotalSignIntegral),
+                    new SqlParameter("@TotalSignDays",model.TotalSignDays)
+                                        };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters) > 0;
+        }
+
+
+        /// <summary>
+        /// 添加用户积分
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="money">The money.</param>
+        /// <returns>System.Int32.</returns>
+        public int addUserIntegral(int userId, decimal money)
+        {
+            string strSql = "update BM_User_extend set Score=Score+@money where UserId=@UserId";
+            var parms = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@money",money)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
+
+        /// <summary>
+        /// 添加用户锁定积分
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="money">The money.</param>
+        /// <returns>System.Int32.</returns>
+        public int addUserLockedIntegral(int userId, decimal money)
+        {
+            string strSql = "update BM_User_extend set ScoreLocked=ScoreLocked+@money where UserId=@UserId";
+            var parms = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@money",money)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
+        }
 
     }
 }

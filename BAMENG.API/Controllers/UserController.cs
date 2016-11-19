@@ -42,6 +42,8 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SignIn()
         {
+            ApiStatusCode apiCode = ApiStatusCode.OK;
+            UserLogic.SignIn(GetAuthUserId(), ref apiCode);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 
@@ -176,7 +178,7 @@ namespace BAMENG.API.Controllers
             {
                 case (int)UserPropertyOptions.USER_1:
                     {
-                        HttpPostedFileBase oFile = Request.Files[0];
+                        HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
                         if (oFile == null)
                             return Json(new ResultModel(ApiStatusCode.请上传图片));
                         string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";

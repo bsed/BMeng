@@ -21,17 +21,18 @@ namespace BAMENG.LOGIC
     public class MessageLogic
     {
         /// <summary>
-        /// 获取消息列表
+        /// 获取消息列表作者身份 
         /// </summary>
         /// <param name="shopId">门店ID 0为总后台，</param>
+        /// <param name="AuthorIdentity">0总后台，1总店，2分店</param>
         /// <param name="model">The model.</param>
         /// <returns>ResultPageModel.</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static ResultPageModel GetMessageList(int shopId, SearchModel model)
+        public static ResultPageModel GetMessageList(int shopId, int AuthorIdentity, SearchModel model)
         {
             using (var dal = FactoryDispatcher.MessageFactory())
             {
-                return dal.GetMessageList(shopId, model);
+                return dal.GetMessageList(shopId, AuthorIdentity, model);
             }
         }
 
@@ -44,16 +45,15 @@ namespace BAMENG.LOGIC
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool EditMessage(int userIdentity, int ShopBelongId, MessageModel model)
         {
-
-            using (TransactionScope scope = new TransactionScope())
+            using (var dal = FactoryDispatcher.MessageFactory())
             {
-
-                using (var dal = FactoryDispatcher.MessageFactory())
+                if (model.ID > 0)
+                    return dal.UpdateMessageInfo(model);
+                else
                 {
-                    if (model.ID > 0)
-                        return dal.UpdateMessageInfo(model);
-                    else
+                    using (TransactionScope scope = new TransactionScope())
                     {
+
                         int messageId = dal.AddMessageInfo(model);
                         if (messageId > 0)
                         {
@@ -128,16 +128,33 @@ namespace BAMENG.LOGIC
         }
 
         /// <summary>
-        /// 删除消息
+        /// 修改阅读状态
         /// </summary>
         /// <param name="messageId">The message identifier.</param>
-        /// <returns>System.Int32.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static bool DeleteMessageInfo(int messageId)
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateReadStatus(int messageId, int shopId)
         {
             using (var dal = FactoryDispatcher.MessageFactory())
             {
-                return dal.DeleteMessageInfo(messageId);
+                return dal.UpdateReadStatus(messageId, shopId);
+            }
+        }
+
+
+        /// <summary>
+        /// 删除消息
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static bool DeleteMessageInfo(int messageId, int shopId, int type)
+        {
+            using (var dal = FactoryDispatcher.MessageFactory())
+            {
+                return dal.DeleteMessageInfo(messageId,shopId,type);
             }
         }
     }

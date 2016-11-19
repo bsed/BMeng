@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace BAMENG.MODEL
 {
-    public  class OrderModel
+    public class OrderModel
     {
         /// <summary>
         /// 
         /// </summary>
         public string orderId { get; set; }
-         
+
         /// <summary>
         /// 
         /// </summary>
@@ -29,13 +29,13 @@ namespace BAMENG.MODEL
         /// 
         /// </summary>
         public DateTime orderTime { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Memo { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Memo { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int OrderStatus { get; set; }
 
 
@@ -109,6 +109,11 @@ namespace BAMENG.MODEL
         public int status { get; set; }
 
         public string orderId { get; set; }
+        /// <summary>
+        /// 订单状态名称
+        /// </summary>
+        /// <value>The name of the status.</value>
+        public string statusName { get; set; }
     }
 
 
@@ -142,12 +147,12 @@ namespace BAMENG.MODEL
         /// </summary>
         public string address { get; set; }
 
- 
+
         /// <summary>
         /// 订单状态 0 未成交 1 已成交 2退单
         /// </summary>
         public int status { get; set; }
 
-       
+
     }
 }

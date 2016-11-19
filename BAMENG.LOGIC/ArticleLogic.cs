@@ -41,24 +41,28 @@ namespace BAMENG.LOGIC
         /// <param name="pageindex">The pageindex.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
         /// <returns>ResultPageModel.</returns>
-        public static ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId)
+        public static ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId,int shopId, int userIdentity)
         {
             using (var dal = FactoryDispatcher.ArticleFactory())
             {
-                return dal.GetAppArticleList(AuthorIdentity, pageindex, pageSize, userId);
+                return dal.GetAppArticleList(AuthorIdentity, pageindex, pageSize, userId, shopId, userIdentity);
             }
         }
         /// <summary>
         /// 获取置顶资讯数据
         /// </summary>
         /// <param name="AuthorIdentity">The author identity.</param>
+        /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
+        /// <param name="shopId">The shop identifier.</param>
         /// <returns>List&lt;ArticleBaseModel&gt;.</returns>
-        public static List<ArticleBaseModel> GetAppTopArticleList(int AuthorIdentity)
+        public static List<ArticleBaseModel> GetAppTopArticleList(int AuthorIdentity, int userIdentity, int shopId)
         {
             using (var dal = FactoryDispatcher.ArticleFactory())
             {
-                return dal.GetAppTopArticleList(AuthorIdentity);
+                return dal.GetAppTopArticleList(AuthorIdentity, userIdentity, shopId);
             }
         }
 

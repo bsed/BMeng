@@ -180,7 +180,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public bool IsExist(string mobile, string addr)
         {
-            string strSql = "select COUNT(1) from BM_CustomerManage where IsDel=0 and Status<>2 and (Mobile =@Mobile or Addr =@Addr)";
+            string strSql = "select COUNT(1) from BM_CustomerManage where IsDel=0 and Status==1 and (Mobile =@Mobile or Addr =@Addr)";
             var param = new[] {
                 new SqlParameter("@Mobile",mobile),
                 new SqlParameter("@Addr",addr)
@@ -253,7 +253,7 @@ namespace BAMENG.DAL
         public CustomerModel getCustomerModel(string mobile, string address)
         {
             CustomerModel model = new CustomerModel();
-            string strSql = "select * from BM_CustomerManage wehre Addr=@Addr and Mobile=@Mobile";
+            string strSql = "select * from BM_CustomerManage where (Addr=@Addr or Mobile=@Mobile) and  IsDel=0 and Status=1";
             var parms = new[] {
                new SqlParameter("@Addr",address),
                new SqlParameter("@Mobile",mobile)
@@ -273,10 +273,10 @@ namespace BAMENG.DAL
         /// <param name="status"> 0 审核中，1已同意  2已拒绝</param>
         /// <returns>System.Int32.</returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public int GetCustomerCount(int userId, int userIdentity,int status)
+        public int GetCustomerCount(int userId, int userIdentity, int status)
         {
-            string strSql = "select count(*) from BM_Orders where IsDel=0 and Status=@Status";
-            if (userIdentity == 1)            
+            string strSql = "select count(*) from BM_CustomerManage where IsDel=0 and Status=@Status";
+            if (userIdentity == 1)
                 strSql += " and BelongTwo=@UserId";
             else
                 strSql += " and BelongOne=@UserId";

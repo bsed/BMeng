@@ -28,7 +28,7 @@
                         <div class="panel-body">
                             <div style="text-align:right;">
                                 <!-- 添加按钮 -->
-                                <button type="button" id="btnUser" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="messageHelper.edit(0)">添加消息</button>
+                                <button type="button" id="btnMessage" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="messageHelper.edit(0)">添加消息</button>
                             </div>
                             <table class="table table-bordered table-hover table-center">
                                 <thead>
@@ -60,7 +60,7 @@
             <td>{CreateTime}</td>
             <td>{StatusText}</td>
             <td>
-                <span class="cursor-point" onclick="messageHelper.edit('{ID}');" data-toggle="modal" data-target="#myModal2">编辑</span>                
+                <span class="cursor-point" onclick="messageHelper.edit('{ID}');" >{editText}</span>                
                 &nbsp;
                 <span class="cursor-point" onclick="messageHelper.del('{ID}')">删除</span>
             </td>

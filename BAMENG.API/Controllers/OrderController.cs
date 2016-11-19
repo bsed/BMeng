@@ -25,11 +25,11 @@ namespace BAMENG.API.Controllers
         /// <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
         /// <param name="lastId">最后的时间</param>
         /// <returns></returns>
-        public ActionResult myList(int type,long lastId)
+        public ActionResult myList(int type, long lastId)
         {
             int userId = GetAuthUserId();
-            var data = OrderLogic.GetMyOrderList(userId,type,lastId);
-            return Json(new ResultModel(ApiStatusCode.OK,data));
+            var data = OrderLogic.GetMyOrderList(userId, type, lastId);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
 
@@ -54,12 +54,12 @@ namespace BAMENG.API.Controllers
         /// <param name="cashNo">现金卷编号</param>
         /// <param name="memo">备注</param>
         /// <returns></returns>
-        public ActionResult create(string userName,string mobile,string address, string cashNo,string memo)
+        public ActionResult create(string userName, string mobile, string address, string cashNo, string memo)
         {
             int userId = GetAuthUserId();
 
             string imgContent = string.Empty;
-            HttpPostedFileBase oFile = Request.Files[0];
+            HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
             if (oFile == null)
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
@@ -72,7 +72,7 @@ namespace BAMENG.API.Controllers
             stream.Seek(0, SeekOrigin.Begin);
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
-                OrderLogic.saveOrder(userId,userName,  mobile,  address,  cashNo,  memo, fileName);
+                OrderLogic.saveOrder(userId, userName, mobile, address, cashNo, memo, fileName);
                 return Json(new ResultModel(ApiStatusCode.OK));
             }
             else
@@ -86,11 +86,11 @@ namespace BAMENG.API.Controllers
         /// <param name="note">说明</param>
         /// <param name="status">状态  0 未成交 1 已成交 2退单</param>
         /// <returns></returns>
-        public ActionResult update(string orderId,string note,int status)
+        public ActionResult update(string orderId, string note, int status)
         {
             int userId = GetAuthUserId();
             ApiStatusCode code = ApiStatusCode.OK;
-            OrderLogic.Update(userId,orderId, status, note,ref code);
+            OrderLogic.Update(userId, orderId, status, note, ref code);
             return Json(new ResultModel(code));
         }
 
@@ -118,7 +118,7 @@ namespace BAMENG.API.Controllers
 
 
             string imgContent = string.Empty;
-            HttpPostedFileBase oFile = Request.Files[0];
+            HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
             if (oFile == null)
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));

@@ -241,7 +241,7 @@ namespace BAMENG.DAL
         {
 
             CashCouponLogModel model = new CashCouponLogModel();
-            string strSql = "select * from BM_GetCashCouponLog wehre CouponNo=@CouponNo and Mobile=@Mobile and IsGet=0 and IsDel=0 and IsUse=0";
+            string strSql = "select * from BM_GetCashCouponLog where CouponNo=@CouponNo and Mobile=@Mobile and IsGet=1 and IsDel=0 and IsUse=0";
             var parms = new[] {
                new SqlParameter("@CouponNo",cashNo),
                new SqlParameter("@Mobile",mobile)

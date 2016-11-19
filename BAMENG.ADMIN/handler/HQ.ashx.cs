@@ -832,7 +832,7 @@ namespace BAMENG.ADMIN.handler
                 type = GetFormValue("type", 1)
             };
 
-            var data = MessageLogic.GetMessageList(user.UserIndentity == 0 ? 0 : user.ID, model);
+            var data = MessageLogic.GetMessageList(user.ID, user.UserIndentity, model);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -852,8 +852,10 @@ namespace BAMENG.ADMIN.handler
                 Title = HttpUtility.UrlDecode(GetFormValue("title", "")),
                 AuthorName = user.UserName,
                 IsSend = GetFormValue("issend", 1),
-                IsSendBelongShopId = GetFormValue("issend", 0),
-                SendTargetIds = GetFormValue("sendtarget", "")
+                IsSendBelongShopId = GetFormValue("sendbelongshop", 0),
+                SendTargetIds = GetFormValue("sendtarget", ""),
+                AuthorId = user.ID,
+                AuthorIdentity = user.UserIndentity
             });
             if (flag)
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
@@ -865,7 +867,8 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void DeleteMessage()
         {
-            if (MessageLogic.DeleteMessageInfo(GetFormValue("messageid", 0)))
+            int type = GetFormValue("type", 1);
+            if (MessageLogic.DeleteMessageInfo(GetFormValue("messageid", 0), user.UserIndentity == 0 ? -1 : user.ID, type))
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.删除失败));
@@ -877,7 +880,11 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void GetMessageInfo()
         {
-            var data = MessageLogic.GetModel(GetFormValue("messageid", 0));
+            int type = GetFormValue("type", 1);
+            int messageId = GetFormValue("messageid", 0);
+            var data = MessageLogic.GetModel(messageId);
+            if (type == 2)
+                MessageLogic.UpdateReadStatus(messageId, user.UserIndentity == 0 ? -1 : user.ID);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 

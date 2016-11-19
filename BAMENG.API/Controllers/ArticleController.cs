@@ -42,12 +42,25 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult list(int identity, int pageIndex, int pageSize)
         {
-            ResultPageModel data = ArticleLogic.GetAppArticleList(identity, pageIndex, pageSize, GetAuthUserId());
+
+            var userInfo = GetUserData();
+
+
+            //当前用户所属门店ID
+            int shopId = userInfo.ShopId;
+            //如果当前用户所属分店，且当前其他类型为总店，那么shopid=当前用户门店所属的总店ID
+            if (userInfo.ShopType == 2 && identity == 1)
+                shopId = userInfo.ShopBelongId;
+
+            if (identity == 0)
+                shopId = 0;
+
+            ResultPageModel data = ArticleLogic.GetAppArticleList(identity, pageIndex, pageSize, userInfo.UserId, shopId, userInfo.UserIdentity);
 
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict["list"] = data;
             if (pageIndex == 1 && (identity == 0 || identity == 1 || identity == 2))
-                dict["top"] = ArticleLogic.GetAppTopArticleList(identity);
+                dict["top"] = ArticleLogic.GetAppTopArticleList(identity, userInfo.UserIdentity, shopId);
             return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
 
