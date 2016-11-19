@@ -300,7 +300,7 @@ namespace BAMENG.API.Controllers
         /// todo 
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        [ActionAuthorize(AuthLogin = false, EnableSign = false)]
+        [ActionAuthorize]
         public ActionResult AllyApply(int userId, string mobile, string password
             , string nickname, string userName
             , int sex)
