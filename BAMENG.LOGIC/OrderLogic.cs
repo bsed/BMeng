@@ -42,6 +42,12 @@ namespace BAMENG.LOGIC
                 orderList.status = order.OrderStatus;
                 orderList.id = StringHelper.GetUTCTime(order.CreateTime);
                 orderList.orderId = order.orderId;
+                if (orderList.status == 0)
+                    orderList.statusName = "未成交";
+                else if (orderList.status == 1)
+                    orderList.statusName = "已成交";
+                else
+                    orderList.statusName = "退单";
                 result.Add(orderList);
             }
             return result;
@@ -108,6 +114,7 @@ namespace BAMENG.LOGIC
                 result.orderId = order.orderId;
                 result.orderTime = StringHelper.GetUTCTime(order.orderTime);
                 result.address = order.Ct_Address;
+                result.remark = order.Memo;
             }
             return result;
         }

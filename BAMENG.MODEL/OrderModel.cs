@@ -154,5 +154,12 @@ namespace BAMENG.MODEL
         public int status { get; set; }
 
 
+        /// <summary>
+        /// 备注
+        /// </summary>
+        /// <value>The remark.</value>
+        public string remark { get; set; }
+
+
     }
 }
