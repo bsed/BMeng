@@ -621,5 +621,105 @@ namespace BAMENG.LOGIC
             return false;
         }
 
+
+        /// <summary>
+        /// 获得盟豆流水记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public static BeansRecordsListIndexModel getBeansRecordsList(int userId, int lastId) {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                BeansRecordsListIndexModel result = new BeansRecordsListIndexModel();
+                if (lastId <= 0)
+                {
+                    result.outcome = countBeansMoney(userId, 0, 0);
+                    result.income = countBeansMoney(userId, 0, 1);
+                }
+                else {
+                    result.outcome = 0;
+                    result.income = 0;
+                }
+                result.list = toBeansRecordsList(dal.getBeansRecordsList(userId, lastId,0));
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// 获得积分流水
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public static List<BeansRecordsListModel> getScoreList(int userId, int lastId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return toBeansRecordsList(dal.getBeansRecordsList(userId, lastId, 1));
+            }
+        }
+
+        /// <summary>
+        /// 获取临时盟豆列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public static List<TempBeansRecordsListModel> getTempBeansRecordsList(int userId, int lastId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return toTempBeansRecordsList(dal.getTempBeansRecordsList(userId, lastId, 0));
+            }
+        }
+
+
+        private static List<BeansRecordsListModel> toBeansRecordsList(List<BeansRecordsModel> list)
+        {
+            List<BeansRecordsListModel> result = new List<BeansRecordsListModel>();
+            foreach (BeansRecordsModel model in list)
+            {
+                BeansRecordsListModel item = new BeansRecordsListModel();
+                item.id = model.ID;
+                item.money = model.Amount;
+                item.status = model.Income;
+                item.time = StringHelper.GetUTCTime(model.CreateTime);
+                item.remark = model.Remark;
+                result.Add(item);
+            }
+            return result;
+        }
+
+        private static List<TempBeansRecordsListModel> toTempBeansRecordsList(List<TempBeansRecordsModel> list)
+        {
+            List<TempBeansRecordsListModel> result = new List<TempBeansRecordsListModel>();
+            foreach (TempBeansRecordsModel model in list)
+            {
+                TempBeansRecordsListModel item = new TempBeansRecordsListModel();
+                item.id = model.ID;
+                item.money = model.Amount;
+                item.status = model.Income;
+                item.time = StringHelper.GetUTCTime(model.CreateTime);
+                result.Add(item);
+            }
+            return result;
+        }
+
+        public static decimal countBeansMoney(int userId, int LogType, int income)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return countBeansMoney(userId, LogType, income);
+            }
+        }
+
+        public static decimal countTempBeansMoney(int userId, int LogType, int income)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return countTempBeansMoney(userId, LogType, income);
+            }
+        }
     }
 }

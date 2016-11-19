@@ -1058,5 +1058,110 @@ namespace BAMENG.MODEL
 
     }
 
+    public class BeansRecordsListModel
+    {
+        public int id { get; set; }
+        public decimal money { get; set; }
+        /// <summary>
+        /// 0支出，1收入
+        /// </summary>
+        public int status{ get; set; }
+        public long time { get; set; }
+
+        public string remark { get; set; }
+    }
+
+    public class BeansRecordsListIndexModel
+    {
+        public List<BeansRecordsListModel> list { get; set; }
+        /// <summary>
+        /// 收入
+        /// </summary>
+        public decimal income { get; set; }
+        /// <summary>
+        /// 支出
+        /// </summary>
+        public decimal outcome { get; set; }
+    }
+
+    public class TempBeansRecordsListModel
+    {
+        public int id { get; set; }
+        public int money { get; set; }
+        public int status { get; set; }
+        public long time { get; set; }
+    }
+
+    public   class BeansRecordsModel
+    {        
+        public int ID { get; set; }
+       
+        /// <summary>
+        /// 
+        /// </summary>
+        public int LogType { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Income { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal Amount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Remark { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+      }
+
+    public class TempBeansRecordsModel
+    {
+        public int ID { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int LogType { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Income { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Amount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Remark { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+
+        public int Status { get; set; }
+    }
 
 }

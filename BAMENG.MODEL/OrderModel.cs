@@ -107,6 +107,8 @@ namespace BAMENG.MODEL
         /// 订单状态 0 未成交 1 已成交 2退单
         /// </summary>
         public int status { get; set; }
+
+        public string orderId { get; set; }
     }
 
 

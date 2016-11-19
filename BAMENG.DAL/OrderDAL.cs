@@ -29,6 +29,7 @@ namespace BAMENG.DAL
             string strSql = "select top 10 * from BM_Orders where UserId=@UserId";
             if (status > 0) strSql += " and OrderStatus=" + status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
+            strSql += " order by CreateTime desc";
             SqlParameter[] parameters = {
                     new SqlParameter("@UserId", masterUserId)
             };
@@ -55,6 +56,7 @@ namespace BAMENG.DAL
             string strSql = "select top 10 * from BM_Orders where Ct_BelongId=@UserId";
             if (status > 0) strSql += " and OrderStatus=" + status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
+            strSql += " order by CreateTime desc";
             SqlParameter[] parameters = {
                     new SqlParameter("@UserId", userId)
             };

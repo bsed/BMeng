@@ -41,6 +41,7 @@ namespace BAMENG.LOGIC
                 orderList.pictureUrl = WebConfig.reswebsite() + order.OrderImg;
                 orderList.status = order.OrderStatus;
                 orderList.id = StringHelper.GetUTCTime(order.CreateTime);
+                orderList.orderId = order.orderId;
                 result.Add(orderList);
             }
             return result;

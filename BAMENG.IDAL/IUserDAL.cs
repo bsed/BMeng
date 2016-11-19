@@ -357,6 +357,18 @@ namespace BAMENG.IDAL
         int GetConvertCount(int userid, int status);
 
 
+        /// <summary>
+        /// 获得盟都流水记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        List<BeansRecordsModel> getBeansRecordsList(int userId, int lastId, int LogType);
 
+        List<TempBeansRecordsModel> getTempBeansRecordsList(int userId, int lastId, int LogType);
+
+        decimal countBeansMoney(int userId, int LogType, int income);
+
+        decimal countTempBeansMoney(int userId, int LogType, int income);
     }
 }

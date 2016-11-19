@@ -70,9 +70,11 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <returns><![CDATA[{ status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult TempSettleBeanList()
+        public ActionResult TempSettleBeanList(int lastId)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+          var data =  UserLogic.getTempBeansRecordsList(userId,lastId);
+            return Json(new ResultModel(ApiStatusCode.OK,data));
         }
         /// <summary>
         /// 兑换盟豆 POST: user/ConvertToBean
@@ -257,8 +259,10 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult scoreList()
+        public ActionResult scoreList(int lastId)
         {
+            int userId = GetAuthUserId();
+            var data = UserLogic.getScoreList(userId, lastId);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 
@@ -268,8 +272,12 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult BeanFlowList()
+        public ActionResult BeanFlowList(int lastId)
         {
+            int userId = GetAuthUserId();
+            var data = UserLogic.getBeansRecordsList(userId,lastId);
+         
+
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 

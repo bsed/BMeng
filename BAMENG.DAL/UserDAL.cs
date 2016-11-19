@@ -1202,6 +1202,7 @@ namespace BAMENG.DAL
             string strSql = "select top 10 convert.*,UB_UserRealName as UserRealName from BM_BeansConvert as convert "
                 + " left join Hot_UserBaseInfo as user on user.UB_UserID=convert.UserId  where convert.UserId=@UserId";
             if (lastId > 0) strSql += " and id<" + lastId;
+            strSql += " order by id desc";
             var parms = new[] {
                    new SqlParameter("@UserId",userId)
             };
@@ -1225,6 +1226,7 @@ namespace BAMENG.DAL
             string strSql = "select top 10 convert.*,UB_UserRealName as UserRealName from BM_BeansConvert as convert "
                 + " left join Hot_UserBaseInfo as user on user.UB_UserID=convert.UserId where UserMasterId=@UserMasterId";
             if (lastId > 0) strSql += " and id<" + lastId;
+            strSql += " order by id desc";
             var parms = new[] {
                    new SqlParameter("@UserMasterId",userMasterId)
             };
@@ -1313,6 +1315,77 @@ namespace BAMENG.DAL
         }
 
 
+        /// <summary>
+        /// 获得盟豆流水记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public List<BeansRecordsModel> getBeansRecordsList(int userId, int lastId,int LogType)
+        {
+            List<BeansRecordsModel> list = new List<BeansRecordsModel>();
+            string strSql = "select * from BM_BeansRecords where UserId=@UserId and LogType=@LogType";
+            if (lastId > 0) strSql += " and id<" + lastId;
+            strSql += " order by id desc";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                 new SqlParameter("@LogType",LogType)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                list = DbHelperSQLP.GetEntityList<BeansRecordsModel>(dr);
+            }
+            return list;
+        }
+
+        public decimal countBeansMoney(int userId, int LogType,int income)
+        {
+            string strSql = "select sum(Amount) from BM_BeansRecords where UserId=@UserId and LogType=@LogType and Income=@Income";   
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@LogType",LogType),
+                new SqlParameter("@Income",income)
+            };
+
+            return Decimal.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString());
+        }
+
+
+
+        public decimal countTempBeansMoney(int userId, int LogType, int income)
+        {
+            string strSql = "select sum(Amount) from BM_TempBeansRecords where UserId=@UserId and LogType=@LogType and Income=@Income";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@LogType",LogType),
+                new SqlParameter("@Income",income)
+            };
+
+            return Decimal.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString());
+        }
+
+        /// <summary>
+        /// 获得盟豆流水记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lastId"></param>
+        /// <returns></returns>
+        public List<TempBeansRecordsModel> getTempBeansRecordsList(int userId, int lastId,int LogType)
+        {
+            List<TempBeansRecordsModel> list = new List<TempBeansRecordsModel>();
+            string strSql = "select * from BM_TempBeansRecords where UserId=@UserId and LogType=@LogType";
+            if (lastId > 0) strSql += " and id<" + lastId;
+            strSql += " order by id desc";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@LogType",LogType)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                list = DbHelperSQLP.GetEntityList<TempBeansRecordsModel>(dr);
+            }
+            return list;
+        }
 
 
         /// <summary>
@@ -1330,8 +1403,8 @@ namespace BAMENG.DAL
         //    };
         //    parameters[0].Value = customerId;
         //    parameters[1].Value = userId;
-   
-    
+
+
         //}
 
 
