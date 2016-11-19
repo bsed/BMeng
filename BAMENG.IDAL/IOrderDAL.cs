@@ -7,26 +7,35 @@ using System.Threading.Tasks;
 
 namespace BAMENG.IDAL
 {
-    public interface IOrderDAL :IDisposable
+    public interface IOrderDAL : IDisposable
     {
-      List<OrderModel> GetOrderList(int masterUserId, int status, long lastId);
+        List<OrderModel> GetOrderList(int masterUserId, int status, long lastId);
 
 
         /// <summary>
         /// 是否存在该记录
         /// </summary>
-         bool Exists(string orderId);
+        bool Exists(string orderId);
 
         /// <summary>
         /// 增加一条数据
         /// </summary>
-         bool Add(OrderModel model);
+        bool Add(OrderModel model);
         /// <summary>
         /// 更新一条数据
         /// </summary>
-         bool Update(string orderId, int status, string memo);
+        bool Update(string orderId, int status, string memo);
 
         OrderModel GetModel(string orderId);
+
+
+        /// <summary>
+        /// 获取订单完整详情
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>OrderModel.</returns>
+        OrderModel GetOrderDetail(string orderId);
+
 
         /// <summary>
         /// 计算订单数
@@ -42,7 +51,7 @@ namespace BAMENG.IDAL
         /// <param name="userId">The user identifier.</param>
         /// <param name="orderStatus">0 未成交 1 已成交 2退单</param>
         /// <returns>System.Int32.</returns>
-        int CountOrdersByAllyUserId(int userId,int orderStatus);
+        int CountOrdersByAllyUserId(int userId, int orderStatus);
 
         /// <summary>
         /// 计算订单数
@@ -61,5 +70,26 @@ namespace BAMENG.IDAL
         /// <param name="lastId"></param>
         /// <returns></returns>
         List<OrderModel> GetUserOrderList(int userId, int status, long lastId);
+
+
+
+
+        /// <summary>
+        /// 修改订单价格
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="status">0未成交，1已成交，2退单</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateOrderStatus(string orderId, int status);
+
+
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="shopType">门店类型1 总店 0分店</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetOrderList(int shopId, int shopType, SearchModel model);
     }
 }

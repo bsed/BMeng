@@ -107,12 +107,17 @@
     <Content Include="admin\messagelist.html" />
     <Content Include="admin\orderlist.html" />
     <Content Include="admin\shoplist.html" />
+    <Content Include="admin\orderdetails.html" />
     <Content Include="admin\userdetails.html" />
     <Content Include="admin\userlevel.html" />
     <Content Include="admin\customerlist.html" />
     <Content Include="admin\managerlist.html" />
     <Content Include="admin\userlist.html" />
-    <Content Include="article\details.html" />
+    <Content Include="app\register.html" />
+    <Content Include="app\about.html" />
+    <Content Include="app\details.html" />
+    <Content Include="app\myqrcode.html" />
+    <Content Include="app\agreement.html" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -125,6 +130,7 @@
     <Content Include="static\fonts\fontawesome-webfont.eot_" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot_" />
     <Content Include="static\img\sj%403x.png" />
+    <Content Include="static\img\wechat.jpg" />
     <Content Include="static\img\ydll%403x.png" />
     <Content Include="static\js\.DS_Store" />
     <Content Include="static\js\admin\apparticle.js" />
@@ -133,7 +139,9 @@
     <Content Include="static\js\admin\articlelist.js" />
     <Content Include="static\js\admin\basesetting.js" />
     <Content Include="static\js\admin\Login.js" />
+    <Content Include="static\js\admin\orderlist.js" />
     <Content Include="static\js\admin\messagelist.js" />
+    <Content Include="static\js\admin\orderdetails.js" />
     <Content Include="static\js\admin\userdetails.js" />
     <Content Include="static\js\admin\userlevel.js" />
     <Content Include="static\js\admin\customerlist.js" />

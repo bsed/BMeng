@@ -49,7 +49,8 @@ var userHelper = {
                                 tempHtml = tempHtml.replace("{UserHeadImg}", item.UserHeadImg);
                             else
                                 tempHtml = tempHtml.replace("{UserHeadImg}", "/static/img/bg.png");
-                            tempHtml = tempHtml.replace("{OrderSuccessAmount}", self.isAlly == 1 ? item.CustomerAmount : item.OrderSuccessAmount);
+                            tempHtml = tempHtml.replace("{OrderSuccessAmount}", item.OrderSuccessAmount);
+                            tempHtml = tempHtml.replace("{CustomerAmount}", item.CustomerAmount);
                             tempHtml = tempHtml.replace("{ActiveStatus}", item.IsActive == 1 ? "<span style='color:red;'>激活</span>" : "已冻结")
                             listhtml += tempHtml;
                         });

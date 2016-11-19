@@ -216,6 +216,16 @@ namespace BAMENG.ADMIN.handler
                     case "GETMESSAGESHOPLIST":
                         GetMessageShopList();
                         break;
+
+                    case "GETORDERLIST":
+                        GetOrderList();
+                        break;
+                    case "UPDATEORDERSTATUS":
+                        UpdateOrderStatus();
+                        break;
+                    case "GETORDERINFO":
+                        GetOrderInfo();
+                        break;
                     default:
                         break;
                 }
@@ -897,6 +907,53 @@ namespace BAMENG.ADMIN.handler
             var data = ShopLogic.GetShopList(user.UserIndentity == 0 ? 1 : 2, user.ID);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
 
+        }
+
+
+
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
+        private void GetOrderList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+                type = GetFormValue("type", -1)
+            };
+            if (user.UserIndentity != 0)
+            {
+                var data = OrderLogic.GetOrderList(user.ID, user.UserIndentity == 1 ? 1 : 0, model);
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+            }
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.NULL));
+
+        }
+
+        /// <summary>
+        /// 更新订单状态
+        /// </summary>
+        private void UpdateOrderStatus()
+        {
+            int type = GetFormValue("type", 1);
+            if (OrderLogic.UpdateOrderStatus(GetFormValue("orderid", ""), type))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.更新失败));
+        }
+
+        /// <summary>
+        /// 获取订单详情
+        /// </summary>
+        private void GetOrderInfo()
+        {
+            var data = OrderLogic.GetOrderDetail(GetFormValue("orderid", ""));
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
     }

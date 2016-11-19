@@ -163,6 +163,20 @@ namespace BAMENG.LOGIC
         }
 
         /// <summary>
+        /// 获取订单完整详情
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>OrderModel.</returns>
+        public static OrderModel GetOrderDetail(string orderId)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return dal.GetOrderDetail(orderId);
+            }
+        }
+
+
+        /// <summary>
         /// 计算订单数
         /// </summary>
         /// <param name="userId"></param>
@@ -217,6 +231,36 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.OrderFactory())
             {
                 return GetUserOrderList(userId, status, lastId);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="shopType">门店类型1 总店 0分店</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetOrderList(int shopId, int shopType, SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return dal.GetOrderList(shopId, shopType, model);
+            }
+        }
+
+        /// <summary>
+        /// 修改订单价格
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="status">0未成交，1已成交，2退单</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateOrderStatus(string orderId, int status)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return dal.UpdateOrderStatus(orderId, status);
             }
         }
     }
