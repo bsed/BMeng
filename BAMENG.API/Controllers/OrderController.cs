@@ -99,10 +99,10 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         public ActionResult UploadSuccessVoucher(string orderId
-            ,string customer,string mobile,decimal price,string memo)
+            , string customer, string mobile, decimal price, string memo)
         {
             OrderModel orderModel = OrderLogic.GetModel(orderId);
-            if (orderModel.OrderStatus != 1)
+            if (orderModel.OrderStatus != 0)
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
@@ -123,7 +123,7 @@ namespace BAMENG.API.Controllers
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
 
-                OrderLogic.UploadVoucher( orderId, customer, mobile, price, memo,fileName);
+                OrderLogic.UploadVoucher(orderId, customer, mobile, price, memo, fileName);
                 return Json(new ResultModel(ApiStatusCode.OK));
             }
             else

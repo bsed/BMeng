@@ -7,18 +7,18 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="description" content="" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
     <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">    
     <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />
-    
-    <title>二维码</title>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/css/plugins/qrcode/jquery-qrcode-0.14.0.min.js"></script>
+    <title>推广二维码</title>
 </head>
 <body>
     <div class="bm">
         <div class="lodinggo">
             <div class="bacfff textc">
                 <p id="code">
-                    <img src="../static/img/qr_code.png"  width="50%"/>
                 </p>
                 <p style="margin:10px;"><b>长按此图，识别图中二维码，成为我的盟友吧!</b></p>
             </div>
@@ -26,3 +26,13 @@
     </div>
 </body>
 </html>
+<script>
+    $(function () {
+        var arrs = window.location.href.split("/");
+        $("#code").qrcode({
+            render: "image",
+            size: 200,
+            text: "http://" + window.location.host + "/app/register.html?userid=" + arrs[arrs.length - 2]
+        });
+    });
+</script>

@@ -90,6 +90,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, SqlParameter[] commandParameters, Action<List<T>> callback, bool orderby = false) where T : new()
         {
+            PageSize = PageSize > 0 ? PageSize : 20;
             string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
@@ -194,6 +195,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, Action<List<T>> callback, bool orderby = false) where T : new()
         {
+            PageSize = PageSize > 0 ? PageSize : 20;
             string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
@@ -231,6 +233,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, bool orderby = false) where T : new()
         {
+            PageSize = PageSize > 0 ? PageSize : 20;
             string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 

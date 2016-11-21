@@ -27,7 +27,7 @@ namespace BAMENG.DAL
         {
 
             string strSql = "select top 10 * from BM_Orders where UserId=@UserId";
-            if (status > 0) strSql += " and OrderStatus=" + status;
+            if (status >= 0) strSql += " and OrderStatus=" + status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
             strSql += " order by CreateTime desc";
             SqlParameter[] parameters = {
@@ -108,11 +108,11 @@ namespace BAMENG.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into BM_Orders(");
-            strSql.Append("orderId,UserId,Ct_BelongId,ShopId,orderTime,Memo,OrderStatus,OrderImg,SuccessImg,Ct_Name,Ct_Mobile,Ct_Address,CashCouponAmount,CashCouponBn,FianlAmount,CreateTime)");
+            strSql.Append("orderId,UserId,Ct_BelongId,ShopId,orderTime,Memo,OrderStatus,OrderImg,SuccessImg,Ct_Name,Ct_Mobile,Ct_Address,CashCouponAmount,CashCouponBn,FianlAmount,CreateTime,MengBeans)");
             strSql.Append(" values (");
-            strSql.Append("@orderId,@UserId,@Ct_BelongId,@ShopId,@orderTime,@Memo,@OrderStatus,@OrderImg,@SuccessImg,@Ct_Name,@Ct_Mobile,@Ct_Address,@CashCouponAmount,@CashCouponBn,@FianlAmount,@CreateTime)");
+            strSql.Append("@orderId,@UserId,@Ct_BelongId,@ShopId,@orderTime,@Memo,@OrderStatus,@OrderImg,@SuccessImg,@Ct_Name,@Ct_Mobile,@Ct_Address,@CashCouponAmount,@CashCouponBn,@FianlAmount,@CreateTime,@MengBeans)");
             SqlParameter[] parameters = {
-                    new SqlParameter("@orderId", SqlDbType.NVarChar,50),
+                    new SqlParameter("@orderId", SqlDbType.NVarChar),
                     new SqlParameter("@UserId", SqlDbType.Int,4),
                     new SqlParameter("@Ct_BelongId", SqlDbType.Int,4),
                     new SqlParameter("@ShopId", SqlDbType.Int,4),
@@ -127,7 +127,9 @@ namespace BAMENG.DAL
                     new SqlParameter("@CashCouponAmount", SqlDbType.Decimal,9),
                     new SqlParameter("@CashCouponBn", SqlDbType.NVarChar,50),
                     new SqlParameter("@FianlAmount", SqlDbType.Decimal,9),
-                    new SqlParameter("@CreateTime", SqlDbType.DateTime)};
+                    new SqlParameter("@CreateTime", SqlDbType.DateTime),
+                    new SqlParameter("@MengBeans",model.MengBeans)
+            };
             parameters[0].Value = model.orderId;
             parameters[1].Value = model.UserId;
             parameters[2].Value = model.Ct_BelongId;

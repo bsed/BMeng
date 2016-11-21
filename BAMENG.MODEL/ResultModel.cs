@@ -253,5 +253,20 @@ namespace BAMENG.MODEL
         /// 城市
         /// </summary>
         public string city { get; set; }
+
+
+        /// <summary>
+        /// 排序类型，0盟友等级，1客户信息，2订单成交
+        /// </summary>
+        /// <value>The orderby code.</value>
+        public int orderbyCode { get; set; }
+
+
+        /// <summary>
+        /// 是否降序
+        /// </summary>
+        /// <value>true if desc; otherwise, false.</value>
+        public bool IsDesc { get; set; }
+
     }
 }

@@ -69,13 +69,6 @@ namespace BAMENG.MODEL
 
 
         /// <summary>
-        /// 我的二维码
-        /// </summary>
-        /// <value>The myqrcode URL.</value>
-        public string myqrcodeUrl { get; set; }
-
-
-        /// <summary>
         ///启用签到 1启用，0禁用
         /// </summary>
         /// <value>The enable sign in.</value>

@@ -398,6 +398,15 @@ namespace BAMENG.IDAL
 
         decimal countTempBeansMoney(int userId, int LogType, int income);
 
+
+        /// <summary>
+        /// 获取待结算盟豆
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="LogType">Type of the log.</param>
+        /// <returns>System.Decimal.</returns>
+        decimal countTempBeansMoney(int userId, int LogType);
+
         /// <summary>
         /// 添加用户积分
         /// </summary>
@@ -416,5 +425,38 @@ namespace BAMENG.IDAL
 
         int AddTempBeansRecords(TempBeansRecordsModel model);
         int AddBeansRecords(BeansRecordsModel model);
+
+
+        /// <summary>
+        ///添加用户客户提交量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddUserCustomerAmount(int userId);
+
+        /// <summary>
+        /// 添加用户订单成交量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddUserOrderSuccessAmount(int userId);
+
+
+
+        /// <summary>
+        /// 获取盟友数量
+        /// </summary>
+        /// <param name="userid">The userid.</param>
+        /// <returns>System.Int32.</returns>
+        int GetAllyCount(int userid);
+
+
+
+        /// <summary>
+        /// 获取排名
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>MyAllyIndexModel.</returns>
+        MyAllyIndexModel GetUserRank(int userId);
     }
 }

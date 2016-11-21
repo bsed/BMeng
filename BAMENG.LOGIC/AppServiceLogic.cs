@@ -48,7 +48,6 @@ namespace BAMENG.LOGIC
 
             data.baseData.agreementUrl = WebConfig.articleDetailsDomain() + "/app/agreement.html";
 
-            data.baseData.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html";
 
             data.baseData.userStatus = 1;
 
@@ -108,12 +107,15 @@ namespace BAMENG.LOGIC
                     if (model.IsActive == 1)
                     {
                         apiCode = ApiStatusCode.OK;
+                        model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
+                        model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
+                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
+                        model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
+
+                       
                         string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
                         if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
-                        {
                             model.token = token;
-                            model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
-                        }
                         return model;
                     }
                     else
@@ -124,7 +126,7 @@ namespace BAMENG.LOGIC
                 }
                 else
                 {
-                    apiCode = ApiStatusCode.账户不存在;
+                    apiCode = ApiStatusCode.账户密码不正确;
                     return null;
                 }
             }

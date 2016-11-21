@@ -34,7 +34,7 @@ namespace BAMENG.DAL
         /// </summary>
         private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
-                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId
+                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId,ue.CustomerAmount,ue.OrderSuccessAmount
                              from BM_User_extend ue
                             inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID =ue.UserId
                             left join BM_ShopManage S with(nolock) on S.ShopID=ue.ShopId
@@ -143,14 +143,13 @@ namespace BAMENG.DAL
                 new SqlParameter("@ShopId",ShopId)
             };
             //生成sql语句
-            return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, "ue.CreateTime", param, (items) =>
-            {
-                items.ForEach((item) =>
-                {
-                    item.CustomerAmount = cus.GetCustomerCount(item.UserId, item.UserIdentity, 1);
-                    item.OrderSuccessAmount = item.UserIdentity == 1 ? order.CountOrders(item.UserId, 1) : order.CountOrdersByAllyUserId(item.UserId, 1);
-                });
-            });
+            return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, "ue.CreateTime", param);
+
+            //items.ForEach((item) =>
+            //{
+            //    item.CustomerAmount = cus.GetCustomerCount(item.UserId, item.UserIdentity, 1);
+            //    item.OrderSuccessAmount = item.UserIdentity == 1 ? order.CountOrders(item.UserId, 1) : order.CountOrdersByAllyUserId(item.UserId, 1);
+            //});
         }
 
 
@@ -168,16 +167,10 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {
                 var data = DbHelperSQLP.GetEntity<UserModel>(dr);
-                if (data != null)
-                {
-                    data.CustomerAmount = cus.GetCustomerCount(data.UserId, data.UserIdentity, 1);
-                    data.OrderSuccessAmount = data.UserIdentity == 1 ? order.CountOrders(data.UserId, 1) : order.CountOrdersByAllyUserId(data.UserId, 1);
-                }
                 return data;
             }
 
         }
-
 
         /// <summary>
         /// 添加商城用户
@@ -600,19 +593,30 @@ namespace BAMENG.DAL
 
             strSql += " and ue.UserIdentity=0 and U.UB_BelongOne=@UB_BelongOne";
 
+
+            string orderFiled = "ue.CreateTime";
+            switch (model.orderbyCode)
+            {
+                case 0:
+                    orderFiled = "U.UB_LevelID";
+                    break;
+                case 1:
+                    orderFiled = "ue.CustomerAmount";
+                    break;
+                case 2:
+                    orderFiled = "ue.OrderSuccessAmount";
+                    break;
+                default:
+                    break;
+            }
+            bool isDesc = model.IsDesc ? false : true;
+
             var param = new[] {
                 new SqlParameter("@UB_BelongOne",model.UserId),
             };
 
             //生成sql语句
-            return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, "ue.CreateTime", param, (items) =>
-            {
-                items.ForEach((item) =>
-                {
-                    item.CustomerAmount = cus.GetCustomerCount(item.UserId, item.UserIdentity, 1);
-                    item.OrderSuccessAmount = item.UserIdentity == 1 ? order.CountOrders(item.UserId, 1) : order.CountOrdersByAllyUserId(item.UserId, 1);
-                });
-            });
+            return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, orderFiled, isDesc, param);
         }
 
 
@@ -1045,7 +1049,7 @@ namespace BAMENG.DAL
                     new SqlParameter("@UserName",userName),
                     new SqlParameter("@Sex", sex),
                     new SqlParameter("@Mobile", mobile),
-                    new SqlParameter("@Status", 0),
+                    new SqlParameter("@Status", "0"),
                     new SqlParameter("@CreateTime", DateTime.Now),
                     new SqlParameter("@NickNname", nickname),
                     new SqlParameter("@Password", password)
@@ -1190,7 +1194,7 @@ namespace BAMENG.DAL
                     new SqlParameter("@CreateTime", DateTime.Now)};
 
 
-            return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
 
         }
 
@@ -1299,7 +1303,7 @@ namespace BAMENG.DAL
             var parms = new[] {
                    new SqlParameter("@id",userId)
             };
-            return Int32.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms).ToString());
+            return int.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms).ToString());
         }
 
         /// <summary>
@@ -1351,7 +1355,11 @@ namespace BAMENG.DAL
                 new SqlParameter("@Income",income)
             };
 
-            return Decimal.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString());
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString();
+            if (obj != null && obj.ToString() != "")
+                return Convert.ToDecimal(obj);
+            else
+                return 0;
         }
 
 
@@ -1365,8 +1373,35 @@ namespace BAMENG.DAL
                 new SqlParameter("@Income",income)
             };
 
-            return Decimal.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString());
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString();
+            if (obj != null && obj.ToString() != "")
+                return Convert.ToDecimal(obj);
+            else
+                return 0;
         }
+
+
+        /// <summary>
+        /// 获取待结算盟豆
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="LogType">Type of the log.</param>
+        /// <returns>System.Decimal.</returns>
+        public decimal countTempBeansMoney(int userId, int LogType)
+        {
+            string strSql = "select sum(Amount) from BM_TempBeansRecords where UserId=@UserId and LogType=@LogType";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@LogType",LogType)
+            };
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString();
+            if (obj != null && obj.ToString() != "")
+                return Convert.ToDecimal(obj);
+            else
+                return 0;
+        }
+
+
 
         /// <summary>
         /// 获得盟豆流水记录
@@ -1395,9 +1430,9 @@ namespace BAMENG.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into BM_TempBeansRecords(");
-            strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime,Status)");
+            strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime,Status,OrderId)");
             strSql.Append(" values (");
-            strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@Status)");
+            strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@Status,@OrderId)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
                     new SqlParameter("@LogType", SqlDbType.Int,4),
@@ -1406,7 +1441,9 @@ namespace BAMENG.DAL
                     new SqlParameter("@Amount", SqlDbType.Int,4),
                     new SqlParameter("@Remark", SqlDbType.NVarChar,500),
                     new SqlParameter("@CreateTime", SqlDbType.DateTime),
-                    new SqlParameter("@Status", SqlDbType.Int,4)};
+                    new SqlParameter("@Status", SqlDbType.Int,4),
+                    new SqlParameter("@OrderId", model.OrderId)
+            };
             parameters[0].Value = model.LogType;
             parameters[1].Value = model.UserId;
             parameters[2].Value = model.Income;
@@ -1415,16 +1452,16 @@ namespace BAMENG.DAL
             parameters[5].Value = model.CreateTime;
             parameters[6].Value = model.Status;
 
-            return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
 
         public int AddBeansRecords(BeansRecordsModel model)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into BM_TempBeansRecords(");
-            strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime)");
+            strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime,OrderId)");
             strSql.Append(" values (");
-            strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime)");
+            strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@OrderId)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
                     new SqlParameter("@LogType", model.LogType),
@@ -1432,9 +1469,11 @@ namespace BAMENG.DAL
                     new SqlParameter("@Income", model.Income),
                     new SqlParameter("@Amount", model.Amount),
                     new SqlParameter("@Remark", model.Remark),
-                    new SqlParameter("@CreateTime", model.CreateTime)};
+                    new SqlParameter("@CreateTime", model.CreateTime),
+                    new SqlParameter("@OrderId", model.OrderId)
+            };
 
-            return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
 
         /// <param name="userId">The user identifier.</param>
@@ -1546,7 +1585,7 @@ namespace BAMENG.DAL
         public ResultPageModel GetApplyFriendList(SearchModel model)
         {
             ResultPageModel result = new ResultPageModel();
-            string strSql = "select ID,UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname as NickName,Password from BM_ApplyFriend where 1=1 and UserId=@UserId and Status<>1";
+            string strSql = "select ID,UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname as NickName,Password from BM_ApplyFriend where 1=1 and UserId=@UserId and Status=0";
 
             var param = new[] {
                 new SqlParameter("@UserId",model.UserId),
@@ -1571,6 +1610,70 @@ namespace BAMENG.DAL
 
                 });
             });
+        }
+
+
+
+        /// <summary>
+        ///添加用户客户提交量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddUserCustomerAmount(int userId)
+        {
+            string strSql = "update BM_User_extend set CustomerAmount=CustomerAmount+1 where UserId=@UserId";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+        /// <summary>
+        /// 添加用户订单成交量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddUserOrderSuccessAmount(int userId)
+        {
+            string strSql = "update BM_User_extend set OrderSuccessAmount=OrderSuccessAmount+1 where UserId=@UserId";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+        /// <summary>
+        /// 获取盟友数量
+        /// </summary>
+        /// <param name="userid">The userid.</param>
+        /// <returns>System.Int32.</returns>
+        public int GetAllyCount(int userid)
+        {
+            string strSql = "select COUNT(1) from BM_User_extend where UserIdentity=0  and UserId=@UserId";
+            var param = new[] {
+                new SqlParameter("@UserId",userid)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        }
+
+        /// <summary>
+        /// 获取排名
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>MyAllyIndexModel.</returns>
+        public MyAllyIndexModel GetUserRank(int userId)
+        {
+            string strSql = @"select CustomerRank,OrderRank from (
+                                SELECT UserId, RANK() over(order by CustomerAmount desc) CustomerRank, RANK() over(order by OrderSuccessAmount desc) OrderRank 
+                                FROM BM_User_extend D WITH(NOLOCK)
+                                ) as temp where temp.UserId = @UserId";
+            var param = new[] {
+                new SqlParameter("@UserId",userId)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param))
+            {
+                return DbHelperSQLP.GetEntity<MyAllyIndexModel>(dr);
+            }
         }
 
     }

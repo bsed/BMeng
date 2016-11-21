@@ -110,15 +110,19 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
+        /// <param name="orderbyCode">排序类型，-1 默认  0盟友等级，1客户信息，2订单成交</param>
+        /// <param name="isDesc">是否降序</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public JsonResult allylist(int pageIndex, int pageSize)
+        public JsonResult allylist(int pageIndex, int pageSize, int orderbyCode, int isDesc)
         {
             var data = UserLogic.GetAllyList(new SearchModel()
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                UserId = GetAuthUserId()
+                UserId = GetAuthUserId(),
+                orderbyCode = orderbyCode,
+                IsDesc = isDesc == 1
             });
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
@@ -315,30 +319,16 @@ namespace BAMENG.API.Controllers
         /// <param name="pageSize">Size of the page.</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult AllyApplylist(int type, int pageIndex, int pageSize)
+        public ActionResult AllyApplylist(int pageIndex, int pageSize)
         {
             int userId = GetAuthUserId();
-            if (type == 1)
+            var data = UserLogic.GetApplyFriendList(new SearchModel()
             {
-                var data = UserLogic.GetAllyList(new SearchModel()
-                {
-                    PageIndex = pageIndex,
-                    PageSize = pageSize,
-                    UserId = userId
-                });
-                return Json(new ResultModel(ApiStatusCode.OK, data));
-            }
-            else
-            {
-
-                var data = UserLogic.GetApplyFriendList(new SearchModel()
-                {
-                    PageIndex = pageIndex,
-                    PageSize = pageSize,
-                    UserId = userId
-                });
-                return Json(new ResultModel(ApiStatusCode.OK, data));
-            }
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                UserId = userId
+            });
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
         /// <summary>
         /// 盟友申请审核 POST: user/AllyApplyAudit
@@ -410,17 +400,12 @@ namespace BAMENG.API.Controllers
         {
             var user = GetUserData();
             var data = UserLogic.MyBusinessAmount(user.UserId, user.UserIdentity);
+            if (data != null)
+            {
+                data.customerAmount = user.CustomerAmount;
+                data.orderAmount = user.OrderSuccessAmount;
+            }
             return Json(new ResultModel(ApiStatusCode.OK, data));
-        }
-
-        /// <summary>
-        /// 我的财富 POST: user/MyTreasure
-        /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        [ActionAuthorize]
-        public ActionResult MyTreasure()
-        {
-            return Json(new ResultModel(ApiStatusCode.OK));
         }
 
         /// <summary>
@@ -430,7 +415,14 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult AllyHomeSummary()
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            var user = GetUserData();
+
+            MyAllyIndexModel data = UserLogic.GetUserRank(user.UserId);
+            if (data == null) data = new MyAllyIndexModel();
+            data.OrderSuccessAmount = user.OrderSuccessAmount;
+            data.CustomerAmount = user.CustomerAmount;
+            data.AllyAmount = UserLogic.GetAllyCount(user.BelongOne);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
 
         }
     }

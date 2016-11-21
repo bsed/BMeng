@@ -560,7 +560,18 @@ namespace BAMENG.LOGIC
                 return dal.GetConvertCount(userid, status);
             }
         }
-
+        /// <summary>
+        /// 获取盟友数量
+        /// </summary>
+        /// <param name="userid">The userid.</param>
+        /// <returns>System.Int32.</returns>
+        public static int GetAllyCount(int userid)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetAllyCount(userid);
+            }
+        }
 
 
         /// <summary>
@@ -572,12 +583,6 @@ namespace BAMENG.LOGIC
         public static MyUserBusinessModel MyBusinessAmount(int userId, int userIdentity)
         {
             MyUserBusinessModel model = new MyUserBusinessModel();
-
-            //订单数量
-            model.orderAmount = userIdentity == 1 ? OrderLogic.CountOrders(userId, 0) : OrderLogic.CountOrdersByAllyUserId(userId, 0);
-
-            //客户数量
-            model.customerAmount = CustomerLogic.GetCustomerCount(userId, userIdentity, 0);
 
             //兑换数量
             model.exchangeAmount = GetConvertCount(userId, 0);
@@ -722,16 +727,21 @@ namespace BAMENG.LOGIC
                      * 更新签到缓存
                      */
                     RefreshMemberSignCache(userId, memberSign);
-
-
-                    /**
-                     * 添加签到日志
-                     */
-
-
                     //将签到获得积分，冲入用户积分账号中
                     if (dal.addUserIntegral(userId, Integral + RewardIntegral) > 0)
                     {
+                        /**
+                         * 添加签到日志
+                         */
+                        BeansRecordsModel model2 = new BeansRecordsModel();
+                        model2.Amount = Integral + RewardIntegral;
+                        model2.UserId = userId;
+                        model2.LogType = 1;
+                        model2.Income = 1;
+                        model2.Remark = "签到";
+                        model2.OrderId = "";
+                        model2.CreateTime = DateTime.Now;
+                        dal.AddBeansRecords(model2);
                         apiCode = ApiStatusCode.OK;
                     }
 
@@ -761,7 +771,7 @@ namespace BAMENG.LOGIC
                 BeansRecordsListIndexModel result = new BeansRecordsListIndexModel();
                 if (lastId <= 0)
                 {
-                    result.outcome = countBeansMoney(userId, 0, 0);
+                    result.outcome = countBeansMoney(userId, 0, 0) * -1;
                     result.income = countBeansMoney(userId, 0, 1);
                 }
                 else
@@ -834,6 +844,13 @@ namespace BAMENG.LOGIC
             return result;
         }
 
+        /// <summary>
+        /// 统计盟豆数据
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="LogType">0盟豆 1积分</param>
+        /// <param name="income">0支出 1收入.</param>
+        /// <returns>System.Decimal.</returns>
         public static decimal countBeansMoney(int userId, int LogType, int income)
         {
             using (var dal = FactoryDispatcher.UserFactory())
@@ -842,6 +859,13 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 统计临时盟豆数据.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="LogType">0盟豆 1积分</param>
+        /// <param name="income">0支出 1收入.</param>
+        /// <returns>System.Decimal.</returns>
         public static decimal countTempBeansMoney(int userId, int LogType, int income)
         {
             using (var dal = FactoryDispatcher.UserFactory())
@@ -849,6 +873,21 @@ namespace BAMENG.LOGIC
                 return dal.countTempBeansMoney(userId, LogType, income);
             }
         }
+        /// <summary>
+        /// 获取待结算盟豆
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="LogType">Type of the log.</param>
+        /// <returns>System.Decimal.</returns>
+        public static decimal countTempBeansMoney(int userId, int LogType)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.countTempBeansMoney(userId, LogType);
+            }
+        }
+
+
         /// 获取签到信息
         /// </summary>
         /// <param name="userId">用户ID</param>
@@ -916,6 +955,50 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 return dal.GetApplyFriendList(model);
+            }
+        }
+
+
+        /// <summary>
+        ///添加用户客户提交量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddUserCustomerAmount(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.AddUserCustomerAmount(userId);
+            }
+        }
+
+        /// <summary>
+        /// 添加用户订单成交量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddUserOrderSuccessAmount(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.AddUserOrderSuccessAmount(userId);
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// 获取排名
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>MyAllyIndexModel.</returns>
+        public static MyAllyIndexModel GetUserRank(int userId)
+        {
+
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetUserRank(userId);
             }
         }
 

@@ -168,6 +168,7 @@
     <Content Include="handler\Logout.ashx" />
     <Content Include="handler\UploadFileEidt.ashx" />
     <Content Include="handler\articleInfo.ashx" />
+    <Content Include="handler\app.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -550,6 +551,10 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="handler\app.ashx.cs">
+      <DependentUpon>app.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="handler\articleInfo.ashx.cs">
       <DependentUpon>articleInfo.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

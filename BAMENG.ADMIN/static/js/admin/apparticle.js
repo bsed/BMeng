@@ -27,6 +27,7 @@ var articleInfoHelper = {
         hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
+                   // document.title = ret.data.ArticleTitle;
                     $(".demos-title").text(ret.data.ArticleTitle);
                     $("#articleTime").text(ret.data.PublishTime);
                     $("#articleAmount").text(ret.data.BrowseAmount);

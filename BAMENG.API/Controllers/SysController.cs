@@ -32,7 +32,9 @@ namespace BAMENG.API.Controllers
                 AppInitModel data = AppServiceLogic.Instance.Initialize(Version, OS);
                 data.userData = GetUserData();
                 if (data.userData != null)
-                    data.baseData.userStatus = data.userData.IsActive;
+                {
+                    data.baseData.userStatus = data.userData.IsActive;                    
+                }
                 else
                     data.baseData.userStatus = -1;
 

@@ -73,6 +73,11 @@ namespace BAMENG.API.Controllers
                     Remark = remark,
                     Status = user.UserIdentity == 1 ? 1 : 0
                 });
+
+                if (flag && user.UserIdentity == 1)
+                    UserLogic.AddUserCustomerAmount(user.UserId);
+
+
                 return Json(new ResultModel(ApiStatusCode.OK));
             }
             else

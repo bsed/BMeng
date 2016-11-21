@@ -180,7 +180,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public bool IsExist(string mobile, string addr)
         {
-            string strSql = "select COUNT(1) from BM_CustomerManage where IsDel=0 and Status==1 and (Mobile =@Mobile or Addr =@Addr)";
+            string strSql = "select COUNT(1) from BM_CustomerManage where IsDel=0 and Status=1 and (Mobile =@Mobile or Addr =@Addr)";
             var param = new[] {
                 new SqlParameter("@Mobile",mobile),
                 new SqlParameter("@Addr",addr)

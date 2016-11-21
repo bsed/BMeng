@@ -174,6 +174,19 @@ namespace BAMENG.MODEL
         /// <value>The shop belong identifier.</value>
         [JsonIgnore()]
         public int ShopBelongId { get; set; }
+
+
+        /// <summary>
+        /// 我的二维码
+        /// </summary>
+        /// <value>The myqrcode URL.</value>
+        public string myqrcodeUrl { get; set; }
+
+        /// <summary>
+        /// 分享二维码
+        /// </summary>
+        /// <value>My share qrcode URL.</value>
+        public string myShareQrcodeUrl { get; set; }
     }
 
 
@@ -1128,8 +1141,10 @@ namespace BAMENG.MODEL
     {
         public int ID { get; set; }
 
+        public string OrderId { get; set; }
+
         /// <summary>
-        /// 
+        /// 0盟豆 1积分
         /// </summary>
         public int LogType { get; set; }
 
@@ -1139,7 +1154,7 @@ namespace BAMENG.MODEL
         public int UserId { get; set; }
 
         /// <summary>
-        /// 
+        /// 1收入 0支出
         /// </summary>
         public int Income { get; set; }
 
@@ -1163,8 +1178,11 @@ namespace BAMENG.MODEL
     {
         public int ID { get; set; }
 
+
+        public string OrderId { get; set; }
+
         /// <summary>
-        /// 
+        /// 0盟豆 1积分
         /// </summary>
         public int LogType { get; set; }
 
@@ -1174,7 +1192,7 @@ namespace BAMENG.MODEL
         public int UserId { get; set; }
 
         /// <summary>
-        /// 
+        /// 1收入 0支出
         /// </summary>
         public int Income { get; set; }
 
@@ -1194,5 +1212,51 @@ namespace BAMENG.MODEL
         public DateTime CreateTime { get; set; }
 
         public int Status { get; set; }
+    }
+
+
+
+    /// <summary>
+    /// 盟友首页数据汇总.
+    /// </summary>
+    public class MyAllyIndexModel
+    {
+        /// <summary>
+        /// 客户信息量
+        /// </summary>
+        /// <value>The customer amount.</value>
+        public int CustomerAmount { get; set; }
+
+        /// <summary>
+        /// 客户排名
+        /// </summary>
+        /// <value>The customer rank.</value>
+        public int CustomerRank { get; set; }
+
+
+        /// <summary>
+        /// 盟主的盟友数量
+        /// </summary>
+        /// <value>The ally amount.</value>
+        public int AllyAmount{ get; set; }
+
+
+        /// <summary>
+        /// 订单成交量
+        /// </summary>
+        /// <value>The order success amount.</value>
+        public int OrderSuccessAmount { get; set; }
+
+
+        /// <summary>
+        ///订单排名
+        /// </summary>
+        /// <value>The order rank.</value>
+        public int OrderRank { get; set; }
+
+
+
+
+
     }
 }

@@ -14,12 +14,13 @@ namespace BAMENG.MODEL
         public string orderId { get; set; }
 
         /// <summary>
-        /// 
+        /// 订单归属盟主
         /// </summary>
         public int UserId { get; set; }
         /// <summary>
-        /// 
+        /// 客户归属盟友
         /// </summary>
+        /// <value>The CT_ belong identifier.</value>
         public int Ct_BelongId { get; set; }
         /// <summary>
         /// 
@@ -102,6 +103,13 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The note.</value>
         public string Note { get; set; }
+
+        /// <summary>
+        /// 需付盟豆
+        /// </summary>
+        /// <value>The meng beans.</value>
+        public decimal MengBeans { get; set; }
+
     }
 
     public class OrderListModel
@@ -152,6 +160,13 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The note.</value>
         public string note { get; set; }
+
+
+        /// <summary>
+        /// 需付盟豆
+        /// </summary>
+        /// <value>The meng beans.</value>
+        public decimal mengbeans { get; set; }
     }
 
 

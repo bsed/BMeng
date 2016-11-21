@@ -44,6 +44,7 @@ namespace BAMENG.LOGIC
                 orderList.orderId = order.orderId;
                 orderList.remark = order.Memo;
                 orderList.note = order.Note;
+                orderList.mengbeans = order.MengBeans;
                 if (orderList.status == 0)
                     orderList.statusName = "未成交";
                 else if (orderList.status == 1)
@@ -55,6 +56,17 @@ namespace BAMENG.LOGIC
             return result;
         }
 
+        /// <summary>
+        /// 创建订单
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <param name="mobile">The mobile.</param>
+        /// <param name="address">The address.</param>
+        /// <param name="cashNo">The cash no.</param>
+        /// <param name="memo">The memo.</param>
+        /// <param name="filename">The filename.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
         public static bool saveOrder(int userId, string userName, string mobile, string address, string cashNo, string memo, string filename)
         {
 
@@ -62,13 +74,6 @@ namespace BAMENG.LOGIC
             model.orderId = createOrderNo(userId);
             model.UserId = userId;
             model.Ct_BelongId = userId;
-
-            CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
-            if (customer != null)
-            {
-                model.Ct_BelongId = customer.BelongOne;
-                model.ShopId = customer.ShopId;
-            }
             model.orderTime = DateTime.Now;
             model.Memo = memo;
             model.OrderStatus = 0;
@@ -77,8 +82,12 @@ namespace BAMENG.LOGIC
             model.Ct_Name = userName;
             model.Ct_Mobile = mobile;
             model.Ct_Address = address;
+            model.FianlAmount = 0;
+            model.CreateTime = DateTime.Now;
 
+            //判断订单是否使用优惠券
             CashCouponLogModel coupon = null;
+            int cashUserId = 0;
             using (var dal = FactoryDispatcher.CouponFactory())
             {
                 coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
@@ -86,25 +95,51 @@ namespace BAMENG.LOGIC
                 {
                     model.CashCouponAmount = coupon.Money;
                     model.CashCouponBn = cashNo;
-                    model.UserId = coupon.UserId;
+                    cashUserId = coupon.UserId;
                 }
             }
-            model.FianlAmount = 0;
-            model.CreateTime = DateTime.Now;
-
-            using (var dal = FactoryDispatcher.UserFactory())
+            //如果没有优惠
+            if (cashUserId <= 0)
             {
-                if (coupon != null)
+                //根据手机号或地址，查找客户
+                CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
+                if (customer != null)
                 {
-                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(coupon.UserId);
-                    TempBeansRecordsModel model1 = new TempBeansRecordsModel();
-                    model1.Amount = rewardSettingModel.CustomerReward;
-                    model1.UserId = coupon.UserId;
-                    model1.LogType = 0;
-                    model1.Income = 1;
-                    model1.CreateTime = DateTime.Now;
-                    model1.Status = 0;
-                    dal.AddTempBeansRecords(model1);
+                    //设置订单归属用户
+                    model.Ct_BelongId = customer.BelongOne;
+                    model.UserId = customer.BelongTwo;
+                    model.ShopId = customer.ShopId;
+                    cashUserId = customer.BelongOne;
+                }
+            }
+
+            if (cashUserId > 0)
+            {
+                using (var dal = FactoryDispatcher.UserFactory())
+                {
+                    var user = dal.GetUserModel(cashUserId);
+                    if (user.UserIdentity == 0)
+                    {
+                        model.UserId = user.BelongOne;
+                        model.Ct_BelongId = user.UserId;
+                        //获取盟友奖励
+                        RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(user.BelongOne);
+                        if (rewardSettingModel != null)
+                        {
+                            //订单成交需付盟豆
+                            model.MengBeans = rewardSettingModel.OrderReward;
+                            //插入盟友订单成交临时奖励
+                            TempBeansRecordsModel model1 = new TempBeansRecordsModel();
+                            model1.Amount = rewardSettingModel.OrderReward;
+                            model1.UserId = coupon.UserId;
+                            model1.LogType = 0;
+                            model1.Income = 1;
+                            model1.CreateTime = DateTime.Now;
+                            model1.Status = 0;
+                            model1.Remark = "下单";
+                            dal.AddTempBeansRecords(model1);
+                        }
+                    }
                 }
             }
 
@@ -148,7 +183,7 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.OrderFactory())
             {
                 OrderModel orderModel = dal.GetModel(orderId);
-                if (orderModel == null || orderModel.UserId != userId)
+                if (orderModel == null)
                 {
                     code = ApiStatusCode.订单存在问题;
                     return false;
@@ -162,50 +197,75 @@ namespace BAMENG.LOGIC
                 //改订单为已处理
                 if (status == 1 && orderModel.UserId != orderModel.Ct_BelongId)
                 {
-                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(orderModel.UserId);
-                    //给盟友加盟豆
-                    UserLogic.addUserMoney(orderModel.UserId, rewardSettingModel.OrderReward);
                     //更新用户等级
                     UserLogic.userUpdate(orderModel.UserId);
-
-                    using (var dal1 = FactoryDispatcher.UserFactory())
+                    if (orderModel.MengBeans > 0)
                     {
-                        RewardsSettingModel rewardSettingModel1 = UserLogic.GetRewardModel(orderModel.UserId);
-                        TempBeansRecordsModel model1 = new TempBeansRecordsModel();
-                        model1.Amount = rewardSettingModel1.CustomerReward;
-                        model1.UserId = orderModel.UserId;
-                        model1.LogType = 0;
-                        model1.Income = 0;
-                        model1.CreateTime = DateTime.Now;
-                        model1.Status = 0;
-                        dal1.AddTempBeansRecords(model1);
+                        //给盟友加盟豆
+                        UserLogic.addUserMoney(orderModel.Ct_BelongId, orderModel.MengBeans);
 
-                        BeansRecordsModel model2 = new BeansRecordsModel();
-                        model2.Amount = rewardSettingModel.OrderReward;
-                        model2.UserId = orderModel.UserId;
-                        model2.LogType = 0;
-                        model2.Income = 1;
-                        model2.CreateTime = DateTime.Now;
-                        dal1.AddBeansRecords(model2);
+                        using (var dal1 = FactoryDispatcher.UserFactory())
+                        {
+
+                            TempBeansRecordsModel model1 = new TempBeansRecordsModel();
+                            model1.Amount = -orderModel.MengBeans;
+                            model1.UserId = orderModel.UserId;
+                            model1.LogType = 0;
+                            model1.Income = 0;
+                            model1.CreateTime = DateTime.Now;
+                            model1.Status = 0;
+                            model1.OrderId = orderModel.orderId;
+                            model1.Remark = "转正";
+                            dal1.AddTempBeansRecords(model1);
+
+                            BeansRecordsModel model2 = new BeansRecordsModel();
+                            model2.Amount = orderModel.MengBeans;
+                            model2.UserId = orderModel.UserId;
+                            model2.LogType = 0;
+                            model2.Income = 1;
+                            model2.Remark = "转正";
+                            model2.OrderId = orderModel.orderId;
+                            model2.CreateTime = DateTime.Now;
+                            dal1.AddBeansRecords(model2);
+                        }
                     }
                 }
-                if (status == 2 && orderModel.UserId != orderModel.Ct_BelongId)
+                if (status == 2 && orderModel.UserId != orderModel.Ct_BelongId && orderModel.MengBeans > 0)
                 {
+
                     using (var dal1 = FactoryDispatcher.UserFactory())
                     {
                         RewardsSettingModel rewardSettingModel1 = UserLogic.GetRewardModel(orderModel.UserId);
                         TempBeansRecordsModel model1 = new TempBeansRecordsModel();
-                        model1.Amount = rewardSettingModel1.UserId;
+                        model1.Amount = -orderModel.MengBeans;
                         model1.UserId = orderModel.UserId;
                         model1.LogType = 0;
                         model1.Income = 0;
                         model1.CreateTime = DateTime.Now;
                         model1.Status = 0;
+                        model1.OrderId = orderModel.orderId;
+                        model1.Remark = "退单";
                         dal1.AddTempBeansRecords(model1);
                     }
                 }
 
-                return dal.Update(orderId, status) == 1;
+                bool flag = dal.Update(orderId, status) == 1;
+                if (status == 1)
+                {
+                    if (orderModel.UserId != orderModel.Ct_BelongId && orderModel.UserId > 0 && orderModel.Ct_BelongId > 0)
+                    {
+                        //添加用户订单量
+                        UserLogic.AddUserOrderSuccessAmount(orderModel.UserId);
+                        UserLogic.AddUserOrderSuccessAmount(orderModel.Ct_BelongId);
+                    }
+                    else
+                    {
+                        //添加用户订单量
+                        UserLogic.AddUserOrderSuccessAmount(orderModel.UserId);
+                    }
+                }
+
+                return flag;
             }
         }
 
