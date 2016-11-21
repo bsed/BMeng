@@ -938,6 +938,7 @@ namespace BAMENG.MODEL
 
         public string NickNname { get; set; }
 
+        [JsonIgnore()]
         public string Password { get; set; }
 
     }
