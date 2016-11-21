@@ -515,7 +515,7 @@ namespace BAMENG.LOGIC
                     register.loginName = model.Mobile;
                     register.loginPassword = model.Password;
                     register.mobile = model.Mobile;
-                    register.nickname = model.NickNname;
+                    register.nickname = model.NickName;
                     register.ShopId = dal.getUserShopId(userId);
                     register.storeId = ConstConfig.storeId;
                     register.UserIdentity = 0;

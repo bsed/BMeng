@@ -25,7 +25,7 @@ namespace BAMENG.DAL
 {
     public class UserDAL : AbstractDAL, IUserDAL
     {
-        
+
         private static OrderDAL order = new OrderDAL();
         private static CustomerDAL cus = new CustomerDAL();
 
@@ -169,8 +169,8 @@ namespace BAMENG.DAL
             {
                 var data = DbHelperSQLP.GetEntity<UserModel>(dr);
                 if (data != null)
-                {                    
-                    data.CustomerAmount = cus.GetCustomerCount(data.UserId, data.UserIdentity,1); 
+                {
+                    data.CustomerAmount = cus.GetCustomerCount(data.UserId, data.UserIdentity, 1);
                     data.OrderSuccessAmount = data.UserIdentity == 1 ? order.CountOrders(data.UserId, 1) : order.CountOrdersByAllyUserId(data.UserId, 1);
                 }
                 return data;
@@ -1325,7 +1325,7 @@ namespace BAMENG.DAL
         /// <param name="userId"></param>
         /// <param name="lastId"></param>
         /// <returns></returns>
-        public List<BeansRecordsModel> getBeansRecordsList(int userId, int lastId,int LogType)
+        public List<BeansRecordsModel> getBeansRecordsList(int userId, int lastId, int LogType)
         {
             List<BeansRecordsModel> list = new List<BeansRecordsModel>();
             string strSql = "select * from BM_BeansRecords where UserId=@UserId and LogType=@LogType";
@@ -1342,9 +1342,9 @@ namespace BAMENG.DAL
             return list;
         }
 
-        public decimal countBeansMoney(int userId, int LogType,int income)
+        public decimal countBeansMoney(int userId, int LogType, int income)
         {
-            string strSql = "select sum(Amount) from BM_BeansRecords where UserId=@UserId and LogType=@LogType and Income=@Income";   
+            string strSql = "select sum(Amount) from BM_BeansRecords where UserId=@UserId and LogType=@LogType and Income=@Income";
             var param = new[] {
                 new SqlParameter("@UserId",userId),
                 new SqlParameter("@LogType",LogType),
@@ -1374,7 +1374,7 @@ namespace BAMENG.DAL
         /// <param name="userId"></param>
         /// <param name="lastId"></param>
         /// <returns></returns>
-        public List<TempBeansRecordsModel> getTempBeansRecordsList(int userId, int lastId,int LogType)
+        public List<TempBeansRecordsModel> getTempBeansRecordsList(int userId, int lastId, int LogType)
         {
             List<TempBeansRecordsModel> list = new List<TempBeansRecordsModel>();
             string strSql = "select * from BM_TempBeansRecords where UserId=@UserId and LogType=@LogType";
@@ -1415,7 +1415,7 @@ namespace BAMENG.DAL
             parameters[5].Value = model.CreateTime;
             parameters[6].Value = model.Status;
 
-           return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);           
+            return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
 
         public int AddBeansRecords(BeansRecordsModel model)
@@ -1433,29 +1433,9 @@ namespace BAMENG.DAL
                     new SqlParameter("@Amount", model.Amount),
                     new SqlParameter("@Remark", model.Remark),
                     new SqlParameter("@CreateTime", model.CreateTime)};
-      
+
             return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
-
-
-        /// <summary>
-        /// 获取会员签到实体
-        /// </summary>
-        //public MemberSignModel GetMemberSignModel(int customerId, int userId)
-        //{
-
-        //    StringBuilder strSql = new StringBuilder();
-        //    strSql.Append("select  top 1 Id,CustomerId,MemberId,lastSignTime,SignCount,CreateTime,TotalSignIntegral,TotalSignDays from Mall_MemberSign ");
-        //    strSql.Append(" where CustomerId=@CustomerId and MemberId=@MemberId");
-        //    SqlParameter[] parameters = {
-        //            new SqlParameter("@CustomerId", SqlDbType.Int,4),
-        //            new SqlParameter("@MemberId", SqlDbType.Int,4)
-        //    };
-        //    parameters[0].Value = customerId;
-        //    parameters[1].Value = userId;
-
-
-        //}
 
         /// <param name="userId">The user identifier.</param>
         /// <returns>MemberSignModel.</returns>
@@ -1581,6 +1561,14 @@ namespace BAMENG.DAL
                         item.StatusName = "未审核";
                     else
                         item.StatusName = "已拒绝";
+
+                    if (item.Sex == 0)
+                        item.UserGender = "F";
+                    if (item.Sex == 1)
+                        item.UserGender = "M";
+                    else
+                        item.UserGender = "未知";
+
                 });
             });
         }

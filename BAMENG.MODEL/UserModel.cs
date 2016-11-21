@@ -922,7 +922,18 @@ namespace BAMENG.MODEL
 
         public string UserName { get; set; }
 
+        /// <summary>
+        /// 0女 1男
+        /// </summary>
+        /// <value>The sex.</value>
+        [JsonIgnore()]
         public int Sex { get; set; }
+
+        /// <summary>
+        /// 性别 男M 女F 未知
+        /// </summary>
+        /// <value>The user sex.</value>
+        public string UserGender { get; set; }
 
         public string Mobile { get; set; }
 
@@ -936,7 +947,7 @@ namespace BAMENG.MODEL
 
         public DateTime CreateTime { get; set; }
 
-        public string NickNname { get; set; }
+        public string NickName { get; set; }
 
         [JsonIgnore()]
         public string Password { get; set; }
