@@ -33,6 +33,14 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         ResultPageModel GetAllyList(SearchModel model);
 
+
+        /// <summary>
+        /// 获取盟友申请列表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        ResultPageModel GetApplyFriendList(SearchModel model);
+
         /// <summary>
         /// 添加用户信息
         /// </summary>

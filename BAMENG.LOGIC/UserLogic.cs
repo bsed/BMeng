@@ -903,5 +903,21 @@ namespace BAMENG.LOGIC
                 return dal.AddBeansRecords(model);
             }
         }
+
+
+
+        /// <summary>
+        /// 获取盟友申请列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetApplyFriendList(SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetApplyFriendList(model);
+            }
+        }
+
     }
 }

@@ -317,20 +317,27 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult AllyApplylist(int type, int pageIndex, int pageSize)
         {
+            int userId = GetAuthUserId();
             if (type == 1)
             {
                 var data = UserLogic.GetAllyList(new SearchModel()
                 {
                     PageIndex = pageIndex,
                     PageSize = pageSize,
-                    UserId = GetAuthUserId()
+                    UserId = userId
                 });
                 return Json(new ResultModel(ApiStatusCode.OK, data));
             }
             else
             {
 
-                return Json(new ResultModel(ApiStatusCode.OK));
+                var data = UserLogic.GetApplyFriendList(new SearchModel()
+                {
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    UserId = userId
+                });
+                return Json(new ResultModel(ApiStatusCode.OK, data));
             }
         }
         /// <summary>
@@ -381,7 +388,7 @@ namespace BAMENG.API.Controllers
                 userInfo.UserMobile = mobile;
                 if (UserLogic.UpdateUserInfo(UserPropertyOptions.USER_3, userInfo))
                     return Json(new ResultModel(ApiStatusCode.OK));
-            }            
+            }
             return Json(new ResultModel(ApiStatusCode.无效验证码));
         }
 

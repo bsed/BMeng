@@ -1558,5 +1558,32 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
         }
 
+        /// <summary>
+        /// 获取盟友申请列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetApplyFriendList(SearchModel model)
+        {
+            ResultPageModel result = new ResultPageModel();
+            string strSql = "select ID,UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname,Password from BM_ApplyFriend where 1=1 and UserId=@UserId and Status<>1";
+
+            var param = new[] {
+                new SqlParameter("@UserId",model.UserId),
+            };
+
+            //生成sql语句
+            return getPageData<ApplyFriendModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param, (items) =>
+            {
+                items.ForEach((item) =>
+                {
+                    if (item.Status == 0)
+                        item.StatusName = "未审核";
+                    else
+                        item.StatusName = "已拒绝";
+                });
+            });
+        }
+
     }
 }

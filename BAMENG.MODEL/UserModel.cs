@@ -926,7 +926,13 @@ namespace BAMENG.MODEL
 
         public string Mobile { get; set; }
 
+        /// <summary>
+        /// 申请状态0申请中，1同意  拒绝
+        /// </summary>
+        /// <value>The status.</value>
         public int Status { get; set; }
+
+        public string StatusName { get; set; }
 
         public DateTime CreateTime { get; set; }
 
@@ -953,7 +959,7 @@ namespace BAMENG.MODEL
     public class BeansConvertModel
     {
         public int ID { get; set; }
-     
+
         public int UserId { get; set; }
 
         public int UserMasterId { get; set; }
@@ -1007,12 +1013,12 @@ namespace BAMENG.MODEL
     }
 
 
-    public  class MemberSignModel
+    public class MemberSignModel
     {
         public MemberSignModel()
         { }
         #region Model
-        private int _id;        
+        private int _id;
         private int _memberid = 0;
         private DateTime _lastsigntime = DateTime.Now;
         private int _signcount = 0;
@@ -1079,7 +1085,7 @@ namespace BAMENG.MODEL
         /// <summary>
         /// 0支出，1收入
         /// </summary>
-        public int status{ get; set; }
+        public int status { get; set; }
         public long time { get; set; }
 
         public string remark { get; set; }
@@ -1106,10 +1112,10 @@ namespace BAMENG.MODEL
         public long time { get; set; }
     }
 
-    public   class BeansRecordsModel
-    {        
+    public class BeansRecordsModel
+    {
         public int ID { get; set; }
-       
+
         /// <summary>
         /// 
         /// </summary>
@@ -1139,7 +1145,7 @@ namespace BAMENG.MODEL
         /// 
         /// </summary>
         public DateTime CreateTime { get; set; }
-      }
+    }
 
     public class TempBeansRecordsModel
     {
@@ -1177,5 +1183,4 @@ namespace BAMENG.MODEL
 
         public int Status { get; set; }
     }
-
 }
