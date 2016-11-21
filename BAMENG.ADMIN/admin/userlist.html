@@ -71,7 +71,8 @@
                                         <th>手机</th>
                                         <th>状态</th>
                                         <th>所属门店</th>
-                                        <th class="allyText">订单成交量</th>
+                                        <th>订单成交量</th>
+                                        <th>客户信息量</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -99,6 +100,7 @@
             <td>{ActiveStatus}</td>
             <td>{ShopName}</td>
             <td>{OrderSuccessAmount}</td>
+            <td>{CustomerAmount}</td>            
             <td>
                 <span class="cursor-point" onclick="userHelper.dialog('{UserId}');" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
                 &nbsp;

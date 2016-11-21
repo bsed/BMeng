@@ -75,8 +75,8 @@ namespace BAMENG.API.Controllers
         public ActionResult TempSettleBeanList(int lastId)
         {
             int userId = GetAuthUserId();
-          var data =  UserLogic.getTempBeansRecordsList(userId,lastId);
-            return Json(new ResultModel(ApiStatusCode.OK,data));
+            var data = UserLogic.getTempBeansRecordsList(userId, lastId);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
         /// <summary>
         /// 兑换盟豆 POST: user/ConvertToBean
@@ -212,8 +212,6 @@ namespace BAMENG.API.Controllers
                     userInfo.UserCity = content;
                     break;
             }
-
-            //支付配置信息
             UserPropertyOptions opt;
             bool flg = Enum.TryParse(type.ToString(), out opt);
 
@@ -277,8 +275,8 @@ namespace BAMENG.API.Controllers
         public ActionResult BeanFlowList(int lastId)
         {
             int userId = GetAuthUserId();
-            var data = UserLogic.getBeansRecordsList(userId,lastId);
-         
+            var data = UserLogic.getBeansRecordsList(userId, lastId);
+
 
             return Json(new ResultModel(ApiStatusCode.OK));
         }
@@ -300,7 +298,7 @@ namespace BAMENG.API.Controllers
         /// todo 
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        [ActionAuthorize(AuthLogin = false, EnableSign = false)]
+        [ActionAuthorize]
         public ActionResult AllyApply(int userId, string mobile, string password
             , string nickname, string userName
             , int sex)
@@ -312,7 +310,7 @@ namespace BAMENG.API.Controllers
         /// <summary>
         /// 盟友申请列表 POST: user/AllyApplylist
         /// </summary>
-        /// <param name="type">0盟友申请，1盟友列表</param>
+        /// <param name="type">0盟友申请列表，1我的盟友列表</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
@@ -330,7 +328,10 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.OK, data));
             }
             else
+            {
+
                 return Json(new ResultModel(ApiStatusCode.OK));
+            }
         }
         /// <summary>
         /// 盟友申请审核 POST: user/AllyApplyAudit
@@ -368,12 +369,20 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <param name="mobile">The mobile.</param>
         /// <param name="verifyCode">The verify code.</param>
-        /// <param name="newMobile">The new mobile.</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult ChanageMobile(string mobile, string verifyCode, string newMobile)
+        public ActionResult ChanageMobile(string mobile, string verifyCode)
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            if (SmsLogic.IsPassVerify(mobile, verifyCode))
+            {
+                SmsLogic.UpdateVerifyCodeInvalid(mobile, verifyCode);
+                UserModel userInfo = new UserModel();
+                userInfo.UserId = GetAuthUserId();
+                userInfo.UserMobile = mobile;
+                if (UserLogic.UpdateUserInfo(UserPropertyOptions.USER_3, userInfo))
+                    return Json(new ResultModel(ApiStatusCode.OK));
+            }            
+            return Json(new ResultModel(ApiStatusCode.无效验证码));
         }
 
         /// <summary>

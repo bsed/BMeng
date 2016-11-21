@@ -574,10 +574,10 @@ namespace BAMENG.LOGIC
             MyUserBusinessModel model = new MyUserBusinessModel();
 
             //订单数量
-            model.orderAmount = OrderLogic.CountOrdersByAllyUserId(userId, 0);
+            model.orderAmount = userIdentity == 1 ? OrderLogic.CountOrders(userId, 0) : OrderLogic.CountOrdersByAllyUserId(userId, 0);
 
             //客户数量
-            model.customerAmount = CustomerLogic.GetCustomerCount(userId, 0, 0);
+            model.customerAmount = CustomerLogic.GetCustomerCount(userId, userIdentity, 0);
 
             //兑换数量
             model.exchangeAmount = GetConvertCount(userId, 0);
@@ -754,7 +754,8 @@ namespace BAMENG.LOGIC
         /// <param name="userId"></param>
         /// <param name="lastId"></param>
         /// <returns></returns>
-        public static BeansRecordsListIndexModel getBeansRecordsList(int userId, int lastId) {
+        public static BeansRecordsListIndexModel getBeansRecordsList(int userId, int lastId)
+        {
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 BeansRecordsListIndexModel result = new BeansRecordsListIndexModel();
@@ -763,11 +764,12 @@ namespace BAMENG.LOGIC
                     result.outcome = countBeansMoney(userId, 0, 0);
                     result.income = countBeansMoney(userId, 0, 1);
                 }
-                else {
+                else
+                {
                     result.outcome = 0;
                     result.income = 0;
                 }
-                result.list = toBeansRecordsList(dal.getBeansRecordsList(userId, lastId,0));
+                result.list = toBeansRecordsList(dal.getBeansRecordsList(userId, lastId, 0));
                 return result;
             }
         }

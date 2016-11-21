@@ -95,15 +95,6 @@ namespace BAMENG.API.Controllers
 
 
         /// <summary>
-        /// 订单成交信息提交 POST: order/success
-        /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult success()
-        {
-            return Json(new ResultModel(ApiStatusCode.OK));
-        }
-
-        /// <summary>
         /// 上传成交凭证 POST: order/UploadSuccessVoucher
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
@@ -139,23 +130,6 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
         }
 
-
-        /// <summary>
-        /// 发送站内消息 POST: order/SendInstationMessage
-        /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult SendInstationMessage()
-        {
-            return Json(new ResultModel(ApiStatusCode.OK));
-        }
-        /// <summary>
-        /// 站内消息列表 POST: order/InstationMessageList
-        /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult InstationMessageList()
-        {
-            return Json(new ResultModel(ApiStatusCode.OK));
-        }
 
         /// <summary>
         /// 客户订单列表 POST: order/customerOrderList

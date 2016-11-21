@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title>详情</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tabs-container">
+                    <label>订单状态:</label> <label><span id="OrderStatusName" style="color:red;">未成交</span></label>
+
+                    <button type="button" class="btn btn-outline btn-default" onclick="orderdetailsHelper.updateStatus(1)" >已成交</button>
+                    <button type="button" class="btn btn-outline btn-primary" onclick="orderdetailsHelper.updateStatus(2)">已退单</button>                    
+                    <p></p>
+                    <div class="tab-content">
+                        <div  class="tab-pan">
+                            <div class="panel-body">
+                                <div class="client-detail">
+                                    <div class="full-height-scroll">
+                                        <ul class="list-group clear-list col-lg-4">
+                                            <li class="list-group-item fist-item">
+                                                所属门店：<span id="ShopName"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                所属盟主：<span id="BelongOneName"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                所属盟友：<span id="BelongTwoName"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                客户姓名：<span id="Ct_Name"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                客户手机：<span id="Ct_Mobile"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                客户地址：<span id="Ct_Address"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                现金券金额：<span id="CashCouponAmount"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                最终金额：<span id="FianlAmount"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                订单备注：<span id="Memo"></span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                补充说明：<span id="Note"></span>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-group clear-list col-lg-6">
+                                            <li class="list-group-item fist-item">
+                                                订单照片：
+                                                <br />
+                                                <img height="200" id="OrderImg" onclick="window.open(this.src, '_blank')" />
+                                            </li>
+
+                                            <li class="list-group-item">
+                                                成交照片：
+                                                <br />
+                                                <img height="200" id="SuccessImg" />
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/admin/orderdetails.js"></script>
+</body>
+</html>

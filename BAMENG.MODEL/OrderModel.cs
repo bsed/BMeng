@@ -25,6 +25,22 @@ namespace BAMENG.MODEL
         /// 
         /// </summary>
         public int ShopId { get; set; }
+
+        /// <summary>
+        /// 门店名称
+        /// </summary>
+        /// <value>The name of the shop.</value>
+        public string ShopName { get; set; }
+
+        /// <summary>
+        /// 盟友姓名
+        /// </summary>
+        public string BelongOneName { get; set; }
+        /// <summary>
+        /// 盟主姓名
+        /// </summary>
+        public string BelongTwoName { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -34,11 +50,16 @@ namespace BAMENG.MODEL
         /// </summary>
         public string Memo { get; set; }
         /// <summary>
-        /// 
+        /// 订单状态 0 未成交 1 已成交 2退单
         /// </summary>
+        /// <value>The order status.</value>
         public int OrderStatus { get; set; }
 
-
+        /// <summary>
+        /// 订单状态名称
+        /// </summary>
+        /// <value>The name of the order status.</value>
+        public string OrderStatusName { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -75,6 +96,12 @@ namespace BAMENG.MODEL
         /// 
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 补充说明
+        /// </summary>
+        /// <value>The note.</value>
+        public string Note { get; set; }
     }
 
     public class OrderListModel
@@ -152,6 +179,13 @@ namespace BAMENG.MODEL
         /// 订单状态 0 未成交 1 已成交 2退单
         /// </summary>
         public int status { get; set; }
+
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        /// <value>The remark.</value>
+        public string remark { get; set; }
 
 
     }

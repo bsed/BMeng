@@ -44,8 +44,12 @@ namespace BAMENG.LOGIC
             if (OS.ToLower() == "android")
                 data.versionData = CheckUpdate(clientVersion, "android");
 
-            data.baseData.aboutUrl = "http://wwww.xx.com/about.html";
-            data.baseData.agreementUrl = "http://wwww.xx.com/about.html";
+            data.baseData.aboutUrl = WebConfig.articleDetailsDomain() + "/app/about.html";
+
+            data.baseData.agreementUrl = WebConfig.articleDetailsDomain() + "/app/agreement.html";
+
+            data.baseData.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html";
+
             data.baseData.userStatus = 1;
 
             string v = ConfigLogic.GetValue("EnableSign");

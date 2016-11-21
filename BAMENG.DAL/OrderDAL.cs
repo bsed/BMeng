@@ -211,6 +211,45 @@ namespace BAMENG.DAL
             return model;
         }
 
+
+
+        /// <summary>
+        /// 获取订单完整详情
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>OrderModel.</returns>
+        public OrderModel GetOrderDetail(string orderId)
+        {
+            string strSql = @"select O.*,S.ShopName,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName from BM_Orders O with(nolock)
+                                left join BM_ShopManage S with(nolock)  on S.ShopID=O.ShopId
+                                left join Hot_UserBaseInfo U with(nolock) on U.UB_UserID=O.Ct_BelongId
+                                left join Hot_UserBaseInfo UB with(nolock) on UB.UB_UserID=O.UserId
+                                where O.orderId=@orderId";
+
+            SqlParameter[] parameters = {
+                    new SqlParameter("@orderId", orderId)
+            };
+
+            OrderModel model = null;
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters))
+            {
+                model = DbHelperSQLP.GetEntity<OrderModel>(dr);
+                if (model != null)
+                {
+                    if (model.OrderStatus == 0)
+                        model.OrderStatusName = "未成交";
+                    else if (model.OrderStatus == 1)
+                        model.OrderStatusName = "已成交";
+                    else
+                        model.OrderStatusName = "已退单";
+                }
+            }
+            return model;
+        }
+
+
+
+
         /// <summary>
         /// 计算订单数
         /// </summary>
@@ -259,5 +298,90 @@ namespace BAMENG.DAL
         }
 
 
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="shopType">门店类型1 总店 0分店</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetOrderList(int shopId, int shopType, SearchModel model)
+        {
+            ResultPageModel result = new ResultPageModel();
+            if (model == null)
+                return result;
+            string strSql = string.Empty;
+            if (shopType == 0)//如果是分店情况下，查询
+            {
+                strSql = @"select O.*,S.ShopName from BM_Orders O
+                            left join BM_ShopManage S on S.ShopID=O.ShopId 
+                            where 1=1 ";
+                strSql += " and O.ShopId=@ShopId";
+            }
+            else
+            {
+                strSql = @"select O.*,S.ShopName from BM_Orders O
+                            left join BM_ShopManage S on S.ShopBelongId=O.ShopId 
+                            where 1=1 ";
+                strSql += " and (O.ShopId=@ShopId or S.ShopBelongId=@ShopId) ";
+            }
+            if (!string.IsNullOrEmpty(model.key))
+                strSql += string.Format(" and O.Ct_Name like '%{0}%' ", model.key);
+            if (model.type != -1)
+                strSql += "  and OrderStatus=@OrderStatus";
+
+            if (!string.IsNullOrEmpty(model.startTime))
+                strSql += " and CONVERT(nvarchar(10),O.CreateTime,121)>=@startTime ";
+            if (!string.IsNullOrEmpty(model.endTime))
+                strSql += " and CONVERT(nvarchar(10),O.CreateTime,121)<=@endTime ";
+
+
+            var param = new[] {
+                new SqlParameter("@ShopId",shopId),
+                new SqlParameter("@OrderStatus", model.type),
+                new SqlParameter("@startTime", model.startTime),
+                new SqlParameter("@endTime", model.endTime)
+            };
+            //生成sql语句
+            return getPageData<OrderModel>(model.PageSize, model.PageIndex, strSql, "O.CreateTime", param, (items =>
+             {
+                 items.ForEach(item =>
+                 {
+                     if (item.OrderStatus == 0)
+                         item.OrderStatusName = "未成交";
+                     else if (item.OrderStatus == 1)
+                         item.OrderStatusName = "已成交";
+                     else
+                         item.OrderStatusName = "已退单";
+                 });
+             }));
+        }
+
+        /// <summary>
+        /// 修改订单价格
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="status">0未成交，1已成交，2退单</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateOrderStatus(string orderId, int status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update BM_Orders set ");
+            strSql.Append("OrderStatus=@OrderStatus");
+            strSql.Append(" where orderId=@orderId ");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@OrderStatus", status),
+                    new SqlParameter("@orderId", orderId)};
+
+            int rows = DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
