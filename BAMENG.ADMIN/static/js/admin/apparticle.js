@@ -11,25 +11,20 @@
 
 var articleInfoHelper = {
     idt: hotUtil.getQuery("idt"),
-    auth: function () {
-        if (/(Authorization)/i.test(navigator.userAgent))
-            return navigator.userAgent.split("(Authorization)")[0];
-        return "";
-    },
     show: function () {
         $("#loadBox").show();
     },
     hide: function () {
-        $("#loadBox").hide();        
+        $("#loadBox").hide();
     },
     load: function () {
         var self = this;
         var postData = {
-            auth: self.auth,
+            auth: hotUtil.auth(),
             articleId: hotUtil.getQuery("articleId")
         }
         self.show();
-        hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {            
+        hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
                     $(".demos-title").text(ret.data.ArticleTitle);
@@ -39,7 +34,7 @@ var articleInfoHelper = {
                     $(".bodyContent").show();
                 }
                 else
-                    swal(ret.statusText);
+                   $.alert(ret.statusText);
             }
             self.hide();
         });

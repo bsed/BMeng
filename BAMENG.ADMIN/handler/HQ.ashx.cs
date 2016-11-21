@@ -5,6 +5,7 @@ using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -225,6 +226,12 @@ namespace BAMENG.ADMIN.handler
                         break;
                     case "GETORDERINFO":
                         GetOrderInfo();
+                        break;
+                    case "ALLYAPPLY":
+                        AllyApply();
+                        break;
+                    case "MYQRCODE":
+                        MyQrcode();
                         break;
                     default:
                         break;
@@ -954,6 +961,63 @@ namespace BAMENG.ADMIN.handler
         {
             var data = OrderLogic.GetOrderDetail(GetFormValue("orderid", ""));
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        /// 盟友注册申请
+        /// </summary>
+        private void AllyApply()
+        {
+
+            int uid = GetFormValue("userid", 0);
+            string nickName = GetFormValue("nickname", "");
+            string pwd = GetFormValue("pwd", "");
+            string username = GetFormValue("username", "");
+            string usermobile = GetFormValue("usermobile", "");
+            int sex = GetFormValue("sex", 0);
+            if (uid > 0)
+            {
+                ApiStatusCode code = ApiStatusCode.OK;
+                bool flag = UserLogic.AllyApply(uid, usermobile, pwd, nickName, username, sex, ref code);
+                json = JsonHelper.JsonSerializer(new ResultModel(code));
+            }
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.账户已存在));
+        }
+
+
+        /// <summary>
+        /// 我的二维码
+        /// </summary>
+        private void MyQrcode()
+        {
+            string auth = GetFormValue("auth", "");
+            string json = string.Empty;
+            int userId = 0;
+            if (!string.IsNullOrEmpty(auth))
+            {
+                userId = UserLogic.GetUserIdByAuthToken(auth);
+                if (userId == 0)
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+                else
+                {
+                    //string sourceFileName = MapPath("/app/myqrcodetemplate.html");
+                    //string destPath = MapPath(string.Format("resource/app/qrcode/{0}/index.html", userId));
+                    //if (!Directory.Exists(destPath))
+                    //    Directory.CreateDirectory(destPath);
+                    //File.Copy(sourceFileName, destPath);
+                }
+            }
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+
+
+            string sourceFileName = MapPath("/app/myqrcodetemplate.html");
+            string destPath = MapPath(string.Format("resource/app/qrcode/{0}/index.html", 15200));
+            if (!Directory.Exists(destPath))
+                Directory.CreateDirectory(destPath);
+            File.Copy(sourceFileName, destPath);
         }
 
     }

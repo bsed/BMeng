@@ -99,7 +99,7 @@ namespace BAMENG.CONFIG
         [Description("手机用户已存在")]
         手机用户已存在 = 7005,
 
-        [Description("你已申请，请耐心等到审核")]
+        [Description("你已申请，请耐心等待审核")]
         你已申请请耐心等到审核 = 7006,
 
         [Description("用户信息丢失，请重新登录")]

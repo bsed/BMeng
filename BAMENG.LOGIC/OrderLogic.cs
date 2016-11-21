@@ -40,7 +40,7 @@ namespace BAMENG.LOGIC
                 orderList.money = order.FianlAmount;
                 orderList.pictureUrl = WebConfig.reswebsite() + order.OrderImg;
                 orderList.status = order.OrderStatus;
-                orderList.id = StringHelper.GetUTCTime(order.CreateTime);
+                orderList.ID = StringHelper.GetUTCTime(order.CreateTime);
                 orderList.orderId = order.orderId;
                 orderList.remark = order.Memo;
                 orderList.note = order.Note;

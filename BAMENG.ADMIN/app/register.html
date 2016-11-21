@@ -22,51 +22,100 @@
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">昵称</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="请输入昵称">
+                    <input class="weui_input" type="text" id="txtNickName" placeholder="请输入昵称">
                 </div>
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="password" placeholder="请输入密码">
+                    <input class="weui_input" type="password" id="txtPwd" placeholder="请输入密码">
                 </div>
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">确认密码</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="password" placeholder="确认密码">
+                    <input class="weui_input" type="password" id="txtConfirmPwd" placeholder="确认密码">
                 </div>
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="请输入姓名">
+                    <input class="weui_input" type="tel" id="txtUserName" placeholder="请输入姓名">
                 </div>
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">手机</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="number" placeholder="请输入手机">
+                    <input class="weui_input" type="number" id="txtUserMobile" placeholder="请输入手机">
                 </div>
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">性别</label></div>
-                <select>
-                    <option>男</option>
-                    <option value="">女</option>
+                <select id="sltSex" class="weui_input">
+                    <option value="1">男</option>
+                    <option value="0">女</option>
                 </select>
             </div>
         </div>
-        <a style="margin:10px;" href="javascript:;" class="weui_btn weui_btn_primary anniu ">提交</a>
+        <a style="margin:10px;" href="javascript:save();" class="weui_btn weui_btn_primary anniu ">提交</a>
     </div>
 </body>
 </html>
 <script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
+<script src="/static/js/plugins/hot/Jquery.util.js"></script>
 <script>
-    $(function () {
-        $("#sltsex").select({
-            title: "选择性别",
-            items: ["男", "女"]
-        });
-    });
+
+    function save() {
+        if (checkForm()) {
+            var param = {
+                action: "AllyApply",
+                nickname: $("#txtNickName").val(),
+                pwd: $("#txtPwd").val(),
+                username: $("#txtUserName").val(),
+                usermobile: $("#txtUserMobile").val(),
+                sex: $("#sltSex").val(),
+                userid: hotUtil.getQuery("userid")
+            };
+            hotUtil.loading.show();
+            hotUtil.ajaxCall("/handler/HQ.ashx", null, function (ret, err) {
+                if (ret) {
+                    if (ret.status == 200) {
+                        $.alert("申请成功");
+                    }
+                    else
+                        $.alert("申请失败");
+                }
+                hotUtil.loading.close();
+            });
+        }
+    }
+
+    function checkForm() {
+        if (hotUtil.isNullOrEmpty($("#txtNickName").val())) {
+            $.alert("请输入昵称");
+            return false;
+        }
+        if (hotUtil.isNullOrEmpty($("#txtPwd").val())) {
+            $.alert("请输入登录密码");
+            return false;
+        }
+        if ($("#txtConfirmPwd").val() != $("#txtPwd").val()) {
+            $.alert("两次密码不一致");
+            return false;
+        }
+        if (hotUtil.isNullOrEmpty($("#txtUserName").val())) {
+            $.alert("请输入昵称");
+            return false;
+        }
+
+        if (hotUtil.isNullOrEmpty($("#txtUserMobile").val())) {
+            $.alert("请输入手机号码");
+            return false;
+        }
+        if (!hotUtil.isMobile($("#txtUserMobile").val())) {
+            $.alert("请输入有效的手机号码");
+            return false;
+        }
+    }
+
 </script>

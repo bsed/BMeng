@@ -1068,7 +1068,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public bool ExistApplyFriend(string mobile)
         {
-            string strSql = "select COUNT(1) from BM_ApplyFriend with(nolock) where Mobile=@Mobile";
+            string strSql = "select COUNT(1) from BM_ApplyFriend with(nolock) where Mobile=@Mobile and Status=0";
             var param = new[] {
                 new SqlParameter("@Mobile",mobile)
             };
@@ -1546,7 +1546,7 @@ namespace BAMENG.DAL
         public ResultPageModel GetApplyFriendList(SearchModel model)
         {
             ResultPageModel result = new ResultPageModel();
-            string strSql = "select ID,UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname,Password from BM_ApplyFriend where 1=1 and UserId=@UserId and Status<>1";
+            string strSql = "select ID,UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname as NickName,Password from BM_ApplyFriend where 1=1 and UserId=@UserId and Status<>1";
 
             var param = new[] {
                 new SqlParameter("@UserId",model.UserId),

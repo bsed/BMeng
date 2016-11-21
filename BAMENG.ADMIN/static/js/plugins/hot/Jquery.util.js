@@ -416,6 +416,11 @@ $.extend(hotUtil, {
                 }
             }
         });
+    },
+    auth: function () {
+        if (/(Authorization)/i.test(navigator.userAgent))
+            return navigator.userAgent.split("(Authorization)")[0];
+        return "";
     }
 });
 

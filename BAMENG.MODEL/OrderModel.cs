@@ -9,7 +9,7 @@ namespace BAMENG.MODEL
     public class OrderModel
     {
         /// <summary>
-        /// 
+        /// 订单号
         /// </summary>
         public string orderId { get; set; }
 
@@ -107,9 +107,9 @@ namespace BAMENG.MODEL
     public class OrderListModel
     {
         /// <summary>
-        /// 时间
+        /// lastid
         /// </summary>
-        public long id;
+        public long ID { get; set; }
 
         /// <summary>
         /// 图片地址
@@ -160,11 +160,11 @@ namespace BAMENG.MODEL
         /// <summary>
         /// 订单号
         /// </summary>
-        public string orderId;
+        public string orderId { get; set; }
         /// <summary>
         /// 下单时间
         /// </summary>
-        public long orderTime;
+        public long orderTime { get; set; }
 
         /// <summary>
         /// 图片地址

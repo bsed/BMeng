@@ -27,7 +27,7 @@ namespace BAMENG.ADMIN.handler
                 userId = UserLogic.GetUserIdByAuthToken(auth);
                 if(userId==0)
                 {
-                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.用户信息丢失));
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
                     context.Response.ContentType = "application/json";
                     context.Response.Write(json);
                     context.Response.End();
@@ -35,7 +35,7 @@ namespace BAMENG.ADMIN.handler
             }
             else
             {
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.用户信息丢失));
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
                 context.Response.ContentType = "application/json";
                 context.Response.Write(json);
                 context.Response.End();
