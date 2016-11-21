@@ -838,7 +838,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                return countBeansMoney(userId, LogType, income);
+                return dal.countBeansMoney(userId, LogType, income);
             }
         }
 
@@ -846,7 +846,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                return countTempBeansMoney(userId, LogType, income);
+                return dal.countTempBeansMoney(userId, LogType, income);
             }
         }
         /// 获取签到信息
@@ -886,6 +886,22 @@ namespace BAMENG.LOGIC
         private static string GetMemberSignCacheKey(int userId)
         {
             return string.Format("BMSIGN{0}{1}", userId, DateTime.Now.ToString("yyyyMMdd"));
+        }
+
+        public static int AddTempBeansRecords(TempBeansRecordsModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.AddTempBeansRecords(model);
+            }
+
+        }
+        public static int AddBeansRecords(BeansRecordsModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.AddBeansRecords(model);
+            }
         }
     }
 }

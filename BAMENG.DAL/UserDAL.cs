@@ -1391,6 +1391,52 @@ namespace BAMENG.DAL
             return list;
         }
 
+        public int AddTempBeansRecords(TempBeansRecordsModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into BM_TempBeansRecords(");
+            strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime,Status)");
+            strSql.Append(" values (");
+            strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@Status)");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@LogType", SqlDbType.Int,4),
+                    new SqlParameter("@UserId", SqlDbType.Int,4),
+                    new SqlParameter("@Income", SqlDbType.Int,4),
+                    new SqlParameter("@Amount", SqlDbType.Int,4),
+                    new SqlParameter("@Remark", SqlDbType.NVarChar,500),
+                    new SqlParameter("@CreateTime", SqlDbType.DateTime),
+                    new SqlParameter("@Status", SqlDbType.Int,4)};
+            parameters[0].Value = model.LogType;
+            parameters[1].Value = model.UserId;
+            parameters[2].Value = model.Income;
+            parameters[3].Value = model.Amount;
+            parameters[4].Value = model.Remark;
+            parameters[5].Value = model.CreateTime;
+            parameters[6].Value = model.Status;
+
+           return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);           
+        }
+
+        public int AddBeansRecords(BeansRecordsModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into BM_TempBeansRecords(");
+            strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime)");
+            strSql.Append(" values (");
+            strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime)");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@LogType", model.LogType),
+                    new SqlParameter("@UserId",model.UserId),
+                    new SqlParameter("@Income", model.Income),
+                    new SqlParameter("@Amount", model.Amount),
+                    new SqlParameter("@Remark", model.Remark),
+                    new SqlParameter("@CreateTime", model.CreateTime)};
+      
+            return DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+        }
+
 
         /// <summary>
         /// 获取会员签到实体
