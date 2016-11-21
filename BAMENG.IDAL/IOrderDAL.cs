@@ -24,7 +24,7 @@ namespace BAMENG.IDAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-         bool Update(string orderId, int status, string memo);
+         int Update(string orderId, int status);
 
         OrderModel GetModel(string orderId);
 
@@ -61,5 +61,8 @@ namespace BAMENG.IDAL
         /// <param name="lastId"></param>
         /// <returns></returns>
         List<OrderModel> GetUserOrderList(int userId, int status, long lastId);
+
+        int UploadVoucher(string orderId, string customer
+           , string mobile, decimal price, string note, string fileName);
     }
 }

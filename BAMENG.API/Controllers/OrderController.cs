@@ -83,14 +83,13 @@ namespace BAMENG.API.Controllers
         /// 修改订单 POST: order/update
         /// </summary>
         /// <param name="orderId">订单号</param>
-        /// <param name="note">说明</param>
         /// <param name="status">状态  0 未成交 1 已成交 2退单</param>
         /// <returns></returns>
-        public ActionResult update(string orderId, string note, int status)
+        public ActionResult update(string orderId, int status)
         {
             int userId = GetAuthUserId();
             ApiStatusCode code = ApiStatusCode.OK;
-            OrderLogic.Update(userId, orderId, status, note, ref code);
+            OrderLogic.Update(userId, orderId, status, ref code);
             return Json(new ResultModel(code));
         }
 
@@ -108,7 +107,8 @@ namespace BAMENG.API.Controllers
         /// 上传成交凭证 POST: order/UploadSuccessVoucher
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
-        public ActionResult UploadSuccessVoucher(string orderId)
+        public ActionResult UploadSuccessVoucher(string orderId
+            ,string customer,string mobile,decimal price,string memo)
         {
             OrderModel orderModel = OrderLogic.GetModel(orderId);
             if (orderModel.OrderStatus != 1)
@@ -131,6 +131,8 @@ namespace BAMENG.API.Controllers
             stream.Seek(0, SeekOrigin.Begin);
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
+
+                OrderLogic.UploadVoucher( orderId, customer, mobile, price, memo,fileName);
                 return Json(new ResultModel(ApiStatusCode.OK));
             }
             else

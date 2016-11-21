@@ -405,5 +405,8 @@ namespace BAMENG.IDAL
         /// <param name="money">The money.</param>
         /// <returns>System.Int32.</returns>
         int addUserLockedIntegral(int userId, decimal money);
+
+        int AddTempBeansRecords(TempBeansRecordsModel model);
+        int AddBeansRecords(BeansRecordsModel model);
     }
 }

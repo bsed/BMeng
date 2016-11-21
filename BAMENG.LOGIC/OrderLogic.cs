@@ -69,21 +69,42 @@ namespace BAMENG.LOGIC
             model.Ct_Name = userName;
             model.Ct_Mobile = mobile;
             model.Ct_Address = address;
+
+            CashCouponLogModel coupon = null;
             using (var dal = FactoryDispatcher.CouponFactory())
             {
-                CashCouponLogModel coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
+                coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
                 if (coupon != null)
                 {
                     model.CashCouponAmount = coupon.Money;
                     model.CashCouponBn = cashNo;
+                    model.UserId = coupon.UserId;
                 }
             }
             model.FianlAmount = 0;
             model.CreateTime = DateTime.Now;
+
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                if (coupon != null)
+                {
+                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(coupon.UserId);
+                    TempBeansRecordsModel model1 = new TempBeansRecordsModel();
+                    model1.Amount = rewardSettingModel.CustomerReward ;
+                    model1.UserId = coupon.UserId;
+                    model1.LogType = 0;
+                    model1.Income = 1;
+                    model1.CreateTime = DateTime.Now;
+                    model1.Status = 0;
+                    dal.AddTempBeansRecords(model1);
+                }
+            }
+            
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return dal.Add(model);
-            }
+                return dal.Add(model);               
+            }         
+
         }
 
 
@@ -112,7 +133,7 @@ namespace BAMENG.LOGIC
             return result;
         }
 
-        public static bool Update(int userId, string orderId, int status, string memo, ref ApiStatusCode code)
+        public static bool Update(int userId, string orderId, int status, ref ApiStatusCode code)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
@@ -129,16 +150,52 @@ namespace BAMENG.LOGIC
                 }
 
                 //改订单为已处理
-                if (status == 1 && orderModel.Ct_BelongId > 0)
+                if (status == 1 && orderModel.UserId != orderModel.Ct_BelongId)
                 {
-                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(userId);
+                    RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(orderModel.UserId);
                     //给盟友加盟豆
-                    UserLogic.addUserMoney(userId, rewardSettingModel.OrderReward);
+                    UserLogic.addUserMoney(orderModel.UserId, rewardSettingModel.OrderReward);
                     //更新用户等级
-                    UserLogic.userUpdate(userId);
+                    UserLogic.userUpdate(orderModel.UserId);
+
+                    using (var dal1 = FactoryDispatcher.UserFactory())
+                    {
+                        RewardsSettingModel rewardSettingModel1 = UserLogic.GetRewardModel(orderModel.UserId);
+                        TempBeansRecordsModel model1 = new TempBeansRecordsModel();
+                        model1.Amount = rewardSettingModel1.CustomerReward;
+                        model1.UserId = orderModel.UserId;
+                        model1.LogType = 0;
+                        model1.Income = 0;
+                        model1.CreateTime = DateTime.Now;
+                        model1.Status = 0;
+                        dal1.AddTempBeansRecords(model1);
+
+                        BeansRecordsModel model2 = new BeansRecordsModel();
+                        model2.Amount = rewardSettingModel.OrderReward;
+                        model2.UserId = orderModel.UserId;
+                        model2.LogType = 0;
+                        model2.Income = 1;
+                        model2.CreateTime = DateTime.Now;
+                        dal1.AddBeansRecords(model2);
+                    }
+                }
+                if (status == 2 && orderModel.UserId != orderModel.Ct_BelongId)
+                {
+                    using (var dal1 = FactoryDispatcher.UserFactory())
+                    {
+                        RewardsSettingModel rewardSettingModel1 = UserLogic.GetRewardModel(orderModel.UserId);
+                        TempBeansRecordsModel model1 = new TempBeansRecordsModel();
+                        model1.Amount = rewardSettingModel1.UserId;
+                        model1.UserId = orderModel.UserId;
+                        model1.LogType = 0;
+                        model1.Income = 0;
+                        model1.CreateTime = DateTime.Now;
+                        model1.Status = 0;
+                        dal1.AddTempBeansRecords(model1);                       
+                    }
                 }
 
-                return dal.Update(orderId, status, memo);
+                return dal.Update(orderId, status)==1;
             }
         }
 
@@ -209,7 +266,17 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return GetUserOrderList(userId, status, lastId);
+                return dal.GetUserOrderList(userId, status, lastId);
+            }
+        }
+
+        public static int UploadVoucher(string orderId,string customer
+            ,string mobile,decimal price,string memo,string fileName)
+        {
+            using (var dal = FactoryDispatcher.OrderFactory())
+            {
+                return  dal.UploadVoucher(orderId,  customer
+            ,  mobile,  price,  memo,  fileName);
             }
         }
     }

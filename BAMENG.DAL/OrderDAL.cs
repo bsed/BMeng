@@ -158,27 +158,40 @@ namespace BAMENG.DAL
         /// <summary>
         /// 更新一条数据
         /// </summary>
-        public bool Update(string orderId, int status, string memo)
+        public int Update(string orderId, int status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update BM_Orders set ");
+            strSql.Append(" OrderStatus=@OrderStatus,FinishedTime=@FinishedTime");
+            strSql.Append(" where orderId=@orderId ");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@OrderStatus", status),
+                    new SqlParameter("@FinishedTime",DateTime.Now),
+                    new SqlParameter("@orderId", orderId)};
+
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);            
+        }
+
+
+        public int UploadVoucher(string orderId, string customer
+            , string mobile, decimal price, string note, string fileName)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update BM_Orders set ");
             strSql.Append("Memo=@Memo,OrderStatus=@OrderStatus");
             strSql.Append(" where orderId=@orderId ");
             SqlParameter[] parameters = {
-                    new SqlParameter("@Memo", memo),
-                    new SqlParameter("@OrderStatus", status),
+                    new SqlParameter("@Note", note),
+                    new SqlParameter("@FianlAmount", price),
+                    new SqlParameter("@SuccessImg", fileName),
+                    new SqlParameter("@Ct_Mobile", mobile),
+                    new SqlParameter("@Ct_Name", customer),
                     new SqlParameter("@orderId", orderId)};
 
-            int rows = DbHelperSQL.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
+
+
 
 
 

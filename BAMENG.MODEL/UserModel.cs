@@ -1101,7 +1101,7 @@ namespace BAMENG.MODEL
     public class TempBeansRecordsListModel
     {
         public int id { get; set; }
-        public int money { get; set; }
+        public decimal money { get; set; }
         public int status { get; set; }
         public long time { get; set; }
     }
@@ -1163,7 +1163,7 @@ namespace BAMENG.MODEL
         /// <summary>
         /// 
         /// </summary>
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// 
