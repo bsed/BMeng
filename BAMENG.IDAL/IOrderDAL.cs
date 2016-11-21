@@ -64,5 +64,30 @@ namespace BAMENG.IDAL
 
         int UploadVoucher(string orderId, string customer
            , string mobile, decimal price, string note, string fileName);
+
+        /// <summary>
+        /// 获取订单完整详情
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>OrderModel.</returns>
+        OrderModel GetOrderDetail(string orderId);
+
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="shopType">门店类型1 总店 0分店</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetOrderList(int shopId, int shopType, SearchModel model);
+
+
+        /// <summary>
+        /// 修改订单价格
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="status">0未成交，1已成交，2退单</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateOrderStatus(string orderId, int status);
     }
 }
