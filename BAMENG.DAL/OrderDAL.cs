@@ -169,23 +169,33 @@ namespace BAMENG.DAL
                     new SqlParameter("@FinishedTime",DateTime.Now),
                     new SqlParameter("@orderId", orderId)};
 
-            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);            
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
 
 
+        /// <summary>
+        /// 更新成交信息
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="customer">The customer.</param>
+        /// <param name="mobile">The mobile.</param>
+        /// <param name="price">The price.</param>
+        /// <param name="note">The note.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>System.Int32.</returns>
         public int UploadVoucher(string orderId, string customer
             , string mobile, decimal price, string note, string fileName)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update BM_Orders set ");
-            strSql.Append("Memo=@Memo,OrderStatus=@OrderStatus");
+            strSql.Append("Note=@Note,Ct_Mobile=@Ct_Mobile,Ct_Name=@Ct_Name,FianlAmount=@FianlAmount,SuccessImg=@SuccessImg");
             strSql.Append(" where orderId=@orderId ");
             SqlParameter[] parameters = {
                     new SqlParameter("@Note", note),
-                    new SqlParameter("@FianlAmount", price),
                     new SqlParameter("@SuccessImg", fileName),
                     new SqlParameter("@Ct_Mobile", mobile),
                     new SqlParameter("@Ct_Name", customer),
+                    new SqlParameter("@FianlAmount", price),
                     new SqlParameter("@orderId", orderId)};
 
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);

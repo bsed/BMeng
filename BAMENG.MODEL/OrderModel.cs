@@ -141,6 +141,17 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The name of the status.</value>
         public string statusName { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        /// <value>The remark.</value>
+        public string remark { get; set; }
+        /// <summary>
+        /// 补充说明
+        /// </summary>
+        /// <value>The note.</value>
+        public string note { get; set; }
     }
 
 
@@ -186,6 +197,13 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The remark.</value>
         public string remark { get; set; }
+
+
+        /// <summary>
+        /// 补充说明
+        /// </summary>
+        /// <value>The note.</value>
+        public string note { get; set; }
 
 
     }

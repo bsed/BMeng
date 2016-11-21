@@ -62,6 +62,16 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         List<OrderModel> GetUserOrderList(int userId, int status, long lastId);
 
+        /// <summary>
+        /// 更新成交信息
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="customer">The customer.</param>
+        /// <param name="mobile">The mobile.</param>
+        /// <param name="price">The price.</param>
+        /// <param name="note">The note.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>System.Int32.</returns>
         int UploadVoucher(string orderId, string customer
            , string mobile, decimal price, string note, string fileName);
 

@@ -42,6 +42,8 @@ namespace BAMENG.LOGIC
                 orderList.status = order.OrderStatus;
                 orderList.id = StringHelper.GetUTCTime(order.CreateTime);
                 orderList.orderId = order.orderId;
+                orderList.remark = order.Memo;
+                orderList.note = order.Note;
                 if (orderList.status == 0)
                     orderList.statusName = "未成交";
                 else if (orderList.status == 1)
@@ -96,7 +98,7 @@ namespace BAMENG.LOGIC
                 {
                     RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(coupon.UserId);
                     TempBeansRecordsModel model1 = new TempBeansRecordsModel();
-                    model1.Amount = rewardSettingModel.CustomerReward ;
+                    model1.Amount = rewardSettingModel.CustomerReward;
                     model1.UserId = coupon.UserId;
                     model1.LogType = 0;
                     model1.Income = 1;
@@ -105,11 +107,11 @@ namespace BAMENG.LOGIC
                     dal.AddTempBeansRecords(model1);
                 }
             }
-            
+
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return dal.Add(model);               
-            }         
+                return dal.Add(model);
+            }
 
         }
 
@@ -136,6 +138,7 @@ namespace BAMENG.LOGIC
                 result.orderTime = StringHelper.GetUTCTime(order.orderTime);
                 result.address = order.Ct_Address;
                 result.remark = order.Memo;
+                result.note = order.Note;
             }
             return result;
         }
@@ -198,11 +201,11 @@ namespace BAMENG.LOGIC
                         model1.Income = 0;
                         model1.CreateTime = DateTime.Now;
                         model1.Status = 0;
-                        dal1.AddTempBeansRecords(model1);                       
+                        dal1.AddTempBeansRecords(model1);
                     }
                 }
 
-                return dal.Update(orderId, status)==1;
+                return dal.Update(orderId, status) == 1;
             }
         }
 
@@ -291,13 +294,23 @@ namespace BAMENG.LOGIC
             }
         }
 
-        public static int UploadVoucher(string orderId,string customer
-            ,string mobile,decimal price,string memo,string fileName)
+        /// <summary>
+        /// 更新上传凭证信息
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="customer">The customer.</param>
+        /// <param name="mobile">The mobile.</param>
+        /// <param name="price">The price.</param>
+        /// <param name="memo">The memo.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>System.Int32.</returns>
+        public static int UploadVoucher(string orderId, string customer
+            , string mobile, decimal price, string memo, string fileName)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return  dal.UploadVoucher(orderId,  customer
-            ,  mobile,  price,  memo,  fileName);
+                return dal.UploadVoucher(orderId, customer
+            , mobile, price, memo, fileName);
             }
         }
 
