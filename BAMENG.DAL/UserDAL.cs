@@ -1207,8 +1207,8 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public List<BeansConvertModel> getBeansConvertListModel(int userId, int lastId)
         {
-            string strSql = "select top 10 convert.*,UB_UserRealName as UserRealName from BM_BeansConvert as convert "
-                + " left join Hot_UserBaseInfo as user on user.UB_UserID=convert.UserId  where convert.UserId=@UserId";
+            string strSql = "select top 10 c.*,UB_UserRealName as UserRealName from BM_BeansConvert as c "
+                + " left join Hot_UserBaseInfo as u on u.UB_UserID=c.UserId  where c.UserId=@UserId";
             if (lastId > 0) strSql += " and id<" + lastId;
             strSql += " order by id desc";
             var parms = new[] {
@@ -1231,8 +1231,8 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId)
         {
-            string strSql = "select top 10 convert.*,UB_UserRealName as UserRealName from BM_BeansConvert as convert "
-                + " left join Hot_UserBaseInfo as user on user.UB_UserID=convert.UserId where UserMasterId=@UserMasterId";
+            string strSql = "select top 10 c.*,UB_UserRealName as UserRealName from BM_BeansConvert as c "
+                + " left join Hot_UserBaseInfo as u on u.UB_UserID=c.UserId where UserMasterId=@UserMasterId";
             if (lastId > 0) strSql += " and id<" + lastId;
             strSql += " order by id desc";
             var parms = new[] {

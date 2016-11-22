@@ -161,9 +161,7 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyInfo()
         {
-            var data = GetUserData();
-            if (data != null)
-                data.UserHeadImg = WebConfig.reswebsite() + data.UserHeadImg;
+            var data = GetUserData();            
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -267,7 +265,7 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getScoreList(userId, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK));
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
 
@@ -280,9 +278,7 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getBeansRecordsList(userId, lastId);
-
-
-            return Json(new ResultModel(ApiStatusCode.OK));
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
         /// <summary>

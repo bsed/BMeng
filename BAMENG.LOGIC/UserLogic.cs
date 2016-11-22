@@ -104,7 +104,17 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                return dal.GetUserModel(userId);
+                var user = dal.GetUserModel(userId);
+                if (user != null)
+                {
+                    user.UserHeadImg = WebConfig.reswebsite() + user.UserHeadImg;
+                    user.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + user.UserId;
+                    user.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", user.UserId);
+                    user.MengBeans = user.MengBeans - user.MengBeansLocked;
+                    user.Score = user.Score - user.ScoreLocked;
+                }
+                return user;
+
             }
         }
 

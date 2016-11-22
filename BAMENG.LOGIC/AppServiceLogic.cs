@@ -109,10 +109,11 @@ namespace BAMENG.LOGIC
                         apiCode = ApiStatusCode.OK;
                         model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
                         model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
-                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
+                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);                        
+                        model.MengBeans = model.MengBeans - model.MengBeansLocked;
+                        model.Score = model.Score - model.ScoreLocked;
                         model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
 
-                       
                         string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
                         if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
                             model.token = token;

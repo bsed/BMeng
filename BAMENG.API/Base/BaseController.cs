@@ -221,9 +221,6 @@ namespace BAMENG.API
                         int UserId = UserLogic.GetUserIdByAuthToken(Authorization);
                         UserModel user = UserLogic.GetModel(UserId);
                         user.token = Authorization;
-                        user.UserHeadImg = WebConfig.reswebsite() + user.UserHeadImg;
-                        user.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + user.UserId;
-                        user.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", user.UserId);
                         user.TempMengBeans = UserLogic.countTempBeansMoney(user.UserId, 0);
                         return user;
                     }
