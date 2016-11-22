@@ -33,7 +33,16 @@ namespace BAMENG.API.Controllers
                 data.userData = GetUserData();
                 if (data.userData != null)
                 {
-                    data.baseData.userStatus = data.userData.IsActive;                    
+                    data.baseData.userStatus = data.userData.IsActive;
+                    //添加登录日志
+                    LogLogic.AddLoginLog(new LoginLogModel()
+                    {
+                        UserId = data.userData.UserId,
+                        UserIdentity = data.userData.UserIdentity,
+                        BelongOne = data.userData.BelongOne,
+                        ShopId = data.userData.ShopId,
+                        AppSystem = OS
+                    });
                 }
                 else
                     data.baseData.userStatus = -1;
@@ -105,7 +114,7 @@ namespace BAMENG.API.Controllers
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
-            string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+            string fileName = GetUploadImagePath();
             Stream stream = oFile.InputStream;
             byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);

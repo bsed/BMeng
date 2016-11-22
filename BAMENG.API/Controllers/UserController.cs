@@ -32,7 +32,7 @@ namespace BAMENG.API.Controllers
         public ActionResult Login(string loginName, string password)
         {
             ApiStatusCode apiCode = ApiStatusCode.OK;
-            UserModel userData = AppServiceLogic.Instance.Login(loginName, password, ref apiCode);
+            UserModel userData = AppServiceLogic.Instance.Login(loginName, password,OS, ref apiCode);
             return Json(new ResultModel(apiCode, userData));
         }
         /// <summary>
@@ -183,7 +183,7 @@ namespace BAMENG.API.Controllers
                         HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
                         if (oFile == null)
                             return Json(new ResultModel(ApiStatusCode.请上传图片));
-                        string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+                        string fileName = GetUploadImagePath();
                         Stream stream = oFile.InputStream;
                         byte[] bytes = new byte[stream.Length];
                         stream.Read(bytes, 0, bytes.Length);
@@ -396,11 +396,11 @@ namespace BAMENG.API.Controllers
         {
             var user = GetUserData();
             var data = UserLogic.MyBusinessAmount(user.UserId, user.UserIdentity);
-            if (data != null)
-            {
-                data.customerAmount = user.CustomerAmount;
-                data.orderAmount = user.OrderSuccessAmount;
-            }
+            //if (data != null)
+            //{
+            //    data.customerAmount = user.CustomerAmount;
+            //    data.orderAmount = user.OrderSuccessAmount;
+            //}
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 

@@ -76,13 +76,16 @@ namespace BAMENG.LOGIC
             AppVersionModel verData = new AppVersionModel();
             if (os == OSOptions.android.ToString())
             {
-                bool flag = GlobalProvider.IsVersionUpdate("1.0.2", currentVersion);
+
+                var newVersion = ConfigLogic.GetValue("AppVersion");
+
+                bool flag = GlobalProvider.IsVersionUpdate(newVersion, currentVersion);
                 if (flag)
                 {
                     verData.serverVersion = "1.0.2";
-                    verData.updateType = 1;
-                    verData.updateTip = "测试更新";
-                    verData.updateUrl = "http://www.baidu.com";
+                    verData.updateType = Convert.ToInt32(ConfigLogic.GetValue("EnableAppCoerceUpdate"));
+                    verData.updateTip = ConfigLogic.GetValue("AppUpateContent");
+                    verData.updateUrl = ConfigLogic.GetValue("AppUpateUrl");
                 }
             }
             return verData;
@@ -95,9 +98,10 @@ namespace BAMENG.LOGIC
         /// </summary>
         /// <param name="loginName">Name of the login.</param>
         /// <param name="password">The password.</param>
+        /// <param name="AppSystem">APP系统</param>
         /// <param name="apiCode">The API code.</param>
         /// <returns>UserModel.</returns>
-        public UserModel Login(string loginName, string password, ref ApiStatusCode apiCode)
+        public UserModel Login(string loginName, string password, string AppSystem, ref ApiStatusCode apiCode)
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
@@ -109,7 +113,7 @@ namespace BAMENG.LOGIC
                         apiCode = ApiStatusCode.OK;
                         model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
                         model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
-                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);                        
+                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
                         model.MengBeans = model.MengBeans - model.MengBeansLocked;
                         model.Score = model.Score - model.ScoreLocked;
                         model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
@@ -117,6 +121,20 @@ namespace BAMENG.LOGIC
                         string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
                         if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
                             model.token = token;
+
+
+                        //添加登录日志
+                        LogLogic.AddLoginLog(new LoginLogModel()
+                        {
+                            UserId = model.UserId,
+                            UserIdentity = model.UserIdentity,
+                            BelongOne = model.BelongOne,
+                            ShopId = model.ShopId,
+                            AppSystem = AppSystem
+                        });
+
+
+
                         return model;
                     }
                     else

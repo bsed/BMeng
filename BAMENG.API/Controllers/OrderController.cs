@@ -114,7 +114,7 @@ namespace BAMENG.API.Controllers
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
-            string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+            string fileName = GetUploadImagePath();
             Stream stream = oFile.InputStream;
             byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);

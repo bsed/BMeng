@@ -223,7 +223,7 @@ namespace BAMENG.LOGIC
                             model2.UserId = orderModel.UserId;
                             model2.LogType = 0;
                             model2.Income = 1;
-                            model2.Remark = "转正";
+                            model2.Remark = "订单奖励";
                             model2.OrderId = orderModel.orderId;
                             model2.CreateTime = DateTime.Now;
                             dal1.AddBeansRecords(model2);

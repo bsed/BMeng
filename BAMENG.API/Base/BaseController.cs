@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Web.Routing;
 using BAMENG.CONFIG;
 using BAMENG.LOGIC;
+using HotCoreUtils.Helper;
 
 namespace BAMENG.API
 {
@@ -256,5 +257,16 @@ namespace BAMENG.API
             }
             return 0;
         }
+
+
+        /// <summary>
+        /// 获取图片上传的路径
+        /// </summary>
+        /// <returns>System.String.</returns>
+        public string GetUploadImagePath()
+        {
+            return "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+        }
+
     }
 }

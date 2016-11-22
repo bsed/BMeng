@@ -83,5 +83,19 @@ namespace BAMENG.LOGIC
                 return false;
             }
         }
+
+        /// <summary>
+        /// 添加登录日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddLoginLog(LoginLogModel logModel)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.AddLoginLog(logModel);
+            }
+        }
+
     }
 }

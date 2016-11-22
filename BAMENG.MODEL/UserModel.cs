@@ -221,6 +221,12 @@ namespace BAMENG.MODEL
         /// </summary>
         public int belongOne { get; set; }
 
+        /// <summary>
+        /// 用户性别 F女 M男
+        /// </summary>
+        /// <value>The user gender.</value>
+        public string userGender { get; set; }
+
     }
 
     /// <summary>
@@ -969,6 +975,7 @@ namespace BAMENG.MODEL
 
     public class ConvertFlowModel
     {
+        public int ID { get; set; }
         /// <summary>
         /// 客户
         /// </summary>
@@ -1133,6 +1140,10 @@ namespace BAMENG.MODEL
     {
         public int id { get; set; }
         public decimal money { get; set; }
+        /// <summary>
+        /// 1收入 0支出
+        /// </summary>
+        /// <value>The status.</value>
         public int status { get; set; }
         public long time { get; set; }
     }

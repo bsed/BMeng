@@ -132,7 +132,7 @@ namespace BAMENG.LOGIC
                             model2.UserId = model.BelongOne;
                             model2.LogType = 0;
                             model2.Income = 1;
-                            model2.Remark = "客户信息收入";
+                            model2.Remark = "客户信息奖励";
                             model2.OrderId = model.ID.ToString();
                             model2.CreateTime = DateTime.Now;
                             dal1.AddBeansRecords(model2);
@@ -198,7 +198,7 @@ namespace BAMENG.LOGIC
                             model2.UserId = model.BelongOne;
                             model2.LogType = 0;
                             model2.Income = 1;
-                            model2.Remark = "进店收入";
+                            model2.Remark = "进店奖励";
                             model2.OrderId = model.ID.ToString();
                             model2.CreateTime = DateTime.Now;
                             dal1.AddBeansRecords(model2);

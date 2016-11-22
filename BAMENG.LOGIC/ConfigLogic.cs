@@ -123,7 +123,7 @@ namespace BAMENG.LOGIC
                 model.EnableSign = Convert.ToInt32(v) == 0;
 
 
-            string v1= GetValue("EnableContinuousSign");
+            string v1 = GetValue("EnableContinuousSign");
             if (string.IsNullOrEmpty(v1))
                 model.EnableContinuousSign = false;
             else
@@ -155,6 +155,5 @@ namespace BAMENG.LOGIC
             return model;
 
         }
-
     }
 }

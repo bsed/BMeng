@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 
 namespace BAMENG.LOGIC
@@ -456,7 +457,7 @@ namespace BAMENG.LOGIC
                 convertFlow.name = convert.UserRealName;
                 convertFlow.time = StringHelper.GetUTCTime(convert.CreateTime);
                 convertFlow.status = convert.Status;
-
+                convertFlow.ID = convert.ID;
                 result.Add(convertFlow);
             }
             return result;
@@ -474,25 +475,43 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 BeansConvertModel model = dal.getBeansConvertModel(id);
-                if (model == null || model.Status != 0 || model.UserMasterId != userId)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    code = ApiStatusCode.兑换审核存在异常;
-                    return false;
-                }
+                    if (model == null || model.Status != 0 || model.UserMasterId != userId)
+                    {
+                        code = ApiStatusCode.兑换审核存在异常;
+                        return false;
+                    }
 
-                if (status == 1)
-                {
-                    dal.addMengBeansLocked(model.UserId, -model.Amount);
-                    dal.addUserMoney(model.UserId, -model.Amount);
-                    dal.updateBeansConvertStatus(id, 1);
-                }
-                else if (status == 2)
-                {
-                    dal.addMengBeansLocked(model.UserId, -model.Amount);
-                    dal.updateBeansConvertStatus(id, 2);
-                }
+                    if (status == 1)
+                    {
+                        dal.addMengBeansLocked(model.UserId, -model.Amount);
+                        dal.addUserMoney(model.UserId, -model.Amount);
+                        dal.updateBeansConvertStatus(id, 1);
 
-                dal.updateBeansConvertStatus(id, status);
+
+
+                        BeansRecordsModel model2 = new BeansRecordsModel();
+                        model2.Amount = -model.Amount;
+                        model2.UserId = model.UserId;
+                        model2.LogType = 0;
+                        model2.Income = 0;
+                        model2.Remark = "兑换";
+                        model2.OrderId = "";
+                        model2.CreateTime = DateTime.Now;
+                        dal.AddBeansRecords(model2);
+
+                    }
+                    else if (status == 2)
+                    {
+                        dal.addMengBeansLocked(model.UserId, -model.Amount);
+                        dal.updateBeansConvertStatus(id, 2);
+                    }
+
+                    dal.updateBeansConvertStatus(id, status);
+
+                    scope.Complete();
+                }
             }
             return true;
         }
@@ -530,6 +549,7 @@ namespace BAMENG.LOGIC
                     register.storeId = ConstConfig.storeId;
                     register.UserIdentity = 0;
                     register.username = model.UserName;
+                    register.userGender = model.Sex == 1 ? "M" : "F";
                     dal.AddUserInfo(register);
                 }
                 else if (status == 2)
@@ -592,7 +612,14 @@ namespace BAMENG.LOGIC
         /// <returns>MyUserBusinessModel.</returns>
         public static MyUserBusinessModel MyBusinessAmount(int userId, int userIdentity)
         {
+
             MyUserBusinessModel model = new MyUserBusinessModel();
+
+            //订单数量
+            model.orderAmount = userIdentity == 1 ? OrderLogic.CountOrders(userId, 0) : OrderLogic.CountOrdersByAllyUserId(userId, 0);
+
+            //客户数量
+            model.customerAmount = CustomerLogic.GetCustomerCount(userId, userIdentity, 0);
 
             //兑换数量
             model.exchangeAmount = GetConvertCount(userId, 0);
