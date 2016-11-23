@@ -302,12 +302,11 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 bool flag = dal.ChanagePassword(userId, oldPassword, password);
-                string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
-                if (dal.IsAuthTokenExist(userId))
+                if (flag)
+                {
+                    string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
                     dal.UpdateUserAuthToken(userId, token);
-                else
-                    dal.AddUserAuthToken(userId, token);
-
+                }
                 return flag;
             }
         }

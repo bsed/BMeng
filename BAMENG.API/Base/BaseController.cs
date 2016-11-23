@@ -231,7 +231,7 @@ namespace BAMENG.API
             {
 
             }
-            return new UserModel();
+            return null;
         }
 
         /// <summary>
