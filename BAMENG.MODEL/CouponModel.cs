@@ -188,4 +188,26 @@ namespace BAMENG.MODEL
     }
 
 
+    public class MyCouponListModel
+    {
+        /// <summary>
+        /// 现金优惠券Id
+        /// </summary>
+        public int id { get; set; }
+
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string name { get; set; }
+
+        /// <summary>
+        /// 金额
+        /// </summary>
+        public decimal money { get; set; }
+
+        /// <summary>
+        /// 有效期
+        /// </summary>
+        public string due { get; set; }
+    }
 }

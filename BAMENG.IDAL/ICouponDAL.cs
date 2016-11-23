@@ -114,6 +114,19 @@ namespace BAMENG.IDAL
         /// <returns>System.Int32.</returns>
         int GetMyCashCouponCount(int userId);
 
+        /// <summary>
+        /// 获得现金卷列表
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        List<CashCouponModel> getEnabledCashCouponList(int shopId);
 
+
+        /// <summary>
+        /// 获得优惠卷发送列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        List<CouponSendModel> getCouponSendList(int userId);
     }
 }

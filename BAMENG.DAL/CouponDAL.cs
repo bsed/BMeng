@@ -278,5 +278,42 @@ namespace BAMENG.DAL
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
         }
 
+        /// <summary>
+        /// 获得现金卷列表
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        public List<CashCouponModel> getEnabledCashCouponList(int shopId)
+        {
+            List<CashCouponModel> list = new List<CashCouponModel>();
+           string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and StartTime<@Date and EndTime>@Date order by CouponId desc";
+            var parms = new[] {
+                new SqlParameter("@ShopId",shopId),
+                new SqlParameter("@Date",DateTime.Now)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, null))
+            {
+                list = DbHelperSQLP.GetEntityList<CashCouponModel>(dr);
+            }
+            return list;
+
+        }
+
+        /// <summary>
+        /// 获得优惠卷发送列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<CouponSendModel> getCouponSendList(int userId)
+        {
+            List<CouponSendModel> list = new List<CouponSendModel>();
+            string strSql = "select * from BM_CouponSend where UserId=" + userId + " order by id desc";
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, null))
+            {
+                list = DbHelperSQLP.GetEntityList<CouponSendModel>(dr);
+            }
+            return list;
+        }
+
     }
 }
