@@ -111,5 +111,19 @@ namespace BAMENG.LOGIC
                 return dal.GetShopList(shopType, shopId);
             }
         }
+
+
+        /// <summary>
+        /// 获取门店所属总店ID
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public static int GetBelongShopId(int shopId)
+        {
+            using (var dal = FactoryDispatcher.ShopFactory())
+            {
+                return dal.GetBelongShopId(shopId);
+            }
+        }
     }
 }

@@ -176,5 +176,34 @@ namespace BAMENG.LOGIC
                 return dal.getCouponSendList(userId);
             }
         }
+
+
+        /// <summary>
+        /// 添加优惠券发送记录
+        /// </summary>
+        /// <param name="userId">发送人ID</param>
+        /// <param name="sendToUserId">接收用户ID,如果是自己转发，则为0</param>
+        /// <param name="couponId">优惠券ID</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddSendCoupon(int userId, int sendToUserId,int couponId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.AddSendCoupon(userId, sendToUserId, couponId);
+            }
+        }
+
+        /// <summary>
+        /// 创建用户现金券(盟主分享现金券时调用)
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public int CreateUserCashCouponLog(CashCouponLogModel model)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.CreateUserCashCouponLog(model);
+            }
+        }
     }
 }

@@ -202,12 +202,6 @@ namespace BAMENG.API.Controllers
                 case (int)UserPropertyOptions.USER_2:
                     userInfo.NickName = content;
                     break;
-                case (int)UserPropertyOptions.USER_3:
-                    {
-
-                        userInfo.UserMobile = content;
-                    }
-                    break;
                 case (int)UserPropertyOptions.USER_4:
                     userInfo.RealName = content;
                     break;
@@ -393,6 +387,25 @@ namespace BAMENG.API.Controllers
             var data = UserLogic.getMyCashCouponList(userId);
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
+
+
+
+        /// <summary>
+        ///发送优惠券 POST: user/SendCashCoupon
+        /// </summary>
+        /// <param name="couponId">优惠券ID</param>
+        /// <param name="toUserId">接收用户ID,如果是自己转发，则为0</param>
+        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        [ActionAuthorize]
+        public ActionResult SendCashCoupon(int couponId, int toUserId = 0)
+        {
+            int userId = GetAuthUserId();
+            CouponLogic.AddSendCoupon(userId, toUserId, couponId);
+            return Json(new ResultModel(ApiStatusCode.OK));
+        }
+
+
+
         /// <summary>
         /// 我的业务 POST: user/MyBusiness         
         /// </summary>

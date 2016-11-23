@@ -227,6 +227,20 @@ namespace BAMENG.ADMIN.handler
                     case "GETORDERINFO":
                         GetOrderInfo();
                         break;
+
+
+                    #region 统计
+
+
+                    case "LOGINSTATISTICS":
+                        LoginStatistics();
+                        break;
+
+
+                    #endregion
+
+
+
                     default:
                         break;
                 }
@@ -958,6 +972,47 @@ namespace BAMENG.ADMIN.handler
             var data = OrderLogic.GetOrderDetail(GetFormValue("orderid", ""));
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
+
+
+
+
+
+        #region 统计
+
+
+        /// <summary>
+        /// 登录统计
+        /// </summary>
+        private void LoginStatistics()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
+            var data = LogLogic.LoginStatistics(user, beginTime, endTime);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        #endregion
+
 
     }
 }

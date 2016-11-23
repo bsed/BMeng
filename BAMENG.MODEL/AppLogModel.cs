@@ -106,6 +106,12 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The shop identifier.</value>
         public int ShopId { get; set; }
+        /// <summary>
+        /// 用户所属总店ID
+        /// </summary>
+        /// <value>The belong shop identifier.</value>
+        public int BelongShopId { get; set; }
+
 
         /// <summary>
         /// Gets or sets the application system.
@@ -120,4 +126,49 @@ namespace BAMENG.MODEL
         public DateTime LoginTime { get; set; }
 
     }
+
+
+    public class StatisticsModel
+    {
+        /// <summary>
+        /// 统计日期数组
+        /// </summary>
+        /// <value>The x data.</value>
+        public List<string> xData { get; set; }
+
+
+        /// <summary>
+        /// 统计数数据数组
+        /// </summary>
+        /// <value>The y data.</value>
+        public List<int> yData { get; set; }
+
+
+        /// <summary>
+        /// 总数
+        /// </summary>
+        /// <value>The total.</value>
+        public long total { get; set; }
+    }
+
+
+    /// <summary>
+    /// Class StatisticsListModel.
+    /// </summary>
+    public class StatisticsListModel
+    {
+        /// <summary>
+        /// 统计日期数组
+        /// </summary>
+        /// <value>The x data.</value>
+        public string xData { get; set; }
+
+
+        /// <summary>
+        /// 统计数数据数组
+        /// </summary>
+        /// <value>The y data.</value>
+        public int yData { get; set; }
+    }
+
 }

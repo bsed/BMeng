@@ -214,6 +214,24 @@ namespace BAMENG.DAL
             }
         }
 
+        /// <summary>
+        /// 获取门店所属总店ID
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public int GetBelongShopId(int shopId)
+        {
+            string strSql = "select ShopBelongId from BM_ShopManage where ShopID=@ShopID  and ShopType=2 ";
+            var param = new[] {                        
+                        new SqlParameter("@ShopID", shopId)
+            };
+            object obj= DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            return 0;
+        }
+
+
 
     }
 }

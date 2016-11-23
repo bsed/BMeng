@@ -86,7 +86,7 @@ namespace BAMENG.IDAL
         /// <param name="userId">The user identifier.</param>
         /// <param name="couponId">The coupon identifier.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        int CreateUserCashCouponLog(int userId, int couponId);
+        int CreateUserCashCouponLog(CashCouponLogModel model);
 
         /// <summary>
         /// 更新现金券的领取记录
@@ -128,5 +128,17 @@ namespace BAMENG.IDAL
         /// <param name="userId"></param>
         /// <returns></returns>
         List<CouponSendModel> getCouponSendList(int userId);
+
+
+
+
+        /// <summary>
+        /// 添加优惠券发送记录
+        /// </summary>
+        /// <param name="userId">发送人ID</param>
+        /// <param name="sendToUserId">接收用户ID,如果是自己转发，则为0</param>
+        /// <param name="couponId">优惠券ID</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddSendCoupon(int userId,int sendToUserId, int couponId);
     }
 }

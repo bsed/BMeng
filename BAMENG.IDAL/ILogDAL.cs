@@ -76,5 +76,15 @@ namespace BAMENG.IDAL
         /// <param name="logModel">The log model.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         bool AddLoginLog(LoginLogModel logModel);
+
+        /// <summary>
+        /// 获取登录统计
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        List<StatisticsListModel> LoginStatistics(int shopId,int userIdentity, string startTime, string endTime);
     }
 }

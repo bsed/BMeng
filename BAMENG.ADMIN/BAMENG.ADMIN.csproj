@@ -98,6 +98,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\loginstatic.html" />
     <Content Include="admin\messageedit.html" />
     <Content Include="admin\articleedit.html" />
     <Content Include="admin\articlelist.html" />
@@ -137,6 +138,7 @@
     <Content Include="static\img\ydll%403x.png" />
     <Content Include="static\js\.DS_Store" />
     <Content Include="static\js\admin\apparticle.js" />
+    <Content Include="static\js\admin\loginstatistics.js" />
     <Content Include="static\js\admin\messageedit.js" />
     <Content Include="static\js\admin\articleedit.js" />
     <Content Include="static\js\admin\articlelist.js" />
@@ -145,6 +147,7 @@
     <Content Include="static\js\admin\orderlist.js" />
     <Content Include="static\js\admin\messagelist.js" />
     <Content Include="static\js\admin\orderdetails.js" />
+    <Content Include="static\js\admin\shareConfig.js" />
     <Content Include="static\js\admin\userdetails.js" />
     <Content Include="static\js\admin\userlevel.js" />
     <Content Include="static\js\admin\customerlist.js" />

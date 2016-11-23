@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title>登录统计</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <base target="_blank">
+    <style>
+        .chart-info {
+            margin: 25px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+        }
+
+            .chart-info span {
+                color: #ff0000;
+            }
+    </style>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!--search-->
+        <form role="form" class="search-panel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content p-m no-borders">
+
+                            <p style="height: 8px;"></p>
+                            <div class="form-inline">
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodBn">登录时间：</label>
+                                    <input type="text" class="form-control input-sm mb10 data-range-pick" id="createTimePick" name="createTimePick" start-element="#beginTime" end-element="#endTime" placeholder="开始时间-结束时间" style="width: 277px;" />
+                                    <input type="hidden" id="beginTime" name="beginTime" />
+                                    <input type="hidden" id="endTime" name="endTime" />
+                                </div>
+                            </div>
+                            <p style="height: 8px;"></p>
+                            <div class="form-inline" style="max-width: 926px; text-align: right;">
+                                <button type="button" class="btn btn-success" onclick="chartsHelper.loadData(0)">筛选</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--search-->
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>登录统计</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a data-toggle="tab" aria-expanded="true" onclick="chartsHelper.tab(7)">最近一周</a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" aria-expanded="false" onclick="chartsHelper.tab(30)">最近一个月</a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" aria-expanded="false" onclick="chartsHelper.tab(90)">最近三个月</a>
+                            </li>
+                        </ul>
+                        <p></p>
+                        <div class="echarts" id="echarts-line-chart" style="height:500px;"></div>
+
+                        <div class="chart-info">
+                           当前统计总登录次数:<span class="login-total">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <link href="http://resali.huobanplus.com/cdn/hotui/css/plugins/datetimepick/daterangepicker.css" rel="stylesheet" />
+    <script src="http://resali.huobanplus.com/cdn/hotui/js/plugins/datetimepick/moment.js"></script>
+    <script src="http://resali.huobanplus.com/cdn/hotui/js/plugins/datetimepick/daterangepicker.js"></script>
+    <script src="/static/js/plugins/echarts/echarts-all.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/admin/loginstatistics.js"></script>
+</body>
+</html>

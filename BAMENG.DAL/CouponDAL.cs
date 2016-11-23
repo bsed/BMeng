@@ -184,15 +184,18 @@ namespace BAMENG.DAL
         /// <summary>
         /// 创建用户现金券(盟主分享现金券时调用)
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="model">The model.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public int CreateUserCashCouponLog(int userId, int couponId)
+        public int CreateUserCashCouponLog(CashCouponLogModel model)
         {
-            string strSql = "insert into BM_GetCashCouponLog(UserId,CouponNo,CouponId) values(@UserId,@CouponId);select @@IDENTITY";
+            string strSql = "insert into BM_GetCashCouponLog(UserId,CouponNo,CouponId,StartTime,EndTime,Money) values(@UserId,@CouponNo,@CouponId,@StartTime,@EndTime,@Money);select @@IDENTITY";
             var parm = new[] {
-                new SqlParameter("@UserId", userId),
-                new SqlParameter("@CouponId", couponId)
+                new SqlParameter("@UserId", model.UserId),
+                new SqlParameter("@CouponId", model.CouponId),
+                new SqlParameter("@CouponNo", model.CouponNo),
+                new SqlParameter("@StartTime", model.StartTime),
+                new SqlParameter("@EndTime", model.EndTime),
+                new SqlParameter("@Money", model.Money)
             };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
             if (obj != null)
@@ -286,7 +289,7 @@ namespace BAMENG.DAL
         public List<CashCouponModel> getEnabledCashCouponList(int shopId)
         {
             List<CashCouponModel> list = new List<CashCouponModel>();
-           string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and StartTime<@Date and EndTime>@Date order by CouponId desc";
+            string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and StartTime<@Date and EndTime>@Date order by CouponId desc";
             var parms = new[] {
                 new SqlParameter("@ShopId",shopId),
                 new SqlParameter("@Date",DateTime.Now)
@@ -313,6 +316,28 @@ namespace BAMENG.DAL
                 list = DbHelperSQLP.GetEntityList<CouponSendModel>(dr);
             }
             return list;
+        }
+
+
+
+
+        /// <summary>
+        /// 添加优惠券发送记录
+        /// </summary>
+        /// <param name="userId">发送人ID</param>
+        /// <param name="sendToUserId">接收用户ID,如果是自己转发，则为0</param>
+        /// <param name="couponId">优惠券ID</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddSendCoupon(int userId, int sendToUserId, int couponId)
+        {
+            string strSql = "insert into BM_CouponSend(UserId,CouponId,Type,SendToUserId) values(@UserId,@CouponId,@Type,@SendToUserId)";
+            var parm = new[] {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@CouponId", couponId),
+                new SqlParameter("@Type", sendToUserId==0?"0":"1"),
+                new SqlParameter("@SendToUserId", sendToUserId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
 
     }

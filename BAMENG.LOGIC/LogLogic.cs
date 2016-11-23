@@ -94,11 +94,59 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.LogFactory())
             {
                 if (logModel.UserId > 0)
+                {
+                    int shopId = ShopLogic.GetBelongShopId(logModel.ShopId);
+                    if (shopId > 0)
+                        logModel.BelongShopId = shopId;
+
                     return dal.AddLoginLog(logModel);
+                }
                 else
                     return false;
             }
         }
+
+
+
+
+        /// <summary>
+        /// 登录统计
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        public static StatisticsModel LoginStatistics(AdminLoginModel user, string startTime, string endTime)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                StatisticsModel data = new StatisticsModel();
+                data.yData = new List<int>();
+                data.xData = new List<string>();
+                List<StatisticsListModel> lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                if (lst != null && lst.Count() > 0)
+                {
+                    int len = lst.Count();
+                    if (len < 5)
+                    {
+                        string t = lst[0].xData;
+                        data.xData.Add(Convert.ToDateTime(t).AddDays(-1).ToString("yyyy-MM-dd"));
+                        data.yData.Add(0);
+                    }
+                    foreach (var item in lst)
+                    {
+                        data.xData.Add(item.xData);
+                        data.yData.Add(item.yData);
+                        data.total += item.yData;
+                    }
+                    string t2 = lst[len - 1].xData;
+                    data.xData.Add(Convert.ToDateTime(t2).AddDays(1).ToString("yyyy-MM-dd"));
+                    data.yData.Add(0);
+
+                }
+                return data;
+            }
+        }
+
 
     }
 }

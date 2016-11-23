@@ -63,5 +63,13 @@ namespace BAMENG.IDAL
         /// <returns>List&lt;ShopModel&gt;.</returns>
         List<ShopModel> GetShopList(int shopType, int shopId);
 
+
+        /// <summary>
+        /// 获取门店所属总店ID
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>System.Int32.</returns>
+        int GetBelongShopId(int shopId);
+
     }
 }
