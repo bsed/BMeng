@@ -1012,5 +1012,40 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        /// <summary>
+        /// 获取我的现金卷列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static List<MyCouponListModel> getMyCashCouponList(int userId)
+        {
+            UserModel user = GetModel(userId);
+            List<CashCouponModel> coupons = CouponLogic.getEnabledCashCouponList(user.ShopId);
+            List<CouponSendModel> sendlist = CouponLogic.getCouponSendList(userId);
+            List<int> sends = new List<int>();
+            foreach (CouponSendModel item in sendlist)
+            {
+                sends.Add(item.CouponId);
+            }
+
+            List<MyCouponListModel> result = new List<MyCouponListModel>();
+            foreach (CashCouponModel item in coupons)
+            {
+                if(!sends.Contains(item.CouponId)) result.Add(ToMyCouponList(item));
+            }
+
+            return result;
+        }
+
+        public static  MyCouponListModel ToMyCouponList(CashCouponModel item)
+        {
+            MyCouponListModel model = new MyCouponListModel();
+            model.due = item.StartTime.ToString("yyyy.MM.dd") + "-" + item.EndTime.ToString("yyyy.MM.dd");
+            model.id = item.CouponId;
+            model.money = item.Money;
+            model.name = item.Title;
+            return model;
+        }
     }
 }

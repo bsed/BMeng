@@ -385,7 +385,9 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyCashCouponList()
         {
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int userId = GetAuthUserId();
+            var data = UserLogic.getMyCashCouponList(userId);
+            return Json(new ResultModel(ApiStatusCode.OK, data));
         }
         /// <summary>
         /// 我的业务 POST: user/MyBusiness         

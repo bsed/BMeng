@@ -1238,7 +1238,7 @@ namespace BAMENG.MODEL
         /// 盟主的盟友数量
         /// </summary>
         /// <value>The ally amount.</value>
-        public int AllyAmount{ get; set; }
+        public int AllyAmount { get; set; }
 
 
         /// <summary>
@@ -1258,5 +1258,18 @@ namespace BAMENG.MODEL
 
 
 
+    }
+
+    /// <summary>
+    /// 优惠卷转发
+    /// </summary>
+    public class CouponSendModel
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int CouponId { get; set; }
+        public int Type { get; set; }
+        public int SendToUserId { get; set; }
+        public DateTime SendDate { get; set; }
     }
 }

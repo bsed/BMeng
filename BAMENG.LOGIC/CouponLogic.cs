@@ -150,5 +150,31 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        /// <summary>
+        /// 获得现金卷列表
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        public static List<CashCouponModel> getEnabledCashCouponList(int shopId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.getEnabledCashCouponList(shopId);
+            }
+        }
+
+        /// <summary>
+        /// 获得优惠卷发送列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static List<CouponSendModel> getCouponSendList(int userId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.getCouponSendList(userId);
+            }
+        }
     }
 }
