@@ -32,19 +32,21 @@ namespace BAMENG.API.Controllers
         public ActionResult Login(string loginName, string password)
         {
             ApiStatusCode apiCode = ApiStatusCode.OK;
-            UserModel userData = AppServiceLogic.Instance.Login(loginName, password,OS, ref apiCode);
+            UserModel userData = AppServiceLogic.Instance.Login(loginName, password, OS, ref apiCode);
             return Json(new ResultModel(apiCode, userData));
         }
         /// <summary>
         /// 签到  POST: user/signin
         /// </summary>
-        /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        /// <returns><![CDATA[{status:200,statusText:"OK",data:{score:10}}]]></returns>
         [ActionAuthorize]
         public ActionResult SignIn()
         {
             ApiStatusCode apiCode = ApiStatusCode.OK;
-            UserLogic.SignIn(GetAuthUserId(), ref apiCode);
-            return Json(new ResultModel(ApiStatusCode.OK));
+            int Integral = UserLogic.SignIn(GetAuthUserId(), ref apiCode);
+            Dictionary<string, int> data = new Dictionary<string, int>();
+            data["score"] = Integral;
+            return Json(new ResultModel(apiCode, data));
         }
 
         /// <summary>
@@ -130,12 +132,14 @@ namespace BAMENG.API.Controllers
         /// <summary>
         /// 兑换审核列表 POST: user/ConvertAuditList
         /// </summary>
+        /// <param name="lastId">The last identifier.</param>
+        /// <param name="type"> 0 未处理 1已处理</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult ConvertAuditList(int lastId)
+        public ActionResult ConvertAuditList(int lastId, int type = 0)
         {
             int userId = GetAuthUserId();
-            var data = UserLogic.getMasterConvertFlow(userId, lastId);
+            var data = UserLogic.getMasterConvertFlow(userId, lastId, type);
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -161,7 +165,7 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyInfo()
         {
-            var data = GetUserData();            
+            var data = GetUserData();
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 

@@ -55,7 +55,7 @@ namespace BAMENG.DAL
         {
             using (TransactionScope scope = new TransactionScope())
             {
-                int userId = AddUserBaseInfoModel(model.storeId, model.mobile, model.loginName, model.loginPassword, model.username, model.nickname, model.belongOne);
+                int userId = AddUserBaseInfoModel(model);
                 if (userId <= 0)
                     return userId;
                 string strSql = "insert into BM_User_extend(UserId,UserIdentity,MerchantID,ShopId) values(@UserId,@UserIdentity,@MerchantID,@ShopId);select @@IDENTITY";
@@ -183,21 +183,24 @@ namespace BAMENG.DAL
         /// <param name="userName"></param>
         /// <param name="belongOne"></param>
         /// <returns></returns>
-        private int AddUserBaseInfoModel(int storeId, string mobile, string loginName, string password, string userName, string nickName, int belongOne, int levelId = 0)
+        private int AddUserBaseInfoModel(UserRegisterModel regModel, int levelId = 0)
         {
-            if (UserExist(loginName, storeId))
+            if (UserExist(regModel.loginName, regModel.storeId))
                 return -1;
             UserBaseInfoModel model = new UserBaseInfoModel();
-            model.UB_UserLoginName = loginName;
-            model.UB_UserLoginPassword = password;
-            model.UB_CustomerID = storeId;
-            model.UB_UserMobile = mobile;
-            model.UB_UserType = 0;
+            model.UB_UserLoginName = regModel.loginName;
+            model.UB_UserLoginPassword = regModel.loginPassword;
+            model.UB_CustomerID = regModel.storeId;
+            model.UB_UserMobile = regModel.mobile;
+            model.UB_UserType = regModel.UserIdentity;
             model.UB_GroupId = 0;
             model.UB_RebateEnabled = 0;
-            model.WxNickName = nickName;//QQ昵称对应微信昵称
-            model.UB_UserRealName = userName;
-            model.UB_UserNickName = nickName;
+            model.WxNickName = regModel.nickname;//QQ昵称对应微信昵称
+            model.UB_UserRealName = regModel.username;
+            model.UB_UserNickName = regModel.nickname;
+            model.UB_UserGender = regModel.userGender;
+
+
             model.UB_ShareCount = 0; //分享机会赠送
             model.UB_InviteCount = 0;
             model.UB_UserEmail = "";
@@ -223,11 +226,11 @@ namespace BAMENG.DAL
             model.UB_ShareTaskType = 0;
 
             UserRelationViewEntity sourceModel = null;
-            if (belongOne > 0)
+            if (regModel.belongOne > 0)
             {
-                model.UB_SourceID = belongOne;
+                model.UB_SourceID = regModel.belongOne;
                 model.UB_SourceDesc = "我引导注册";
-                sourceModel = GetRelationInfoPlus(belongOne);
+                sourceModel = GetRelationInfoPlus(regModel.belongOne);
             }
             else
             {
@@ -242,16 +245,16 @@ namespace BAMENG.DAL
                 model.UB_ParentID = 0;
             }
             if (levelId == 0)
-                model.UB_LevelID = GetMinLevelID(storeId, 0);
+                model.UB_LevelID = GetMinLevelID(regModel.storeId, model.UB_UserType);
             else
                 model.UB_LevelID = levelId;
             try
             {
                 StringBuilder strSql = new StringBuilder();
                 strSql.Append("insert into Hot_UserBaseInfo(");
-                strSql.Append("UB_UserMobile,UB_UserEmail,UB_UserCardID,UB_UserProvince,UB_UserCity,UB_UserArea,UB_UserAddress,UB_UserLoginPassword,UB_UserNickName,UB_UserFace,UB_UserRealName,UB_UserAge,UB_UserIncome,UB_IsDelete,UB_CustomerID,UB_UserBirthday,UB_HasCard,UB_UserLoginName,UB_LevelID,UB_UserType,UB_BelongTo,UB_SourceID,UB_SourceDesc,UB_ShareCount,UB_InviteCount,UB_ShareTaskID,UB_ShareTaskType,UB_StoreAddr,UB_IsStore,UB_ParentID,UB_SourcePath,UB_SourceDepth,UB_BelongOne,UB_BelongTwo,UB_BelongThree,UB_UserGroupId,UB_AccountSrc,UB_MobileToBeBind,UB_WxNickName,UB_WxHeadImg");
+                strSql.Append("UB_UserMobile,UB_UserEmail,UB_UserCardID,UB_UserProvince,UB_UserCity,UB_UserArea,UB_UserAddress,UB_UserLoginPassword,UB_UserNickName,UB_UserFace,UB_UserRealName,UB_UserAge,UB_UserIncome,UB_IsDelete,UB_CustomerID,UB_UserBirthday,UB_HasCard,UB_UserLoginName,UB_LevelID,UB_UserType,UB_BelongTo,UB_SourceID,UB_SourceDesc,UB_ShareCount,UB_InviteCount,UB_ShareTaskID,UB_ShareTaskType,UB_StoreAddr,UB_IsStore,UB_ParentID,UB_SourcePath,UB_SourceDepth,UB_BelongOne,UB_BelongTwo,UB_BelongThree,UB_UserGroupId,UB_AccountSrc,UB_MobileToBeBind,UB_WxNickName,UB_WxHeadImg,UB_UserGender");
                 strSql.Append(") values (");
-                strSql.Append("@UB_UserMobile,@UB_UserEmail,@UB_UserCardID,@UB_UserProvince,@UB_UserCity,@UB_UserArea,@UB_UserAddress,@UB_UserLoginPassword,@UB_UserNickName,@UB_UserFace,@UB_UserRealName,@UB_UserAge,@UB_UserIncome,@UB_IsDelete,@UB_CustomerID,@UB_UserBirthday,@UB_HasCard,@UB_UserLoginName,@UB_LevelID,@UB_UserType,@UB_BelongTo,@UB_SourceID,@UB_SourceDesc,@UB_ShareCount,@UB_InviteCount,@UB_ShareTaskID,@UB_ShareTaskType,@UB_StoreAddr,@UB_IsStore,@UB_ParentID,@UB_SourcePath,@UB_SourceDepth,@UB_BelongOne,@UB_BelongTwo,@UB_BelongThree,@UB_UserGroupId,@UB_AccountSrc,@UB_MobileToBeBind,@UB_WxNickName,@UB_WxHeadImg");
+                strSql.Append("@UB_UserMobile,@UB_UserEmail,@UB_UserCardID,@UB_UserProvince,@UB_UserCity,@UB_UserArea,@UB_UserAddress,@UB_UserLoginPassword,@UB_UserNickName,@UB_UserFace,@UB_UserRealName,@UB_UserAge,@UB_UserIncome,@UB_IsDelete,@UB_CustomerID,@UB_UserBirthday,@UB_HasCard,@UB_UserLoginName,@UB_LevelID,@UB_UserType,@UB_BelongTo,@UB_SourceID,@UB_SourceDesc,@UB_ShareCount,@UB_InviteCount,@UB_ShareTaskID,@UB_ShareTaskType,@UB_StoreAddr,@UB_IsStore,@UB_ParentID,@UB_SourcePath,@UB_SourceDepth,@UB_BelongOne,@UB_BelongTwo,@UB_BelongThree,@UB_UserGroupId,@UB_AccountSrc,@UB_MobileToBeBind,@UB_WxNickName,@UB_WxHeadImg,@UB_UserGender");
                 strSql.Append(") ");
                 strSql.Append(";select @@IDENTITY");
                 SqlParameter[] parameters = {
@@ -294,7 +297,8 @@ namespace BAMENG.DAL
                         new SqlParameter("@UB_AccountSrc", SqlDbType.Int),
                         new SqlParameter("@UB_MobileToBeBind", SqlDbType.Int),
                         new SqlParameter("@UB_WxNickName", SqlDbType.VarChar),
-                        new SqlParameter("@UB_WxHeadImg", SqlDbType.VarChar)
+                        new SqlParameter("@UB_WxHeadImg", SqlDbType.VarChar),
+                        new SqlParameter("@UB_UserGender",model.UB_UserGender)
                 };
                 parameters[0].Value = model.UB_UserMobile;
                 parameters[1].Value = model.UB_UserEmail;
@@ -352,8 +356,8 @@ namespace BAMENG.DAL
                         Change_Type = 5,
                         Remark = "会员注册",
                         Add_Time = DateTime.Now,
-                        Customer_Id = storeId,
-                        BelongOne = belongOne,
+                        Customer_Id = regModel.storeId,
+                        BelongOne = regModel.belongOne,
                         BelongTwo = model.UB_BelongTwo,
                         BelongThree = model.UB_BelongThree,
                         ParentId = model.UB_ParentID,
@@ -405,7 +409,7 @@ namespace BAMENG.DAL
         public int GetMinLevelID(int customerid, int type)
         {
             StringBuilder sql = new StringBuilder();
-            sql.AppendFormat("SELECT TOP 1 UL_ID FROM Mall_UserLevel WHERE UL_CustomerID={0}  order by UL_Level", customerid);
+            sql.AppendFormat("SELECT TOP 1 UL_ID FROM Mall_UserLevel WHERE UL_CustomerID={0} and UL_Type={1}  order by UL_Level", customerid, type);
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, sql.ToString());
             if (obj == null)
                 return 0;
@@ -1189,7 +1193,7 @@ namespace BAMENG.DAL
                     new SqlParameter("@UserId",userId),
                     new SqlParameter("@UserMasterId", userMasterId),
                     new SqlParameter("@Amount", amount),
-                    new SqlParameter("@Status", 0),
+                    new SqlParameter("@Status", "0"),
                     new SqlParameter("@UpdateTime",DateTime.Now),
                     new SqlParameter("@CreateTime", DateTime.Now)};
 
@@ -1207,7 +1211,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public List<BeansConvertModel> getBeansConvertListModel(int userId, int lastId)
         {
-            string strSql = "select top 10 c.*,UB_UserRealName as UserRealName from BM_BeansConvert as c "
+            string strSql = "select top 10 c.*,UB_UserRealName as UserRealName,UB_WxHeadImg as HeadImg from BM_BeansConvert as c "
                 + " left join Hot_UserBaseInfo as u on u.UB_UserID=c.UserId  where c.UserId=@UserId";
             if (lastId > 0) strSql += " and id<" + lastId;
             strSql += " order by id desc";
@@ -1226,17 +1230,24 @@ namespace BAMENG.DAL
         /// <summary>
         /// 获取兑换列表
         /// </summary>
-        /// <param name="userMasterId"></param>
-        /// <param name="lastId"></param>
-        /// <returns></returns>
-        public List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId)
+        /// <param name="userMasterId">The user master identifier.</param>
+        /// <param name="lastId">The last identifier.</param>
+        /// <param name="type">0未处理，1亿处理</param>
+        /// <returns>List&lt;BeansConvertModel&gt;.</returns>
+        public List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId, int type)
         {
-            string strSql = "select top 10 c.*,UB_UserRealName as UserRealName from BM_BeansConvert as c "
+            string strSql = "select top 10 c.*,UB_UserRealName as UserRealName,UB_WxHeadImg as HeadImg from BM_BeansConvert as c "
                 + " left join Hot_UserBaseInfo as u on u.UB_UserID=c.UserId where UserMasterId=@UserMasterId";
-            if (lastId > 0) strSql += " and id<" + lastId;
-            strSql += " order by id desc";
+            if (lastId > 0) strSql += " and id< @lastId ";
+
+            if (type == 1) strSql += " and c.Status<>@Status ";
+            else strSql += " and c.Status=@Status ";
+
+            strSql += " order by c.id desc";
             var parms = new[] {
-                   new SqlParameter("@UserMasterId",userMasterId)
+                   new SqlParameter("@UserMasterId",userMasterId),
+                   new SqlParameter("@lastId",lastId),
+                   new SqlParameter("@Status",type)
             };
 
             List<BeansConvertModel> list = new List<BeansConvertModel>();
@@ -1274,7 +1285,7 @@ namespace BAMENG.DAL
 
         public ApplyFriendModel getApplyFriendModel(int id)
         {
-            string strSql = "select * from BM_ApplyFriend where id=@id";
+            string strSql = "select ID,UserId,UserName,Sex,Mobile,Status,CreateTime,NickNname as NickName,Password from BM_ApplyFriend where id=@id";
             var parms = new[] {
                    new SqlParameter("@id",id)
             };
@@ -1299,9 +1310,9 @@ namespace BAMENG.DAL
 
         public int getUserShopId(int userId)
         {
-            string strSql = "select ShopId from BM_User_extend where id=@id";
+            string strSql = "select ShopId from BM_User_extend  where UserId=@UserId";
             var parms = new[] {
-                   new SqlParameter("@id",userId)
+                   new SqlParameter("@UserId",userId)
             };
             return int.Parse(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms).ToString());
         }
@@ -1458,7 +1469,7 @@ namespace BAMENG.DAL
         public int AddBeansRecords(BeansRecordsModel model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into BM_TempBeansRecords(");
+            strSql.Append("insert into BM_BeansRecords(");
             strSql.Append("LogType,UserId,Income,Amount,Remark,CreateTime,OrderId)");
             strSql.Append(" values (");
             strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@OrderId)");
@@ -1511,7 +1522,7 @@ namespace BAMENG.DAL
                     new SqlParameter("@TotalSignIntegral", model.TotalSignIntegral),
                     new SqlParameter("@TotalSignDays",model.TotalSignDays)
                                         };
-            object obj = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
             if (obj == null)
             {
                 return 0;

@@ -93,7 +93,10 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.LogFactory())
             {
-                return dal.AddLoginLog(logModel);
+                if (logModel.UserId > 0)
+                    return dal.AddLoginLog(logModel);
+                else
+                    return false;
             }
         }
 

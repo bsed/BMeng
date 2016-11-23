@@ -120,14 +120,14 @@ namespace BAMENG.LOGIC
             if (string.IsNullOrEmpty(v))
                 model.EnableSign = false;
             else
-                model.EnableSign = Convert.ToInt32(v) == 0;
+                model.EnableSign = Convert.ToInt32(v) == 1;
 
 
             string v1 = GetValue("EnableContinuousSign");
             if (string.IsNullOrEmpty(v1))
                 model.EnableContinuousSign = false;
             else
-                model.EnableContinuousSign = Convert.ToInt32(v1) == 0;
+                model.EnableContinuousSign = Convert.ToInt32(v1) == 1;
 
 
 

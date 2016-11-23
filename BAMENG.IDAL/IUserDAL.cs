@@ -338,10 +338,11 @@ namespace BAMENG.IDAL
         /// <summary>
         /// 获取兑换列表
         /// </summary>
-        /// <param name="userMasterId"></param>
-        /// <param name="lastId"></param>
-        /// <returns></returns>
-        List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId);
+        /// <param name="userMasterId">The user master identifier.</param>
+        /// <param name="lastId">The last identifier.</param>
+        /// <param name="type">0未处理，1亿处理</param>
+        /// <returns>List&lt;BeansConvertModel&gt;.</returns>
+        List<BeansConvertModel> getBeansConvertListByMasterModel(int userMasterId, int lastId, int type);
 
 
         int updateBeansConvertStatus(int id, int status);

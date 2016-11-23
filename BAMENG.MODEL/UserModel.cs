@@ -187,6 +187,7 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>My share qrcode URL.</value>
         public string myShareQrcodeUrl { get; set; }
+        
     }
 
 
@@ -470,7 +471,7 @@ namespace BAMENG.MODEL
         }
 
         /// <summary>
-        /// 会员类型，0表示普通会员，1表示小伙伴，-1表示超级小伙伴
+        /// 会员类型，0表示普通会员，1表示小伙伴
         /// </summary>
         public int UB_UserType { set; get; }
 
@@ -986,6 +987,12 @@ namespace BAMENG.MODEL
         /// 审核状态 0未审核 1已审核 2,拒绝
         /// </summary>
         public int status;
+
+        /// <summary>
+        /// 用户头像
+        /// </summary>
+        /// <value>The headimg.</value>
+        public string headimg { get; set; }
     }
 
     public class BeansConvertModel
@@ -1007,6 +1014,9 @@ namespace BAMENG.MODEL
         public DateTime CreateTime { get; set; }
 
         public string UserRealName { get; set; }
+
+
+        public string HeadImg { get; set; }
 
     }
 
@@ -1112,7 +1122,7 @@ namespace BAMENG.MODEL
 
     public class BeansRecordsListModel
     {
-        public int id { get; set; }
+        public int ID { get; set; }
         public decimal money { get; set; }
         /// <summary>
         /// 0支出，1收入
@@ -1138,7 +1148,7 @@ namespace BAMENG.MODEL
 
     public class TempBeansRecordsListModel
     {
-        public int id { get; set; }
+        public int ID { get; set; }
         public decimal money { get; set; }
         /// <summary>
         /// 1收入 0支出

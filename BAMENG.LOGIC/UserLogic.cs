@@ -431,11 +431,18 @@ namespace BAMENG.LOGIC
             return true;
         }
 
-        public static List<ConvertFlowModel> getMasterConvertFlow(int masterUserId, int lastId)
+        /// <summary>
+        /// Gets the master convert flow.
+        /// </summary>
+        /// <param name="masterUserId">The master user identifier.</param>
+        /// <param name="lastId">The last identifier.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>List&lt;ConvertFlowModel&gt;.</returns>
+        public static List<ConvertFlowModel> getMasterConvertFlow(int masterUserId, int lastId, int type)
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                return toConvertFlowModel(dal.getBeansConvertListByMasterModel(masterUserId, lastId));
+                return toConvertFlowModel(dal.getBeansConvertListByMasterModel(masterUserId, lastId, type));
             }
         }
 
@@ -458,6 +465,7 @@ namespace BAMENG.LOGIC
                 convertFlow.time = StringHelper.GetUTCTime(convert.CreateTime);
                 convertFlow.status = convert.Status;
                 convertFlow.ID = convert.ID;
+                convertFlow.headimg = WebConfig.reswebsite() + convert.HeadImg;
                 result.Add(convertFlow);
             }
             return result;
@@ -537,20 +545,25 @@ namespace BAMENG.LOGIC
 
                 if (status == 1)
                 {
-                    dal.updateApplyFriendStatus(id, 1);
+                    using (TransactionScope scope = new TransactionScope())
+                    {
 
-                    UserRegisterModel register = new UserRegisterModel();
-                    register.belongOne = userId;
-                    register.loginName = model.Mobile;
-                    register.loginPassword = model.Password;
-                    register.mobile = model.Mobile;
-                    register.nickname = model.NickName;
-                    register.ShopId = dal.getUserShopId(userId);
-                    register.storeId = ConstConfig.storeId;
-                    register.UserIdentity = 0;
-                    register.username = model.UserName;
-                    register.userGender = model.Sex == 1 ? "M" : "F";
-                    dal.AddUserInfo(register);
+                        dal.updateApplyFriendStatus(id, 1);
+                        UserRegisterModel register = new UserRegisterModel();
+                        register.belongOne = userId;
+                        register.loginName = model.Mobile;
+                        register.loginPassword = model.Password;
+                        register.mobile = model.Mobile;
+                        register.nickname = model.NickName;
+                        register.ShopId = dal.getUserShopId(userId);
+                        register.storeId = ConstConfig.storeId;
+                        register.UserIdentity = 0;
+                        register.username = model.UserName;
+                        register.userGender = model.Sex == 1 ? "M" : "F";
+                        dal.AddUserInfo(register);
+
+                        scope.Complete();
+                    }
                 }
                 else if (status == 2)
                 {
@@ -637,7 +650,7 @@ namespace BAMENG.LOGIC
         /// <param name="userId">The user identifier.</param>
         /// <param name="apiCode">The API code.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool SignIn(int userId, ref ApiStatusCode apiCode)
+        public static int SignIn(int userId, ref ApiStatusCode apiCode)
         {
             try
             {
@@ -666,7 +679,7 @@ namespace BAMENG.LOGIC
                 if (signCfg == null || !signCfg.EnableSign)
                 {
                     apiCode = ApiStatusCode.签到功能未开启;
-                    return false;
+                    return 0;
                 }
 
                 Integral = signCfg.SignScore;
@@ -689,7 +702,7 @@ namespace BAMENG.LOGIC
                     if (memberSign.lastSignTime.ToString(dateFormat).Equals(DateTime.Now.ToString(dateFormat)))
                     {
                         apiCode = ApiStatusCode.今日已签到;
-                        return false;
+                        return 0;
                     }
                 }
 
@@ -783,13 +796,13 @@ namespace BAMENG.LOGIC
                     }
 
                 }
-                return true;
+                return Integral + RewardIntegral;
             }
             catch (Exception ex)
             {
                 apiCode = ApiStatusCode.请重新签到;
                 LogHelper.Log(string.Format("SignIn-->StackTrace:{0},Message:{1},MemberId:{2}", ex.StackTrace, ex.Message, ex, userId));
-                return false;
+                return 0;
 
             }
         }
@@ -856,7 +869,7 @@ namespace BAMENG.LOGIC
             foreach (BeansRecordsModel model in list)
             {
                 BeansRecordsListModel item = new BeansRecordsListModel();
-                item.id = model.ID;
+                item.ID = model.ID;
                 item.money = model.Amount;
                 item.status = model.Income;
                 item.time = StringHelper.GetUTCTime(model.CreateTime);
@@ -872,7 +885,7 @@ namespace BAMENG.LOGIC
             foreach (TempBeansRecordsModel model in list)
             {
                 TempBeansRecordsListModel item = new TempBeansRecordsListModel();
-                item.id = model.ID;
+                item.ID = model.ID;
                 item.money = model.Amount;
                 item.status = model.Income;
                 item.time = StringHelper.GetUTCTime(model.CreateTime);
