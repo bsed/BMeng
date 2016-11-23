@@ -27,15 +27,18 @@ var articleInfoHelper = {
         hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                   // document.title = ret.data.ArticleTitle;
+                    // document.title = ret.data.ArticleTitle;
                     $(".demos-title").text(ret.data.ArticleTitle);
                     $("#articleTime").text(ret.data.PublishTime);
                     $("#articleAmount").text(ret.data.BrowseAmount);
                     $("#articleInfo").html(ret.data.ArticleBody);
+                    if (parseInt(articleInfoHelper.idt) == 4 || parseInt(articleInfoHelper.idt) == 3) {
+                        $("#authorName").text(ret.data.AuthorName);
+                    }
                     $(".bodyContent").show();
                 }
                 else
-                   $.alert(ret.statusText);
+                    $.alert(ret.statusText);
             }
             self.hide();
         });
@@ -43,7 +46,9 @@ var articleInfoHelper = {
 }
 
 $(function () {
-    if (parseInt(articleInfoHelper.idt) == 4 || parseInt(articleInfoHelper.idt) == 3)
+    if (parseInt(articleInfoHelper.idt) == 4 || parseInt(articleInfoHelper.idt) == 3) {
         $("#spanAmount").hide();
+        $("#spanMessage").show();
+    }
     articleInfoHelper.load();
 });

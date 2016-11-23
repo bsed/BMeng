@@ -129,5 +129,25 @@ namespace BAMENG.DAL
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
         }
+
+
+        /// <summary>
+        /// 添加登录日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddLoginLog(LoginLogModel logModel)
+        {
+            string strSql = @"insert into BM_UserLoginLog(UserId,UserIdentity,BelongOne,ShopId,AppSystem) values(@UserId,@UserIdentity,@BelongOne,@ShopId,@AppSystem)";
+            var param = new[] {
+                new SqlParameter("@UserId",logModel.UserId),
+                new SqlParameter("@UserIdentity",logModel.UserIdentity),
+                new SqlParameter("@BelongOne",logModel.BelongOne),
+                new SqlParameter("@ShopId",logModel.ShopId),
+                new SqlParameter("@AppSystem",logModel.AppSystem)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
     }
 }

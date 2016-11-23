@@ -26,7 +26,7 @@ var settingHelper = {
                     $.each(ret.data, function (idx, item) {
                         $("#" + item.Code).val(item.Value);
 
-                        if (item.Code == "EnableSign" || item.Code == "EnableContinuousSign")
+                        if (item.Code == "EnableSign" || item.Code == "EnableContinuousSign" || item.Code == "EnableAppCoerceUpdate")
                             $("#" + item.Code).setChecked(item.Value == 1);
 
                     });
@@ -125,7 +125,7 @@ $(function () {
 
     settingHelper.load();
 
-    $("#EnableSign,#EnableContinuousSign").change(function () {
+    $("#EnableSign,#EnableContinuousSign,#EnableAppCoerceUpdate").change(function () {
         if ($(this).attr("checked"))
             $(this).setChecked(false);
         else

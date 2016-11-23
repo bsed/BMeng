@@ -73,4 +73,51 @@ namespace BAMENG.MODEL
         public DateTime CreateTime { get; set; }
 
     }
+
+
+    public class LoginLogModel
+    {
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>The identifier.</value>
+        public int ID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user identifier.
+        /// </summary>
+        /// <value>The user identifier.</value>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user identity.
+        /// </summary>
+        /// <value>The user identity.</value>
+        public int UserIdentity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the belong one.
+        /// </summary>
+        /// <value>The belong one.</value>
+        public int BelongOne { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shop identifier.
+        /// </summary>
+        /// <value>The shop identifier.</value>
+        public int ShopId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the application system.
+        /// </summary>
+        /// <value>The application system.</value>
+        public string AppSystem { get; set; }
+
+        /// <summary>
+        /// Gets or sets the login time.
+        /// </summary>
+        /// <value>The login time.</value>
+        public DateTime LoginTime { get; set; }
+
+    }
 }

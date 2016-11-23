@@ -131,6 +131,7 @@
     <Content Include="static\css\weui.min-bm-diy.css" />
     <Content Include="static\fonts\fontawesome-webfont.eot_" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot_" />
+    <Content Include="static\img\mz%403x.png" />
     <Content Include="static\img\sj%403x.png" />
     <Content Include="static\img\wechat.jpg" />
     <Content Include="static\img\ydll%403x.png" />

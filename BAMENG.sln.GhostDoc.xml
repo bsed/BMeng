@@ -82,8 +82,8 @@
     <HeaderText>霸盟接口文档</HeaderText>
     <FooterText />
     <SelectedProjects>
-      <SelectedProject>BAMENG.API</SelectedProject>
       <SelectedProject>BAMENG.MODEL</SelectedProject>
+      <SelectedProject>BAMENG.API</SelectedProject>
     </SelectedProjects>
   </HelpConfiguration>
 </HelpConfigurations>
