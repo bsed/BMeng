@@ -243,5 +243,41 @@ namespace BAMENG.DAL
             }
         }
 
+        /// <summary>
+        /// 获取优惠券统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="userIdentity"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public List<StatisticsMoneyListModel> CouponStatistics(int shopId, int userIdentity, string startTime, string endTime)
+        {
+            string strSql = @"select CONVERT(nvarchar(10),CreateTime,121) as xData,Type as Code,sum(Money) as yData from BM_CouponLog 
+                                where 
+                                CONVERT(nvarchar(10),CreateTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),CreateTime,121)<=@endTime";
+
+            if (userIdentity == 1)
+                strSql += " and BelongShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and ShopId=@ShopId";
+
+
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            strSql += " group by CONVERT(nvarchar(10),CreateTime,121),Type";
+            strSql += " order by CONVERT(nvarchar(10),CreateTime,121)";
+
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
+            }
+        }
+        
+
     }
 }

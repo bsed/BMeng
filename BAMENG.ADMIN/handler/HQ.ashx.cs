@@ -1061,7 +1061,19 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void CouponStatistics()
         {
-            //TODO
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type <= 0)
+            {
+                type = 7;
+            }
+
+            beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
+            endTime = DateTime.Now.ToString("yyyy-MM-dd");
+
+            var data = LogLogic.CouponStatistics(user, type, beginTime, endTime);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
 
