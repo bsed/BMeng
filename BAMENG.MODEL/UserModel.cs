@@ -1252,7 +1252,7 @@ namespace BAMENG.MODEL
         /// 客户排名
         /// </summary>
         /// <value>The customer rank.</value>
-        public int CustomerRank { get; set; }
+        public long CustomerRank { get; set; }
 
 
         /// <summary>
@@ -1273,7 +1273,7 @@ namespace BAMENG.MODEL
         ///订单排名
         /// </summary>
         /// <value>The order rank.</value>
-        public int OrderRank { get; set; }
+        public long OrderRank { get; set; }
 
 
 

@@ -1660,7 +1660,9 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public int GetAllyCount(int userid)
         {
-            string strSql = "select COUNT(1) from BM_User_extend where UserIdentity=0  and UserId=@UserId";
+            string strSql = @"select COUNT(1) from BM_User_extend UE
+                                inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID=UE.UserId
+                                where UserIdentity=0  and U.UB_BelongOne=@UserId";
             var param = new[] {
                 new SqlParameter("@UserId",userid)
             };

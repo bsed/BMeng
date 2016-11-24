@@ -112,7 +112,7 @@ namespace BAMENG.LOGIC
                     cashUserId = customer.BelongOne;
                 }
             }
-
+            TempBeansRecordsModel model1 = null;
             if (cashUserId > 0)
             {
                 using (var dal = FactoryDispatcher.UserFactory())
@@ -129,7 +129,7 @@ namespace BAMENG.LOGIC
                             //订单成交需付盟豆
                             model.MengBeans = rewardSettingModel.OrderReward;
                             //插入盟友订单成交临时奖励
-                            TempBeansRecordsModel model1 = new TempBeansRecordsModel();
+                            model1 = new TempBeansRecordsModel();
                             model1.Amount = rewardSettingModel.OrderReward;
                             model1.UserId = coupon.UserId;
                             model1.LogType = 0;
@@ -137,16 +137,34 @@ namespace BAMENG.LOGIC
                             model1.CreateTime = DateTime.Now;
                             model1.Status = 0;
                             model1.Remark = "下单";
-                            dal.AddTempBeansRecords(model1);
+
                         }
                     }
                 }
             }
-
+            bool flag = false;
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return dal.Add(model);
+                flag = dal.Add(model);
             }
+            if (flag)
+            {
+                //添加
+                using (var dald = FactoryDispatcher.UserFactory())
+                {
+                    dald.AddTempBeansRecords(model1);
+                }
+
+                //添加优惠券使用记录
+                using (var cpDal = FactoryDispatcher.CouponFactory())
+                {
+                    if (coupon != null)
+                        cpDal.UpdateUserCashCouponUseStatus(coupon.ID);
+                }
+
+            }
+            return flag;
+
 
         }
 

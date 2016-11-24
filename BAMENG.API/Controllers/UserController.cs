@@ -339,7 +339,7 @@ namespace BAMENG.API.Controllers
         /// <param name="status">1成功2拒绝</param>
         /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult ApllyApplyAudit(int id, int status)
+        public ActionResult AllyApplyAudit(int id, int status)
         {
             ApiStatusCode code = ApiStatusCode.OK;
             int userId = GetAuthUserId();
@@ -409,8 +409,8 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SendCashCoupon(int couponId, int toUserId = 0)
         {
-            int userId = GetAuthUserId();
-            CouponLogic.AddSendCoupon(userId, toUserId, couponId);
+            var user = GetUserData();
+            CouponLogic.AddSendCoupon(user.UserId,user.UserIdentity, toUserId, couponId);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
 
@@ -425,11 +425,6 @@ namespace BAMENG.API.Controllers
         {
             var user = GetUserData();
             var data = UserLogic.MyBusinessAmount(user.UserId, user.UserIdentity);
-            //if (data != null)
-            //{
-            //    data.customerAmount = user.CustomerAmount;
-            //    data.orderAmount = user.OrderSuccessAmount;
-            //}
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 

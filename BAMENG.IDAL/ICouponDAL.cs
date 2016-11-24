@@ -96,6 +96,13 @@ namespace BAMENG.IDAL
         bool UpdateUserCashCouponGetLog(CashCouponLogModel model);
 
         /// <summary>
+        /// 更新现金券的领取记录
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateUserCashCouponUseStatus(int cashlogId);
+
+        /// <summary>
         /// 获取现金券领取列表
         /// </summary>
         /// <param name="couponId">The coupon identifier.</param>
@@ -105,6 +112,14 @@ namespace BAMENG.IDAL
 
         CashCouponLogModel getEnableCashCouponLogModel(string mobile, string cashNo);
 
+
+
+        /// <summary>
+        ///获取优惠券信息
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>CashCouponModel.</returns>
+        CashCouponModel GetModel(int couponId);
 
 
         /// <summary>
@@ -121,6 +136,12 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         List<CashCouponModel> getEnabledCashCouponList(int shopId);
 
+        /// <summary>
+        /// 根据盟友ID，获取盟友的现金券列表
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>List&lt;CashCouponModel&gt;.</returns>
+        List<CashCouponModel> GetEnableCashCouponListByUserId(int userId);
 
         /// <summary>
         /// 获得优惠卷发送列表
@@ -139,6 +160,6 @@ namespace BAMENG.IDAL
         /// <param name="sendToUserId">接收用户ID,如果是自己转发，则为0</param>
         /// <param name="couponId">优惠券ID</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        bool AddSendCoupon(int userId,int sendToUserId, int couponId);
+        bool AddSendCoupon(int userId, int sendToUserId, int couponId);
     }
 }

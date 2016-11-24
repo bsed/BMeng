@@ -1060,24 +1060,35 @@ namespace BAMENG.LOGIC
         public static List<MyCouponListModel> getMyCashCouponList(int userId)
         {
             UserModel user = GetModel(userId);
-            List<CashCouponModel> coupons = CouponLogic.getEnabledCashCouponList(user.ShopId);
-            List<CouponSendModel> sendlist = CouponLogic.getCouponSendList(userId);
-            List<int> sends = new List<int>();
-            foreach (CouponSendModel item in sendlist)
-            {
-                sends.Add(item.CouponId);
-            }
-
+            List<CashCouponModel> coupons = null;
             List<MyCouponListModel> result = new List<MyCouponListModel>();
-            foreach (CashCouponModel item in coupons)
+            //如果是盟主身份，则需要过滤掉已发送或分享的优惠券
+            if (user.UserIdentity == 1)
             {
-                if(!sends.Contains(item.CouponId)) result.Add(ToMyCouponList(item));
+                coupons = CouponLogic.getEnabledCashCouponList(user.ShopId);
+                List<CouponSendModel> sendlist = CouponLogic.getCouponSendList(userId);
+                List<int> sends = new List<int>();
+                foreach (CouponSendModel item in sendlist)
+                {
+                    sends.Add(item.CouponId);
+                }
+                foreach (CashCouponModel item in coupons)
+                {
+                    if (!sends.Contains(item.CouponId)) result.Add(ToMyCouponList(item));
+                }
             }
-
+            else
+            {
+                coupons = CouponLogic.GetEnableCashCouponListByUserId(userId);
+                foreach (CashCouponModel item in coupons)
+                {
+                    result.Add(ToMyCouponList(item));
+                }
+            }
             return result;
         }
 
-        public static  MyCouponListModel ToMyCouponList(CashCouponModel item)
+        public static MyCouponListModel ToMyCouponList(CashCouponModel item)
         {
             MyCouponListModel model = new MyCouponListModel();
             model.due = item.StartTime.ToString("yyyy.MM.dd") + "-" + item.EndTime.ToString("yyyy.MM.dd");

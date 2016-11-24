@@ -9,6 +9,7 @@
 
 
 using BAMENG.MODEL;
+using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,6 +166,20 @@ namespace BAMENG.LOGIC
         }
 
         /// <summary>
+        /// 根据盟友ID，获取盟友的现金券列表
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>List&lt;CashCouponModel&gt;.</returns>
+        public static List<CashCouponModel> GetEnableCashCouponListByUserId(int userId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.GetEnableCashCouponListByUserId(userId);
+            }
+        }
+
+
+        /// <summary>
         /// 获得优惠卷发送列表
         /// </summary>
         /// <param name="userId"></param>
@@ -182,14 +197,38 @@ namespace BAMENG.LOGIC
         /// 添加优惠券发送记录
         /// </summary>
         /// <param name="userId">发送人ID</param>
+        /// <param name="Int32">The int32.</param>
+        /// <param name="userIdentity">用户身份，0盟友  1盟主.</param>
         /// <param name="sendToUserId">接收用户ID,如果是自己转发，则为0</param>
         /// <param name="couponId">优惠券ID</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool AddSendCoupon(int userId, int sendToUserId,int couponId)
+        public static bool AddSendCoupon(int userId, int userIdentity, int sendToUserId, int couponId)
         {
             using (var dal = FactoryDispatcher.CouponFactory())
             {
-                return dal.AddSendCoupon(userId, sendToUserId, couponId);
+                bool flag = dal.AddSendCoupon(userId, sendToUserId, couponId);
+
+                //如果盟主自己分享或发送给盟友，则创建现金券记录
+                if (flag && userIdentity == 1)
+                {
+                    CashCouponModel couponModel = dal.GetModel(couponId);
+                    if (couponModel != null)
+                    {
+                        dal.CreateUserCashCouponLog(new CashCouponLogModel()
+                        {
+                            CouponId = couponId,
+                            CouponNo = StringHelper.CreateCheckCode(10).ToLower(),
+                            UserId = sendToUserId > 0 ? sendToUserId : userId,
+                            IsShare = sendToUserId > 0 ? 1 : 0,
+                            Money = couponModel.Money,
+                            StartTime = couponModel.StartTime,
+                            EndTime = couponModel.EndTime,
+                            ShopId = couponModel.ShopId
+                        });
+                    }
+                }
+
+                return flag;
             }
         }
 

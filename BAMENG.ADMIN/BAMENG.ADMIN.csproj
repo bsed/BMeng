@@ -98,6 +98,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\customerareastatic.html" />
     <Content Include="admin\customerstatic.html" />
     <Content Include="admin\loginstatic.html" />
     <Content Include="admin\messageedit.html" />

@@ -113,7 +113,7 @@ namespace BAMENG.MODEL
         /// 现金券码
         /// </summary>
         /// <value>The coupon no.</value>
-        public int CouponNo { get; set; }
+        public string CouponNo { get; set; }
 
 
         /// <summary>
@@ -121,6 +121,9 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The coupon identifier.</value>
         public int CouponId { get; set; }
+
+
+        public int ShopId { get; set; }
 
         /// <summary>
         /// 客户名称
@@ -131,7 +134,7 @@ namespace BAMENG.MODEL
         /// 客户手机号码
         /// </summary>
         /// <value>The mobile.</value>
-        public int Mobile { get; set; }
+        public string Mobile { get; set; }
 
         /// <summary>
         /// 是否获取
@@ -143,7 +146,7 @@ namespace BAMENG.MODEL
         /// 获取时间
         /// </summary>
         /// <value>The get time.</value>
-        public int GetTime { get; set; }
+        public DateTime GetTime { get; set; }
 
         /// <summary>
         /// 是否使用
@@ -185,6 +188,12 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The end time.</value>
         public DateTime EndTime { get; set; }
+
+        /// <summary>
+        /// 优惠券是否已转发出去
+        /// </summary>
+        /// <value>The is share.</value>
+        public int IsShare { get; set; }
     }
 
 

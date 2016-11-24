@@ -102,7 +102,7 @@ namespace BAMENG.DAL
             string strSql = @"select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,LoginPassword,IsActive,CreateTime from BM_ShopManage where 1=1 and IsDel<>1 ";
 
             strSql += " and ShopType=@ShopType";
-            if (ShopType == 0)
+            if (ShopType == 1 && ShopBelongId > 0)
             {
                 strSql += " and ShopBelongId=@ShopBelongId";
             }
@@ -222,10 +222,10 @@ namespace BAMENG.DAL
         public int GetBelongShopId(int shopId)
         {
             string strSql = "select ShopBelongId from BM_ShopManage where ShopID=@ShopID  and ShopType=2 ";
-            var param = new[] {                        
+            var param = new[] {
                         new SqlParameter("@ShopID", shopId)
             };
-            object obj= DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
             if (obj != null)
                 return Convert.ToInt32(obj);
             return 0;

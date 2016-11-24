@@ -72,14 +72,6 @@ var chartsHelper = {
                 name: "有效客户信息量",
                 type: "line",
                 data: AxisData[1].yData,
-                markPoint: {
-                    data: [{
-                        name: "周最低",
-                        value: -2,
-                        xAxis: 1,
-                        yAxis: -1.5
-                    }]
-                },
                 markLine: {
                     data: [{
                         type: "average",
@@ -91,14 +83,6 @@ var chartsHelper = {
                 name: "无效客户信息量",
                 type: "line",
                 data: AxisData[2].yData,
-                markPoint: {
-                    data: [{
-                        name: "周最低",
-                        value: -2,
-                        xAxis: 1,
-                        yAxis: -1.5
-                    }]
-                },
                 markLine: {
                     data: [{
                         type: "average",
