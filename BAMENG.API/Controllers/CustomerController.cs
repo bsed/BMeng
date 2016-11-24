@@ -42,8 +42,21 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult audit(int cid, int status)
         {
-            if (CustomerLogic.UpdateStatus(cid, status, GetAuthUserId()))
+            var user = GetUserData();
+            if (CustomerLogic.UpdateStatus(cid, status, user.UserId))
+            {
+
+                //添加客户操作日志
+                LogLogic.AddCustomerLog(new LogBaseModel()
+                {
+                    UserId = user.UserId,
+                    ShopId = user.ShopId,
+                    AppSystem = OS,
+                    OperationType = status
+                });
+
                 return Json(new ResultModel(ApiStatusCode.OK));
+            }
             else
                 return Json(new ResultModel(ApiStatusCode.操作失败));
         }
@@ -74,8 +87,33 @@ namespace BAMENG.API.Controllers
                     Status = user.UserIdentity == 1 ? 1 : 0
                 });
 
-                if (flag && user.UserIdentity == 1)
-                    UserLogic.AddUserCustomerAmount(user.UserId);
+                if (flag)
+                {
+
+                    //添加客户操作日志
+                    LogLogic.AddCustomerLog(new LogBaseModel()
+                    {
+                        UserId = user.UserId,
+                        ShopId = user.ShopId,
+                        AppSystem = OS,
+                        OperationType = 0 //操作类型0提交，1有效 2无效
+                    });
+
+                    if (user.UserIdentity == 1)
+                    {
+                        UserLogic.AddUserCustomerAmount(user.UserId);
+                        //如果是盟主创建客户，则需要添加一条有效客户日志
+                        //添加客户操作日志
+                        LogLogic.AddCustomerLog(new LogBaseModel()
+                        {
+                            UserId = user.UserId,
+                            ShopId = user.ShopId,
+                            AppSystem = OS,
+                            OperationType = 1
+                        });
+                    }
+
+                }
 
 
                 return Json(new ResultModel(ApiStatusCode.OK));

@@ -78,7 +78,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getTempBeansRecordsList(userId, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
         /// <summary>
         /// 兑换盟豆 POST: user/ConvertToBean
@@ -105,7 +107,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getConvertFlow(userId, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
         /// <summary>
         /// 盟友列表 POST: user/allylist
@@ -140,7 +144,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getMasterConvertFlow(userId, lastId, type);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
 
         /// <summary>
@@ -263,7 +269,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getScoreList(userId, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
 
 
@@ -385,7 +393,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = UserLogic.getMyCashCouponList(userId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
 
 

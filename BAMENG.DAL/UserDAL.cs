@@ -1240,7 +1240,7 @@ namespace BAMENG.DAL
                 + " left join Hot_UserBaseInfo as u on u.UB_UserID=c.UserId where UserMasterId=@UserMasterId";
             if (lastId > 0) strSql += " and id< @lastId ";
 
-            if (type == 1) strSql += " and c.Status<>@Status ";
+            if (type == 1) strSql += " and c.Status<>0 ";
             else strSql += " and c.Status=@Status ";
 
             strSql += " order by c.id desc";

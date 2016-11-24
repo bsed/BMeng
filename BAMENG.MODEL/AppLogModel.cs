@@ -74,8 +74,7 @@ namespace BAMENG.MODEL
 
     }
 
-
-    public class LoginLogModel
+    public class LogBaseModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -90,16 +89,11 @@ namespace BAMENG.MODEL
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the user identity.
+        /// 操作类型
         /// </summary>
-        /// <value>The user identity.</value>
-        public int UserIdentity { get; set; }
+        /// <value>The type of the operation.</value>
+        public int OperationType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the belong one.
-        /// </summary>
-        /// <value>The belong one.</value>
-        public int BelongOne { get; set; }
 
         /// <summary>
         /// Gets or sets the shop identifier.
@@ -112,21 +106,37 @@ namespace BAMENG.MODEL
         /// <value>The belong shop identifier.</value>
         public int BelongShopId { get; set; }
 
-
         /// <summary>
         /// Gets or sets the application system.
         /// </summary>
         /// <value>The application system.</value>
         public string AppSystem { get; set; }
 
-        /// <summary>
-        /// Gets or sets the login time.
-        /// </summary>
-        /// <value>The login time.</value>
-        public DateTime LoginTime { get; set; }
-
     }
 
+
+    /// <summary>
+    /// 登录操作日志
+    /// </summary>
+    /// <seealso cref="BAMENG.MODEL.LogBaseModel" />
+    public class LoginLogModel : LogBaseModel
+    {
+
+        /// <summary>
+        /// Gets or sets the user identity.
+        /// </summary>
+        /// <value>The user identity.</value>
+        public int UserIdentity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the belong one.
+        /// </summary>
+        /// <value>The belong one.</value>
+        public int BelongOne { get; set; }
+
+
+
+    }
 
     public class StatisticsModel
     {
@@ -169,6 +179,14 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The y data.</value>
         public int yData { get; set; }
+
+
+        /// <summary>
+        /// 类型
+        /// </summary>
+        /// <value>The code.</value>
+        public int Code { get; set; }
+
     }
 
 }

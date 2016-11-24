@@ -1081,7 +1081,7 @@ namespace BAMENG.LOGIC
         {
             MyCouponListModel model = new MyCouponListModel();
             model.due = item.StartTime.ToString("yyyy.MM.dd") + "-" + item.EndTime.ToString("yyyy.MM.dd");
-            model.id = item.CouponId;
+            model.ID = item.CouponId;
             model.money = item.Money;
             model.name = item.Title;
             return model;

@@ -9,6 +9,7 @@
 
 
 using BAMENG.MODEL;
+using HotCoreUtils.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +107,27 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 添加客户操作日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddCustomerLog(LogBaseModel logModel)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                if (logModel.UserId > 0)
+                {
+                    int shopId = ShopLogic.GetBelongShopId(logModel.ShopId);
+                    if (shopId > 0)
+                        logModel.BelongShopId = shopId;
 
+                    return dal.AddCustomerLog(logModel);
+                }
+                else
+                    return false;
+            }
+        }
 
 
         /// <summary>
@@ -115,14 +136,26 @@ namespace BAMENG.LOGIC
         /// <param name="user">The user.</param>
         /// <param name="startTime">The start time.</param>
         /// <param name="endTime">The end time.</param>
-        public static StatisticsModel LoginStatistics(AdminLoginModel user, string startTime, string endTime)
+        public static StatisticsModel LoginStatistics(AdminLoginModel user, int type, string startTime, string endTime)
         {
             using (var dal = FactoryDispatcher.LogFactory())
             {
                 StatisticsModel data = new StatisticsModel();
                 data.yData = new List<int>();
                 data.xData = new List<string>();
-                List<StatisticsListModel> lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                List<StatisticsListModel> lst = null;
+                string cacheKey = string.Format("BMLOGIN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
+                if (type != 0)
+                {
+                    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
+                    if (lst == null)
+                    {
+                        lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                    }
+                }
+                else
+                    lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
                 if (lst != null && lst.Count() > 0)
                 {
                     int len = lst.Count();
@@ -138,9 +171,9 @@ namespace BAMENG.LOGIC
                         data.yData.Add(item.yData);
                         data.total += item.yData;
                     }
-                    string t2 = lst[len - 1].xData;
-                    data.xData.Add(Convert.ToDateTime(t2).AddDays(1).ToString("yyyy-MM-dd"));
-                    data.yData.Add(0);
+                    //string t2 = lst[len - 1].xData;
+                    //data.xData.Add(Convert.ToDateTime(t2).AddDays(1).ToString("yyyy-MM-dd"));
+                    //data.yData.Add(0);
 
                 }
                 return data;
@@ -148,5 +181,53 @@ namespace BAMENG.LOGIC
         }
 
 
+        /// <summary>
+        ///获取客户统计
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        public StatisticsModel CustomerStatistics(AdminLoginModel user, int type, string startTime, string endTime)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                StatisticsModel data = new StatisticsModel();
+                data.yData = new List<int>();
+                data.xData = new List<string>();
+                List<StatisticsListModel> lst = null;
+                string cacheKey = string.Format("BMCT{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
+                if (type != 0)
+                {
+                    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
+                    if (lst == null)
+                    {
+                        lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                    }
+                }
+                else
+                    lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                if (lst != null && lst.Count() > 0)
+                {
+                    int len = lst.Count();
+                    if (len < 5)
+                    {
+                        string t = lst[0].xData;
+                        data.xData.Add(Convert.ToDateTime(t).AddDays(-1).ToString("yyyy-MM-dd"));
+                        data.yData.Add(0);
+                    }
+                    foreach (var item in lst)
+                    {
+                        data.xData.Add(item.xData);
+                        data.yData.Add(item.yData);
+                        data.total += item.yData;
+                    }
+
+                }
+                return data;
+            }
+        }
     }
 }

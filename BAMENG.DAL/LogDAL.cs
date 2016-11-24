@@ -151,6 +151,25 @@ namespace BAMENG.DAL
         }
 
 
+        /// <summary>
+        /// 添加客户操作日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddCustomerLog(LogBaseModel logModel)
+        {
+            string strSql = @"insert into BM_CustomerLog(UserId,ShopId,AppSystem,BelongShopId,OperationType) values(@UserId,@ShopId,@AppSystem,@BelongShopId,@OperationType)";
+            var param = new[] {
+                new SqlParameter("@UserId",logModel.UserId),
+                new SqlParameter("@ShopId",logModel.ShopId),
+                new SqlParameter("@AppSystem",logModel.AppSystem),
+                new SqlParameter("@BelongShopId",logModel.BelongShopId),
+                new SqlParameter("@OperationType",logModel.OperationType)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+
 
 
         /// <summary>
@@ -161,7 +180,7 @@ namespace BAMENG.DAL
         /// <param name="startTime">The start time.</param>
         /// <param name="endTime">The end time.</param>
         /// <returns>List&lt;StatisticsListModel&gt;.</returns>
-        public List<StatisticsListModel> LoginStatistics(int shopId,int userIdentity, string startTime, string endTime)
+        public List<StatisticsListModel> LoginStatistics(int shopId, int userIdentity, string startTime, string endTime)
         {
             string strSql = @"select CONVERT(nvarchar(10),LoginTime,121) as xData,COUNT(1) as yData from BM_UserLoginLog 
                                 where 
@@ -180,7 +199,43 @@ namespace BAMENG.DAL
                 new SqlParameter("@endTime",endTime),
                 new SqlParameter("@ShopId",shopId)
             };
-            strSql += "group by  CONVERT(nvarchar(10),LoginTime,121) order by CONVERT(nvarchar(10),LoginTime,121)";
+            strSql += " group by  CONVERT(nvarchar(10),LoginTime,121)";
+            strSql += " order by CONVERT(nvarchar(10),LoginTime,121)";
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+
+
+        /// <summary>
+        ///获取客户统计
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        public List<StatisticsListModel> CustomerStatistics(int shopId, int userIdentity, string startTime, string endTime)
+        {
+            string strSql = @"select CONVERT(nvarchar(10),CreateTime,121) as xData,COUNT(1) as yData,OperationType as Code from BM_CustomerLog 
+                                where 
+                                CONVERT(nvarchar(10),CreateTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),CreateTime,121)<=@endTime";
+
+            if (userIdentity == 1)
+                strSql += " and BelongShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and ShopId=@ShopId";
+
+
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            strSql += " group by  CONVERT(nvarchar(10),CreateTime,121),OperationType";
+            strSql += " order by CONVERT(nvarchar(10),CreateTime,121)";
 
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {

@@ -29,7 +29,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = OrderLogic.GetMyOrderList(userId, type, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
 
 
@@ -141,7 +143,9 @@ namespace BAMENG.API.Controllers
         {
             int userId = GetAuthUserId();
             var data = OrderLogic.GetUserOrderList(userId, type, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
 
 

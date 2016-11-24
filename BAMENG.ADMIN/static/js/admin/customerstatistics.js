@@ -22,13 +22,16 @@ var chartsHelper = {
         var e = echarts.init(document.getElementById("echarts-line-chart"));
         var a = {
             title: {
-                text: title
+                text: ""
             },
             tooltip: {
                 trigger: "axis"
             },
+            legend: {
+                data: ["客户信息总量", "有效客户信息量", "无效客户信息量"]
+            },
             grid: {
-                x: 30,
+                x: 40,
                 x2: 40,
                 y2: 24
             },
@@ -36,18 +39,18 @@ var chartsHelper = {
             xAxis: [{
                 type: "category",
                 boundaryGap: !1,
-                data: xAxisData,                
+                data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
             }],
             yAxis: [{
                 type: "value",
                 axisLabel: {
-                    formatter: "{value}"
+                    formatter: "{value} °C"
                 }
             }],
             series: [{
-                name: "登录次数",
+                name: "客户信息总量",
                 type: "line",
-                data: yData,
+                data: [11, 11, 15, 13, 12, 13, 10],
                 markPoint: {
                     data: [{
                         type: "max",
@@ -64,9 +67,47 @@ var chartsHelper = {
                         name: "平均值"
                     }]
                 }
+            },
+            {
+                name: "有效客户信息量",
+                type: "line",
+                data: [1, -2, 2, 5, 3, 2, 0],
+                markPoint: {
+                    data: [{
+                        name: "周最低",
+                        value: -2,
+                        xAxis: 1,
+                        yAxis: -1.5
+                    }]
+                },
+                markLine: {
+                    data: [{
+                        type: "average",
+                        name: "平均值"
+                    }]
+                }
+            },
+            {
+                name: "无效客户信息量",
+                type: "line",
+                data: [1, -2, 2, 5, 15, 2, 0],
+                markPoint: {
+                    data: [{
+                        name: "周最低",
+                        value: -2,
+                        xAxis: 1,
+                        yAxis: -1.5
+                    }]
+                },
+                markLine: {
+                    data: [{
+                        type: "average",
+                        name: "平均值"
+                    }]
+                }
             }]
         };
-        e.setOption(a);
+        e.setOption(a);        
 
         var date = new Date();
         $(".login-time").text(date);        

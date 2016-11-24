@@ -193,7 +193,7 @@ namespace BAMENG.MODEL
         /// <summary>
         /// 现金优惠券Id
         /// </summary>
-        public int id { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// 名称

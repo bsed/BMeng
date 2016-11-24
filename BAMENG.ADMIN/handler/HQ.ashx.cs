@@ -1006,7 +1006,7 @@ namespace BAMENG.ADMIN.handler
                     endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
                 }
             }
-            var data = LogLogic.LoginStatistics(user, beginTime, endTime);
+            var data = LogLogic.LoginStatistics(user, type, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 

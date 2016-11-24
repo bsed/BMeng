@@ -264,6 +264,7 @@ namespace BAMENG.DAL
         /// <exception cref="System.NotImplementedException"></exception>
         public bool UpdateUserCashCouponGetLog(CashCouponLogModel model)
         {
+            //TODO:
             throw new NotImplementedException();
         }
 
@@ -294,7 +295,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@ShopId",shopId),
                 new SqlParameter("@Date",DateTime.Now)
             };
-            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, null))
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
             {
                 list = DbHelperSQLP.GetEntityList<CashCouponModel>(dr);
             }
@@ -310,8 +311,11 @@ namespace BAMENG.DAL
         public List<CouponSendModel> getCouponSendList(int userId)
         {
             List<CouponSendModel> list = new List<CouponSendModel>();
-            string strSql = "select * from BM_CouponSend where UserId=" + userId + " order by id desc";
-            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, null))
+            string strSql = "select * from BM_CouponSend where UserId=@UserId order by id desc";
+            var parms = new[] {
+                new SqlParameter("@UserId",userId)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, parms))
             {
                 list = DbHelperSQLP.GetEntityList<CouponSendModel>(dr);
             }
