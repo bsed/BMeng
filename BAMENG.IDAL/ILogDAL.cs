@@ -108,5 +108,16 @@ namespace BAMENG.IDAL
         /// <param name="endTime">The end time.</param>
         /// <returns>List&lt;StatisticsListModel&gt;.</returns>
         List<StatisticsListModel> CustomerStatistics(int shopId, int userIdentity, string startTime, string endTime);
+
+
+        /// <summary>
+        /// 获取优惠券统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="userIdentity"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsMoneyListModel> CouponStatistics(int shopId, int userIdentity, string startTime, string endTime);
     }
 }

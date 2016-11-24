@@ -98,7 +98,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\customerareastatic.html" />
+    <Content Include="admin\cashcouponstatic.html" />
     <Content Include="admin\customerstatic.html" />
     <Content Include="admin\loginstatic.html" />
     <Content Include="admin\messageedit.html" />
@@ -140,6 +140,7 @@
     <Content Include="static\img\ydll%403x.png" />
     <Content Include="static\js\.DS_Store" />
     <Content Include="static\js\admin\apparticle.js" />
+    <Content Include="static\js\admin\cashcouponstatic.js" />
     <Content Include="static\js\admin\customerstatistics.js" />
     <Content Include="static\js\admin\loginstatistics.js" />
     <Content Include="static\js\admin\messageedit.js" />
