@@ -145,8 +145,6 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.LogFactory())
             {
                 StatisticsModel data = new StatisticsModel();
-                data.yData = new List<int>();
-                data.xData = new List<string>();
                 List<StatisticsListModel> lst = null;
                 string cacheKey = string.Format("BMLOGIN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
                 if (type != 0)
@@ -179,6 +177,14 @@ namespace BAMENG.LOGIC
                     //data.xData.Add(Convert.ToDateTime(t2).AddDays(1).ToString("yyyy-MM-dd"));
                     //data.yData.Add(0);
 
+                    if (data.xData.Count() == 0)
+                    {
+                        string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                        data.xData.Add(dtime);
+                        data.yData.Add(0);
+                    }
+
+
                 }
                 return data;
             }
@@ -193,13 +199,14 @@ namespace BAMENG.LOGIC
         /// <param name="startTime">The start time.</param>
         /// <param name="endTime">The end time.</param>
         /// <returns>List&lt;StatisticsListModel&gt;.</returns>
-        public StatisticsModel CustomerStatistics(AdminLoginModel user, int type, string startTime, string endTime)
+        public static List<StatisticsModel> CustomerStatistics(AdminLoginModel user, int type, string startTime, string endTime)
         {
             using (var dal = FactoryDispatcher.LogFactory())
             {
-                StatisticsModel data = new StatisticsModel();
-                data.yData = new List<int>();
-                data.xData = new List<string>();
+                List<StatisticsModel> result = new List<StatisticsModel>();
+                StatisticsModel data1 = new StatisticsModel();
+                StatisticsModel data2 = new StatisticsModel();
+                StatisticsModel data3 = new StatisticsModel();
                 List<StatisticsListModel> lst = null;
                 string cacheKey = string.Format("BMCT{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
                 if (type != 0)
@@ -207,30 +214,55 @@ namespace BAMENG.LOGIC
                     lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
                     if (lst == null)
                     {
-                        lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                        lst = dal.CustomerStatistics(user.ID, user.UserIndentity, startTime, endTime);
                         WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
                     }
                 }
                 else
-                    lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                    lst = dal.CustomerStatistics(user.ID, user.UserIndentity, startTime, endTime);
                 if (lst != null && lst.Count() > 0)
                 {
-                    int len = lst.Count();
-                    if (len < 5)
-                    {
-                        string t = lst[0].xData;
-                        data.xData.Add(Convert.ToDateTime(t).AddDays(-1).ToString("yyyy-MM-dd"));
-                        data.yData.Add(0);
-                    }
                     foreach (var item in lst)
                     {
-                        data.xData.Add(item.xData);
-                        data.yData.Add(item.yData);
-                        data.total += item.yData;
+                        if (item.Code == 0)
+                        {
+                            data1.xData.Add(item.xData);
+                            data1.yData.Add(item.yData);
+                            data1.total += item.yData;
+                        }
+                        if (item.Code == 1)
+                        {
+                            data2.xData.Add(item.xData);
+                            data2.yData.Add(item.yData);
+                            data2.total += item.yData;
+                        }
+                        if (item.Code == 2)
+                        {
+                            data3.xData.Add(item.xData);
+                            data3.yData.Add(item.yData);
+                            data3.total += item.yData;
+                        }
                     }
 
                 }
-                return data;
+
+                if(data1.xData.Count()==0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data1.xData.Add(dtime);
+                    data1.yData.Add(0);
+                    data2.xData.Add(dtime);
+                    data2.yData.Add(0);
+                    data3.xData.Add(dtime);
+                    data3.yData.Add(0);
+                }
+
+
+                result.Add(data1);
+                result.Add(data2);
+                result.Add(data3);
+
+                return result;
             }
         }
     }

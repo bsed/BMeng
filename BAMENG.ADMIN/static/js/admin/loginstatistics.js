@@ -74,7 +74,7 @@ var chartsHelper = {
         $(".chart-info").show();
         $(window).resize(e.resize);
     },
-    loadLoginData: function (type) {
+    loadData: function (type) {
         var self = this;
         var param = {
             action: "loginstatistics",
@@ -98,3 +98,7 @@ var chartsHelper = {
         this.loadData(type);
     }
 }
+
+$(function () {
+    chartsHelper.loadData(7);
+});

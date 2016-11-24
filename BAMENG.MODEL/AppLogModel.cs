@@ -140,18 +140,32 @@ namespace BAMENG.MODEL
 
     public class StatisticsModel
     {
+
+
+        private List<string> _xData = new List<string>();
+
         /// <summary>
         /// 统计日期数组
         /// </summary>
         /// <value>The x data.</value>
-        public List<string> xData { get; set; }
+        public List<string> xData
+        {
+            get { return _xData; }
+            set { value = _xData;}
+        }
+
+
+        private List<int> _yData = new List<int>();
 
 
         /// <summary>
         /// 统计数数据数组
         /// </summary>
         /// <value>The y data.</value>
-        public List<int> yData { get; set; }
+        public List<int> yData {
+            get { return _yData; }
+            set { value = _yData; }
+        }
 
 
         /// <summary>

@@ -232,10 +232,20 @@ namespace BAMENG.ADMIN.handler
                     #region 统计
 
 
-                    case "LOGINSTATISTICS":
+                    case "LOGINSTATISTICS":// 登录统计
                         LoginStatistics();
                         break;
 
+                    case "CUSTOMERSTATISTICS": //客户统计
+                        CustomerStatistics();
+                        break;
+
+                    case "COUPONSTATISTICS": //现金券统计
+                        CouponStatistics();
+                        break;
+                    case "ORDERSTATISTICS": //订单统计
+                        OrderStatistics();
+                        break;
 
                     #endregion
 
@@ -1008,6 +1018,59 @@ namespace BAMENG.ADMIN.handler
             }
             var data = LogLogic.LoginStatistics(user, type, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        ///获取客户统计
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        private void CustomerStatistics()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
+            var data = LogLogic.CustomerStatistics(user, type, beginTime, endTime);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+        /// <summary>
+        /// 现金券统计
+        /// </summary>
+        private void CouponStatistics()
+        {
+            //TODO
+        }
+
+
+        /// <summary>
+        /// 订单统计
+        /// </summary>
+        private void OrderStatistics()
+        {
+            //TODO
         }
 
 

@@ -18,7 +18,7 @@ var chartsHelper = {
     * @param total 总数
     *
     **/
-    initCharts: function (title,xAxisData, yData, total) {
+    initCharts: function (title,AxisData, total) {
         var e = echarts.init(document.getElementById("echarts-line-chart"));
         var a = {
             title: {
@@ -39,18 +39,18 @@ var chartsHelper = {
             xAxis: [{
                 type: "category",
                 boundaryGap: !1,
-                data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+                data: AxisData[0].xData
             }],
             yAxis: [{
                 type: "value",
                 axisLabel: {
-                    formatter: "{value} °C"
+                    formatter: "{value}"
                 }
             }],
             series: [{
                 name: "客户信息总量",
                 type: "line",
-                data: [11, 11, 15, 13, 12, 13, 10],
+                data: AxisData[0].yData,
                 markPoint: {
                     data: [{
                         type: "max",
@@ -71,7 +71,7 @@ var chartsHelper = {
             {
                 name: "有效客户信息量",
                 type: "line",
-                data: [1, -2, 2, 5, 3, 2, 0],
+                data: AxisData[1].yData,
                 markPoint: {
                     data: [{
                         name: "周最低",
@@ -90,7 +90,7 @@ var chartsHelper = {
             {
                 name: "无效客户信息量",
                 type: "line",
-                data: [1, -2, 2, 5, 15, 2, 0],
+                data: AxisData[2].yData,
                 markPoint: {
                     data: [{
                         name: "周最低",
@@ -115,10 +115,10 @@ var chartsHelper = {
         $(".chart-info").show();
         $(window).resize(e.resize);
     },
-    loadLoginData: function (type) {
+    loadData: function (type) {
         var self = this;
         var param = {
-            action: "loginstatistics",
+            action: "CustomerStatistics",
             beginTime: $("#beginTime").val(),
             endTime: $("#endTime").val(),
             type: type
@@ -127,8 +127,11 @@ var chartsHelper = {
         hotUtil.ajaxCall("/handler/HQ.ashx", param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-
-                    self.initCharts("", ret.data.xData, ret.data.yData, ret.data.total);
+                    var total = 0;
+                    $.each(ret.data, function (i, item) {
+                        total += item.total
+                    });
+                    self.initCharts("", ret.data, total);
                 }
             }
             hotUtil.loading.close();
@@ -139,3 +142,6 @@ var chartsHelper = {
         this.loadData(type);
     }
 }
+$(function () {
+    chartsHelper.loadData(7);
+});
