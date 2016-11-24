@@ -99,6 +99,8 @@ namespace BAMENG.LOGIC
                     int shopId = ShopLogic.GetBelongShopId(logModel.ShopId);
                     if (shopId > 0)
                         logModel.BelongShopId = shopId;
+                    else
+                        logModel.BelongShopId = logModel.ShopId;
 
                     return dal.AddLoginLog(logModel);
                 }
@@ -121,6 +123,8 @@ namespace BAMENG.LOGIC
                     int shopId = ShopLogic.GetBelongShopId(logModel.ShopId);
                     if (shopId > 0)
                         logModel.BelongShopId = shopId;
+                    else
+                        logModel.BelongShopId = logModel.ShopId;
 
                     return dal.AddCustomerLog(logModel);
                 }
