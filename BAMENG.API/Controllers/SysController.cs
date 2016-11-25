@@ -43,6 +43,7 @@ namespace BAMENG.API.Controllers
                         ShopId = data.userData.ShopId,
                         AppSystem = OS
                     });
+                    UserLogic.UpdateLastLoginTime(data.userData.UserId);
                 }
                 else
                     data.baseData.userStatus = -1;

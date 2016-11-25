@@ -184,6 +184,14 @@ namespace BAMENG.ADMIN.handler
                                 });
                             }
                         }
+                        if (flag)
+                            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
+                        else
+                            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
+                    }
+                    else
+                    {
+                        json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
                     }
                 }
 
@@ -213,10 +221,12 @@ namespace BAMENG.ADMIN.handler
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.未授权));
             else
             {
-                CashCouponModel model = CouponLogic.GetModel(cpid, true);
+                // CashCouponModel model = CouponLogic.GetModel(cpid, true);
+                CashCouponLogModel model = CouponLogic.GetCashCouponLogIDByUserID(uid, cpid);
                 if (model != null)
                 {
                     Dictionary<string, object> data = new Dictionary<string, object>();
+                    data["time"] = model.StartTime.ToString("yyyy.MM.dd") + "-" + model.EndTime.ToString("yyyy.MM.dd");
                     data["money"] = model.Money;
                     data["url"] = "http://" + ctx.Request.Url.Host + string.Format("/app/getcoupon.html?userid={0}&cpid={1}&sign={2}", uid, cpid, currentSign);
                     json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));

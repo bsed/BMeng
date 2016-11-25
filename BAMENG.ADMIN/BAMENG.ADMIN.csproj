@@ -134,13 +134,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="static\css\.DS_Store" />
+    <Content Include="static\css\grid-framework.css" />
     <Content Include="static\css\plugins\footable\fonts\footable.eot_" />
     <Content Include="static\css\plugins\jqgrid\ui.jqgrid.css_0820" />
     <Content Include="static\css\plugins\qrcode\jquery-qrcode-0.14.0.min.js" />
+    <Content Include="static\css\style.min-1.0.1.css" />
     <Content Include="static\css\weui.min-bm-diy.css" />
     <Content Include="static\fonts\fontawesome-webfont.eot_" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot_" />
     <Content Include="static\img\70.jpg" />
+    <Content Include="static\img\hbhb.png" />
+    <Content Include="static\img\icon_nav_msg.png" />
     <Content Include="static\img\mz%403x.png" />
     <Content Include="static\img\sj%403x.png" />
     <Content Include="static\img\wechat.jpg" />

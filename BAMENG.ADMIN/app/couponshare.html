@@ -22,11 +22,14 @@
 <body>
     <div class="bm">
         <div class="lodinggo" style="display:none;">
-            <div class="bacimg textc">
-                <p id="code"></p>
-                <p style="margin:10px; color:#646464; font-size:14px;">
-                    扫码领取<i style="font-style:normal; color:#B91719" id="couponMoney"></i>现金抵用券！
-                </p>
+            <div class="bacimg textc">                
+                <div class="nrnr">
+                    <p id="code"></p>
+                    <p style="margin: 10px;color: #000;font-size:14px;">
+                        立刻扫码领取<span id="couponMoney"></span> 现金抵用券！
+                        <br/>使用有效期：<span id="couponTime"></span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -46,10 +49,8 @@
 <script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
 <script src="/static/css/plugins/qrcode/jquery-qrcode-0.14.0.min.js"></script>
 <script src="/static/js/plugins/hot/Jquery.util.js"></script>
-
 <script>
     $(function () {
-
         var param = {
             action: "GetCouponInfo",
             userid: hotUtil.getQuery("userid"),
@@ -62,12 +63,10 @@
                 if (ret.status != 200) {
                     $(".lodinggo").remove();
                     $.alert(ret.statusText);
-                    if (ret.status == 75001) {
-                        //todo
-                    }
                 }
                 else {
-                    $("#couponMoney").text(ret.data.money + " 元");
+                    $("#couponMoney").text(ret.data.money + " 元");                    
+                    $(".couponTime").text(ret.data.time);
                     $("#code").qrcode({
                         render: "image",
                         size: 200,

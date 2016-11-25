@@ -133,6 +133,8 @@ namespace BAMENG.LOGIC
                             AppSystem = AppSystem
                         });
 
+                        //更新最后登录时间
+                        dal.UpdateLastLoginTime(model.UserId);
 
 
                         return model;

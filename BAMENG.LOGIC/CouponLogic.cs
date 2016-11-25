@@ -33,7 +33,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.CouponFactory())
             {
-                int flag= dal.AddCashCoupon(model);
+                int flag = dal.AddCashCoupon(model);
                 if (flag > 0)
                 {
                     //添加优惠券领取操作日志
@@ -233,6 +233,11 @@ namespace BAMENG.LOGIC
                             BelongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId)
                         });
                     }
+                }
+
+                if (flag && userIdentity == 0)
+                {
+                    dal.UpdateCouponShareStatus(userId, couponId);
                 }
 
                 return flag;

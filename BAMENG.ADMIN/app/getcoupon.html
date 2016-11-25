@@ -9,7 +9,7 @@
     <meta name="description" content="" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
-    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">    
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />
     <title>转发客户领取</title>
 </head>
@@ -17,20 +17,98 @@
 <body>
     <div class="bm">
         <div class="lodinggo">
-            <div style="display:none" class="bacimg textc">
-                <p>现金券<b><i style="font-style:normal; color:#B91719; font-size:20px;">100元</i></b></p>
-                <p>使用期限<i style="font-style:normal; color:#B91719">2016-10-11 — 2017-1-1</i></p>
-                <input type="text" placeholder="请输入姓名" class="weui_input weui-prompt-input" id="weui-prompt-input">
-                <input type="text" placeholder="请输入手机号码" class="weui_input weui-prompt-input" id="weui-prompt-input">
-                <a style="margin-top:55px;" href="javascript:;" class="weui_btn weui_btn_primary">立即领取</a>
+            <div style="display:block" id="coupon_no" class="bacimg textc">
+                <p>现金券<b><i style="font-style:normal; color:#B91719; font-size:20px;" class="couponMoney"></i></b></p>
+                <p>使用期限<i style="font-style:normal; color:#B91719" class="couponTime">--/--</i></p>
+                <input type="text" placeholder="请输入姓名" class="weui_input weui-prompt-input" id="txtUserName">
+                <input type="text" placeholder="请输入手机号码" class="weui_input weui-prompt-input" id="txtUserMobile">
+                <a style="margin-top:55px;" href="javascript:getcoupon();" class="weui_btn weui_btn_primary">立即领取</a>
             </div>
 
-            <div style="display:block" class="bacimg textc">
-                <img src="images/icon_nav_msg.png" width="56px">
-                <p><b><i style="font-style:normal; color:#B91719; font-size:20px;">现金券100元</i></b></p>
-                <p style="font-size:14px; color: #B91719;">线下使用编码：AS568589SD</p>
-                <p style="font-size:14px;">现金券线下使用期限<br><i style="font-style:normal;">2016-10-11 — 2017-1-1</i></p>
+            <div style="display:none" id="coupon_success" class="bacimg textc">
+                <div style="margin: 18%;top: 40px;" class="nrnr">
+                    <img src="/static/img/icon_nav_msg.png" width="56">
+                    <p><b><i style=" font-style:normal; color:#B91719; font-size:20px;">成功领取现金券<span class="couponMoney"></span></i></b></p>
+                    <p style="font-size:14px;">使用编码：<span class="couponNo"></span></p>
+                    <p style="font-size:14px;">现金券使用期限<br /><span class="couponTime">--/--</span></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-12" id="loadBox" style="display:none;">
+            <div class="cover"></div>
+            <div class="spiner-example">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
             </div>
         </div>
+    </div>
 </body>
 </html>
+<script src="/static/js/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
+<script src="/static/js/plugins/hot/Jquery.util.js"></script>
+<script>
+    var param = {
+        userid: hotUtil.getQuery("userid"),
+        cpid: hotUtil.getQuery("cpid"),
+        sign: hotUtil.getQuery("sign")
+    };
+
+    $(function () {
+        param.action = "GetCouponInfo";
+        $("#loadBox").show();
+        hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
+            if (ret) {
+                if (ret.status != 200) {
+                    $(".lodinggo").remove();
+                    $.alert(ret.statusText);
+                }
+                else {
+                    $(".couponMoney").text(ret.data.money + " 元");
+                    $(".couponTime").text(ret.data.time);
+                }
+            }
+            $("#loadBox").hide();
+        });
+    });
+
+    function getcoupon() {
+        param.action = "CouponGet";
+        param.username = $("#txtUserName").val();
+        param.usermobile = $("#txtUserMobile").val();
+
+
+        if (hotUtil.isNullOrEmpty(param.username)) {
+            $.alert("请输入姓名");
+            return false;
+        }
+        if (hotUtil.isNullOrEmpty(param.usermobile) || !hotUtil.isMobile(param.usermobile)) {
+            $.alert("请输入有效的手机号码");
+            return false;
+        }
+
+        $("#loadBox").show();
+        hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
+            if (ret) {
+                if (ret.status != 200) {
+                    $(".lodinggo").remove();
+                    $.alert(ret.statusText);
+                }
+                else {
+                    $(".couponNo").text(ret.data.couponNo);
+                    $(".lodinggo").show();
+                    $("#coupon_no").hide();
+                    $("#coupon_success").show();
+                }
+            }
+            $("#loadBox").hide();
+        });
+    }
+
+
+</script>

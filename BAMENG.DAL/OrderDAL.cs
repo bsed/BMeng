@@ -108,9 +108,9 @@ namespace BAMENG.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into BM_Orders(");
-            strSql.Append("orderId,UserId,Ct_BelongId,ShopId,orderTime,Memo,OrderStatus,OrderImg,SuccessImg,Ct_Name,Ct_Mobile,Ct_Address,CashCouponAmount,CashCouponBn,FianlAmount,CreateTime,MengBeans)");
+            strSql.Append("orderId,UserId,Ct_BelongId,ShopId,orderTime,Memo,OrderStatus,OrderImg,SuccessImg,Ct_Name,Ct_Mobile,Ct_Address,CashCouponAmount,CashCouponBn,FianlAmount,CreateTime,MengBeans,BelongOneShopId)");
             strSql.Append(" values (");
-            strSql.Append("@orderId,@UserId,@Ct_BelongId,@ShopId,@orderTime,@Memo,@OrderStatus,@OrderImg,@SuccessImg,@Ct_Name,@Ct_Mobile,@Ct_Address,@CashCouponAmount,@CashCouponBn,@FianlAmount,@CreateTime,@MengBeans)");
+            strSql.Append("@orderId,@UserId,@Ct_BelongId,@ShopId,@orderTime,@Memo,@OrderStatus,@OrderImg,@SuccessImg,@Ct_Name,@Ct_Mobile,@Ct_Address,@CashCouponAmount,@CashCouponBn,@FianlAmount,@CreateTime,@MengBeans,@BelongOneShopId)");
             SqlParameter[] parameters = {
                     new SqlParameter("@orderId", SqlDbType.NVarChar),
                     new SqlParameter("@UserId", SqlDbType.Int,4),
@@ -128,7 +128,8 @@ namespace BAMENG.DAL
                     new SqlParameter("@CashCouponBn", SqlDbType.NVarChar,50),
                     new SqlParameter("@FianlAmount", SqlDbType.Decimal,9),
                     new SqlParameter("@CreateTime", SqlDbType.DateTime),
-                    new SqlParameter("@MengBeans",model.MengBeans)
+                    new SqlParameter("@MengBeans",model.MengBeans),
+                    new SqlParameter("@BelongOneShopId",model.BelongOneShopId)
             };
             parameters[0].Value = model.orderId;
             parameters[1].Value = model.UserId;

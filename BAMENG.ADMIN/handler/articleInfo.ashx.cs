@@ -25,7 +25,7 @@ namespace BAMENG.ADMIN.handler
             if (!string.IsNullOrEmpty(auth))
             {
                 userId = UserLogic.GetUserIdByAuthToken(auth);
-                if(userId==0)
+                if (userId == 0)
                 {
                     json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
                     context.Response.ContentType = "application/json";
@@ -41,6 +41,8 @@ namespace BAMENG.ADMIN.handler
                 context.Response.End();
             }
             ArticleModel data = ArticleLogic.GetModel(articleId);
+            if (data != null)
+                data.ArticleCover = WebConfig.articleDetailsDomain() + data.ArticleCover;
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
 
 
@@ -81,7 +83,7 @@ namespace BAMENG.ADMIN.handler
 
             goto Finish;
 
-        Finish:
+            Finish:
             context.Response.ContentType = "application/json";
             context.Response.Write(json);
         }

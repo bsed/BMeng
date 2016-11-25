@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BAMENG.LOGIC
 {
@@ -70,115 +71,130 @@ namespace BAMENG.LOGIC
         public static bool saveOrder(int userId, string userName, string mobile, string address, string cashNo, string memo, string filename)
         {
 
-            OrderModel model = new OrderModel();
-            model.orderId = createOrderNo(userId);
-            model.UserId = userId;
-            model.Ct_BelongId = userId;
-            model.orderTime = DateTime.Now;
-            model.Memo = memo;
-            model.OrderStatus = 0;
-            model.OrderImg = filename;
-            model.SuccessImg = "";
-            model.Ct_Name = userName;
-            model.Ct_Mobile = mobile;
-            model.Ct_Address = address;
-            model.FianlAmount = 0;
-            model.CreateTime = DateTime.Now;
+            try
+            {
+                OrderModel model = new OrderModel();
+                model.orderId = createOrderNo(userId);
+                model.UserId = userId;
+                model.Ct_BelongId = userId;
+                model.orderTime = DateTime.Now;
+                model.Memo = memo;
+                model.OrderStatus = 0;
+                model.OrderImg = filename;
+                model.SuccessImg = "";
+                model.Ct_Name = userName;
+                model.Ct_Mobile = mobile;
+                model.Ct_Address = address;
+                model.FianlAmount = 0;
+                model.CreateTime = DateTime.Now;
 
-            //判断订单是否使用优惠券
-            CashCouponLogModel coupon = null;
-            int cashUserId = 0;
-            using (var dal = FactoryDispatcher.CouponFactory())
-            {
-                coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
-                if (coupon != null)
+                //判断订单是否使用优惠券
+                CashCouponLogModel coupon = null;
+                int cashUserId = 0;
+                using (var dal = FactoryDispatcher.CouponFactory())
                 {
-                    model.CashCouponAmount = coupon.Money;
-                    model.CashCouponBn = cashNo;
-                    cashUserId = coupon.UserId;
-                }
-            }
-            //如果没有优惠
-            if (cashUserId <= 0)
-            {
-                //根据手机号或地址，查找客户
-                CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
-                if (customer != null)
-                {
-                    //设置订单归属用户
-                    model.Ct_BelongId = customer.BelongOne;
-                    model.UserId = customer.BelongTwo;
-                    model.ShopId = customer.ShopId;
-                    cashUserId = customer.BelongOne;
-                }
-            }
-            TempBeansRecordsModel model1 = null;
-            if (cashUserId > 0)
-            {
-                using (var dal = FactoryDispatcher.UserFactory())
-                {
-                    var user = dal.GetUserModel(cashUserId);
-                    if (user.UserIdentity == 0)
-                    {
-                        model.UserId = user.BelongOne;
-                        model.Ct_BelongId = user.UserId;
-                        //获取盟友奖励
-                        RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(user.BelongOne);
-                        if (rewardSettingModel != null)
-                        {
-                            //订单成交需付盟豆
-                            model.MengBeans = rewardSettingModel.OrderReward;
-                            //插入盟友订单成交临时奖励
-                            model1 = new TempBeansRecordsModel();
-                            model1.Amount = rewardSettingModel.OrderReward;
-                            model1.UserId = cashUserId;
-                            model1.LogType = 0;
-                            model1.Income = 1;
-                            model1.CreateTime = DateTime.Now;
-                            model1.Status = 0;
-                            model1.Remark = "下单";
-
-                        }
-                    }
-                }
-            }
-            bool flag = false;
-            using (var dal = FactoryDispatcher.OrderFactory())
-            {
-                flag = dal.Add(model);
-            }
-            if (flag)
-            {
-                //添加
-                using (var dald = FactoryDispatcher.UserFactory())
-                {
-                    if (model1 != null)
-                        dald.AddTempBeansRecords(model1);
-                }
-
-                //添加优惠券使用记录
-                using (var cpDal = FactoryDispatcher.CouponFactory())
-                {
+                    coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
                     if (coupon != null)
                     {
-                        if (cpDal.UpdateUserCashCouponUseStatus(coupon.ID))
+                        model.CashCouponAmount = coupon.Money;
+                        model.CashCouponBn = cashNo;
+                        model.ShopId = coupon.ShopId;
+                        cashUserId = coupon.UserId;
+                    }
+                }
+                //如果没有优惠
+                if (cashUserId <= 0)
+                {
+                    //根据手机号或地址，查找客户
+                    CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
+                    if (customer != null)
+                    {
+                        //设置订单归属用户
+                        model.Ct_BelongId = customer.BelongOne;
+                        model.UserId = customer.BelongTwo;
+                        model.ShopId = customer.ShopId;
+                        cashUserId = customer.BelongOne;
+                    }
+                }
+                TempBeansRecordsModel model1 = null;
+                if (cashUserId > 0)
+                {
+                    using (var dal = FactoryDispatcher.UserFactory())
+                    {
+                        var user = dal.GetUserModel(cashUserId);
+                        if (user.UserIdentity == 0)
                         {
-                            //添加优惠券领取操作日志
-                            LogLogic.AddCouponLog(new LogBaseModel()
+                            model.UserId = user.BelongOne;
+                            model.Ct_BelongId = user.UserId;
+                            //获取盟友奖励
+                            RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(user.BelongOne);
+                            if (rewardSettingModel != null)
                             {
-                                UserId = coupon.UserId,
-                                ShopId = coupon.ShopId,
-                                OperationType = 2,//0创建 1领取 2使用
-                                Money = coupon.Money
-                            });
+                                //订单成交需付盟豆
+                                model.MengBeans = rewardSettingModel.OrderReward;
+                                //插入盟友订单成交临时奖励
+                                model1 = new TempBeansRecordsModel();
+                                model1.Amount = rewardSettingModel.OrderReward;
+                                model1.UserId = cashUserId;
+                                model1.LogType = 0;
+                                model1.Income = 1;
+                                model1.CreateTime = DateTime.Now;
+                                model1.Status = 0;
+                                model1.Remark = "下单";
+
+                            }
                         }
                     }
                 }
+                bool flag = false;
 
-                
+                using (TransactionScope scope = new TransactionScope())
+                {
+
+                    using (var dal = FactoryDispatcher.OrderFactory())
+                    {
+                        model.BelongOneShopId = ShopLogic.GetBelongShopId(model.ShopId);
+                        if (model.BelongOneShopId == 0)
+                            model.BelongOneShopId = model.ShopId;
+                        flag = dal.Add(model);
+                    }
+                    if (flag)
+                    {
+                        //添加
+                        using (var dald = FactoryDispatcher.UserFactory())
+                        {
+                            if (model1 != null)
+                                dald.AddTempBeansRecords(model1);
+                        }
+
+                        //添加优惠券使用记录
+                        using (var cpDal = FactoryDispatcher.CouponFactory())
+                        {
+                            if (coupon != null)
+                            {
+                                if (cpDal.UpdateUserCashCouponUseStatus(coupon.ID))
+                                {
+                                    //添加优惠券领取操作日志
+                                    LogLogic.AddCouponLog(new LogBaseModel()
+                                    {
+                                        UserId = coupon.UserId,
+                                        ShopId = coupon.ShopId,
+                                        OperationType = 2,//0创建 1领取 2使用
+                                        Money = coupon.Money
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    scope.Complete();
+                    return flag;
+                }
 
             }
-            return flag;
+            catch (Exception)
+            {
+                return false;
+            }
 
 
         }

@@ -7,8 +7,8 @@
  * author guomw
 **/
 var _shareData = {
-    title: "test",
-    desc: "desc",
+    title: document.title,
+    desc: "",
     img_url: "http://bmadmin.fancat.cn/static/img/mz@3x.png",
     link: window.location.href,
     enable: true
