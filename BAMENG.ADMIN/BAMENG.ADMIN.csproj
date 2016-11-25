@@ -98,6 +98,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\cashcouponstaticpie.html" />
+    <Content Include="admin\couponstaticstispie.html" />
+    <Content Include="admin\customerareastatic.html" />
     <Content Include="admin\none.html" />
     <Content Include="admin\cashcouponstatic.html" />
     <Content Include="admin\customerstatic.html" />
