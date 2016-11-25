@@ -198,7 +198,7 @@ namespace BAMENG.ADMIN.handler
             }
             catch (Exception ex)
             {
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已过期));
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
             }
 
         }
@@ -233,7 +233,7 @@ namespace BAMENG.ADMIN.handler
                 }
                 else
                 {
-                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已过期));
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
                 }
             }
         }
