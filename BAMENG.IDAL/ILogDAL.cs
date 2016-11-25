@@ -152,5 +152,45 @@ namespace BAMENG.IDAL
         /// <param name="endTime"></param>
         /// <returns></returns>
         List<StatisticsMoneyListModel> CouponStatisticsPieByShop(int shopId, string startTime, string endTime);
+
+        /// <summary>
+        /// 获取完成订单统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="userIdentity"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="orderStatus"></param>
+        /// <returns></returns>
+        List<StatisticsListModel> OrderFinishStatistics(int shopId, int userIdentity, string startTime, string endTime );
+
+
+        List<StatisticsListModel> OrderStatistics(int shopId, int userIdentity, string startTime, string endTime);
+
+        /// <summary>
+        /// 获取主店订单饼图统计
+        /// </summary>
+        /// <param name="belongShopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsListModel> OrderStatisticsPieByBelongShop(int belongShopId, string startTime, string endTime);
+        
+        /// <summary>
+        /// 获取管理员订单饼图统计
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsListModel> OrderStatisticsPieByAdmin(string startTime, string endTime);
+
+        /// <summary>
+        /// 获取分店订单统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsListModel> OrderStatisticsPieByShop(int shopId, string startTime, string endTime);
     }
 }
