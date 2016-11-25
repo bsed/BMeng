@@ -55,21 +55,7 @@ namespace BAMENG.IDAL
         bool DeleteCashCoupon(int couponId);
 
 
-        /// <summary>
-        /// 修改现金券的获取状态
-        /// </summary>
-        /// <param name="couponId">The coupon identifier.</param>
-        /// <param name="couponNo">The coupon no.</param>
-        /// <returns>true if XXXX, false otherwise.</returns>
-        bool UpdateGetStatus(int couponId, string couponNo);
 
-
-        /// <summary>
-        /// 修改现金券使用状态
-        /// </summary>
-        /// <param name="couponId">The coupon identifier.</param>
-        /// <returns>true if XXXX, false otherwise.</returns>
-        bool UpdateUseStatus(int couponId);
 
         /// <summary>
         ///设置优惠券启用和禁用
@@ -115,11 +101,12 @@ namespace BAMENG.IDAL
 
 
         /// <summary>
-        ///获取优惠券信息
+        /// 获取优惠券信息
         /// </summary>
         /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="isValid">是否只获取有效的优惠券</param>
         /// <returns>CashCouponModel.</returns>
-        CashCouponModel GetModel(int couponId);
+        CashCouponModel GetModel(int couponId, bool isValid = false);
 
 
         /// <summary>
@@ -128,6 +115,16 @@ namespace BAMENG.IDAL
         /// <param name="userId">The user identifier.</param>
         /// <returns>System.Int32.</returns>
         int GetMyCashCouponCount(int userId);
+
+
+        /// <summary>
+        /// 根据用户ID和优惠券ID，获取优惠券记录ID
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>System.Int32.</returns>
+        CashCouponLogModel GetCashCouponLogIDByUserID(int userId, int couponId);
+
 
         /// <summary>
         /// 获得现金卷列表

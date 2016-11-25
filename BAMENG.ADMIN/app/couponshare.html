@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />
+    <script src="/static/js/admin/shareConfig.js"></script>
+    <title>扫码领取现金券</title>
+    <script>
+        _shareData.title = "美尔凯特现金券";
+        _shareData.desc = "领取金券，可在本店直接抵扣现金";
+        enableShare();
+    </script>
+</head>
+<body>
+    <div class="bm">
+        <div class="lodinggo" style="display:none;">
+            <div class="bacimg textc">
+                <p id="code"></p>
+                <p style="margin:10px; color:#646464; font-size:14px;">
+                    扫码领取<i style="font-style:normal; color:#B91719" id="couponMoney"></i>现金抵用券！
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" id="loadBox" style="display:none;">
+        <div class="cover"></div>
+        <div class="spiner-example">
+            <div class="sk-spinner sk-spinner-three-bounce">
+                <div class="sk-bounce1"></div>
+                <div class="sk-bounce2"></div>
+                <div class="sk-bounce3"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="/static/js/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
+<script src="/static/css/plugins/qrcode/jquery-qrcode-0.14.0.min.js"></script>
+<script src="/static/js/plugins/hot/Jquery.util.js"></script>
+
+<script>
+    $(function () {
+
+        var param = {
+            action: "GetCouponInfo",
+            userid: hotUtil.getQuery("userid"),
+            cpid: hotUtil.getQuery("cpid"),
+            sign: hotUtil.getQuery("sign")
+        };
+        $("#loadBox").show();
+        hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
+            if (ret) {
+                if (ret.status != 200) {
+                    $(".lodinggo").remove();
+                    $.alert(ret.statusText);
+                    if (ret.status == 75001) {
+                        //todo
+                    }
+                }
+                else {
+                    $("#couponMoney").text(ret.data.money + " 元");
+                    $("#code").qrcode({
+                        render: "image",
+                        size: 200,
+                        text: ret.data.url
+                    });
+                    $(".lodinggo").show();
+                }
+            }
+            $("#loadBox").hide();
+        });
+    });
+</script>

@@ -27,7 +27,7 @@ namespace BAMENG.DAL
     {
 
         private const string APP_SELECT = @"select A.ArticleId,A.AuthorId,a.AuthorName,a.AuthorIdentity,a.SendTargetId,a.SendType,a.ArticleSort,a.ArticleType,a.ArticleClassify
-                                            ,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.ArticleBody,a.EnableTop,a.EnablePublish,a.BrowseAmount,a.ArticleStatus,a.IsDel,a.IsRead,a.TopTime,a.UpdateTime,a.PublishTime,a.CreateTime,S.ShopName
+                                            ,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.ArticleBody,a.EnableTop,a.EnablePublish,a.BrowseAmount,a.ArticleStatus,a.IsDel,a.IsRead,a.TopTime,a.UpdateTime,a.PublishTime,a.CreateTime,S.ShopName,s.ShopProv,s.ShopCity
                                              from BM_ArticleList A with(nolock)
                                             left join BM_ShopManage S with(nolock) on S.ShopID=AuthorId
                                             where a.IsDel=0 ";

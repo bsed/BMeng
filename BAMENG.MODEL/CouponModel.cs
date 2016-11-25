@@ -194,6 +194,19 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The is share.</value>
         public int IsShare { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the belong one user identifier.
+        /// </summary>
+        /// <value>The belong one user identifier.</value>
+        public int BelongOneUserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the belong one shop identifier.
+        /// </summary>
+        /// <value>The belong one shop identifier.</value>
+        public int BelongOneShopId { get; set; }
     }
 
 
@@ -218,5 +231,12 @@ namespace BAMENG.MODEL
         /// 有效期
         /// </summary>
         public string due { get; set; }
+
+
+        /// <summary>
+        /// 现金券url
+        /// </summary>
+        /// <value>The URL.</value>
+        public string url { get; set; }
     }
 }

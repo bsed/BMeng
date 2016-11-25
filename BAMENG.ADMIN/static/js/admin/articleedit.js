@@ -49,6 +49,7 @@ var articleHelper = {
                     $("#articleTop").setChecked(ret.data.EnableTop == 1);
                     $("#articlePublish").setChecked(ret.data.EnablePublish == 1);
                     $("#txtcover").val(ret.data.ArticleCover);
+                    $("#articleShopName").val(ret.data.ShopProv + "/" + ret.data.ShopCity + "/" + ret.data.ShopName);
                     articleHelper.setEditContent(ret.data.ArticleBody);
 
                     if (parseInt(self.audit) == 1 && ret.data.ArticleStatus == 0) {
@@ -110,7 +111,7 @@ var articleHelper = {
     },
     upload: function (callback) {
         if (!hotUtil.isNullOrEmpty($("#uploadfile").val())) {
-            if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent())).length==0) {
+            if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent())).length == 0) {
                 swal("资讯内容不能为空", "", "warning")
             }
             else {

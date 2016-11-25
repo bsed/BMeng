@@ -98,7 +98,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\none.html" />
     <Content Include="admin\cashcouponstatic.html" />
+    <Content Include="admin\customerareastatic.html" />
     <Content Include="admin\customerstatic.html" />
     <Content Include="admin\loginstatic.html" />
     <Content Include="admin\messageedit.html" />
@@ -116,6 +118,8 @@
     <Content Include="admin\customerlist.html" />
     <Content Include="admin\managerlist.html" />
     <Content Include="admin\userlist.html" />
+    <Content Include="app\couponshare.html" />
+    <Content Include="app\getcoupon.html" />
     <Content Include="app\myqrcodetemplate.html" />
     <Content Include="app\register.html" />
     <Content Include="app\about.html" />
@@ -134,6 +138,7 @@
     <Content Include="static\css\weui.min-bm-diy.css" />
     <Content Include="static\fonts\fontawesome-webfont.eot_" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot_" />
+    <Content Include="static\img\70.jpg" />
     <Content Include="static\img\mz%403x.png" />
     <Content Include="static\img\sj%403x.png" />
     <Content Include="static\img\wechat.jpg" />

@@ -102,7 +102,7 @@ namespace BAMENG.DAL
             string strSql = @"select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,LoginPassword,IsActive,CreateTime from BM_ShopManage where 1=1 and IsDel<>1 ";
 
             strSql += " and ShopType=@ShopType";
-            if (ShopType == 1 && ShopBelongId > 0)
+            if (ShopType == 2 && ShopBelongId > 0)
             {
                 strSql += " and ShopBelongId=@ShopBelongId";
             }

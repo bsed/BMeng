@@ -271,7 +271,7 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void GetShopList()
         {
-            int shopType = user.UserIndentity == 0 ? 1 : 0;
+            int shopType = user.UserIndentity == 0 ? 1 : 2;
             int shopBelongId = user.UserIndentity == 0 ? 0 : user.ID;
 
             SearchModel model = new SearchModel()

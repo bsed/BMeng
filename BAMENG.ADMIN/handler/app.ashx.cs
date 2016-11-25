@@ -13,8 +13,10 @@ namespace BAMENG.ADMIN.handler
     /// <summary>
     /// app 的摘要说明
     /// </summary>
-    public class app : BaseLogicFactory,IHttpHandler
+    public class app : BaseLogicFactory, IHttpHandler
     {
+
+        private HttpContext ctx { get; set; }
 
         /// <summary>
         /// 设置 <see cref="T:System.Web.UI.Page" /> 对象的内部服务器对象，如 <see cref="P:System.Web.UI.Page.Context" />、<see cref="P:System.Web.UI.Page.Request" />、<see cref="P:System.Web.UI.Page.Response" /> 和 <see cref="P:System.Web.UI.Page.Application" /> 属性。
@@ -32,6 +34,7 @@ namespace BAMENG.ADMIN.handler
                 );
             try
             {
+                ctx = context;
                 DoRequest(context);
                 LogHelper.Log(resultMsg, LogHelperTag.INFO, WebConfig.debugMode());
             }
@@ -64,6 +67,12 @@ namespace BAMENG.ADMIN.handler
                         break;
                     case "MYQRCODE":
                         MyQrcode();
+                        break;
+                    case "GETCOUPONINFO":
+                        GetCouponInfo();
+                        break;
+                    case "COUPONGET":
+                        CouponGet();
                         break;
                     default:
                         break;
@@ -125,6 +134,98 @@ namespace BAMENG.ADMIN.handler
             }
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+        }
+
+
+        /// <summary>
+        /// 领取优惠券
+        /// </summary>
+        private void CouponGet()
+        {
+            try
+            {
+                int uid = GetFormValue("userid", 0);
+                int cpid = GetFormValue("cpid", 0);
+                string username = GetFormValue("username", "");
+                string usermobile = GetFormValue("usermobile", "");
+                string requestSign = GetFormValue("sign", "");
+
+                Dictionary<string, string> paramters = new Dictionary<string, string>();
+                paramters.Add("userid", uid.ToString());
+                paramters.Add("cpid", cpid.ToString());
+                string currentSign = SignatureHelper.BuildSign(paramters, ConstConfig.SECRET_KEY);
+                if (!requestSign.Equals(currentSign))
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.未授权));
+                else
+                {
+                    CashCouponLogModel logModel = CouponLogic.GetCashCouponLogIDByUserID(uid, cpid);
+                    if (logModel != null)
+                    {
+                        bool flag = CouponLogic.UpdateUserCashCouponGetLog(new CashCouponLogModel()
+                        {
+                            UserId = uid,
+                            ID = logModel.ID,
+                            Name = username,
+                            Mobile = usermobile
+                        });
+                        if (flag)
+                        {
+                            var user = UserLogic.GetModel(uid);
+                            if (user != null)
+                            {
+                                CashCouponModel model = CouponLogic.GetModel(cpid, true);
+                                //添加优惠券领取操作日志
+                                LogLogic.AddCouponLog(new LogBaseModel()
+                                {
+                                    UserId = user.UserId,
+                                    ShopId = logModel.ShopId,
+                                    OperationType = 1,//0创建 1领取 2使用
+                                    Money = logModel.Money
+                                });
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已过期));
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 获取优惠券信息
+        /// </summary>
+        private void GetCouponInfo()
+        {
+            int uid = GetFormValue("userid", 0);
+            int cpid = GetFormValue("cpid", 0);
+            string requestSign = GetFormValue("sign", "");
+            Dictionary<string, string> paramters = new Dictionary<string, string>();
+            paramters.Add("userid", uid.ToString());
+            paramters.Add("cpid", cpid.ToString());
+            string currentSign = SignatureHelper.BuildSign(paramters, ConstConfig.SECRET_KEY);
+            if (!requestSign.Equals(currentSign))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.未授权));
+            else
+            {
+                CashCouponModel model = CouponLogic.GetModel(cpid, true);
+                if (model != null)
+                {
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data["money"] = model.Money;
+                    data["url"] = "http://" + ctx.Request.Url.Host + string.Format("/app/getcoupon.html?userid={0}&cpid={1}&sign={2}", uid, cpid, currentSign);
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+                }
+                else
+                {
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已过期));
+                }
+            }
         }
     }
 }

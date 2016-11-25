@@ -85,6 +85,12 @@ namespace BAMENG.IDAL
         /// <returns>true if XXXX, false otherwise.</returns>
         bool AddCustomerLog(LogBaseModel logModel);
 
+        /// <summary>
+        /// 添加优惠券操作日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddCouponLog(LogBaseModel logModel);
 
         /// <summary>
         /// 获取登录统计

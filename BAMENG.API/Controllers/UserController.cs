@@ -410,8 +410,8 @@ namespace BAMENG.API.Controllers
         public ActionResult SendCashCoupon(int couponId, int toUserId = 0)
         {
             var user = GetUserData();
-            CouponLogic.AddSendCoupon(user.UserId,user.UserIdentity, toUserId, couponId);
-            return Json(new ResultModel(ApiStatusCode.OK));
+            bool flag = CouponLogic.AddSendCoupon(user.UserId, user.UserIdentity, toUserId, couponId);
+            return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
         }
 
 

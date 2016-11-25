@@ -42,7 +42,7 @@ namespace BAMENG.CONFIG
         /// <summary>
         /// 服务器遇到错误
         /// </summary>
-        [Description("服务器遇到错误，无法完成请求")]
+        [Description("服务器开小差了，请稍后再试!")]
         SERVICEERROR = 500,
         /// <summary>
         /// 无数据
@@ -99,7 +99,7 @@ namespace BAMENG.CONFIG
         [Description("手机用户已存在")]
         手机用户已存在 = 7005,
 
-        [Description("你已申请，请耐心等待审核")]
+        [Description("你已申请，请耐心等待")]
         你已申请请耐心等到审核 = 7006,
 
         [Description("用户信息丢失，请重新登录")]
@@ -156,8 +156,12 @@ namespace BAMENG.CONFIG
 
         [Description("今日已签到")]
         今日已签到 = 74002,
-        [Description("签到异常, 请重新签到")]
+        [Description("服务器开小差了, 请重新签到")]
         请重新签到 = 74003,
+
+
+        [Description("现金券已过期")]
+        现金券已过期 = 75001,
     }
 
 

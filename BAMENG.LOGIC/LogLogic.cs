@@ -133,6 +133,30 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 添加优惠券操作日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddCouponLog(LogBaseModel logModel)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                if (logModel.UserId > 0)
+                {
+                    int shopId = ShopLogic.GetBelongShopId(logModel.ShopId);
+                    if (shopId > 0)
+                        logModel.BelongShopId = shopId;
+                    else
+                        logModel.BelongShopId = logModel.ShopId;
+
+                    return dal.AddCouponLog(logModel);
+                }
+                else
+                    return false;
+            }
+        }
+
 
         /// <summary>
         /// 登录统计
@@ -224,29 +248,56 @@ namespace BAMENG.LOGIC
                 {
                     foreach (var item in lst)
                     {
-                        if (item.Code == 0)
+                        if (!data1.xData.Contains(item.xData))
                         {
                             data1.xData.Add(item.xData);
-                            data1.yData.Add(item.yData);
-                            data1.total += item.yData;
+
+                            if (item.Code == 0)
+                            {
+                                data1.yData.Add(item.yData);
+                                data1.total += item.yData;
+                            }
+                            else
+                            {
+                                data1.yData.Add(0);
+                            }
                         }
-                        if (item.Code == 1)
+
+                        if (!data2.xData.Contains(item.xData))
                         {
                             data2.xData.Add(item.xData);
-                            data2.yData.Add(item.yData);
-                            data2.total += item.yData;
+
+                            if (item.Code == 1)
+                            {
+                                data2.yData.Add(item.yData);
+                                data2.total += item.yData;
+                            }
+                            else
+                            {
+                                data2.yData.Add(0);
+                            }
                         }
-                        if (item.Code == 2)
+
+
+                        if (!data3.xData.Contains(item.xData))
                         {
                             data3.xData.Add(item.xData);
-                            data3.yData.Add(item.yData);
-                            data3.total += item.yData;
+
+                            if (item.Code == 2)
+                            {
+                                data3.yData.Add(item.yData);
+                                data3.total += item.yData;
+                            }
+                            else
+                            {
+                                data3.yData.Add(0);
+                            }
                         }
                     }
 
                 }
 
-                if(data1.xData.Count()==0)
+                if (data1.xData.Count() == 0)
                 {
                     string dtime = DateTime.Now.ToString("yyyy-MM-dd");
                     data1.xData.Add(dtime);
@@ -292,7 +343,8 @@ namespace BAMENG.LOGIC
                                 data1.yData.Add(item.yData);
                                 data1.total += item.yData;
                             }
-                            else {
+                            else
+                            {
                                 data1.yData.Add(0);
                             }
                         }

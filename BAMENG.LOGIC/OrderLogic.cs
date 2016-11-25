@@ -131,7 +131,7 @@ namespace BAMENG.LOGIC
                             //插入盟友订单成交临时奖励
                             model1 = new TempBeansRecordsModel();
                             model1.Amount = rewardSettingModel.OrderReward;
-                            model1.UserId = coupon.UserId;
+                            model1.UserId = cashUserId;
                             model1.LogType = 0;
                             model1.Income = 1;
                             model1.CreateTime = DateTime.Now;
@@ -152,15 +152,30 @@ namespace BAMENG.LOGIC
                 //添加
                 using (var dald = FactoryDispatcher.UserFactory())
                 {
-                    dald.AddTempBeansRecords(model1);
+                    if (model1 != null)
+                        dald.AddTempBeansRecords(model1);
                 }
 
                 //添加优惠券使用记录
                 using (var cpDal = FactoryDispatcher.CouponFactory())
                 {
                     if (coupon != null)
-                        cpDal.UpdateUserCashCouponUseStatus(coupon.ID);
+                    {
+                        if (cpDal.UpdateUserCashCouponUseStatus(coupon.ID))
+                        {
+                            //添加优惠券领取操作日志
+                            LogLogic.AddCouponLog(new LogBaseModel()
+                            {
+                                UserId = coupon.UserId,
+                                ShopId = coupon.ShopId,
+                                OperationType = 2,//0创建 1领取 2使用
+                                Money = coupon.Money
+                            });
+                        }
+                    }
                 }
+
+                
 
             }
             return flag;

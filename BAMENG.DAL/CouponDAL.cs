@@ -143,28 +143,6 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
 
-        /// <summary>
-        /// 修改现金券的获取状态
-        /// </summary>
-        /// <param name="couponId">The coupon identifier.</param>
-        /// <param name="couponNo">The coupon no.</param>
-        /// <returns>true if XXXX, false otherwise.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public bool UpdateGetStatus(int couponId, string couponNo)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 修改现金券使用状态
-        /// </summary>
-        /// <param name="couponId">The coupon identifier.</param>
-        /// <returns>true if XXXX, false otherwise.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public bool UpdateUseStatus(int couponId)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// 设置优惠券启用和禁用
@@ -188,7 +166,7 @@ namespace BAMENG.DAL
         /// <returns>true if XXXX, false otherwise.</returns>
         public int CreateUserCashCouponLog(CashCouponLogModel model)
         {
-            string strSql = "insert into BM_GetCashCouponLog(UserId,CouponNo,CouponId,StartTime,EndTime,Money,IsShare,ShopId) values(@UserId,@CouponNo,@CouponId,@StartTime,@EndTime,@Money,@IsShare,@ShopId);select @@IDENTITY";
+            string strSql = "insert into BM_GetCashCouponLog(UserId,CouponNo,CouponId,StartTime,EndTime,Money,IsShare,ShopId,BelongOneUserId,BelongOneShopId) values(@UserId,@CouponNo,@CouponId,@StartTime,@EndTime,@Money,@IsShare,@ShopId,@BelongOneUserId,@BelongOneShopId);select @@IDENTITY";
             var parm = new[] {
                 new SqlParameter("@UserId", model.UserId),
                 new SqlParameter("@CouponId", model.CouponId),
@@ -197,7 +175,9 @@ namespace BAMENG.DAL
                 new SqlParameter("@EndTime", model.EndTime),
                 new SqlParameter("@Money", model.Money),
                 new SqlParameter("@IsShare", model.IsShare),
-                new SqlParameter("@ShopId", model.ShopId)
+                new SqlParameter("@ShopId", model.ShopId),
+                new SqlParameter("@BelongOneUserId", model.BelongOneUserId),
+                new SqlParameter("@BelongOneShopId", model.BelongOneShopId)
             };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
             if (obj != null)
@@ -216,7 +196,7 @@ namespace BAMENG.DAL
             ResultPageModel result = new ResultPageModel();
             if (model == null)
                 return result;
-            string strSql = "select L.ID,L.UserId,L.CouponNo,L.CouponId,L.Name,L.Mobile,L.IsGet,L.GetTime,L.IsUse,L.UseTime,L.CreateTime from BM_GetCashCouponLog L with(nolock) where 1=1 ";
+            string strSql = "select L.ID,L.UserId,L.CouponNo,L.CouponId,L.Name,L.Mobile,L.IsGet,L.GetTime,L.IsUse,L.UseTime,L.CreateTime,L.BelongOneUserId,L.BelongOneShopId from BM_GetCashCouponLog L with(nolock) where 1=1 ";
 
 
             strSql += " and CouponId=@CouponId ";
@@ -259,16 +239,20 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
-        ///获取优惠券信息
+        /// 获取优惠券信息
         /// </summary>
         /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="isValid">是否只获取有效的优惠券</param>
         /// <returns>CashCouponModel.</returns>
-        public CashCouponModel GetModel(int couponId)
+        public CashCouponModel GetModel(int couponId, bool isValid = false)
         {
             CashCouponModel model = new CashCouponModel();
             string strSql = SELECT_SQL + " and CouponId=@CouponId";
+            if (isValid)
+                strSql += " and EndTime>@Date IsEnable=1 ";
             var parms = new[] {
-               new SqlParameter("@CouponId",couponId)
+               new SqlParameter("@CouponId",couponId),
+               new SqlParameter("@Date",DateTime.Now)
            };
             using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms))
             {
@@ -326,6 +310,25 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
+        /// 根据用户ID和优惠券ID，获取优惠券记录ID
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public CashCouponLogModel GetCashCouponLogIDByUserID(int userId, int couponId)
+        {
+            string strSql = "select top 10 * from BM_GetCashCouponLog where UserId=@UserId and CouponId=@CouponId and IsGet=0";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@CouponId",couponId)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntity<CashCouponLogModel>(dr);
+            }
+        }
+
+        /// <summary>
         /// 获得现金卷列表
         /// </summary>
         /// <param name="shopId"></param>
@@ -333,7 +336,7 @@ namespace BAMENG.DAL
         public List<CashCouponModel> getEnabledCashCouponList(int shopId)
         {
             List<CashCouponModel> list = new List<CashCouponModel>();
-            string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and StartTime<@Date and EndTime>@Date and IsEnable=1 order by CouponId desc";
+            string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and EndTime>@Date and IsEnable=1 order by CouponId desc";
             var parms = new[] {
                 new SqlParameter("@ShopId",shopId),
                 new SqlParameter("@Date",DateTime.Now)
@@ -356,7 +359,7 @@ namespace BAMENG.DAL
         {
             string strSql = @"select g.ID as CouponId,c.Title,g.CouponNo,g.StartTime,g.EndTime,g.Money from BM_GetCashCouponLog g
                                 left join BM_CashCoupon c on c.CouponId = g.CouponId
-                                where c.IsEnable = 1 and g.UserId =@UserId and g.StartTime<@Date and g.EndTime>@Date  order by g.ID desc";
+                                where c.IsEnable = 1 and g.UserId =@UserId and g.EndTime>@Date  order by g.ID desc";
 
             var parms = new[] {
                 new SqlParameter("@UserId",userId),

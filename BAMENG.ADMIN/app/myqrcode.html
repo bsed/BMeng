@@ -82,6 +82,7 @@
         hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
             if (ret) {
                 if (ret.status != 200) {
+                    $(".lodinggo").remove();
                     $.alert(ret.statusText);
                 }
                 else {

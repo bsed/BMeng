@@ -33,7 +33,19 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.CouponFactory())
             {
-                return dal.AddCashCoupon(model);
+                int flag= dal.AddCashCoupon(model);
+                if (flag > 0)
+                {
+                    //添加优惠券领取操作日志
+                    LogLogic.AddCouponLog(new LogBaseModel()
+                    {
+                        UserId = 0,
+                        ShopId = model.ShopId,
+                        OperationType = 0,//0创建 1领取 2使用
+                        Money = model.Money
+                    });
+                }
+                return flag;
             }
         }
 
@@ -95,34 +107,6 @@ namespace BAMENG.LOGIC
             }
         }
 
-        /// <summary>
-        /// 修改现金券的获取状态
-        /// </summary>
-        /// <param name="couponId">The coupon identifier.</param>
-        /// <param name="couponNo">The coupon no.</param>
-        /// <returns>true if XXXX, false otherwise.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public static bool UpdateGetStatus(int couponId, string couponNo)
-        {
-            using (var dal = FactoryDispatcher.CouponFactory())
-            {
-                return dal.UpdateGetStatus(couponId, couponNo);
-            }
-        }
-
-        /// <summary>
-        /// 修改现金券使用状态
-        /// </summary>
-        /// <param name="couponId">The coupon identifier.</param>
-        /// <returns>true if XXXX, false otherwise.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public static bool UpdateUseStatus(int couponId)
-        {
-            using (var dal = FactoryDispatcher.CouponFactory())
-            {
-                return dal.UpdateUseStatus(couponId);
-            }
-        }
 
         /// <summary>
         /// 设置优惠券启用和禁用
@@ -151,6 +135,20 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        /// <summary>
+        /// 根据用户ID和优惠券ID，获取优惠券记录ID
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public static CashCouponLogModel GetCashCouponLogIDByUserID(int userId, int couponId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.GetCashCouponLogIDByUserID(userId, couponId);
+            }
+        }
 
         /// <summary>
         /// 获得现金卷列表
@@ -214,6 +212,13 @@ namespace BAMENG.LOGIC
                     CashCouponModel couponModel = dal.GetModel(couponId);
                     if (couponModel != null)
                     {
+                        int BelongOneUserId = userId;
+                        if (sendToUserId > 0)
+                        {
+                            var user = UserLogic.GetModel(sendToUserId);
+                            if (user != null)
+                                BelongOneUserId = user.BelongOne;
+                        }
                         dal.CreateUserCashCouponLog(new CashCouponLogModel()
                         {
                             CouponId = couponId,
@@ -223,7 +228,9 @@ namespace BAMENG.LOGIC
                             Money = couponModel.Money,
                             StartTime = couponModel.StartTime,
                             EndTime = couponModel.EndTime,
-                            ShopId = couponModel.ShopId
+                            ShopId = couponModel.ShopId,
+                            BelongOneUserId = BelongOneUserId,
+                            BelongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId)
                         });
                     }
                 }
@@ -232,16 +239,44 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        /// <summary>
+        /// 获取优惠券信息
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="isValid">是否只获取有效的优惠券</param>
+        /// <returns>CashCouponModel.</returns>
+        public static CashCouponModel GetModel(int couponId, bool isValid = false)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.GetModel(couponId, isValid);
+            }
+        }
+
         /// <summary>
         /// 创建用户现金券(盟主分享现金券时调用)
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public int CreateUserCashCouponLog(CashCouponLogModel model)
+        public static int CreateUserCashCouponLog(CashCouponLogModel model)
         {
             using (var dal = FactoryDispatcher.CouponFactory())
             {
                 return dal.CreateUserCashCouponLog(model);
+            }
+        }
+
+        /// <summary>
+        /// 更新现金券的领取记录
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateUserCashCouponGetLog(CashCouponLogModel model)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.UpdateUserCashCouponGetLog(model);
             }
         }
     }

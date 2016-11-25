@@ -37,7 +37,8 @@ var userdetailsHelper = {
                         $("#spanNickName").text(ret.data.NickName);
                         $("#spanUserScore").text(ret.data.Score - ret.data.ScoreLocked);
                         $("#spanMengBeans").text(ret.data.MengBeans - ret.data.MengBeansLocked);
-                        $("#spanOrderSuccessAmount").text(self.isAlly == 1 ? ret.data.CustomerAmount : ret.data.OrderSuccessAmount);
+                        $("#spanOrderSuccessAmount").text(ret.data.OrderSuccessAmount);
+                        $("#spanCustomerAmount").text(ret.data.CustomerAmount);
                     }
                 }
             }
@@ -143,8 +144,7 @@ var userdetailsHelper = {
         });
     },
     pageInit: function () {
-        userdetailsHelper.getUserInfo();
-        $(".allyText").text(this.isAlly == 1 ? "客户信息提交量" : "订单成交量");
+        userdetailsHelper.getUserInfo();        
         if (this.isAlly == 1)
             $(".tabAlly").hide();
     },

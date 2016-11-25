@@ -169,7 +169,23 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
 
-
+        /// <summary>
+        /// 添加优惠券操作日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddCouponLog(LogBaseModel logModel)
+        {
+            string strSql = @"insert into BM_CouponLog(UserId,ShopId,BelongShopId,Type,Money) values(@UserId,@ShopId,@BelongShopId,@Type,@Money)";
+            var param = new[] {
+                new SqlParameter("@UserId",logModel.UserId),
+                new SqlParameter("@ShopId",logModel.ShopId),
+                new SqlParameter("@BelongShopId",logModel.BelongShopId),
+                new SqlParameter("@Type",logModel.OperationType),
+                new SqlParameter("@Money",logModel.Money)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
 
 
         /// <summary>
@@ -277,7 +293,7 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
             }
         }
-        
+
 
     }
 }

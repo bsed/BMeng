@@ -112,6 +112,12 @@ namespace BAMENG.MODEL
         /// <value>The application system.</value>
         public string AppSystem { get; set; }
 
+        /// <summary>
+        /// Gets or sets the money.
+        /// </summary>
+        /// <value>The money.</value>
+        public decimal Money { get; set; }
+
     }
 
 
@@ -151,7 +157,7 @@ namespace BAMENG.MODEL
         public List<string> xData
         {
             get { return _xData; }
-            set { value = _xData;}
+            set { value = _xData; }
         }
 
 
@@ -162,7 +168,8 @@ namespace BAMENG.MODEL
         /// 统计数数据数组
         /// </summary>
         /// <value>The y data.</value>
-        public List<int> yData {
+        public List<int> yData
+        {
             get { return _yData; }
             set { value = _yData; }
         }

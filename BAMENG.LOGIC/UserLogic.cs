@@ -1094,7 +1094,8 @@ namespace BAMENG.LOGIC
             model.due = item.StartTime.ToString("yyyy.MM.dd") + "-" + item.EndTime.ToString("yyyy.MM.dd");
             model.ID = item.CouponId;
             model.money = item.Money;
-            model.name = item.Title;
+            model.name = item.Title;                                   
+            model.url = WebConfig.reswebsite() + "/app/couponshare.html";
             return model;
         }
     }

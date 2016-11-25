@@ -64,7 +64,7 @@ var articleHelper = {
                             tempHtml = tempHtml.replace("{publish}", item.EnablePublish);
                             tempHtml = tempHtml.replace("{top}", item.EnableTop);
 
-                            tempHtml = tempHtml.replace("{ShopName}", item.ShopName);
+                            tempHtml = tempHtml.replace("{ShopName}", item.ShopProv + "/" + item.ShopCity + "/" + item.ShopName);
                             tempHtml = tempHtml.replace("{SendTarget}", item.SendTargetId == 1 ? "盟主" : item.SendTargetId == 0 ? "所有人" : "盟友");
                             tempHtml = tempHtml.replace("{ArticleStatus}", item.ArticleStatus == 1 ? "审核通过" : item.ArticleStatus == 0 ? "申请中" : "审核失败");
 

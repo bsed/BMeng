@@ -172,5 +172,10 @@ namespace BAMENG.MODEL
         /// <value>The remark.</value>
         public string Remark { get; set; }
 
+
+        public string ShopProv { get; set; }
+
+        public string ShopCity { get; set; }
+
     }
 }

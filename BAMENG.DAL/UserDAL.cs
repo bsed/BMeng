@@ -1445,14 +1445,14 @@ namespace BAMENG.DAL
             strSql.Append(" values (");
             strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@Status,@OrderId)");
             strSql.Append(";select @@IDENTITY");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@LogType", SqlDbType.Int,4),
-                    new SqlParameter("@UserId", SqlDbType.Int,4),
-                    new SqlParameter("@Income", SqlDbType.Int,4),
-                    new SqlParameter("@Amount", SqlDbType.Int,4),
-                    new SqlParameter("@Remark", SqlDbType.NVarChar,500),
+            var parameters = new[] {
+                    new SqlParameter("@LogType", SqlDbType.Int),
+                    new SqlParameter("@UserId", SqlDbType.Int),
+                    new SqlParameter("@Income", SqlDbType.Int),
+                    new SqlParameter("@Amount", SqlDbType.Decimal),
+                    new SqlParameter("@Remark", SqlDbType.NVarChar),
                     new SqlParameter("@CreateTime", SqlDbType.DateTime),
-                    new SqlParameter("@Status", SqlDbType.Int,4),
+                    new SqlParameter("@Status", SqlDbType.Int),
                     new SqlParameter("@OrderId", model.OrderId)
             };
             parameters[0].Value = model.LogType;
@@ -1474,7 +1474,7 @@ namespace BAMENG.DAL
             strSql.Append(" values (");
             strSql.Append("@LogType,@UserId,@Income,@Amount,@Remark,@CreateTime,@OrderId)");
             strSql.Append(";select @@IDENTITY");
-            SqlParameter[] parameters = {
+            var parameters = new[] {
                     new SqlParameter("@LogType", model.LogType),
                     new SqlParameter("@UserId",model.UserId),
                     new SqlParameter("@Income", model.Income),

@@ -10,7 +10,7 @@ var _shareData = {
     title: "test",
     desc: "desc",
     img_url: "http://bmadmin.fancat.cn/static/img/mz@3x.png",
-    link: "http://www.baidu.com",
+    link: window.location.href,
     enable: true
 };
 
