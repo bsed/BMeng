@@ -186,7 +186,7 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
-        /// 获取现金券领取列表
+        /// 获取现金券领取记录列表
         /// </summary>
         /// <param name="couponId">The coupon identifier.</param>
         /// <param name="model">The model.</param>
@@ -196,23 +196,34 @@ namespace BAMENG.DAL
             ResultPageModel result = new ResultPageModel();
             if (model == null)
                 return result;
-            string strSql = "select L.ID,L.UserId,L.CouponNo,L.CouponId,L.Name,L.Mobile,L.IsGet,L.GetTime,L.IsUse,L.UseTime,L.CreateTime,L.BelongOneUserId,L.BelongOneShopId from BM_GetCashCouponLog L with(nolock) where 1=1 ";
+            string strSql = "select L.ID,L.UserId,L.CouponNo,L.CouponId,L.Name,L.Mobile,L.IsGet,L.GetTime,L.IsUse,L.UseTime,L.CreateTime,StartTime,EndTime,L.BelongOneUserId,L.BelongOneShopId from BM_GetCashCouponLog L with(nolock) where IsDel=0 and IsGet=1 and CouponId=@CouponId";
 
+            if (model.Status != -1)
+                strSql += " and IsUse=@IsUse ";
 
-            strSql += " and CouponId=@CouponId ";
+            if (string.IsNullOrEmpty(model.key))
+                strSql += " and Mobile=@Mobile ";
 
 
             if (!string.IsNullOrEmpty(model.startTime))
-                strSql += " and CONVERT(nvarchar(10),CreateTime,121)>=@startTime ";
+                strSql += " and CONVERT(nvarchar(10),GetTime,121)>=@startTime ";
             if (!string.IsNullOrEmpty(model.endTime))
-                strSql += " and CONVERT(nvarchar(10),CreateTime,121)<=@endTime ";
+                strSql += " and CONVERT(nvarchar(10),GetTime,121)<=@endTime ";
             var param = new[] {
                 new SqlParameter("@startTime", model.startTime),
                 new SqlParameter("@endTime", model.endTime),
-                new SqlParameter("@CouponId", couponId)
+                new SqlParameter("@CouponId", couponId),
+                new SqlParameter("@IsUse", model.Status),
+                new SqlParameter("@Mobile", model.key)
             };
             //生成sql语句
-            return getPageData<CashCouponLogModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", param);
+            return getPageData<CashCouponLogModel>(model.PageSize, model.PageIndex, strSql, "GetTime", param, (items =>
+            {
+                items.ForEach(item =>
+                {
+                    item.time = item.StartTime.ToString("yyyy.MM.dd") + " 至 " + item.EndTime.ToString("yyyy.MM.dd");
+                });
+            }));
         }
 
 

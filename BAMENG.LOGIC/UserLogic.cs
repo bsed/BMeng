@@ -1113,7 +1113,7 @@ namespace BAMENG.LOGIC
             model.ID = item.CouponId;
             model.money = item.Money;
             model.name = item.Title;
-            model.url = WebConfig.reswebsite() + "/app/couponshare.html";
+            model.url = WebConfig.articleDetailsDomain() + "/app/couponshare.html";
             return model;
         }
     }

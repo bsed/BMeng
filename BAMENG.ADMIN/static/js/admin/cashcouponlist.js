@@ -18,7 +18,7 @@ var couponHelper = {
     picDir: "bameng/focuspic/",
     pageIndex: 1,
     reset: null,
-    switchery:null,
+    switchery: null,
     loadList: function (page) {
         var self = this;
         self.loaclData = [];
@@ -154,6 +154,9 @@ var couponHelper = {
             hotUtil.loading.close();
         });
     },
+    newTab: function (dataId) {
+        hotUtil.newTab("admin/coupongetlist.html?couponid=" + dataId, "现金券领取记录-" + dataId);
+    },
     dialog: function (dataId) {
         if (this.reset)
             this.reset.resetForm();
@@ -164,13 +167,13 @@ var couponHelper = {
             $("#coupontitle").val(data.Title);
             $("#couponmoney").val(data.Money);
             $("#couponstarttime").val(data.StartTime);
-            $("#couponendtime").val(data.EndTime);            
+            $("#couponendtime").val(data.EndTime);
             $("#couponenable").setChecked(data.IsEnable == 1);
         }
         else {
             $("#modal-title").text("添加现金券");
             $("#signupForm input").val("");
-        }        
+        }
     },
     pageInit: function () {
         couponHelper.loadList(couponHelper.pageIndex);

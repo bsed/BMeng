@@ -136,6 +136,9 @@ namespace BAMENG.MODEL
         /// <value>The mobile.</value>
         public string Mobile { get; set; }
 
+
+
+
         /// <summary>
         /// 是否获取
         /// </summary>
@@ -207,6 +210,13 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The belong one shop identifier.</value>
         public int BelongOneShopId { get; set; }
+
+
+        /// <summary>
+        /// 只后台用到
+        /// </summary>
+        /// <value>The time.</value>
+        public string time { get; set; }
     }
 
 

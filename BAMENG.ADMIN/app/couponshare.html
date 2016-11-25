@@ -66,7 +66,7 @@
                 }
                 else {
                     $("#couponMoney").text(ret.data.money + " 元");                    
-                    $(".couponTime").text(ret.data.time);
+                    $("#couponTime").text(ret.data.time);
                     $("#code").qrcode({
                         render: "image",
                         size: 200,

@@ -101,6 +101,7 @@
     <Content Include="admin\cashcouponstaticpie.html" />
     <Content Include="admin\couponstaticstispie.html" />
     <Content Include="admin\customerareastatic.html" />
+    <Content Include="admin\coupongetlist.html" />
     <Content Include="admin\none.html" />
     <Content Include="admin\cashcouponstatic.html" />
     <Content Include="admin\customerstatic.html" />
@@ -123,6 +124,7 @@
     <Content Include="app\couponshare.html" />
     <Content Include="app\getcoupon.html" />
     <Content Include="app\myqrcodetemplate.html" />
+    <Content Include="app\policy.html" />
     <Content Include="app\register.html" />
     <Content Include="app\about.html" />
     <Content Include="app\details.html" />
@@ -153,6 +155,7 @@
     <Content Include="static\js\admin\apparticle.js" />
     <Content Include="static\js\admin\cashcouponstatic.js" />
     <Content Include="static\js\admin\cashcouponstaticpie.js" />
+    <Content Include="static\js\admin\coupongetlist.js" />
     <Content Include="static\js\admin\customerstatistics.js" />
     <Content Include="static\js\admin\loginstatistics.js" />
     <Content Include="static\js\admin\messageedit.js" />
@@ -189,6 +192,7 @@
     <Content Include="handler\UploadFileEidt.ashx" />
     <Content Include="handler\articleInfo.ashx" />
     <Content Include="handler\app.ashx" />
+    <None Include="Properties\PublishProfiles\bmadmin.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -238,7 +242,6 @@
     <Content Include="static\css\plugins\dropzone\basic.css" />
     <Content Include="static\css\plugins\dropzone\dropzone.css" />
     <Content Include="static\css\plugins\footable\fonts\footable.eot" />
-    <Content Include="static\css\plugins\footable\fonts\footable.eot#Uf025" />
     <Content Include="static\css\plugins\footable\fonts\footable.svg" />
     <Content Include="static\css\plugins\footable\fonts\footable.ttf" />
     <Content Include="static\css\plugins\footable\fonts\footable.woff" />
@@ -256,7 +259,6 @@
     <Content Include="static\css\plugins\ionRangeSlider\ion.rangeSlider.css" />
     <Content Include="static\css\plugins\ionRangeSlider\ion.rangeSlider.skinFlat.css" />
     <Content Include="static\css\plugins\jasny\jasny-bootstrap.min.css" />
-    <Content Include="static\css\plugins\jqgrid\ui.jqgrid.css#Uf0250820" />
     <Content Include="static\css\plugins\jsTree\32px.png" />
     <Content Include="static\css\plugins\jsTree\style.min.css" />
     <Content Include="static\css\plugins\jsTree\throbber.gif" />
@@ -275,13 +277,11 @@
     <Content Include="static\css\plugins\webuploader\webuploader.css" />
     <Content Include="static\css\style.min-1.0.2.css" />
     <Content Include="static\css\style.min.css" />
-    <Content Include="static\fonts\fontawesome-webfont.eot#Uf025" />
     <Content Include="static\fonts\fontawesome-webfont.svg" />
     <Content Include="static\fonts\fontawesome-webfont.ttf" />
     <Content Include="static\fonts\fontawesome-webfont.woff" />
     <Content Include="static\fonts\fontawesome-webfont.woff2" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="static\fonts\glyphicons-halflings-regular.eot#Uf025" />
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
@@ -343,8 +343,6 @@
     <Content Include="static\js\plugins\bootstrap-table\bootstrap-table-mobile.min.js" />
     <Content Include="static\js\plugins\bootstrap-table\bootstrap-table.min.js" />
     <Content Include="static\js\plugins\bootstrap-table\locale\bootstrap-table-zh-CN.min.js" />
-    <Content Include="static\js\plugins\bootstrap-tagsinput\bootstrap-tagsinput.css" />
-    <Content Include="static\js\plugins\bootstrap-tagsinput\bootstrap-tagsinput.min.js" />
     <Content Include="static\js\plugins\chartJs\Chart.min.js" />
     <Content Include="static\js\plugins\chosen\chosen.jquery.js" />
     <Content Include="static\js\plugins\clockpicker\clockpicker.js" />
@@ -353,17 +351,8 @@
     <Content Include="static\js\plugins\colorpicker\bootstrap-colorpicker.min.js" />
     <Content Include="static\js\plugins\cropper\cropper.min.js" />
     <Content Include="static\js\plugins\datapicker\bootstrap-datepicker.js" />
-    <Content Include="static\js\plugins\datapicker\bootstrap-datepicker.min.css" />
-    <Content Include="static\js\plugins\datapicker\bootstrap-datepicker.min.js" />
-    <Content Include="static\js\plugins\datapicker\bootstrap-datepicker.zh-CN.min.js" />
-    <Content Include="static\js\plugins\datapicker\bootstrap-datepicker3.css" />
-    <Content Include="static\js\plugins\datapicker\bootstrap-datepicker3.min.css" />
     <Content Include="static\js\plugins\dataTables\dataTables.bootstrap.js" />
     <Content Include="static\js\plugins\dataTables\jquery.dataTables.js" />
-    <Content Include="static\js\plugins\datetimepick\css\daterangepicker.css" />
-    <Content Include="static\js\plugins\datetimepick\js\daterangepicker.js" />
-    <Content Include="static\js\plugins\datetimepick\js\moment.js" />
-    <Content Include="static\js\plugins\datetimepick\js\moment.min.js" />
     <Content Include="static\js\plugins\diff_match_patch\diff_match_patch.js" />
     <Content Include="static\js\plugins\dropzone\dropzone.js" />
     <Content Include="static\js\plugins\easypiechart\jquery.easypiechart.js" />
@@ -394,8 +383,6 @@
     <Content Include="static\js\plugins\ionRangeSlider\ion.rangeSlider.min.js" />
     <Content Include="static\js\plugins\jasny\jasny-bootstrap.min.js" />
     <Content Include="static\js\plugins\jeditable\jquery.jeditable.js" />
-    <Content Include="static\js\plugins\jqgrid\i18n\grid.locale-cn.js#Uf0250820" />
-    <Content Include="static\js\plugins\jqgrid\jquery.jqGrid.min.js#Uf0250820" />
     <Content Include="static\js\plugins\jquery-ui\jquery-ui.min.js" />
     <Content Include="static\js\plugins\jsKnob\jquery.knob.js" />
     <Content Include="static\js\plugins\jsTree\jstree.min.js" />
@@ -413,8 +400,6 @@
     <Content Include="static\js\plugins\layer\skin\default\loading-1.gif" />
     <Content Include="static\js\plugins\layer\skin\default\loading-2.gif" />
     <Content Include="static\js\plugins\layer\skin\layer.css" />
-    <Content Include="static\js\plugins\layer\skin\moon\default.png" />
-    <Content Include="static\js\plugins\layer\skin\moon\style.css" />
     <Content Include="static\js\plugins\layui\css\layui.css" />
     <Content Include="static\js\plugins\layui\css\mobile.css" />
     <Content Include="static\js\plugins\layui\css\modules\code.css" />
@@ -541,10 +526,6 @@
     <Content Include="static\js\plugins\prettyfile\bootstrap-prettyfile.js" />
     <Content Include="static\js\plugins\rickshaw\rickshaw.min.js" />
     <Content Include="static\js\plugins\rickshaw\vendor\d3.v3.js" />
-    <Content Include="static\js\plugins\SearchableSelect\jquery.searchableSelect-1.0.0.css" />
-    <Content Include="static\js\plugins\SearchableSelect\jquery.searchableSelect-1.0.1.js" />
-    <Content Include="static\js\plugins\SearchableSelect\jquery.searchableSelect.css" />
-    <Content Include="static\js\plugins\SearchableSelect\jquery.searchableSelect.js" />
     <Content Include="static\js\plugins\simditor\hotkeys.js" />
     <Content Include="static\js\plugins\simditor\module.js" />
     <Content Include="static\js\plugins\simditor\simditor.js" />

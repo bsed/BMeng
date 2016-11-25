@@ -68,7 +68,7 @@
   right: 0;
 }
 .lodinggo .bacimg{
-background: url(../images/hbhb.png) no-repeat;
+background: url(../img/hbhb.png) no-repeat;
     border-radius: 8px;
     background-size: 100%;
     height: 100%;
@@ -140,4 +140,9 @@ background: url(../images/hbhb.png) no-repeat;
     bottom: 0;
     right: 0;
 }
+#code img {
+    width: 50%;margin-top:22%;
+    background-color:#fff;    
+}
+
 /*************************/

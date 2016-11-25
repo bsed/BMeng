@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeInRight tooltip-demo">
+        <!--search-->
+        <form role="form" class="search-panel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content p-m no-borders">
+                            <div class="form-inline">
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodName">手机号码：</label>
+                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="" />
+                                </div>
+
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodBn">领取时间：</label>
+                                    <input type="text" class="form-control input-sm mb10 data-range-pick" id="createTimePick" name="createTimePick" start-element="#beginTime" end-element="#endTime" placeholder="开始时间-结束时间" style="width: 277px;" />
+                                    <input type="hidden" id="beginTime" name="beginTime" />
+                                    <input type="hidden" id="endTime" name="endTime" />
+                                </div>
+
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodName">状态：</label>
+                                    <select id="sltStatus" class="form-control">
+                                        <option value="-1">全部</option>
+                                        <option value="1">已核销</option>
+                                        <option value="0">未核销</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p style="height: 8px;"></p>
+                            <div class="form-inline" style="max-width: 926px; text-align: right;">
+                                <button type="button" onclick="couponHelper.search()" class="btn btn-success">筛选</button>
+                                <button type="button" onclick="couponHelper.searchAll()" class="btn btn-success">显示全部</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--search-->
+        <!--list-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">
+                            <div style="text-align:right;">
+                                <button type="button" id="btnUser" class="btn btn-w-m btn-success" onclick="couponHelper.newTab()">返回现金券列表</button>
+                            </div>
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>现金券编码</th>
+                                        <th>领取电话</th>
+                                        <th>有效期</th>
+                                        <th>领取时间</th>
+                                        <th>是否核销</th>
+                                        <th>核销时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode"></tbody>
+                            </table>
+                            <p style="float: left; margin: 20px 0;">共<span class="pagination_recordCount">0</span>条记录，当前第<span class="pagination_pageIndex">1</span> /<span class="pagination_pageCount">1</span>，每页<span class="pagination_pageSize">20</span>条记录</p>
+                            <ul style="float: right;" class="pagination pagination-split"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="templist">
+        <tr>
+            <td>{NO}</td>
+            <td>{CouponNo}</td>
+            <td>{Mobile}</td>
+            <td>{Time}</td>
+            <td>{GetTime}</td>
+            <td>{UseStatusName}</td>
+            <td>{UseTime}</td>
+        </tr>
+    </template>
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <link href="http://resali.huobanplus.com/cdn/hotui/css/plugins/datetimepick/daterangepicker.css" rel="stylesheet" />
+    <script src="http://resali.huobanplus.com/cdn/hotui/js/plugins/datetimepick/moment.js"></script>
+    <script src="http://resali.huobanplus.com/cdn/hotui/js/plugins/datetimepick/daterangepicker.js"></script>
+    <script src="/static/js/admin/coupongetlist.js"></script>
+</body>
+</html>

@@ -253,7 +253,9 @@ namespace BAMENG.ADMIN.handler
 
                     #endregion
 
-
+                    case "GETCOUPONLOGLIST":
+                        GetCouponlogList();
+                        break;
 
                     default:
                         break;
@@ -1068,7 +1070,7 @@ namespace BAMENG.ADMIN.handler
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");
-            if (type <= 0) type = 7;            
+            if (type <= 0) type = 7;
 
             beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
             endTime = DateTime.Now.ToString("yyyy-MM-dd");
@@ -1101,5 +1103,26 @@ namespace BAMENG.ADMIN.handler
             //TODO
         }
         #endregion
+
+
+
+        /// <summary>
+        /// 获取领取记录
+        /// </summary>
+        private void GetCouponlogList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+                Status = GetFormValue("searchType", -1)
+            };
+            int couponId = GetFormValue("couponId", 0);
+            var data = CouponLogic.GetUserCashCouponLogList(couponId, model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
     }
 }

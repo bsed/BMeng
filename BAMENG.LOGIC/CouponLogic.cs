@@ -23,6 +23,24 @@ namespace BAMENG.LOGIC
     /// </summary>
     public class CouponLogic
     {
+
+
+
+        /// <summary>
+        /// 获取现金券领取记录列表
+        /// </summary>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetUserCashCouponLogList(int couponId, SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.GetUserCashCouponLogList(couponId, model);
+            }
+        }
+
+
         /// <summary>
         /// 添加现金券
         /// </summary>

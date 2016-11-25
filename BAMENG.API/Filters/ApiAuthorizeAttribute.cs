@@ -252,7 +252,7 @@ namespace BAMENG.API
                     ApiStatusCode apiCode = authorize.onExcute(filterContext);
                     if (apiCode != ApiStatusCode.OK)
                     {
-                        filterContext.HttpContext.Response.StatusCode = (int)apiCode;
+                        //filterContext.HttpContext.Response.StatusCode = (int)apiCode;
                         filterContext.Result = new JsonResult() { ContentType = "application/json", Data = new ResultModel(ApiStatusCode.未授权), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                         return;
                     }
@@ -260,7 +260,7 @@ namespace BAMENG.API
             }
             else
             {
-                filterContext.HttpContext.Response.StatusCode = (int)ApiStatusCode.禁止请求;
+                //filterContext.HttpContext.Response.StatusCode = (int)ApiStatusCode.禁止请求;
                 filterContext.Result = new JsonResult() { ContentType = "application/json", Data = new ResultModel(ApiStatusCode.禁止请求), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 return;
             }
