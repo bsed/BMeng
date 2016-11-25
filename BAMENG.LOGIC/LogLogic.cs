@@ -408,16 +408,16 @@ namespace BAMENG.LOGIC
         {
             StatisticsMoneyPieModel data1 = new StatisticsMoneyPieModel();
 
-            int shopId = 12;
+          
             using (var dal = FactoryDispatcher.LogFactory())
             {
                 List<StatisticsMoneyListModel> lst = null;
-                if (user.UserIndentity==0 )
+                if (user.UserIndentity == 0)
                     lst = dal.CouponStatisticsPieByAdmin(startTime, endTime);
-                else if(user.UserIndentity ==1)
-                     lst = dal.CouponStatisticsPieByBelongShop(shopId, startTime, endTime);
-                else if(user.UserIndentity==2)
-                    lst = dal.CouponStatisticsPieByShop(shopId, startTime, endTime);
+                else if (user.UserIndentity == 1)
+                    lst = dal.CouponStatisticsPieByBelongShop(user.ID, startTime, endTime);
+                else if (user.UserIndentity == 2)
+                    lst = dal.CouponStatisticsPieByShop(user.ID, startTime, endTime);
 
                 if (lst != null && lst.Count() > 0)
                 {
@@ -440,11 +440,98 @@ namespace BAMENG.LOGIC
                     PieModel pie = new PieModel();
                     pie.name = "";
                     pie.value = 0;
-                    data1.yData.Add(pie);                  
+                    data1.yData.Add(pie);
                 }
-                 
+
+                return data1;
+            }
+        }
+
+        public static List<StatisticsModel> OrderStatistic(AdminLoginModel user, string startTime, string endTime)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                List<StatisticsModel> result = new List<StatisticsModel>();
+
+                List<StatisticsListModel> listTotal = dal.OrderStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                List<StatisticsListModel> listFinish = dal.OrderFinishStatistics(user.ID, user.UserIndentity, startTime, endTime);
+
+                StatisticsModel data1 = new StatisticsModel();
+                StatisticsModel data2 = new StatisticsModel();
+
+                foreach (var item in listTotal)
+                {
+                    data1.xData.Add(item.xData);
+                    data1.yData.Add(item.yData);
+                    data1.total += item.yData;
+
+                    data2.xData.Add(item.xData);
+                    int finishAmount = getFininshAmount(item.xData, listFinish);
+                    data2.yData.Add(finishAmount);
+                    data2.total += finishAmount;
+                }
+
+                result.Add(data1);
+                result.Add(data2);
+                return result;
+            }
+        }
+
+        private static int getFininshAmount(string xData, List<StatisticsListModel> listFinish)
+        {
+            foreach (StatisticsListModel model in listFinish)
+            {
+                if (model.xData == xData)
+                {
+                    return model.yData;
+                }
+            }
+            return 0;
+        }
+
+
+        public static StatisticsPieModel OrderStatisticsPie(AdminLoginModel user, string startTime, string endTime)
+        {
+            StatisticsPieModel data1 = new StatisticsPieModel();
+
+
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                List<StatisticsListModel> lst = null;
+                if (user.UserIndentity == 0)
+                    lst = dal.OrderStatisticsPieByAdmin(startTime, endTime);
+                else if (user.UserIndentity == 1)
+                    lst = dal.OrderStatisticsPieByBelongShop(user.ID, startTime, endTime);
+                else if (user.UserIndentity == 2)
+                    lst = dal.OrderStatisticsPieByShop(user.ID, startTime, endTime);
+
+                if (lst != null && lst.Count() > 0)
+                {
+                    foreach (var item in lst)
+                    {
+                        data1.xData.Add(item.xData);
+                        PieCountModel pie = new PieCountModel();
+                        pie.name = item.xData;
+                        pie.value = item.yData;
+                        data1.yData.Add(pie);
+                        data1.total += item.yData;
+                    }
+                }
+
+
+                if (data1.xData.Count() == 0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data1.xData.Add(dtime);
+                    PieCountModel pie = new PieCountModel();
+                    pie.name = "";
+                    pie.value = 0;
+                    data1.yData.Add(pie);
+                }
+
                 return data1;
             }
         }
     }
 }
+

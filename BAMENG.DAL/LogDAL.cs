@@ -293,6 +293,14 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
             }
         }
+
+        /// <summary>
+        /// 获取主店优惠券饼图统计
+        /// </summary>
+        /// <param name="belongShopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
         public List<StatisticsMoneyListModel> CouponStatisticsPieByBelongShop(int belongShopId, string startTime, string endTime)
         {
             string strSql = @"select log.ShopId,shop.ShopName as xData ,sum(log.Money) as yData  from BM_GetCashCouponLog as log
@@ -311,7 +319,12 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
             }
         }
-
+        /// <summary>
+        /// 获取管理员优惠券饼图统计
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
         public List<StatisticsMoneyListModel> CouponStatisticsPieByAdmin(string startTime, string endTime)
         {
             string strSql = @"select log.BelongOneShopId,shop.ShopName as xData ,sum(log.Money) as yData  from BM_GetCashCouponLog as log
@@ -329,7 +342,13 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
             }
         }
-
+/// <summary>
+/// 获取分店优惠卷统计
+/// </summary>
+/// <param name="shopId"></param>
+/// <param name="startTime"></param>
+/// <param name="endTime"></param>
+/// <returns></returns>
         public List<StatisticsMoneyListModel> CouponStatisticsPieByShop(int shopId, string startTime, string endTime)
         {
             string strSql = @"select log.BelongOneUserId ,shop.UB_UserRealName as xData ,sum(log.Money) as yData  from BM_GetCashCouponLog as log
@@ -346,6 +365,145 @@ namespace BAMENG.DAL
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取订单统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="userIdentity"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="orderStatus"></param>
+        /// <returns></returns>
+        public List<StatisticsListModel> OrderFinishStatistics(int shopId, int userIdentity, string startTime, string endTime)
+        {
+            string strSql = @"select CONVERT(nvarchar(10),FinishedTime,121) as xData,COUNT(1) as yData from BM_Orders 
+                                where 
+                                CONVERT(nvarchar(10),FinishedTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),FinishedTime,121)<=@endTime  and OrderStatus=1";
+            if (userIdentity == 1)
+                strSql += " and BelongOneShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and ShopId=@ShopId";
+
+
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            strSql += " group by CONVERT(nvarchar(10),FinishedTime,121)";
+            strSql += " order by CONVERT(nvarchar(10),FinishedTime,121)";
+
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+
+
+        public List<StatisticsListModel> OrderStatistics(int shopId, int userIdentity, string startTime, string endTime)
+        {
+            string strSql = @"select CONVERT(nvarchar(10),orderTime,121) as xData,COUNT(1) as yData from BM_Orders 
+                                where 
+                                CONVERT(nvarchar(10),orderTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),orderTime,121)<=@endTime";
+            if (userIdentity == 1)
+                strSql += " and BelongOneShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and ShopId=@ShopId";
+
+
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            strSql += " group by CONVERT(nvarchar(10),orderTime,121)";
+            strSql += " order by CONVERT(nvarchar(10),orderTime,121)";
+
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 获取主店订单饼图统计
+        /// </summary>
+        /// <param name="belongShopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public List<StatisticsListModel> OrderStatisticsPieByBelongShop(int belongShopId, string startTime, string endTime)
+        {
+            string strSql = @"select log.ShopId,shop.ShopName as xData ,count(1) as yData  from BM_Orders as log
+                        left join BM_ShopManage as shop on log.shopId=shop.shopid
+                                where CONVERT(nvarchar(10), log.orderTime, 121)>=@startTime
+                                and CONVERT(nvarchar(10), log.orderTime, 121)<=@endTime and log.BelongOneShopId=@ShopId 
+                                group by log.ShopId,shop.ShopName
+                                order by count(1) desc";
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",belongShopId)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+        /// <summary>
+        /// 获取管理员订单饼图统计
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public List<StatisticsListModel> OrderStatisticsPieByAdmin(string startTime, string endTime)
+        {
+            string strSql = @"select log.BelongOneShopId,shop.ShopName as xData ,count(1) as yData  from BM_Orders as log
+                        left join BM_ShopManage as shop on log.BelongOneShopId=shop.shopid
+                                where CONVERT(nvarchar(10), log.orderTime, 121)>=@startTime
+                                and CONVERT(nvarchar(10), log.orderTime, 121)<=@endTime 
+                                group by log.BelongOneShopId,shop.ShopName
+                                order by count(1) desc";
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+        /// <summary>
+        /// 获取分店订单统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public List<StatisticsListModel> OrderStatisticsPieByShop(int shopId, string startTime, string endTime)
+        {
+            string strSql = @"select log.UserId ,shop.UB_UserRealName as xData ,count(1) as yData  from BM_Orders as log
+                        left join Hot_UserBaseInfo as shop on log.UserId=shop.UB_UserID
+                                where CONVERT(nvarchar(10), log.orderTime, 121)>=@startTime
+                                and CONVERT(nvarchar(10), log.orderTime, 121)<=@endTime and log.ShopId=@ShopId 
+                                group by log.UserId,shop.UB_UserRealName
+                                order by count(1) desc";
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
             }
         }
     }

@@ -303,4 +303,32 @@ namespace BAMENG.MODEL
        
     }
 
+
+    public class StatisticsPieModel
+    {
+
+        private List<string> _xData = new List<string>();
+        public List<string> xData
+        {
+            get { return _xData; }
+            set { value = _xData; }
+        }
+
+        private List<PieCountModel> _yData = new List<PieCountModel>();
+        public List<PieCountModel> yData { get { return _yData; } set { value = _yData; } }
+        /// <summary>
+        /// 总额
+        /// </summary>
+        /// <value>The total.</value>
+        public int total { get; set; }
+    }
+
+    public class PieCountModel
+    {
+
+        public string name { get; set; }
+        public int value { get; set; }
+    }
+
+
 }

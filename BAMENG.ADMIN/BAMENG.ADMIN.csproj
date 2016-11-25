@@ -99,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\cashcouponstaticpie.html" />
-    <Content Include="admin\couponstaticstispie.html" />
     <Content Include="admin\customerareastatic.html" />
     <Content Include="admin\none.html" />
     <Content Include="admin\cashcouponstatic.html" />
@@ -113,6 +112,8 @@
     <Content Include="admin\focuspic.html" />
     <Content Include="admin\messagelist.html" />
     <Content Include="admin\orderlist.html" />
+    <Content Include="admin\orderstatic.html" />
+    <Content Include="admin\orderstaticpie.html" />
     <Content Include="admin\shoplist.html" />
     <Content Include="admin\orderdetails.html" />
     <Content Include="admin\userdetails.html" />
@@ -159,6 +160,8 @@
     <Content Include="static\js\admin\orderlist.js" />
     <Content Include="static\js\admin\messagelist.js" />
     <Content Include="static\js\admin\orderdetails.js" />
+    <Content Include="static\js\admin\orderstatic.js" />
+    <Content Include="static\js\admin\orderstaticpie.js" />
     <Content Include="static\js\admin\shareConfig.js" />
     <Content Include="static\js\admin\userdetails.js" />
     <Content Include="static\js\admin\userlevel.js" />
