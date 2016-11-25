@@ -66,7 +66,7 @@ namespace BAMENG.API.Controllers
             {
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
-            string fileName = "/resource/bameng/image/" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(6) + ".jpg";
+            string fileName = GetUploadImagePath();
             Stream stream = oFile.InputStream;
             byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);
@@ -74,8 +74,14 @@ namespace BAMENG.API.Controllers
             stream.Seek(0, SeekOrigin.Begin);
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
-                OrderLogic.saveOrder(userId, userName, mobile, address, cashNo, memo, fileName);
-                return Json(new ResultModel(ApiStatusCode.OK));
+                bool flag = OrderLogic.saveOrder(userId, userName, mobile, address, cashNo, memo, fileName);
+                if (!flag)
+                {
+                    System.IO.File.Delete(Server.MapPath(fileName));
+                    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                }
+                else
+                    return Json(new ResultModel(ApiStatusCode.OK));
             }
             else
                 return Json(new ResultModel(ApiStatusCode.请上传图片));

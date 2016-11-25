@@ -158,5 +158,14 @@ namespace BAMENG.IDAL
         /// <param name="couponId">优惠券ID</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         bool AddSendCoupon(int userId, int sendToUserId, int couponId);
+
+
+        /// <summary>
+        /// 更新优惠券分享状态(只有盟友身份时才操作)
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateCouponShareStatus(int userId, int couponId);
     }
 }

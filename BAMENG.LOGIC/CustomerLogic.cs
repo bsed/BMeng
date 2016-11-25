@@ -188,13 +188,14 @@ namespace BAMENG.LOGIC
                     {
                         RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(model.BelongTwo);
 
-                        if (rewardSettingModel == null && rewardSettingModel.CustomerReward > 0) return flag;
+                        if (rewardSettingModel == null || rewardSettingModel.ShopReward <= 0) return flag;
+
                         using (var dal1 = FactoryDispatcher.UserFactory())
                         {
                             //给盟友加盟豆
-                            UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.CustomerReward);
+                            UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.ShopReward);
                             BeansRecordsModel model2 = new BeansRecordsModel();
-                            model2.Amount = rewardSettingModel.CustomerReward;
+                            model2.Amount = rewardSettingModel.ShopReward;
                             model2.UserId = model.BelongOne;
                             model2.LogType = 0;
                             model2.Income = 1;

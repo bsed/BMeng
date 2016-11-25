@@ -359,7 +359,7 @@ namespace BAMENG.DAL
         {
             string strSql = @"select g.ID as CouponId,c.Title,g.CouponNo,g.StartTime,g.EndTime,g.Money from BM_GetCashCouponLog g
                                 left join BM_CashCoupon c on c.CouponId = g.CouponId
-                                where c.IsEnable = 1 and g.UserId =@UserId and g.EndTime>@Date  order by g.ID desc";
+                                where c.IsEnable = 1 and g.UserId =@UserId and g.EndTime>@Date  and isShare=0  order by g.ID desc";
 
             var parms = new[] {
                 new SqlParameter("@UserId",userId),
@@ -412,6 +412,25 @@ namespace BAMENG.DAL
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
+
+
+        /// <summary>
+        /// 更新优惠券分享状态(只有盟友身份时才操作)
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateCouponShareStatus(int userId, int couponId)
+        {
+            string strSql = "update BM_GetCashCouponLog set IsShare=1 where UserId=@UserId and CouponId=@CouponId";
+            var parm = new[] {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@CouponId", couponId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+        }
+
+
 
     }
 }

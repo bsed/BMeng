@@ -27,6 +27,13 @@ namespace BAMENG.MODEL
         /// </summary>
         public int ShopId { get; set; }
 
+
+        /// <summary>
+        /// 所属总店ID
+        /// </summary>
+        /// <value>The belong one shop identifier.</value>
+        public int BelongOneShopId { get; set; }
+
         /// <summary>
         /// 门店名称
         /// </summary>

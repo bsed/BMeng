@@ -162,6 +162,9 @@ namespace BAMENG.CONFIG
 
         [Description("现金券已过期")]
         现金券已过期 = 75001,
+
+        [Description("您来晚了，现金券已领完!")]
+        现金券已领完 = 75002,
     }
 
 

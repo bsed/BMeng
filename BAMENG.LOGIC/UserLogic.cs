@@ -217,7 +217,18 @@ namespace BAMENG.LOGIC
                 return dal.Login(loginName, loginPassword, IsShop);
             }
         }
-
+        /// <summary>
+        /// 修改最后登录时间
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateLastLoginTime(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.UpdateLastLoginTime(userId);
+            }
+        }
 
         /// <summary>
         /// Gets the user identifier by authentication token.
@@ -636,8 +647,15 @@ namespace BAMENG.LOGIC
             //兑换数量
             model.exchangeAmount = GetConvertCount(userId, 0);
 
-            //现金券数量
-            model.cashCouponAmount = CouponLogic.GetMyCashCouponCount(userId);
+
+            var data = getMyCashCouponList(userId);
+            if (data != null)
+            {
+                //现金券数量
+                //model.cashCouponAmount = CouponLogic.GetMyCashCouponCount(userId);
+                model.cashCouponAmount = data.Count();
+            }
+
 
             return model;
         }
@@ -1094,7 +1112,7 @@ namespace BAMENG.LOGIC
             model.due = item.StartTime.ToString("yyyy.MM.dd") + "-" + item.EndTime.ToString("yyyy.MM.dd");
             model.ID = item.CouponId;
             model.money = item.Money;
-            model.name = item.Title;                                   
+            model.name = item.Title;
             model.url = WebConfig.reswebsite() + "/app/couponshare.html";
             return model;
         }

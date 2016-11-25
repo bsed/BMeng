@@ -839,6 +839,19 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
+        /// 修改最后登录时间
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateLastLoginTime(int userId)
+        {
+            string strSql = "update BM_User_extend set LastLoginTime=getdate() where UserId=@UserId";
+            SqlParameter[] parm = {
+                   new SqlParameter("@UserId", userId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parm) > 0;
+        }
+        /// <summary>
         /// 添加用户授权token
         /// </summary>
         /// <param name="UserId">The user identifier.</param>

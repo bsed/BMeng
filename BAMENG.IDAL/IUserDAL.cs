@@ -166,6 +166,14 @@ namespace BAMENG.IDAL
 
 
         /// <summary>
+        /// 修改最后登录时间
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateLastLoginTime(int userId);
+
+
+        /// <summary>
         /// 添加用户授权token
         /// </summary>
         /// <param name="UserId">The user identifier.</param>
