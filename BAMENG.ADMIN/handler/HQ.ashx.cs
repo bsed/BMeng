@@ -247,6 +247,10 @@ namespace BAMENG.ADMIN.handler
                         OrderStatistics();
                         break;
 
+                    case "COUPONSTATISTICSPIE":
+                        CouponStatisticsPie();
+                        break;
+
                     #endregion
 
 
@@ -1064,15 +1068,27 @@ namespace BAMENG.ADMIN.handler
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");
-            if (type <= 0)
-            {
-                type = 7;
-            }
+            if (type <= 0) type = 7;            
 
             beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
             endTime = DateTime.Now.ToString("yyyy-MM-dd");
 
             var data = LogLogic.CouponStatistics(user, type, beginTime, endTime);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        private void CouponStatisticsPie()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type <= 0) type = 7;
+
+            beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
+            endTime = DateTime.Now.ToString("yyyy-MM-dd");
+
+            var data = LogLogic.CouponStatisticsPie(user, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -1084,10 +1100,6 @@ namespace BAMENG.ADMIN.handler
         {
             //TODO
         }
-
-
         #endregion
-
-
     }
 }

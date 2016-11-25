@@ -125,5 +125,32 @@ namespace BAMENG.IDAL
         /// <param name="endTime"></param>
         /// <returns></returns>
         List<StatisticsMoneyListModel> CouponStatistics(int shopId, int userIdentity, string startTime, string endTime);
+
+
+        /// <summary>
+        /// 获得总店优惠券饼图统计
+        /// </summary>
+        /// <param name="belongShopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsMoneyListModel> CouponStatisticsPieByBelongShop(int belongShopId, string startTime, string endTime);
+
+        /// <summary>
+        /// 获取管理员优惠券统计图
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsMoneyListModel> CouponStatisticsPieByAdmin(string startTime, string endTime);
+
+        /// <summary>
+        /// 获取分店优惠券饼图统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        List<StatisticsMoneyListModel> CouponStatisticsPieByShop(int shopId, string startTime, string endTime);
     }
 }

@@ -277,4 +277,30 @@ namespace BAMENG.MODEL
 
     }
 
+
+
+    public class StatisticsMoneyPieModel
+    {
+
+        private List<string> _xData = new List<string>();
+        public List<string> xData { get { return _xData; }
+            set { value = _xData; } }
+
+        private List<PieModel> _yData = new List<PieModel>();
+        public List<PieModel> yData { get { return _yData; } set { value = _yData; } }
+        /// <summary>
+        /// 总额
+        /// </summary>
+        /// <value>The total.</value>
+        public decimal total { get; set; }
+    }
+
+    public class PieModel
+    {
+        public string name { get; set; }
+        public decimal value { get; set; }
+
+       
+    }
+
 }

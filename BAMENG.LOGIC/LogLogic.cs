@@ -326,7 +326,7 @@ namespace BAMENG.LOGIC
                 StatisticsMoneyModel data1 = new StatisticsMoneyModel();
                 StatisticsMoneyModel data2 = new StatisticsMoneyModel();
                 StatisticsMoneyModel data3 = new StatisticsMoneyModel();
-                List<StatisticsMoneyListModel> lst = lst = dal.CouponStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                List<StatisticsMoneyListModel> lst = dal.CouponStatistics(user.ID, user.UserIndentity, startTime, endTime);
 
 
 
@@ -401,6 +401,49 @@ namespace BAMENG.LOGIC
                 result.Add(data3);
 
                 return result;
+            }
+        }
+
+        public static StatisticsMoneyPieModel CouponStatisticsPie(AdminLoginModel user, string startTime, string endTime)
+        {
+            StatisticsMoneyPieModel data1 = new StatisticsMoneyPieModel();
+
+            int shopId = 12;
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                List<StatisticsMoneyListModel> lst = null;
+                if (user.UserIndentity==0 )
+                    lst = dal.CouponStatisticsPieByAdmin(startTime, endTime);
+                else if(user.UserIndentity ==1)
+                     lst = dal.CouponStatisticsPieByBelongShop(shopId, startTime, endTime);
+                else if(user.UserIndentity==2)
+                    lst = dal.CouponStatisticsPieByShop(shopId, startTime, endTime);
+
+                if (lst != null && lst.Count() > 0)
+                {
+                    foreach (var item in lst)
+                    {
+                        data1.xData.Add(item.xData);
+                        PieModel pie = new PieModel();
+                        pie.name = item.xData;
+                        pie.value = item.yData;
+                        data1.yData.Add(pie);
+                        data1.total += item.yData;
+                    }
+                }
+
+
+                if (data1.xData.Count() == 0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data1.xData.Add(dtime);
+                    PieModel pie = new PieModel();
+                    pie.name = "";
+                    pie.value = 0;
+                    data1.yData.Add(pie);                  
+                }
+                 
+                return data1;
             }
         }
     }

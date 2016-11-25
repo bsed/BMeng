@@ -293,7 +293,25 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
             }
         }
+        
 
-
+        public List<StatisticsMoneyListModel> CouponStatisticsPieByShop(int shopId, string startTime, string endTime)
+        {
+            string strSql = @"select log.BelongOneUserId ,shop.UB_UserRealName as xData ,sum(log.Money) as yData  from BM_GetCashCouponLog as log
+                        left join Hot_UserBaseInfo as shop on log.BelongOneUserId=shop.UB_UserID
+                                where IsUse=1 and CONVERT(nvarchar(10), log.UseTime, 121)>=@startTime
+                                and CONVERT(nvarchar(10), log.UseTime, 121)<=@endTime and log.ShopId=@ShopId 
+                                group by log.BelongOneUserId,shop.UB_UserRealName
+                                order by sum(log.Money) desc";
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
+            }
+        }
     }
 }

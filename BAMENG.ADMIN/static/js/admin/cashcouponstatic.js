@@ -86,8 +86,8 @@ var chartsHelper = {
         e.setOption(a);
 
         var date = new Date();
-        $(".login-time").text(date);
-        $(".login-total").text(total);
+        //$(".login-time").text(date);
+        //$(".login-total").text(total);
         $(".chart-info").show();
         $(window).resize(e.resize);
     },
