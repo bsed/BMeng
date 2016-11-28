@@ -160,6 +160,7 @@ var shopHelper = {
             $("#shopname").val(data.ShopName);
             $("#shopprov").val(data.ShopProv);
             $("#shopcity").val(data.ShopCity);
+            $("#shopaddress").val(data.ShopAddress);
             $("#username").val(data.Contacts);
             $("#usermobile").val(data.ContactWay);
             if (!hotUtil.isNullOrEmpty(data.LoginName))

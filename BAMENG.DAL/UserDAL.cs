@@ -58,13 +58,14 @@ namespace BAMENG.DAL
                 int userId = AddUserBaseInfoModel(model);
                 if (userId <= 0)
                     return userId;
-                string strSql = "insert into BM_User_extend(UserId,UserIdentity,MerchantID,ShopId) values(@UserId,@UserIdentity,@MerchantID,@ShopId);select @@IDENTITY";
+                string strSql = "insert into BM_User_extend(UserId,UserIdentity,MerchantID,ShopId,BelongShopId) values(@UserId,@UserIdentity,@MerchantID,@ShopId,@BelongShopId);select @@IDENTITY";
 
                 var param = new[] {
                         new SqlParameter("@UserId", userId),
                         new SqlParameter("@UserIdentity",model.UserIdentity),
                         new SqlParameter("@MerchantID",model.storeId),
-                        new SqlParameter("@ShopId", model.ShopId)
+                        new SqlParameter("@ShopId", model.ShopId),
+                        new SqlParameter("@BelongShopId", model.BelongShopId>0?model.BelongShopId:model.ShopId)
                         };
                 object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
                 int flag = 0;
@@ -132,9 +133,9 @@ namespace BAMENG.DAL
             if (ShopId > 0)
                 strSql += " and ue.ShopId=@ShopId ";
             if (!string.IsNullOrEmpty(model.startTime))
-                strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)>=@startTime ";
+                strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
             if (!string.IsNullOrEmpty(model.endTime))
-                strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)<=@endTime ";
+                strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)<=CONVERT(nvarchar(10),@endTime,121) ";
             var param = new[] {
                 new SqlParameter("@startTime", model.startTime),
                 new SqlParameter("@endTime", model.endTime),
@@ -144,12 +145,6 @@ namespace BAMENG.DAL
             };
             //生成sql语句
             return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, "ue.CreateTime", param);
-
-            //items.ForEach((item) =>
-            //{
-            //    item.CustomerAmount = cus.GetCustomerCount(item.UserId, item.UserIdentity, 1);
-            //    item.OrderSuccessAmount = item.UserIdentity == 1 ? order.CountOrders(item.UserId, 1) : order.CountOrdersByAllyUserId(item.UserId, 1);
-            //});
         }
 
 

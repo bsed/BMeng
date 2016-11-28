@@ -56,7 +56,119 @@ namespace BAMENG.DAL
                 new SqlParameter("@MyLocation",myLocation),
                 new SqlParameter("@lnglat",lnglat)
             };
-           return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param)>0;
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
+
+
+
+        /// <summary>
+        /// 获取新增盟友数
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="userIdentity">0总后台 1总店，2分店</param>
+        /// <param name="today">默认今天，否则昨天</param>
+        /// <returns>System.Int32.</returns>
+        public int GetNewAllyCount(int shopId, int userIdentity, bool today = true)
+        {
+            string strSql = "select count(1) from BM_User_extend where  CONVERT(nvarchar(10),CreateTime,121)=@Date and UserIdentity=0 ";
+
+            if (shopId > 0)
+            {
+                if (userIdentity == 1)
+                    strSql += " and BelongShopId=@ShopId";
+                else if (userIdentity == 2)
+                    strSql += " and ShopId=@ShopId";
+            }
+
+            DateTime dtnow = DateTime.Now;
+            if (!today)
+                dtnow = DateTime.Now.AddDays(-1);
+
+            var param = new[] {
+                new SqlParameter("@ShopId",shopId),
+                new SqlParameter("@Date",dtnow.ToString("yyyy-MM-dd"))
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+
+        }
+        /// <summary>
+        /// 获取新增有效客户数
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="userIdentity">0总后台 1总店，2分店</param>
+        /// <param name="today">默认今天，否则昨天</param>
+        /// <returns>System.Int32.</returns>
+        public int GetNewCustomerCount(int shopId, int userIdentity, bool today = true)
+        {
+            string strSql = "select count(1) from BM_CustomerLog where  CONVERT(nvarchar(10),CreateTime,121)=@Date and OperationType=1";
+            if (shopId > 0)
+            {
+                if (userIdentity == 1)
+                    strSql += " and BelongShopId=@ShopId";
+                else if (userIdentity == 2)
+                    strSql += " and ShopId=@ShopId";
+            }
+
+            DateTime dtnow = DateTime.Now;
+            if (!today)
+                dtnow = DateTime.Now.AddDays(-1);
+
+            var param = new[] {
+                new SqlParameter("@ShopId",shopId),
+                new SqlParameter("@Date",dtnow.ToString("yyyy-MM-dd"))
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+
+        }
+
+
+        /// <summary>
+        /// 获取新增审核资讯数(此方法只有总后台调用)
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="userIdentity">0总后台 1总店，2分店</param>
+        /// <param name="today">默认今天，否则昨天</param>
+        /// <returns>System.Int32.</returns>
+        public int GetNewArticleCount(bool today = true)
+        {
+            string strSql = "select COUNT(1) from BM_ArticleList where  CONVERT(nvarchar(10),CreateTime,121)=@Date and AuthorIdentity in (1,2) and IsDel=0 ";
+
+            DateTime dtnow = DateTime.Now;
+            if (!today)
+                dtnow = DateTime.Now.AddDays(-1);
+
+            var param = new[] {
+                new SqlParameter("@Date",dtnow.ToString("yyyy-MM-dd"))
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        }
+
+        /// <summary>
+        /// 获取新增信息数
+        /// </summary>
+        /// <param name="shopId">门店ID</param>
+        /// <param name="userIdentity">0总后台 1总店，2分店</param>
+        /// <param name="today">默认今天，否则昨天</param>
+        /// <returns>System.Int32.</returns>
+        public int GetNewMessageCount(int shopId, int userIdentity, bool today = true)
+        {
+            string strSql = "select COUNT(1) from BM_MessageManage M where CONVERT(nvarchar(10),M.CreateTime,121)=@Date and M.IsDel = 0";
+            if (userIdentity != 0)
+                strSql += " and T.SendTargetShopId=@ShopId";
+            else
+                strSql += " and M.IsSendBelongShopId=1 ";
+
+            DateTime dtnow = DateTime.Now;
+            if (!today)
+                dtnow = DateTime.Now.AddDays(-1);
+
+            var param = new[] {
+                new SqlParameter("@Date",dtnow.ToString("yyyy-MM-dd"))
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+
+        }
+
+
     }
 }

@@ -14,11 +14,15 @@ namespace BAMENG.CONFIG
         /// </summary>
         public const string SECRET_KEY = "BAMEENG20161021";
 
+
+#if DEBUG
         /// <summary>
         /// 商户编号(对应商城的编号)
         /// </summary>
         public const int storeId = 296;
-
+#else
+        public const int storeId = 88888;
+#endif
         //public const string Bearer = "Bearer ";
 
     }

@@ -158,6 +158,7 @@
     <Content Include="static\js\admin\cashcouponstaticpie.js" />
     <Content Include="static\js\admin\coupongetlist.js" />
     <Content Include="static\js\admin\customerstatistics.js" />
+    <Content Include="static\js\admin\Home.js" />
     <Content Include="static\js\admin\loginstatistics.js" />
     <Content Include="static\js\admin\messageedit.js" />
     <Content Include="static\js\admin\articleedit.js" />

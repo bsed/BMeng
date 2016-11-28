@@ -85,6 +85,11 @@ namespace BAMENG.ADMIN.handler
             {
                 switch (action.ToUpper())
                 {
+
+                    case "GETHOMEDATA":
+                        GetHomeData();
+                        break;
+
                     case "GETSHOPLIST": //获取门店列表
                         GetShopList();
                         break;
@@ -275,6 +280,20 @@ namespace BAMENG.ADMIN.handler
         }
 
 
+
+        /// <summary>
+        /// 获取首页数据
+        /// </summary>
+        private void GetHomeData()
+        {
+            List<AdminHomeDataModel> data = SystemLogic.GetHomeData(user);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+
+
+
         /// <summary>
         /// 获取门店列表
         /// </summary>
@@ -392,6 +411,7 @@ namespace BAMENG.ADMIN.handler
                 mobile = GetFormValue("usermobile", ""),
                 storeId = ConstConfig.storeId,
                 ShopId = user.ID,
+                BelongShopId = user.ShopBelongId,
                 UserIdentity = GetFormValue("ally", 1),
                 UserId = UserId
             }, ref apiCode);
@@ -930,7 +950,12 @@ namespace BAMENG.ADMIN.handler
             int messageId = GetFormValue("messageid", 0);
             var data = MessageLogic.GetModel(messageId);
             if (type == 2)
-                MessageLogic.UpdateReadStatus(messageId, user.UserIndentity == 0 ? -1 : user.ID);
+            {
+                if (user.UserIndentity == 0)
+                    MessageLogic.UpdateReadStatus(messageId);
+                else
+                    MessageLogic.UpdateReadStatus(messageId, user.ID);
+            }
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -1102,7 +1127,7 @@ namespace BAMENG.ADMIN.handler
         /// 订单统计
         /// </summary>
         private void OrderStatistics()
-        {            
+        {
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");

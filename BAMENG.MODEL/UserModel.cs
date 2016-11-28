@@ -187,7 +187,7 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>My share qrcode URL.</value>
         public string myShareQrcodeUrl { get; set; }
-        
+
     }
 
 
@@ -201,6 +201,10 @@ namespace BAMENG.MODEL
         /// </summary>
         public int UserId { get; set; }
         public int ShopId { get; set; }
+
+        [JsonIgnore()]
+        public int BelongShopId { get; set; }
+
 
         public string username { get; set; }
 
@@ -1293,4 +1297,24 @@ namespace BAMENG.MODEL
         public int SendToUserId { get; set; }
         public DateTime SendDate { get; set; }
     }
+
+
+
+
+
+    public class AdminHomeDataModel
+    {
+        public int NewAllyCount { get; set; }
+
+        public int NewCustomerCount { get; set; }
+
+
+        public int NewArticleCount { get; set; }
+
+
+        public int NewMessageCount { get; set; }
+    }
+
+
+
 }

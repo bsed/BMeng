@@ -74,7 +74,12 @@ namespace BAMENG.ADMIN.handler
             {
                 //添加阅读日志
                 if (type == 3 || type == 4)
-                    LogLogic.UpdateReadStatus(userId, articleId);
+                {
+                    if (LogLogic.IsRead(userId, articleId))
+                        LogLogic.UpdateReadStatus(userId, articleId);
+                    else
+                        LogLogic.AddReadLog(logModel);
+                }
                 else
                     LogLogic.AddReadLog(logModel);
 

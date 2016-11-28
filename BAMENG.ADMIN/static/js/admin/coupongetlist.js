@@ -42,14 +42,18 @@ var couponHelper = {
                             tempHtml = tempHtml.replace("{NO}", (i + 1));
                             tempHtml = tempHtml.replace("{CouponNo}", item.CouponNo);
                             tempHtml = tempHtml.replace("{Mobile}", item.Mobile);
-                            tempHtml = tempHtml.replace("{Time}", item.Time);
+                            tempHtml = tempHtml.replace("{Time}", item.time);
                             tempHtml = tempHtml.replace("{GetTime}", item.GetTime);
-                            if (item.IsUse == 1)
+                            if (item.IsUse == 1) {
                                 tempHtml = tempHtml.replace("{UseStatusName}", "已核销");
-                            else
+                                tempHtml = tempHtml.replace("{UseTime}", item.UseTime);
+                            }
+                            else {
                                 tempHtml = tempHtml.replace("{UseStatusName}", "未核销");
+                                tempHtml = tempHtml.replace("{UseTime}", "--/--");
+                            }
 
-                            tempHtml = tempHtml.replace("{UseTime}", item.CreateTime);
+                            
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);

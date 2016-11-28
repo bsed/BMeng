@@ -75,6 +75,11 @@ namespace BAMENG.IDAL
         /// <returns>true if XXXX, false otherwise.</returns>
         bool UpdateReadStatus(int messageId, int shopId);
 
-
+        /// <summary>
+        /// 修改总后台阅读状态
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateReadStatus(int messageId);
     }
 }

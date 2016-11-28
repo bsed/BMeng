@@ -85,6 +85,35 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        public static bool IsRead(int userId, int articleId)
+        {
+
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.IsRead(userId, articleId);
+            }
+        }
+
+
+        public static bool IsRead(string clientIp, int articleId)
+        {
+
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.IsRead(clientIp, articleId);
+            }
+        }
+        public static bool IsRead(int articleId, string cookie)
+        {
+
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.IsRead(articleId, cookie);
+            }
+        }
+
+
         /// <summary>
         /// 添加登录日志
         /// </summary>
@@ -201,15 +230,18 @@ namespace BAMENG.LOGIC
                     //data.xData.Add(Convert.ToDateTime(t2).AddDays(1).ToString("yyyy-MM-dd"));
                     //data.yData.Add(0);
 
-                    if (data.xData.Count() == 0)
-                    {
-                        string dtime = DateTime.Now.ToString("yyyy-MM-dd");
-                        data.xData.Add(dtime);
-                        data.yData.Add(0);
-                    }
+
 
 
                 }
+
+                if (data.xData.Count() == 0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data.xData.Add(dtime);
+                    data.yData.Add(0);
+                }
+
                 return data;
             }
         }
@@ -470,6 +502,16 @@ namespace BAMENG.LOGIC
                     data2.yData.Add(finishAmount);
                     data2.total += finishAmount;
                 }
+
+                if (data1.xData.Count() == 0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data1.xData.Add(dtime);
+                    data1.yData.Add(0);
+                    data2.xData.Add(dtime);
+                    data2.yData.Add(0);
+                }
+
 
                 result.Add(data1);
                 result.Add(data2);

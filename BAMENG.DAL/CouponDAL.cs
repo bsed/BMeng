@@ -201,7 +201,7 @@ namespace BAMENG.DAL
             if (model.Status != -1)
                 strSql += " and IsUse=@IsUse ";
 
-            if (string.IsNullOrEmpty(model.key))
+            if (!string.IsNullOrEmpty(model.key))
                 strSql += " and Mobile=@Mobile ";
 
 

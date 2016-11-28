@@ -237,6 +237,11 @@ namespace BAMENG.LOGIC
                             if (user != null)
                                 BelongOneUserId = user.BelongOne;
                         }
+
+                        int belongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId);
+                        if (belongOneShopId == 0)
+                            belongOneShopId = couponModel.ShopId;
+
                         dal.CreateUserCashCouponLog(new CashCouponLogModel()
                         {
                             CouponId = couponId,
@@ -248,7 +253,7 @@ namespace BAMENG.LOGIC
                             EndTime = couponModel.EndTime,
                             ShopId = couponModel.ShopId,
                             BelongOneUserId = BelongOneUserId,
-                            BelongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId)
+                            BelongOneShopId = belongOneShopId
                         });
                     }
                 }

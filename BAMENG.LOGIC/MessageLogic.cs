@@ -140,7 +140,18 @@ namespace BAMENG.LOGIC
                 return dal.UpdateReadStatus(messageId, shopId);
             }
         }
-
+        /// <summary>
+        /// 修改总后台阅读状态
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateReadStatus(int messageId)
+        {
+            using (var dal = FactoryDispatcher.MessageFactory())
+            {
+                return dal.UpdateReadStatus(messageId);
+            }
+        }
 
         /// <summary>
         /// 删除消息

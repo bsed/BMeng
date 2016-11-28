@@ -185,7 +185,7 @@ namespace BAMENG.ADMIN.handler
                             }
                         }
                         if (flag)
-                            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
+                            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
                         else
                             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
                     }

@@ -150,16 +150,22 @@ namespace BAMENG.DAL
             }
             else
             {
-                strSql = @"select M.ID,M.Title,M.AuthorName,M.SendTargetIds,M.MessageBody,M.IsSend,T.IsRead,M.CreateTime from BM_MessageManage M
+                if (AuthorIdentity != 0)
+                {
+                    strSql = @"select M.ID,M.Title,M.AuthorName,M.SendTargetIds,M.MessageBody,M.IsSend,T.IsRead,M.CreateTime from BM_MessageManage M
                             inner join BM_MessageSendTarget T on T.MessageId = M.ID
-                            where M.IsDel = 0";
+                            where M.IsDel = 0  and M.IsSend=1  and T.SendTargetShopId=@ShopId ";
+                }
+                else
+                {
+                    strSql = @"select M.ID,M.Title,M.AuthorName,M.SendTargetIds,M.MessageBody,M.IsSend,M.IsRead,M.CreateTime from BM_MessageManage M                            
+                            where M.IsDel = 0  and M.IsSend=1  and M.IsSendBelongShopId=1 ";
+                }
 
                 if (!string.IsNullOrEmpty(model.startTime))
                     strSql += " and CONVERT(nvarchar(10),M.CreateTime,121)>=@startTime ";
                 if (!string.IsNullOrEmpty(model.endTime))
                     strSql += " and CONVERT(nvarchar(10),M.CreateTime,121)<=@endTime ";
-
-                strSql += "  and T.SendTargetShopId=@ShopId ";
 
                 var param = new[] {
                     new SqlParameter("@startTime", model.startTime),
@@ -262,7 +268,21 @@ namespace BAMENG.DAL
                 new SqlParameter("@SendTargetShopId",shopId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
+        }
+        /// <summary>
+        /// 修改总后台阅读状态
+        /// </summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateReadStatus(int messageId)
+        {
+            string strSql = "update BM_MessageManage set IsRead=1,ReadTime=GETDATE() where ID=@MessageId ";
+            var parm = new[] {
+                new SqlParameter("@MessageId",messageId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
 
         }
+
     }
 }

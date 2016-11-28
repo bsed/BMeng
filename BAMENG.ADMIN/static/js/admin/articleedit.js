@@ -88,8 +88,9 @@ var articleHelper = {
                     if (ret.status == 200) {
                         swal("提交成功", "", "success");
                         if (articleHelper.dataId == 0) {
-                            $("#signupForm")[0].reset();
-                            articleHelper.setEditContent("");
+                            //$("#signupForm")[0].reset();
+                            window.location.reload();
+                            //articleHelper.setEditContent("");
                         }
                     }
                 }
@@ -124,7 +125,7 @@ var articleHelper = {
                     }
                     else
                         swal("图片上传失败", "请检查图片格式是否正确", "warning");
-                });
+                }, null, 1);
             }
         }
         else {
@@ -200,6 +201,7 @@ $(document).ready(function () {
 
     if (parseInt(articleHelper.audit) == 1) {
         $(".btn-submit").hide();
+        $("#shopnameshow").show();
     }
     var e = "<i class='fa fa-times-circle'></i> ";
     $("#signupForm").validate({

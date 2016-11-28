@@ -142,6 +142,16 @@ $(function () {
     //defaultMenus();
     LoadMenu();
 
+
+    var def = hotUtil.GetCookie("SHOPID");
+    setInterval(function () {
+        if (!hotUtil.isNullOrEmpty(hotUtil.GetCookie("SHOPID"))) {
+            if (hotUtil.GetCookie("SHOPID") != def)
+                window.location.reload();
+        }
+        else
+            window.location.reload();
+    }, 5000);
 });
 
 

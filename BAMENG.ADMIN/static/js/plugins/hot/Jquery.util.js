@@ -397,8 +397,9 @@ $.extend(hotUtil, {
     /*
      * @brief 上传图片
     */
-    uploadImg: function (btnFile, uploadPath, callback, data) {
-        var uploadUrl = '/handler/UploadFileEidt.ashx?uploadtype=1&userid=' + uploadPath + '';
+    uploadImg: function (btnFile, uploadPath, callback, data, bt) {
+        bt = bt || 0;
+        var uploadUrl = '/handler/UploadFileEidt.ashx?uploadtype=1&userid=' + uploadPath + '&bt=' + bt;
         $.ajaxFileUpload({
             url: uploadUrl,
             secureuri: false,//安全协议
@@ -406,13 +407,13 @@ $.extend(hotUtil, {
             dataType: 'json',
             type: "get",
             data: data,
-            error: function (data, status, e) {                
+            error: function (data, status, e) {
             },
-            success: function (json) {                
-                if (json.success) {                    
+            success: function (json) {
+                if (json.success) {
                     callback(json.fileUrl);
                 } else {
-                    callback(false);                    
+                    callback(false);
                 }
             }
         });

@@ -111,7 +111,8 @@ namespace BAMENG.LOGIC
                     if (model.IsActive == 1)
                     {
                         apiCode = ApiStatusCode.OK;
-                        model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
+                        if (!string.IsNullOrEmpty(model.UserHeadImg))
+                            model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
                         model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
                         model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
                         model.MengBeans = model.MengBeans - model.MengBeansLocked;

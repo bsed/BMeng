@@ -108,7 +108,8 @@ namespace BAMENG.LOGIC
                 var user = dal.GetUserModel(userId);
                 if (user != null)
                 {
-                    user.UserHeadImg = WebConfig.reswebsite() + user.UserHeadImg;
+                    if (!string.IsNullOrEmpty(user.UserHeadImg))
+                        user.UserHeadImg = WebConfig.reswebsite() + user.UserHeadImg;
                     user.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + user.UserId;
                     user.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", user.UserId);
                     user.MengBeans = user.MengBeans - user.MengBeansLocked;
@@ -566,6 +567,7 @@ namespace BAMENG.LOGIC
                         register.mobile = model.Mobile;
                         register.nickname = model.NickName;
                         register.ShopId = dal.getUserShopId(userId);
+                        register.BelongShopId = ShopLogic.GetBelongShopId(register.ShopId);
                         register.storeId = ConstConfig.storeId;
                         register.UserIdentity = 0;
                         register.username = model.UserName;

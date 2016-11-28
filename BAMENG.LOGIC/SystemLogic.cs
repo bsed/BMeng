@@ -65,5 +65,51 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+
+
+        /// <summary>
+        /// 获取后台首页数据
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>List&lt;AdminHomeDataModel&gt;.</returns>
+        public static List<AdminHomeDataModel> GetHomeData(AdminLoginModel user)
+        {
+            List<AdminHomeDataModel> result = new List<AdminHomeDataModel>();
+            using (var dal = FactoryDispatcher.SystemFactory())
+            {
+                //获取今日数据
+                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHH");
+                AdminHomeDataModel todayData = WebCacheHelper<AdminHomeDataModel>.Get(todayKey);
+                if (todayData == null)
+                {
+                    todayData = new AdminHomeDataModel();
+                    todayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity);
+                    todayData.NewArticleCount = dal.GetNewArticleCount();
+                    todayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity);
+                    todayData.NewMessageCount = dal.GetNewMessageCount(user.ID, user.UserIndentity);
+                    WebCacheHelper.Insert(todayKey, todayData, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(todayKey)));
+                }
+                result.Add(todayData);
+
+
+                //读取缓存数据
+                string yesterdayKey = "HOMEDATA" + DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
+                AdminHomeDataModel yesterdayData = WebCacheHelper<AdminHomeDataModel>.Get(yesterdayKey);
+                if (yesterdayData == null)
+                {
+                    yesterdayData = new AdminHomeDataModel();
+                    //获取昨日数据
+                    yesterdayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity);                    
+                    yesterdayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity);                    
+                    WebCacheHelper.Insert(yesterdayKey, yesterdayData, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(yesterdayKey)));
+                }
+                result.Add(yesterdayData);
+
+
+                return result;
+            }
+        }
+
     }
 }

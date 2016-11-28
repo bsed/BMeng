@@ -1,6 +1,7 @@
 ﻿/// <reference path="../plugins/sweetalert/sweetalert.min.js" />
 /// <reference path="../jquery.min.js" />
 /// <reference path="../plugins/hot/Jquery.util.js" />
+/// <reference path="http://resali.huobanplus.com/cdn/hotui/js/plugins/datetimepick/daterangepicker.js" />
 
 /*
     版权所有:杭州火图科技有限公司
@@ -26,7 +27,9 @@ var userHelper = {
             pageSize: 20,
             key: $("#keyword").val(),
             searchType: $("#stdType").val(),
-            ally: this.isAlly == 1 ? 0 : 1
+            ally: this.isAlly == 1 ? 0 : 1,
+            startTime: $("#beginTime").val(),
+            endTime: $("#endTime").val()
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, postData, function (ret, err) {
@@ -52,6 +55,9 @@ var userHelper = {
                             tempHtml = tempHtml.replace("{OrderSuccessAmount}", item.OrderSuccessAmount);
                             tempHtml = tempHtml.replace("{CustomerAmount}", item.CustomerAmount);
                             tempHtml = tempHtml.replace("{ActiveStatus}", item.IsActive == 1 ? "<span style='color:red;'>激活</span>" : "已冻结")
+
+                            tempHtml = tempHtml.replace("{RegTime}", item.CreateTime);                           
+
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
@@ -73,7 +79,7 @@ var userHelper = {
         userHelper.loadList(1);
     },
     searchAll: function () {
-        $("#keyword").val("");
+        $("#keyword,#beginTime,#endTime,#createTimePick").val("");
         userHelper.loadList(1);
     },
     getModel: function (dataId) {
@@ -146,7 +152,7 @@ var userHelper = {
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("提交成功！", "", "success");
+                    swal(param.active == 0 ? "账号已冻结" : "账号已激活", "", "success");
                     userHelper.loadList(userHelper.pageIndex);
                 }
                 else {

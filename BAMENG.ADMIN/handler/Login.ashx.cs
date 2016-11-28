@@ -17,6 +17,7 @@ namespace BAMENG.ADMIN.handler
 
         public new void ProcessRequest(HttpContext context)
         {
+            ClearCookies();
             string loginName = GetFormValue("loginName", "");
             string loginPassword = EncryptHelper.MD5(GetFormValue("password", ""));
             int loginType = GetFormValue("loginType", 0);

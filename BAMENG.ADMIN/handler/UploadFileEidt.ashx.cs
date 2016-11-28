@@ -43,11 +43,11 @@ namespace BAMENG.ADMIN.handler
         /// <summary>
         /// 缩略图宽
         /// </summary>
-        private int ThmbnailW { get { return this.GetQueryString("tbw", 80); } }
+        private int ThmbnailW { get { return this.GetQueryString("tbw", 200); } }
         /// <summary>
         /// 缩略图高
         /// </summary>
-        private int ThmbnailH { get { return this.GetQueryString("tbh", 80); } }
+        private int ThmbnailH { get { return this.GetQueryString("tbh", 200); } }
 
         /// <summary>
         /// 文件名称
@@ -230,7 +230,7 @@ namespace BAMENG.ADMIN.handler
                     }
                     else
                     {
-                        if (!IsBuildThumbnail ? FileUploadHelper.UploadFile(oFile, FileName) : FileUploadHelper.UploadPicFileAndThumbnail(oFile, FileName, ThmbnailW, ThmbnailH, ThumbnailMode.W))
+                        if (!IsBuildThumbnail ? FileUploadHelper.UploadFile(oFile, FileName) : FileUploadHelper.UploadPicFileAndThumbnail(oFile, FileName, ThmbnailW, ThmbnailH, ThumbnailMode.HW))
                         {
                             if (UploadType)
                             {

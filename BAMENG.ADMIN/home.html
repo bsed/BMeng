@@ -23,20 +23,20 @@
                         </div>
                         <div class="ibox-content">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <h1 class="no-margins">0</h1>
+                                <div class="col-md-2" style="cursor:pointer;" onclick="hotUtil.newTab('admin/userlist.html?type=1', '盟友列表')">
+                                    <h1 class="no-margins" id="todayAllyCount">0</h1>
                                     <small>新增盟友量</small>
                                 </div>
-                                <div class="col-md-2">
-                                    <h1 class="no-margins">0</h1>
+                                <div class="col-md-2" style="cursor:pointer;" onclick="hotUtil.newTab('admin/customerlist.html', '客户信息列表')">
+                                    <h1 class="no-margins"  id="todayCustomerCount">0</h1>
                                     <small>新增客户信息量</small>
                                 </div>
-                                <div class="col-md-2">
-                                    <h1 class="no-margins">0</h1>
+                                <div class="col-md-2" style="cursor:pointer;" onclick="hotUtil.newTab('admin/articlelist.html?type=0', '资讯审核列表')">
+                                    <h1 class="no-margins"  id="todayArticleCount">0</h1>
                                     <small>新增审核资讯</small>
                                 </div>
-                                <div class="col-md-2">
-                                    <h1 class="no-margins">0</h1>
+                                <div class="col-md-2" style="cursor:pointer;" onclick="hotUtil.newTab('admin/messagelist.html?type=2','接收消息')">
+                                    <h1 class="no-margins"  id="todayMessageCount">0</h1>
                                     <small>新消息</small>
                                 </div>
                             </div>
@@ -53,11 +53,11 @@
                         <div class="ibox-content">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <h1 class="no-margins">0</h1>
+                                    <h1 class="no-margins" id="yesterdayAllyCount">0</h1>
                                     <small>新增盟友量</small>
                                 </div>
                                 <div class="col-md-2">
-                                    <h1 class="no-margins">0</h1>
+                                    <h1 class="no-margins" id="yesterdayCustomerCount">0</h1>
                                     <small>新增客户信息量</small>
                                 </div>
                             </div>
@@ -67,5 +67,10 @@
             </div>
         </div>
     </div>
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/admin/Home.js"></script>
 </body>
 </html>
