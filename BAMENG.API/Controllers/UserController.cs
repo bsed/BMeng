@@ -186,6 +186,7 @@ namespace BAMENG.API.Controllers
         {
             UserModel userInfo = new UserModel();
             userInfo.UserId = GetAuthUserId();
+            Dictionary<string, object> data = new Dictionary<string, object>();
             switch (type)
             {
                 case (int)UserPropertyOptions.USER_1:
@@ -200,9 +201,12 @@ namespace BAMENG.API.Controllers
                         // 设置当前流的位置为流的开始
                         stream.Seek(0, SeekOrigin.Begin);
                         if (FileUploadHelper.UploadFile(bytes, fileName))
-                            userInfo.UserHeadImg = fileName;
+                            userInfo.UserHeadImg = WebConfig.reswebsite() + fileName;
                         else
                             return Json(new ResultModel(ApiStatusCode.请上传图片));
+
+
+                        data["url"] = userInfo.UserHeadImg;
                     }
                     break;
                 case (int)UserPropertyOptions.USER_2:
@@ -222,7 +226,7 @@ namespace BAMENG.API.Controllers
             bool flg = Enum.TryParse(type.ToString(), out opt);
 
             UserLogic.UpdateUserInfo(opt, userInfo);
-            return Json(new ResultModel(ApiStatusCode.OK));
+            return Json(new ResultModel(ApiStatusCode.OK, data));
 
 
         }

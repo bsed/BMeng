@@ -36,6 +36,7 @@ var levelHelper = {
                             self.loaclData.one = ret.data.Rows;                        
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
+                            tempHtml = tempHtml.replace("{NO}", i+1);
                             tempHtml = tempHtml.replace("{LevelName}", item.UL_LevelName);
                             tempHtml = tempHtml.replace("{MemberNum}", item.UL_MemberNum);
                             tempHtml = tempHtml.replace(/{LevelId}/gm, item.UL_ID);

@@ -639,6 +639,7 @@ namespace BAMENG.ADMIN.handler
         private void EditArticle()
         {
             int ArticleId = GetFormValue("articleid", 0);
+            DateTime dtnow = DateTime.Now;
             //方便测试，此处门店ID写死，真实逻辑是，根据当前登录的门店账户，获取门店ID
             bool flag = ArticleLogic.EditArticle(new ArticleModel()
             {
@@ -655,8 +656,8 @@ namespace BAMENG.ADMIN.handler
                 AuthorName = user.UserName,
                 AuthorId = user.ID,
                 AuthorIdentity = user.UserIndentity,
-                PublishTime = DateTime.Now,
-                TopTime = DateTime.Now
+                PublishTime = dtnow,
+                TopTime = dtnow
             });
             if (flag)
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));

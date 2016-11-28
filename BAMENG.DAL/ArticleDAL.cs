@@ -177,7 +177,7 @@ namespace BAMENG.DAL
             string strSql = @"select A.ArticleId,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.BrowseAmount,a.PublishTime {1}
                                  from BM_ArticleList A with(nolock)
                                  {0}
-                                 where a.IsDel=0 and a.EnableTop=0 and A.ArticleStatus=1";
+                                 where a.IsDel=0 and a.EnableTop=0  and a.EnablePublish=1 and A.ArticleStatus=1";
 
             string whereSql = string.Empty, wherefield = string.Empty;
             string orderbyField = "A.PublishTime";
@@ -227,7 +227,7 @@ namespace BAMENG.DAL
         {
             string strSql = @"select A.ArticleId,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.BrowseAmount,a.PublishTime
                                  from BM_ArticleList A with(nolock)
-                                where a.IsDel=0 and a.EnableTop=1 and A.ArticleStatus=1 and A.AuthorIdentity=@AuthorIdentity and (A.SendTargetId=0 or A.SendTargetId=@SendTargetId)";
+                                where a.IsDel=0 and a.EnableTop=1 and a.EnablePublish=1 and A.ArticleStatus=1 and A.AuthorIdentity=@AuthorIdentity and (A.SendTargetId=0 or A.SendTargetId=@SendTargetId)";
 
 
 

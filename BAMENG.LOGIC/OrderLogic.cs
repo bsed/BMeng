@@ -47,11 +47,20 @@ namespace BAMENG.LOGIC
                 orderList.note = order.Note;
                 orderList.mengbeans = order.MengBeans;
                 if (orderList.status == 0)
+                {
                     orderList.statusName = "未成交";
+                    orderList.pictureUrl = WebConfig.reswebsite() + order.OrderImg;
+                }
                 else if (orderList.status == 1)
+                {
                     orderList.statusName = "已成交";
+                    orderList.pictureUrl = WebConfig.reswebsite() + order.SuccessImg;
+                }
                 else
+                {
                     orderList.statusName = "退单";
+                    orderList.pictureUrl = WebConfig.reswebsite() + order.OrderImg;
+                }
                 result.Add(orderList);
             }
             return result;
@@ -144,6 +153,21 @@ namespace BAMENG.LOGIC
 
                             }
                         }
+                        else
+                        {
+                            model.UserId = user.UserId;
+                            model.Ct_BelongId = user.UserId;
+                        }
+                    }
+                }
+                else
+                {
+                    using (var dal = FactoryDispatcher.UserFactory())
+                    {
+                        var user = dal.GetUserModel(userId);
+                        model.UserId = userId;
+                        model.Ct_BelongId = userId;
+                        model.ShopId = user.ShopId;
                     }
                 }
                 bool flag = false;
@@ -217,6 +241,7 @@ namespace BAMENG.LOGIC
                 result.userName = order.Ct_Name;
                 result.mobile = order.Ct_Mobile;
                 result.pictureUrl = WebConfig.reswebsite() + order.OrderImg;
+                result.successUrl = WebConfig.reswebsite() + order.SuccessImg;
                 result.status = order.OrderStatus;
                 result.orderId = order.orderId;
                 result.orderTime = StringHelper.GetUTCTime(order.orderTime);
@@ -242,6 +267,13 @@ namespace BAMENG.LOGIC
                     code = ApiStatusCode.订单目前状态存在异常;
                     return false;
                 }
+
+                if (status == 1 && string.IsNullOrEmpty(orderModel.SuccessImg))
+                {
+                    code = ApiStatusCode.请先上传成交凭证;
+                    return false;
+                }
+
 
                 //改订单为已处理
                 if (status == 1 && orderModel.UserId != orderModel.Ct_BelongId)

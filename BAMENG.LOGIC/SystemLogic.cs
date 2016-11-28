@@ -100,8 +100,8 @@ namespace BAMENG.LOGIC
                 {
                     yesterdayData = new AdminHomeDataModel();
                     //获取昨日数据
-                    yesterdayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity);                    
-                    yesterdayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity);                    
+                    yesterdayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity,false);                    
+                    yesterdayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity, false);                    
                     WebCacheHelper.Insert(yesterdayKey, yesterdayData, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(yesterdayKey)));
                 }
                 result.Add(yesterdayData);

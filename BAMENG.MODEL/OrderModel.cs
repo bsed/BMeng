@@ -192,6 +192,12 @@ namespace BAMENG.MODEL
         /// 图片地址
         /// </summary>
         public string pictureUrl { get; set; }
+
+        /// <summary>
+        /// 成交凭证图片地址
+        /// </summary>
+        /// <value>The success URL.</value>
+        public string successUrl { get; set; }
         /// <summary>
         /// 用户
         /// </summary>

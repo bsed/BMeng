@@ -129,8 +129,8 @@ var articleHelper = {
             }
         }
         else {
-            if (!hotUtil.isNullOrEmpty($("#txtcover").val()).length == 0) {
-                if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent()))) {
+            if (!hotUtil.isNullOrEmpty($("#txtcover").val())) {
+                if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent())).length==0) {
                     swal("资讯内容不能为空", "", "warning")
                 }
                 else
@@ -208,16 +208,22 @@ $(document).ready(function () {
         rules: {
             articleTitle: {
                 required: !0,
-                minlength: 2
+                maxlength: 20
             },
-            articleIntro: "required"
+            articleIntro: {
+                required: !0,
+                maxlength: 50
+            }
         },
         messages: {
             articleTitle: {
                 required: e + "请输入名称",
-                minlength: e + "联系人必须两个字符以上"
+                maxlength: e + "最长20个字符"
             },
-            articleIntro: e + "请输入您的手机号码"
+            articleIntro: {
+                required: e + "请输入资讯简介",
+                maxlength: e + "最长50个字符"                
+            }
         },
         submitHandler: function (form) {
             articleHelper.edit();

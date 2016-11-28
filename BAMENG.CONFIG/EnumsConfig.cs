@@ -132,6 +132,8 @@ namespace BAMENG.CONFIG
         兑换的盟豆数量不能少于100 = 71005,
         [Description("你的盟豆不够")]
         你的盟豆不够 = 71006,
+        [Description("请先上传成交凭证")]
+        请先上传成交凭证 = 71007,
 
         /// <summary>
         /// 操作过于频繁

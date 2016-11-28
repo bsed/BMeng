@@ -1,4 +1,5 @@
-﻿/// <reference path="../plugins/sweetalert/sweetalert.min.js" />
+﻿/// <reference path="../plugins/prettyfile/bootstrap-prettyfile.js" />
+/// <reference path="../plugins/sweetalert/sweetalert.min.js" />
 /// <reference path="../jquery.min.js" />
 /// <reference path="../plugins/hot/Jquery.util.js" />
 
@@ -101,9 +102,17 @@ var focusHelper = {
             hotUtil.ajaxCall(self.ajaxUrl, postData, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        focusHelper.loadList(focusHelper.pageIndex);
-                        swal("提交成功", "", "success");
+                        focusHelper.loadList(focusHelper.pageIndex);                        
                         $(".close").click();
+                        swal({
+                            title: ret.statusText,
+                            text: "即将更新...",
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
                     }
                     else
                         swal(ret.statusText, "", "warning");
@@ -124,7 +133,7 @@ var focusHelper = {
         }, function () {
             var param = {
                 action: "DeleteFocusPic",
-                userid: dataId
+                focusid: dataId
             }
             hotUtil.loading.show();
             hotUtil.ajaxCall(focusHelper.ajaxUrl, param, function (ret, err) {
@@ -213,13 +222,15 @@ var focusHelper = {
             hotUtil.uploadImg("uploadfile", this.picDir, function (url) {
                 hotUtil.loading.close();
                 if (url) {
-                    $("#focuspicurl").val(url);
+                    $("#focuspicurl").val(url);                    
                     callback();
-
                 }
                 else
                     swal("图片上传失败", "请检查图片格式是否正确", "warning");
-            });
+            }, {
+                tbw: 640,
+                tbh: 320
+            }, 1);
         }
         else {
             if (!hotUtil.isNullOrEmpty($("#focuspicurl").val()))

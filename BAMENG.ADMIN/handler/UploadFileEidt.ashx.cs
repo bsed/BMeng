@@ -43,11 +43,11 @@ namespace BAMENG.ADMIN.handler
         /// <summary>
         /// 缩略图宽
         /// </summary>
-        private int ThmbnailW { get { return this.GetQueryString("tbw", 200); } }
+        private int ThmbnailW { get; set; }
         /// <summary>
         /// 缩略图高
         /// </summary>
-        private int ThmbnailH { get { return this.GetQueryString("tbh", 200); } }
+        private int ThmbnailH { get; set; }
 
         /// <summary>
         /// 文件名称
@@ -116,8 +116,9 @@ namespace BAMENG.ADMIN.handler
         public new void ProcessRequest(HttpContext context)
         {
             ctx = context;
-           // context.Response.ContentType = "application/json";
-
+            // context.Response.ContentType = "application/json";
+            ThmbnailW= GetFormValue("tbw", 200);
+            ThmbnailH = GetFormValue("tbh", 200);
             #region 其他上传
             string disposition = context.Request.ServerVariables["HTTP_CONTENT_DISPOSITION"];
             //------------------------------------------------------------------------------
