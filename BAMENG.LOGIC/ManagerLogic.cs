@@ -136,5 +136,22 @@ namespace BAMENG.LOGIC
                 return dal.Delete(userId);
             }
         }
+
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="useridentity">The useridentity.</param>
+        /// <param name="oldPassword">The old password.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool ChanagePassword(int userId, int useridentity, string oldPassword, string password)
+        {
+            using (var dal = FactoryDispatcher.ManagerFactory())
+            {
+                return dal.ChanagePassword(userId, useridentity, oldPassword, password);
+            }
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace BAMENG.DAL
         /// <exception cref="System.NotImplementedException"></exception>
         public int AddCashCoupon(CashCouponModel model)
         {
-            string strSql = "insert into BM_CashCoupon(ShopId,Title,Money,StartTime,EndTime,IsEnable) values(@ShopId,@Title,@Money,@StartTime,@EndTime,@IsEnable)";
+            string strSql = "insert into BM_CashCoupon(ShopId,Title,Money,StartTime,EndTime,IsEnable) values(@ShopId,@Title,@Money,@StartTime,@EndTime,@IsEnable);select @@IDENTITY;";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
                 new SqlParameter("@Money", model.Money),
@@ -49,7 +49,10 @@ namespace BAMENG.DAL
                 new SqlParameter("@IsEnable", model.IsEnable),
                 new SqlParameter("@ShopId", model.ShopId)
             };
-            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            object obj= DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            return 0;
         }
 
         /// <summary>
@@ -328,7 +331,7 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public CashCouponLogModel GetCashCouponLogIDByUserID(int userId, int couponId)
         {
-            string strSql = "select top 10 * from BM_GetCashCouponLog where UserId=@UserId and CouponId=@CouponId and IsGet=0";
+            string strSql = "select top 1 * from BM_GetCashCouponLog where UserId=@UserId and CouponId=@CouponId and IsGet=0  and IsShare=1";
             var param = new[] {
                 new SqlParameter("@UserId",userId),
                 new SqlParameter("@CouponId",couponId)

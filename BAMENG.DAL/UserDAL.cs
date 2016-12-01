@@ -34,7 +34,7 @@ namespace BAMENG.DAL
         /// </summary>
         private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
-                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId,ue.CustomerAmount,ue.OrderSuccessAmount
+                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId,ue.CustomerAmount,ue.OrderSuccessAmount,S.IsActive as ShopActive
                              from BM_User_extend ue
                             inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID =ue.UserId
                             left join BM_ShopManage S with(nolock) on S.ShopID=ue.ShopId
@@ -107,7 +107,7 @@ namespace BAMENG.DAL
             ResultPageModel result = new ResultPageModel();
             if (model == null)
                 return result;
-            string strSql = APP_USER_SELECT;
+            string strSql = APP_USER_SELECT + " and U.UB_CustomerID=" + ConstConfig.storeId;
 
             if (!string.IsNullOrEmpty(model.key))
             {
@@ -615,7 +615,14 @@ namespace BAMENG.DAL
             };
 
             //生成sql语句
-            return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, orderFiled, isDesc, param);
+            return getPageData<UserModel>(model.PageSize, model.PageIndex, strSql, orderFiled, param, (items =>
+            {
+                items.ForEach(item =>
+                {
+                    if (!string.IsNullOrEmpty(item.UserHeadImg))
+                        item.UserHeadImg = WebConfig.reswebsite() + item.UserHeadImg;
+                });
+            }), isDesc);
         }
 
 
@@ -931,6 +938,24 @@ namespace BAMENG.DAL
             else
                 return 0;
         }
+
+
+        /// <summary>
+        /// 判断用户账户和所属门店是否激活
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if [is user active] [the specified user identifier]; otherwise, false.</returns>
+        public bool IsUserActive(int userId)
+        {
+            string strSql = @"select COUNT(1) from BM_User_extend u
+                                LEFT join BM_ShopManage s on s.ShopID=u.ShopId
+                                where UserId=@UserId and u.IsActive=1 and s.IsActive=1";
+            SqlParameter[] parm = {
+                new SqlParameter("@UserId", userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parm)) > 0;
+        }
+
 
         /// <summary>
         /// 添加盟友奖励设置
@@ -1275,6 +1300,22 @@ namespace BAMENG.DAL
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, parms);
         }
+
+
+        /// <summary>
+        /// 获取已兑换盟豆
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public int GetAllConvertTotal(int userId)
+        {
+            string strSql = "select ISNULL(SUM(Amount),0) from BM_BeansConvert B where B.Status=1 and UserId=@UserId";
+            var parms = new[] {
+                  new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, parms));
+        }
+
 
         public BeansConvertModel getBeansConvertModel(int id)
         {
@@ -1681,15 +1722,19 @@ namespace BAMENG.DAL
         /// 获取排名
         /// </summary>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="belongOne">The belong one.</param>
         /// <returns>MyAllyIndexModel.</returns>
-        public MyAllyIndexModel GetUserRank(int userId)
+        public MyAllyIndexModel GetUserRank(int userId, int belongOne)
         {
             string strSql = @"select CustomerRank,OrderRank from (
                                 SELECT UserId, RANK() over(order by CustomerAmount desc) CustomerRank, RANK() over(order by OrderSuccessAmount desc) OrderRank 
                                 FROM BM_User_extend D WITH(NOLOCK)
+                                inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID=D.UserId and U.UB_BelongOne=@BelongUserId
+                                where D.UserIdentity=0
                                 ) as temp where temp.UserId = @UserId";
             var param = new[] {
-                new SqlParameter("@UserId",userId)
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@BelongUserId",belongOne)
             };
             using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param))
             {

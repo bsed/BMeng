@@ -226,7 +226,9 @@ namespace BAMENG.API
                         string Authorization = filterContext.HttpContext.Request.Headers["Authorization"];
                         if (!string.IsNullOrEmpty(Authorization))
                         {
-                            if (UserLogic.GetUserIdByAuthToken(Authorization) <= 0)
+                            int userid = UserLogic.GetUserIdByAuthToken(Authorization);
+
+                            if (userid <= 0 || !UserLogic.IsUserActive(userid))
                             {
                                 filterContext.Result = new JsonResult() { ContentType = "application/json", Data = new ResultModel(ApiStatusCode.令牌失效), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                                 return;

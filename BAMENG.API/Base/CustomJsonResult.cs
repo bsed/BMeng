@@ -7,6 +7,9 @@
  * author guomw
 **/
 
+using BAMENG.CONFIG;
+using BAMENG.MODEL;
+using HotCoreUtils.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -36,14 +39,24 @@ namespace BAMENG.API.Base
             }
 
             HttpResponseBase response = context.HttpContext.Response;
-            if (response.StatusCode == 200)
+            try
             {
-                response.ContentType = "application/json";
-                if (Data != null)
+                if (response.StatusCode == 200)
                 {
-                    var timeConverter = new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" };//这里使用自定义日期格式，默认是ISO8601格式        
-                    response.Write(JsonConvert.SerializeObject(Data, timeConverter));
+                    response.ContentType = "application/json";
+                    if (Data != null)
+                    {
+                        var timeConverter = new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" };//这里使用自定义日期格式，默认是ISO8601格式        
+                        response.Write(JsonConvert.SerializeObject(Data, timeConverter));
+                        response.End();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ExecuteResult:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace));
+                response.Write(JsonConvert.SerializeObject(new ResultModel(ApiStatusCode.SERVICEERROR)));
+                response.End();
             }
         }
     }

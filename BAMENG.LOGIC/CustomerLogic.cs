@@ -9,6 +9,7 @@
 
 
 using BAMENG.MODEL;
+using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,11 +60,11 @@ namespace BAMENG.LOGIC
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static bool InsertCustomerInfo(CustomerModel model)
+        public static int InsertCustomerInfo(CustomerModel model)
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
             {
-                return dal.InsertCustomerInfo(model) > 0;
+                return dal.InsertCustomerInfo(model);
             }
         }
 
@@ -105,41 +106,49 @@ namespace BAMENG.LOGIC
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool UpdateStatus(int customerId, int status, int userId)
         {
-            using (var dal = FactoryDispatcher.CustomerFactory())
+            try
             {
-                bool flag = dal.UpdateStatus(customerId, status, userId);
-
-                //如果客户审核同意
-                if (flag && status == 1)
+                using (var dal = FactoryDispatcher.CustomerFactory())
                 {
-                    var model = dal.GetModel(customerId);
-                    if (model != null && model.BelongOne > 0)
+                    bool flag = dal.UpdateStatus(customerId, status, userId);
+
+                    //如果客户审核同意
+                    if (flag && status == 1)
                     {
-                        //添加用户的客户量
-                        UserLogic.AddUserCustomerAmount(model.BelongOne);
-                        if (model.BelongOne != model.BelongTwo)
-                            UserLogic.AddUserCustomerAmount(model.BelongTwo);
-
-                        RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(model.BelongTwo);
-
-                        if (rewardSettingModel == null && rewardSettingModel.CustomerReward > 0) return flag;
-                        using (var dal1 = FactoryDispatcher.UserFactory())
+                        var model = dal.GetModel(customerId);
+                        if (model != null && model.BelongOne > 0)
                         {
-                            //给盟友加盟豆
-                            UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.CustomerReward);
-                            BeansRecordsModel model2 = new BeansRecordsModel();
-                            model2.Amount = rewardSettingModel.CustomerReward;
-                            model2.UserId = model.BelongOne;
-                            model2.LogType = 0;
-                            model2.Income = 1;
-                            model2.Remark = "客户信息奖励";
-                            model2.OrderId = model.ID.ToString();
-                            model2.CreateTime = DateTime.Now;
-                            dal1.AddBeansRecords(model2);
+                            //添加用户的客户量
+                            UserLogic.AddUserCustomerAmount(model.BelongOne);
+                            if (model.BelongOne != model.BelongTwo)
+                                UserLogic.AddUserCustomerAmount(model.BelongTwo);
+
+                            RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(model.BelongTwo);
+
+                            if (rewardSettingModel == null || rewardSettingModel.CustomerReward <= 0) return flag;
+                            using (var dal1 = FactoryDispatcher.UserFactory())
+                            {
+                                //给盟友加盟豆
+                                UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.CustomerReward);
+                                BeansRecordsModel model2 = new BeansRecordsModel();
+                                model2.Amount = rewardSettingModel.CustomerReward;
+                                model2.UserId = model.BelongOne;
+                                model2.LogType = 0;
+                                model2.Income = 1;
+                                model2.Remark = "客户信息奖励";
+                                model2.OrderId = model.ID.ToString();
+                                model2.CreateTime = DateTime.Now;
+                                dal1.AddBeansRecords(model2);
+                            }
                         }
                     }
+                    return flag;
                 }
-                return flag;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("UpdateStatus:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace));
+                return false;
             }
         }
 

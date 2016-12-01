@@ -50,6 +50,17 @@ var articleHelper = {
                     $("#articlePublish").setChecked(ret.data.EnablePublish == 1);
                     $("#txtcover").val(ret.data.ArticleCover);
                     $("#articleShopName").val(ret.data.ShopProv + "/" + ret.data.ShopCity + "/" + ret.data.ShopName);
+
+
+                    $("input[name='radioInline']").each(function (i) {
+                        if (i == ret.data.SendTargetId) {
+                            $(this).attr("data-check", "true");
+                            $(this).attr("checked", "checked");
+                            return false;
+                        }
+                    });
+
+
                     articleHelper.setEditContent(ret.data.ArticleBody);
 
                     if (parseInt(self.audit) == 1 && ret.data.ArticleStatus == 0) {
@@ -86,11 +97,18 @@ var articleHelper = {
             hotUtil.ajaxCall(articleHelper.ajaxUrl, postData, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("提交成功", "", "success");
                         if (articleHelper.dataId == 0) {
-                            //$("#signupForm")[0].reset();
-                            window.location.reload();
-                            //articleHelper.setEditContent("");
+                            swal({
+                                title: "提交成功",
+                                text: "即将更新...",
+                                timer: 1500,
+                                showConfirmButton: false
+                            }, function () {
+                                window.location.reload();
+                            });
+                        }
+                        else {
+                            swal("提交成功", "", "success");
                         }
                     }
                 }
@@ -130,7 +148,7 @@ var articleHelper = {
         }
         else {
             if (!hotUtil.isNullOrEmpty($("#txtcover").val())) {
-                if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent())).length==0) {
+                if ($.trim(hotUtil.isNullOrEmpty(this.getEditContent())).length == 0) {
                     swal("资讯内容不能为空", "", "warning")
                 }
                 else
@@ -143,35 +161,37 @@ var articleHelper = {
     updateStatus: function (code) {
         swal({
             title: code == 1 ? "您确定要同意吗？" : "您确定要拒绝吗？",
-            text: code == 1 ? "同意后将无法恢复，请谨慎操作！" : "请输入拒绝理由",
+            text: code == 1 ? "" : "请输入拒绝理由",
             type: code == 1 ? "warning" : "input",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: code == 1 ? "同意" : "拒绝",
-            cancelButtonText: "我再想想",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
             closeOnConfirm: false,
             inputPlaceholder: "理由"
         }, function (inputValue) {
-            var param = {
-                action: "UpdateArticleCode",
-                articleId: articleHelper.dataId,
-                type: 4,
-                active: code,
-                remark: inputValue
-            }
-            hotUtil.loading.show();
-            hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
-                if (ret) {
-                    if (ret.status == 200) {
-                        $(".btn-yes,.btn-no").hide();
-                        swal("操作成功！", "", "success");
-                    }
-                    else {
-                        swal(ret.statusText, "", "warning");
-                    }
+            if (inputValue) {
+                var param = {
+                    action: "UpdateArticleCode",
+                    articleId: articleHelper.dataId,
+                    type: 4,
+                    active: code,
+                    remark: inputValue
                 }
-                hotUtil.loading.close();
-            });
+                hotUtil.loading.show();
+                hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
+                    if (ret) {
+                        if (ret.status == 200) {
+                            $(".btn-yes,.btn-no").hide();
+                            swal("操作成功！", "", "success");
+                        }
+                        else {
+                            swal(ret.statusText, "", "warning");
+                        }
+                    }
+                    hotUtil.loading.close();
+                });
+            }
         });
     }
 
@@ -195,7 +215,27 @@ $(document).ready(function () {
     });
 
     $('input[type="file"]').prettyFile();
-    $(".summernote").summernote({ lang: "zh-CN" });
+    var smnote = $(".summernote").summernote({
+        lang: "zh-CN",
+        onImageUpload: function (files, editor, $editable) {
+            var formData = new FormData();
+            formData.append('file', files[0]);
+            var uploadUrl = '/handler/UploadFileEidt.ashx?uploadtype=1&userid=' + articleHelper.picDir;
+            hotUtil.loading.show();
+            $.ajax({
+                url: uploadUrl,//后台文件上传接口        
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    var obj = eval('(' + data + ')');
+                    editor.insertImage($editable, obj.fileUrl);
+                    hotUtil.loading.close();
+                }
+            });
+        }
+    });
 
     articleHelper.loadData();
 
@@ -208,21 +248,21 @@ $(document).ready(function () {
         rules: {
             articleTitle: {
                 required: !0,
-                maxlength: 20
+                maxlength: 30
             },
             articleIntro: {
                 required: !0,
-                maxlength: 50
+                maxlength: 150
             }
         },
         messages: {
             articleTitle: {
                 required: e + "请输入名称",
-                maxlength: e + "最长20个字符"
+                maxlength: e + "最长30个字符"
             },
             articleIntro: {
                 required: e + "请输入资讯简介",
-                maxlength: e + "最长50个字符"                
+                maxlength: e + "最长150个字符"
             }
         },
         submitHandler: function (form) {

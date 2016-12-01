@@ -101,6 +101,7 @@
     <Content Include="admin\cashcouponstaticpie.html" />
     <Content Include="admin\customerareastatic.html" />
     <Content Include="admin\coupongetlist.html" />
+    <Content Include="admin\modifypassword.html" />
     <Content Include="admin\none.html" />
     <Content Include="admin\cashcouponstatic.html" />
     <Content Include="admin\customerstatic.html" />
@@ -124,6 +125,8 @@
     <Content Include="admin\userlist.html" />
     <Content Include="app\couponshare.html" />
     <Content Include="app\getcoupon.html" />
+    <Content Include="app\images\appShareCoupon.png" />
+    <Content Include="app\images\appShareLogo.png" />
     <Content Include="app\myqrcodetemplate.html" />
     <Content Include="app\policy.html" />
     <Content Include="app\register.html" />
@@ -146,6 +149,9 @@
     <Content Include="static\fonts\fontawesome-webfont.eot_" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot_" />
     <Content Include="static\img\70.jpg" />
+    <Content Include="app\images\default.jpg" />
+    <Content Include="static\img\appShareCoupon.png" />
+    <Content Include="static\img\appShareLogo.png" />
     <Content Include="static\img\hbhb.png" />
     <Content Include="static\img\icon_nav_msg.png" />
     <Content Include="static\img\mz%403x.png" />
@@ -165,6 +171,7 @@
     <Content Include="static\js\admin\articlelist.js" />
     <Content Include="static\js\admin\basesetting.js" />
     <Content Include="static\js\admin\Login.js" />
+    <Content Include="static\js\admin\modifypassword.js" />
     <Content Include="static\js\admin\orderlist.js" />
     <Content Include="static\js\admin\messagelist.js" />
     <Content Include="static\js\admin\orderdetails.js" />

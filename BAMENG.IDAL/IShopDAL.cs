@@ -54,7 +54,12 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         bool DeleltShopInfo(int shopId);
 
-
+        /// <summary>
+        /// 根据总店ID，判断其所有分店是否全部冻结
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>true if [is all disable by shop identifier] [the specified shop identifier]; otherwise, false.</returns>
+        bool IsAllDisableByShopID(int shopId);
         /// <summary>
         /// 获取门店列表
         /// </summary>
@@ -71,5 +76,11 @@ namespace BAMENG.IDAL
         /// <returns>System.Int32.</returns>
         int GetBelongShopId(int shopId);
 
+        /// <summary>
+        /// 获取门店信息
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>ShopModel.</returns>
+        ShopModel GetShopModel(int shopId);
     }
 }

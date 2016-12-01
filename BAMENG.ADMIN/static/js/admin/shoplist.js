@@ -16,6 +16,7 @@ var shopHelper = {
     loaclData: [],
     pageIndex: 1,
     reset: null,
+    type: hotUtil.getQuery("type"),
     loadList: function (page) {
         var self = this;
         self.loaclData = [];
@@ -26,7 +27,8 @@ var shopHelper = {
             pageSize: 20,
             prov: $("#province").val(),
             city: $("#city").val(),
-            key: $("#keyword").val()
+            key: $("#keyword").val(),
+            type: self.type
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, postData, function (ret, err) {
@@ -39,7 +41,10 @@ var shopHelper = {
                             var tempHtml = $("#templist").html();
                             tempHtml = tempHtml.replace("{LoginName}", item.LoginName);
                             tempHtml = tempHtml.replace(/{ShopID}/gm, item.ShopID);
-                            tempHtml = tempHtml.replace("{ShopName}", item.ShopName);
+                            if (self.type == 2)
+                                tempHtml = tempHtml.replace("{ShopName}", item.ShopName + "/【" + item.BelongOneShopName + "】");
+                            else
+                                tempHtml = tempHtml.replace("{ShopName}", item.ShopName);
                             tempHtml = tempHtml.replace("{Contacts}", item.Contacts);
                             tempHtml = tempHtml.replace("{ShopProv}", item.ShopProv + item.ShopCity + item.ShopArea + item.ShopAddress);
                             tempHtml = tempHtml.replace("{ContactWay}", item.ContactWay);
@@ -131,24 +136,57 @@ var shopHelper = {
         });
     },
     updateActive: function (dataId, active) {
-        var param = {
-            action: "UPDATESHOPACTIVE",
-            shopId: dataId,
-            active: active == 1 ? 0 : 1
+        var self = this;
+        if (active == 1 && parseInt(this.type) != 2) {
+            swal({
+                title: "您确定要冻结该总店账号吗",
+                text: "请确保它的分店全部已冻结，否则冻结失败！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false,
+            }, function () {
+                var param = {
+                    action: "UPDATESHOPACTIVE",
+                    shopId: dataId,
+                    active: active == 1 ? 0 : 1
+                }
+                hotUtil.loading.show();
+                hotUtil.ajaxCall(self.ajaxUrl, param, function (ret, err) {
+                    if (ret) {
+                        if (ret.status == 200) {
+                            swal(param.active == 0 ? "冻结成功" : "激活成功", "", "success");
+                            self.loadList(self.pageIndex);
+                        }
+                        else {
+                            swal(param.active == 0 ? "冻结失败" : "冻结成功", param.active == 0 ? "请检查所属分店是否已全部冻结" : "", "warning");
+                        }
+                    }
+                    hotUtil.loading.close();
+                });
+            });
         }
-        hotUtil.loading.show();
-        hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
-            if (ret) {
-                if (ret.status == 200) {
-                    swal("提交成功！", "", "success");
-                    shopHelper.loadList(shopHelper.pageIndex);
-                }
-                else {
-                    swal(ret.statusText, "", "warning");
-                }
+        else {
+            var param = {
+                action: "UPDATESHOPACTIVE",
+                shopId: dataId,
+                active: active == 1 ? 0 : 1
             }
-            hotUtil.loading.close();
-        });
+            hotUtil.loading.show();
+            hotUtil.ajaxCall(self.ajaxUrl, param, function (ret, err) {
+                if (ret) {
+                    if (ret.status == 200) {
+                        swal(param.active == 0 ? "冻结成功" : "激活成功", "", "success");
+                        self.loadList(self.pageIndex);
+                    }
+                    else {
+                        swal(ret.statusText, "", "warning");
+                    }
+                }
+                hotUtil.loading.close();
+            });
+        }
     },
     dialog: function (dataId) {
         if (this.reset)
@@ -199,6 +237,10 @@ $(function () {
         hideCityInput: "#city",
         hideProvinceInput: "#province"
     }).init();
+
+
+    if (parseInt(shopHelper.type) != 2)
+        $("#btnShop").show();
 
 
 

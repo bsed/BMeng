@@ -70,6 +70,13 @@ namespace BAMENG.LOGIC
             {
                 using (var dal = FactoryDispatcher.SmsFactory())
                 {
+                    if (dal.TodaySendCount(mobile, customerid) > 3)
+                    {
+                        LogHelper.Log("超出当前发送次数", LogHelperTag.INFO, WebConfig.debugMode());
+                        AppCode = ApiStatusCode.超出当天发送次数;
+                        return false;
+                    }
+
                     if (!dal.Sendable(mobile, customerid))
                     {
                         LogHelper.Log("操作太频繁,请稍后再试!", LogHelperTag.INFO, WebConfig.debugMode());
@@ -127,7 +134,15 @@ namespace BAMENG.LOGIC
             return false;
         }
 
-        private static bool send(int type, string mobile, string content, out string msg)
+        /// <summary>
+        /// 短信发送
+        /// </summary>
+        /// <param name="type">1 普通，2语音</param>
+        /// <param name="mobile">The mobile.</param>
+        /// <param name="content">The content.</param>
+        /// <param name="msg">The MSG.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool send(int type, string mobile, string content, out string msg)
         {
             int code = 10000;
             msg = "";

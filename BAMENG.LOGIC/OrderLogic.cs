@@ -22,11 +22,11 @@ namespace BAMENG.LOGIC
             return DateTime.Now.ToString("yyyyMMddHHmmss") + StringHelper.CreateCheckCodeWithNum(3) + userId;
         }
 
-        public static List<OrderListModel> GetMyOrderList(int userId, int type, long lastId)
+        public static List<OrderListModel> GetMyOrderList(int userId, int type, long lastId, int userIdentity)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
-                return toOrderListModel(dal.GetOrderList(userId, type, lastId));
+                return toOrderListModel(dal.GetOrderList(userId, type, lastId, userIdentity));
             }
         }
 
@@ -77,7 +77,7 @@ namespace BAMENG.LOGIC
         /// <param name="memo">The memo.</param>
         /// <param name="filename">The filename.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool saveOrder(int userId, string userName, string mobile, string address, string cashNo, string memo, string filename)
+        public static bool saveOrder(int userId, string userName, string mobile, string address, string cashNo, string memo, string filename, ref ApiStatusCode apiCode)
         {
 
             try
@@ -102,13 +102,24 @@ namespace BAMENG.LOGIC
                 int cashUserId = 0;
                 using (var dal = FactoryDispatcher.CouponFactory())
                 {
-                    coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
-                    if (coupon != null)
+                    if (!string.IsNullOrEmpty(cashNo))
                     {
-                        model.CashCouponAmount = coupon.Money;
-                        model.CashCouponBn = cashNo;
-                        model.ShopId = coupon.ShopId;
-                        cashUserId = coupon.UserId;
+                        coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
+                        if (coupon != null && coupon.ID > 0)
+                        {
+                            model.CashCouponAmount = coupon.Money;
+                            model.CashCouponBn = cashNo;
+                            model.ShopId = coupon.ShopId;
+                            //设置订单归属用户
+                            model.Ct_BelongId = coupon.UserId;
+                            model.UserId = coupon.BelongOneUserId;
+                            cashUserId = coupon.UserId;
+                        }
+                        else
+                        {
+                            apiCode = ApiStatusCode.优惠券不存在;
+                            return false;
+                        }
                     }
                 }
                 //如果没有优惠
@@ -137,7 +148,7 @@ namespace BAMENG.LOGIC
                             model.Ct_BelongId = user.UserId;
                             //获取盟友奖励
                             RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(user.BelongOne);
-                            if (rewardSettingModel != null)
+                            if (rewardSettingModel != null && rewardSettingModel.OrderReward > 0)
                             {
                                 //订单成交需付盟豆
                                 model.MengBeans = rewardSettingModel.OrderReward;
@@ -150,7 +161,6 @@ namespace BAMENG.LOGIC
                                 model1.CreateTime = DateTime.Now;
                                 model1.Status = 0;
                                 model1.Remark = "下单";
-
                             }
                         }
                         else
@@ -201,6 +211,7 @@ namespace BAMENG.LOGIC
                                     //添加优惠券领取操作日志
                                     LogLogic.AddCouponLog(new LogBaseModel()
                                     {
+                                        objId = coupon.CouponId,
                                         UserId = coupon.UserId,
                                         ShopId = coupon.ShopId,
                                         OperationType = 2,//0创建 1领取 2使用
@@ -215,8 +226,10 @@ namespace BAMENG.LOGIC
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Log(string.Format("saveOrder==>Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                apiCode = ApiStatusCode.SERVICEERROR;
                 return false;
             }
 
@@ -278,8 +291,10 @@ namespace BAMENG.LOGIC
                 //改订单为已处理
                 if (status == 1 && orderModel.UserId != orderModel.Ct_BelongId)
                 {
-                    //更新用户等级
-                    UserLogic.userUpdate(orderModel.UserId);
+                    //更新盟友用户等级
+                    UserLogic.userUpdate(orderModel.Ct_BelongId);
+                    //更新盟主用户等级
+                    UserLogic.masterUpdate(orderModel.UserId);
                     if (orderModel.MengBeans > 0)
                     {
                         //给盟友加盟豆
@@ -290,7 +305,7 @@ namespace BAMENG.LOGIC
 
                             TempBeansRecordsModel model1 = new TempBeansRecordsModel();
                             model1.Amount = -orderModel.MengBeans;
-                            model1.UserId = orderModel.UserId;
+                            model1.UserId = orderModel.Ct_BelongId;
                             model1.LogType = 0;
                             model1.Income = 0;
                             model1.CreateTime = DateTime.Now;
@@ -301,7 +316,7 @@ namespace BAMENG.LOGIC
 
                             BeansRecordsModel model2 = new BeansRecordsModel();
                             model2.Amount = orderModel.MengBeans;
-                            model2.UserId = orderModel.UserId;
+                            model2.UserId = orderModel.Ct_BelongId;
                             model2.LogType = 0;
                             model2.Income = 1;
                             model2.Remark = "订单奖励";
@@ -316,10 +331,9 @@ namespace BAMENG.LOGIC
 
                     using (var dal1 = FactoryDispatcher.UserFactory())
                     {
-                        RewardsSettingModel rewardSettingModel1 = UserLogic.GetRewardModel(orderModel.UserId);
                         TempBeansRecordsModel model1 = new TempBeansRecordsModel();
                         model1.Amount = -orderModel.MengBeans;
-                        model1.UserId = orderModel.UserId;
+                        model1.UserId = orderModel.Ct_BelongId;
                         model1.LogType = 0;
                         model1.Income = 0;
                         model1.CreateTime = DateTime.Now;

@@ -29,7 +29,7 @@ namespace BAMENG.ADMIN.handler
                   , context.Request.UrlReferrer != null ? StringHelper.ToString(context.Request.UrlReferrer.AbsoluteUri) : ""
                  );
             try
-            {
+            {                
                 DoRequest(context);
                 LogHelper.Log(resultMsg, LogHelperTag.INFO, WebConfig.debugMode());
             }
@@ -265,6 +265,9 @@ namespace BAMENG.ADMIN.handler
                         GetCouponlogList();
                         break;
 
+                    case "MODIFYPASSWORD":
+                        modifypassword();
+                        break;
                     default:
                         break;
                 }
@@ -301,7 +304,9 @@ namespace BAMENG.ADMIN.handler
         {
             int shopType = user.UserIndentity == 0 ? 1 : 2;
             int shopBelongId = user.UserIndentity == 0 ? 0 : user.ID;
-
+            int t = GetFormValue("type", 0);
+            if (t == 2)
+                shopType = 2;
             SearchModel model = new SearchModel()
             {
                 PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
@@ -310,7 +315,8 @@ namespace BAMENG.ADMIN.handler
                 endTime = GetFormValue("endTime", ""),
                 key = GetFormValue("key", ""),
                 city = GetFormValue("city", ""),
-                province = GetFormValue("prov", "")
+                province = GetFormValue("prov", ""),
+                type = GetFormValue("type", 0)
             };
             var data = ShopLogic.GetShopList(shopType, shopBelongId, model);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -372,7 +378,7 @@ namespace BAMENG.ADMIN.handler
             if (ShopLogic.UpdateShopActive(ShopID, active))
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
             else
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.更新失败));
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.操作失败));
         }
 
         /// <summary>
@@ -660,7 +666,23 @@ namespace BAMENG.ADMIN.handler
                 TopTime = dtnow
             });
             if (flag)
+            {
+                if (user.UserIndentity != 0)
+                {
+                    try
+                    {
+                        string errmsg = "";
+                        string sendmobile = ConfigLogic.GetValue("BindMobile");
+                        if (!string.IsNullOrEmpty(sendmobile) && RegexHelper.IsValidMobileNo(sendmobile))
+                            SmsLogic.send(1, sendmobile, "您有一条新的待审核资讯", out errmsg);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                    }
+                }
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            }
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ArticleId > 0 ? ApiStatusCode.更新失败 : ApiStatusCode.添加失败));
         }
@@ -925,7 +947,23 @@ namespace BAMENG.ADMIN.handler
                 AuthorIdentity = user.UserIndentity
             });
             if (flag)
+            {
+                if (user.UserIndentity == 1 && GetFormValue("issend", 1) == 1 && GetFormValue("sendbelongshop", 0) == 1)
+                {
+                    try
+                    {
+                        string errmsg = "";
+                        string sendmobile = ConfigLogic.GetValue("BindMobile");
+                        if (!string.IsNullOrEmpty(sendmobile) && RegexHelper.IsValidMobileNo(sendmobile))
+                            SmsLogic.send(1, sendmobile, "您有一条新的未读消息", out errmsg);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                    }
+                }
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            }
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.操作失败));
         }
@@ -1178,6 +1216,17 @@ namespace BAMENG.ADMIN.handler
             int couponId = GetFormValue("couponId", 0);
             var data = CouponLogic.GetUserCashCouponLogList(couponId, model);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        private void modifypassword()
+        {
+            string oldpwd = GetFormValue("oldpwd", "");
+            string newpwd = GetFormValue("newpwd", "");
+            if (ManagerLogic.ChanagePassword(user.ID, user.UserIndentity, oldpwd, newpwd))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.旧密码不对));
         }
     }
 }

@@ -95,7 +95,21 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.ShopFactory())
             {
-                return dal.UpdateShopActive(shopId, active);
+
+                int belongShopId = 1;
+                //冻结操作时，获取当前门店的总店ID， 如果大于0，表示当前操作的门店是分店
+                if (active == 0)
+                    belongShopId = GetBelongShopId(shopId);
+                if (belongShopId > 0)
+                    return dal.UpdateShopActive(shopId, active);
+                else
+                {
+                    //如果操作的是总店时，需要判断该店下的所有分店是否全部冻结
+                    if (dal.IsAllDisableByShopID(shopId))
+                        return dal.UpdateShopActive(shopId, active);
+                }
+
+                return false;
             }
         }
         /// <summary>
@@ -123,6 +137,14 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.ShopFactory())
             {
                 return dal.GetBelongShopId(shopId);
+            }
+        }
+
+        public static ShopModel GetShopModel(int shopId)
+        {
+            using (var dal = FactoryDispatcher.ShopFactory())
+            {
+                return dal.GetShopModel(shopId);
             }
         }
     }

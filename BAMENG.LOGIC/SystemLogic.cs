@@ -79,7 +79,7 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.SystemFactory())
             {
                 //获取今日数据
-                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHH");
+                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHH") + "_" + user.UserIndentity.ToString() + user.ID.ToString();
                 AdminHomeDataModel todayData = WebCacheHelper<AdminHomeDataModel>.Get(todayKey);
                 if (todayData == null)
                 {
@@ -94,14 +94,14 @@ namespace BAMENG.LOGIC
 
 
                 //读取缓存数据
-                string yesterdayKey = "HOMEDATA" + DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
+                string yesterdayKey = "HOMEDATA" + DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "_" + user.UserIndentity.ToString() + user.ID.ToString();
                 AdminHomeDataModel yesterdayData = WebCacheHelper<AdminHomeDataModel>.Get(yesterdayKey);
                 if (yesterdayData == null)
                 {
                     yesterdayData = new AdminHomeDataModel();
                     //获取昨日数据
-                    yesterdayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity,false);                    
-                    yesterdayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity, false);                    
+                    yesterdayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity, false);
+                    yesterdayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity, false);
                     WebCacheHelper.Insert(yesterdayKey, yesterdayData, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(yesterdayKey)));
                 }
                 result.Add(yesterdayData);

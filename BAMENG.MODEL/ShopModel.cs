@@ -31,6 +31,13 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The name of the shop.</value>
         public string ShopName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the belong one shop.
+        /// </summary>
+        /// <value>The name of the belong one shop.</value>
+        public string BelongOneShopName { get; set; }
+
         /// <summary>
         /// 门店类型1 总店 2分店
         /// </summary>

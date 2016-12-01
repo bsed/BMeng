@@ -152,9 +152,14 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public int GetNewMessageCount(int shopId, int userIdentity, bool today = true)
         {
-            string strSql = "select COUNT(1) from BM_MessageManage M where CONVERT(nvarchar(10),M.CreateTime,121)=@Date and M.IsDel = 0";
+            string strSql = "select COUNT(1) from BM_MessageManage M where CONVERT(nvarchar(10),M.CreateTime,121)=@Date and M.IsDel = 0  and IsSend=1 ";
             if (userIdentity != 0)
+            {
+                strSql = @"select COUNT(1) from BM_MessageManage M 
+                            inner join BM_MessageSendTarget T on T.MessageId = M.ID
+                            where CONVERT(nvarchar(10),M.CreateTime,121)=@Date and M.IsDel = 0  and IsSend=1 ";
                 strSql += " and T.SendTargetShopId=@ShopId";
+            }
             else
                 strSql += " and M.IsSendBelongShopId=1 ";
 
@@ -163,6 +168,7 @@ namespace BAMENG.DAL
                 dtnow = DateTime.Now.AddDays(-1);
 
             var param = new[] {
+                new SqlParameter("@ShopId",shopId),
                 new SqlParameter("@Date",dtnow.ToString("yyyy-MM-dd"))
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));

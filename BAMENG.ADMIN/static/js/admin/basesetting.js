@@ -107,6 +107,11 @@ var settingHelper = {
             action: "EDITCONFIG",
             config: hotUtil.encode(JSON.stringify(configJson))
         }
+
+
+
+
+
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, postData, function (ret, err) {
             if (ret) {
@@ -122,7 +127,7 @@ var settingHelper = {
 
 $(function () {
 
-
+    $('.OnlyNum').OnlyNum();
     settingHelper.load();
 
     $("#EnableSign,#EnableContinuousSign,#EnableAppCoerceUpdate").change(function () {

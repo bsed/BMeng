@@ -62,6 +62,7 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <param name="clientVersion">客户的版本号</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{ AppVersionModel }}]]></returns>
+        [ActionAuthorize]
         public ActionResult CheckUpdate(string clientVersion)
         {
             try
@@ -78,7 +79,7 @@ namespace BAMENG.API.Controllers
         }
 
         /// <summary>
-        /// 发送短信 POST: sys/sendsms
+        /// 发送短信(忘记密码时调用) POST: sys/sendsms
         /// </summary>
         /// <param name="mobile">The mobile.</param>
         /// <param name="type">1普通短信  2语音短信</param>
@@ -89,6 +90,21 @@ namespace BAMENG.API.Controllers
             SmsLogic.SendSms(type, mobile, out apiCode);
             return Json(new ResultModel(apiCode));
         }
+
+        /// <summary>
+        /// 发送短信(用于修改手机号码)-需要签名授权 POST: sys/sendsms
+        /// </summary>
+        /// <param name="mobile">The mobile.</param>
+        /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
+        public ActionResult SendSms(string mobile)
+        {
+            ApiStatusCode apiCode;
+            SmsLogic.SendSms(1, mobile, out apiCode);
+            return Json(new ResultModel(apiCode));
+        }
+
+
         /// <summary>
         /// 焦点图片 POST: sys/focuspic
         /// </summary>
@@ -98,6 +114,21 @@ namespace BAMENG.API.Controllers
         public ActionResult FocusPic(int type)
         {
             var data = FocusPicLogic.GetAppList(type);
+            if (data == null || data.Count() == 0)
+            {
+                data = new List<FocusPicModel>();
+                data.Add(new FocusPicModel()
+                {
+                    PicUrl = WebConfig.articleDetailsDomain() + "/app/images/default.jpg",
+                    CreateTime = DateTime.Now,
+                    Description = "默认图",
+                    IsEnable = 1,
+                    Type = type,
+                    Sort = 1,
+                    Title = "默认图",
+                    LinkUrl = ""
+                });
+            }
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 

@@ -57,7 +57,7 @@ var articleHelper = {
                                 tempHtml = tempHtml.replace("{topText}", item.EnableTop == 1 ? "取消置顶" : "置顶");
                             }
                             else {
-                                tempHtml = tempHtml.replace("{EnablePublish}", item.ArticleStatus == 0 ? "审核中" : "审核失败")
+                                tempHtml = tempHtml.replace("{EnablePublish}", item.ArticleStatus == 0 ? "审核中" : "审核失败" + item.Remark)
                                 tempHtml = tempHtml.replace("{publishText}", "");
                                 tempHtml = tempHtml.replace("{topText}", "");
                             }
@@ -66,7 +66,7 @@ var articleHelper = {
 
                             tempHtml = tempHtml.replace("{ShopName}", item.ShopProv + "/" + item.ShopCity + "/" + item.ShopName);
                             tempHtml = tempHtml.replace("{SendTarget}", item.SendTargetId == 1 ? "盟主" : item.SendTargetId == 0 ? "所有人" : "盟友");
-                            tempHtml = tempHtml.replace("{ArticleStatus}", item.ArticleStatus == 1 ? "审核通过" : item.ArticleStatus == 0 ? "申请中" : "审核失败");
+                            tempHtml = tempHtml.replace("{ArticleStatus}", item.ArticleStatus == 1 ? "审核通过" : item.ArticleStatus == 0 ? "申请中" : "审核失败,理由：" + item.Remark);
 
                             tempHtml = tempHtml.replace(/{display}/gm, item.ArticleStatus == 0 ? "" : "display:none");
 
@@ -127,7 +127,7 @@ var articleHelper = {
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "删除",
+            confirmButtonText: "删除",            
             closeOnConfirm: false,
         }, function () {
             var param = {
@@ -198,35 +198,37 @@ var articleHelper = {
     updateStatus: function (dataId, code) {
         swal({
             title: code == 1 ? "您确定要同意吗？" : "您确定要拒绝吗？",
-            text: code == 1 ? "同意后将无法恢复，请谨慎操作！" : "请输入拒绝理由",
+            text: code == 1 ? "" : "请输入拒绝理由",
             type: code == 1 ? "warning" : "input",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: code == 1 ? "同意" : "拒绝",
-            cancelButtonText: "我再想想",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
             closeOnConfirm: false,
             inputPlaceholder: "理由"
         }, function (inputValue) {
-            var param = {
-                action: "UpdateArticleCode",
-                articleId: dataId,
-                type: 4,
-                active: code,
-                remark: inputValue
-            }
-            hotUtil.loading.show();
-            hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
-                if (ret) {
-                    if (ret.status == 200) {
-                        swal("操作成功！", "", "success");
-                        articleHelper.loadList(articleHelper.pageIndex);
-                    }
-                    else {
-                        swal(ret.statusText, "", "warning");
-                    }
+            if (inputValue) {                
+                var param = {
+                    action: "UpdateArticleCode",
+                    articleId: dataId,
+                    type: 4,
+                    active: code,
+                    remark: inputValue
                 }
-                hotUtil.loading.close();
-            });
+                hotUtil.loading.show();
+                hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
+                    if (ret) {
+                        if (ret.status == 200) {
+                            swal("操作成功！", "", "success");
+                            articleHelper.loadList(articleHelper.pageIndex);
+                        }
+                        else {
+                            swal(ret.statusText, "", "warning");
+                        }
+                    }
+                    hotUtil.loading.close();
+                });
+            }
         });
     }
 };

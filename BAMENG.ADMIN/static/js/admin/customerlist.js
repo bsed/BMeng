@@ -38,6 +38,7 @@ var customerHelper = {
                         self.loaclData = ret.data.Rows;
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
+                            tempHtml = tempHtml.replace("{NO}", i+1);
                             tempHtml = tempHtml.replace(/{ID}/gm, item.ID);
                             tempHtml = tempHtml.replace("{Name}", item.Name);
                             tempHtml = tempHtml.replace("{BelongOneName}", item.BelongOneName);
@@ -45,6 +46,8 @@ var customerHelper = {
                             tempHtml = tempHtml.replace("{Mobile}", item.Mobile);
                             tempHtml = tempHtml.replace("{Addr}", item.Addr + " " + item.ShopName);
                             tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);
+                            tempHtml = tempHtml.replace("{StatusText}", item.Status == 1 ? "有效" : item.Status == 2 ? "无效" : "待审核");
+                            
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);

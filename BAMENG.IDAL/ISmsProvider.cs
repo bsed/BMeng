@@ -41,6 +41,15 @@ namespace BAMENG.IDAL
         bool Sendable(string phone, int customerid, int difSeconds = 60);
 
         /// <summary>
+        /// 获取当前发送次数
+        /// </summary>
+        /// <param name="phone">The phone.</param>
+        /// <param name="customerid">The customerid.</param>
+        /// <returns>System.Int32.</returns>
+        int TodaySendCount(string phone, int customerid);
+
+
+        /// <summary>
         /// 判断是否通过验证
         /// </summary>
         /// <param name="verifyCode"></param>

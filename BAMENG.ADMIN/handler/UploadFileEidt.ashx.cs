@@ -116,8 +116,8 @@ namespace BAMENG.ADMIN.handler
         public new void ProcessRequest(HttpContext context)
         {
             ctx = context;
-            // context.Response.ContentType = "application/json";
-            ThmbnailW= GetFormValue("tbw", 200);
+            //context.Response.ContentType = "application/json";
+            ThmbnailW = GetFormValue("tbw", 200);
             ThmbnailH = GetFormValue("tbh", 200);
             #region 其他上传
             string disposition = context.Request.ServerVariables["HTTP_CONTENT_DISPOSITION"];
@@ -238,11 +238,11 @@ namespace BAMENG.ADMIN.handler
                                 if (context.Request.QueryString["type"] == "image")
                                 {
                                     System.Drawing.Image _bmp = System.Drawing.Image.FromStream(oFile.InputStream);
-                                    responseMsg = "{success:true,fileUrl:'" + FileName + "',size:'" + _bmp.Width + "x" + _bmp.Height + "'}";
+                                    responseMsg = "{success:true,fileUrl:" + FileName + "',size:'" + _bmp.Width + "x" + _bmp.Height + "'}";
                                 }
                                 else
                                 {
-                                    responseMsg = "{success:true,fileUrl:'" + FileName + "'}";
+                                    responseMsg = "{success:true,fileUrl:\""+ FileName + "\"}";
                                 }
                             }
                             else

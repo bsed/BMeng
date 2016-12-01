@@ -27,7 +27,7 @@ namespace BAMENG.DAL
     {
 
         private const string APP_SELECT = @"select A.ArticleId,A.AuthorId,a.AuthorName,a.AuthorIdentity,a.SendTargetId,a.SendType,a.ArticleSort,a.ArticleType,a.ArticleClassify
-                                            ,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.ArticleBody,a.EnableTop,a.EnablePublish,a.BrowseAmount,a.ArticleStatus,a.IsDel,a.IsRead,a.TopTime,a.UpdateTime,a.PublishTime,a.CreateTime,S.ShopName,s.ShopProv,s.ShopCity
+                                            ,a.ArticleTitle,a.ArticleIntro,a.ArticleCover,a.ArticleBody,a.EnableTop,a.EnablePublish,a.BrowseAmount,a.ArticleStatus,a.IsDel,a.IsRead,a.TopTime,a.UpdateTime,a.PublishTime,a.CreateTime,S.ShopName,s.ShopProv,s.ShopCity,A.Remark
                                              from BM_ArticleList A with(nolock)
                                             left join BM_ShopManage S with(nolock) on S.ShopID=AuthorId
                                             where a.IsDel=0 ";
@@ -186,7 +186,8 @@ namespace BAMENG.DAL
             {
 
                 wherefield = ",ISNULL(R.IsRead,0) as IsRead";
-                whereSql = " left join BM_ReadLog R with(nolock) on R.ArticleId=A.ArticleId and R.UserId=@UserId ";
+                whereSql = " left join BM_ReadLog R with(nolock) on R.ArticleId=A.ArticleId ";
+                strSql += "  and R.UserId=@UserId ";
             }
             else
             {

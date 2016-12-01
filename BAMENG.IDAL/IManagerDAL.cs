@@ -45,6 +45,16 @@ namespace BAMENG.IDAL
         bool Update(AdminLoginModel model);
 
         /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="oldPassword">The old password.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool ChanagePassword(int userId, int useridentity, string oldPassword, string password);
+
+
+        /// <summary>
         /// Inserts the specified model.
         /// </summary>
         /// <param name="model">The model.</param>

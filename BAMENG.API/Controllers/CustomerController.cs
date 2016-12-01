@@ -45,10 +45,10 @@ namespace BAMENG.API.Controllers
             var user = GetUserData();
             if (CustomerLogic.UpdateStatus(cid, status, user.UserId))
             {
-
                 //添加客户操作日志
                 LogLogic.AddCustomerLog(new LogBaseModel()
                 {
+                    objId = cid,
                     UserId = user.UserId,
                     ShopId = user.ShopId,
                     AppSystem = OS,
@@ -58,7 +58,7 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.OK));
             }
             else
-                return Json(new ResultModel(ApiStatusCode.操作失败));
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
         }
         /// <summary>
         /// 创建客户 POST: customer/create
@@ -75,7 +75,7 @@ namespace BAMENG.API.Controllers
             //信息以电话和客户地址做为唯一性的判断标准,判断客户所属
             if (!CustomerLogic.IsExist(mobile, address))
             {
-                bool flag = CustomerLogic.InsertCustomerInfo(new CustomerModel()
+                int flag = CustomerLogic.InsertCustomerInfo(new CustomerModel()
                 {
                     BelongOne = user.UserId,
                     BelongTwo = user.UserIdentity == 1 ? user.UserId : user.BelongOne,
@@ -87,12 +87,13 @@ namespace BAMENG.API.Controllers
                     Status = user.UserIdentity == 1 ? 1 : 0
                 });
 
-                if (flag)
+                if (flag > 0)
                 {
 
                     //添加客户操作日志
                     LogLogic.AddCustomerLog(new LogBaseModel()
                     {
+                        objId = flag,
                         UserId = user.UserId,
                         ShopId = user.ShopId,
                         AppSystem = OS,
@@ -106,16 +107,14 @@ namespace BAMENG.API.Controllers
                         //添加客户操作日志
                         LogLogic.AddCustomerLog(new LogBaseModel()
                         {
+                            objId = flag,
                             UserId = user.UserId,
                             ShopId = user.ShopId,
                             AppSystem = OS,
                             OperationType = 1
                         });
                     }
-
                 }
-
-
                 return Json(new ResultModel(ApiStatusCode.OK));
             }
             else
@@ -146,7 +145,7 @@ namespace BAMENG.API.Controllers
             if (CustomerLogic.UpdateInShopStatus(cid, status))
                 return Json(new ResultModel(ApiStatusCode.OK));
             else
-                return Json(new ResultModel(ApiStatusCode.更新失败));
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
         }
     }
 }

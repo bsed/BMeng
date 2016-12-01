@@ -175,6 +175,11 @@ namespace BAMENG.MODEL
         [JsonIgnore()]
         public int ShopBelongId { get; set; }
 
+        /// <summary>
+        ///门店是否激活
+        /// </summary>
+        /// <value>The shop active.</value>
+        public int ShopActive { get; set; }
 
         /// <summary>
         /// 我的二维码
@@ -1160,6 +1165,8 @@ namespace BAMENG.MODEL
         /// <value>The status.</value>
         public int status { get; set; }
         public long time { get; set; }
+
+        public string remark { get; set; }
     }
 
     public class BeansRecordsModel

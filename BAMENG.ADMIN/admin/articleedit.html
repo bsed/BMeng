@@ -30,15 +30,16 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">资讯标题</label>
                         <div class="col-sm-6">
-                            <input type="text" id="articleTitle" name="articleTitle" class="form-control">
+                            <input type="text" id="articleTitle" name="articleTitle" maxlength="30" class="form-control">
+                            <span class="help-block"><i class="fa fa-info-circle"></i>最多30个字符</span>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">资讯简介</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="articleIntro" name="articleIntro" class="form-control" />
-                            <span class="help-block m-b-none"></span>
+                        <div class="col-sm-6">                            
+                            <textarea rows="3" id="articleIntro" name="articleIntro" maxlength="150"  class="form-control"></textarea>                            
+                            <span class="help-block"><i class="fa fa-info-circle"></i>最多150个字符</span>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -115,8 +116,7 @@
         
     <script src="/static/js/jquery.min.js?v=2.1.4"></script>
     <script src="/static/js/plugins/hot/Jquery.util.js"></script>
-    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
-    <script src="/static/js/content.min.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>    
     <script src="/static/js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
     <script src="/static/js/plugins/switchery/switchery.js"></script>
     <script src="/static/js/plugins/layer/layer.min.js"></script>

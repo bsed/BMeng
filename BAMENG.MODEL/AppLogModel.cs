@@ -118,6 +118,12 @@ namespace BAMENG.MODEL
         /// <value>The money.</value>
         public decimal Money { get; set; }
 
+        /// <summary>
+        /// 操作对象ID
+        /// </summary>
+        /// <value>The object identifier.</value>
+        public int objId { get; set; }
+
     }
 
 

@@ -211,7 +211,12 @@ namespace BAMENG.IDAL
         /// <returns>System.Int32.</returns>
         int GetUserIdByAuthToken(string Token);
 
-
+        /// <summary>
+        /// 判断用户账户和所属门店是否激活
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if [is user active] [the specified user identifier]; otherwise, false.</returns>
+        bool IsUserActive(int userId);
 
         /// <summary>
         /// 添加盟友奖励设置
@@ -354,7 +359,12 @@ namespace BAMENG.IDAL
 
 
         int updateBeansConvertStatus(int id, int status);
-
+        /// <summary>
+        /// 获取已兑换盟豆
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        int GetAllConvertTotal(int userId);
         BeansConvertModel getBeansConvertModel(int id);
 
         ApplyFriendModel getApplyFriendModel(int id);
@@ -465,7 +475,8 @@ namespace BAMENG.IDAL
         /// 获取排名
         /// </summary>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="belongOne">The belong one.</param>
         /// <returns>MyAllyIndexModel.</returns>
-        MyAllyIndexModel GetUserRank(int userId);
+        MyAllyIndexModel GetUserRank(int userId, int belongOne);
     }
 }

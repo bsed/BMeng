@@ -57,6 +57,7 @@ namespace BAMENG.LOGIC
                     //添加优惠券领取操作日志
                     LogLogic.AddCouponLog(new LogBaseModel()
                     {
+                        objId = flag,
                         UserId = 0,
                         ShopId = model.ShopId,
                         OperationType = 0,//0创建 1领取 2使用
@@ -247,7 +248,7 @@ namespace BAMENG.LOGIC
                             CouponId = couponId,
                             CouponNo = StringHelper.CreateCheckCode(10).ToLower(),
                             UserId = sendToUserId > 0 ? sendToUserId : userId,
-                            IsShare = sendToUserId > 0 ? 1 : 0,
+                            IsShare = sendToUserId > 0 ? 0 : 1,
                             Money = couponModel.Money,
                             StartTime = couponModel.StartTime,
                             EndTime = couponModel.EndTime,

@@ -49,8 +49,15 @@ var messageHelper = {
                     $("#sendbelongShop").setChecked(ret.data.IsSendBelongShopId == 1);
                     $("#issend").setChecked(ret.data.IsSend == 1);
 
-                    $("#sendtarget").attr("disabled", "disabled");
-
+                    if (ret.data.IsSendBelongShopId == 1 && ret.data.IsSend == 1) {
+                        $("#issendshopSelect").hide();
+                        $("#issendshopText").show();
+                    }
+                    if (ret.data.IsSend == 1) {
+                        $("#issendSelect").hide();
+                        $("#issendText").show();
+                        $("#sendtarget").attr("disabled", "disabled");
+                    }                                       
                     if (!hotUtil.isNullOrEmpty(ret.data.SendTargetIds)) {
                         $("#sendtarget").val(ret.data.SendTargetIds.split(","));
                     }
@@ -63,11 +70,17 @@ var messageHelper = {
     },
     edit: function () {
         var sendtarget = $("#sendtarget").val();
-        if (sendtarget == null)
-        {
-            swal("请选择发送对象", "", "warning");
-            return false;
+        if (!$("#sendbelongShop").attr("checked")) {
+            if (sendtarget == null) {
+                swal("请选择发送对象", "", "warning");
+                return false;
+            }
         }
+        else {
+            if (sendtarget == null)
+                sendtarget = "";
+        }
+
         var self = this;
         var postData = {
             action: "EditMessage",
@@ -82,10 +95,18 @@ var messageHelper = {
         hotUtil.ajaxCall(messageHelper.ajaxUrl, postData, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("提交成功", "", "success");
                     if (messageHelper.dataId == 0) {
-                        $("#signupForm")[0].reset();
-                        messageHelper.setEditContent("");
+                        swal({
+                            title: "提交成功",
+                            text: "即将更新...",
+                            timer: 1500,
+                            showConfirmButton: false
+                        }, function () {
+                            window.location.reload();
+                        });
+                    }
+                    else {
+                        swal("提交成功", "", "success");
                     }
                 }
             }
@@ -121,7 +142,27 @@ $(document).ready(function () {
             $(this).setChecked(true);
     });
 
-    $(".summernote").summernote({ lang: "zh-CN" });
+    $(".summernote").summernote({
+        lang: "zh-CN",
+        onImageUpload: function (files, editor, $editable) {
+            var formData = new FormData();
+            formData.append('file', files[0]);
+            var uploadUrl = '/handler/UploadFileEidt.ashx?uploadtype=1&userid=bameng/article/img';
+            hotUtil.loading.show();
+            $.ajax({
+                url: uploadUrl,//后台文件上传接口        
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    var obj = eval('(' + data + ')');
+                    editor.insertImage($editable, obj.fileUrl);
+                    hotUtil.loading.close();
+                }
+            });
+        }
+    });
 
 
     if (parseInt(messageHelper.type) == 2) {

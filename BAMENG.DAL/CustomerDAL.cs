@@ -118,6 +118,7 @@ namespace BAMENG.DAL
 
             if (type == 2)
             {
+                orderby = true;
                 orderbyField = "C.Status";
             }
             var param = new[] {
@@ -153,10 +154,8 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public int InsertCustomerInfo(CustomerModel model)
         {
-            if (!IsExist(model.Mobile, model.Addr))
-            {
-                string strSql = "insert into BM_CustomerManage (BelongOne,BelongTwo,Status,Name,Mobile,Addr,Remark,ShopId,InShop) values(@BelongOne,@BelongTwo,@Status,@Name,@Mobile,@Addr,@Remark,@ShopId,@InShop)";
-                var param = new[] {
+            string strSql = "insert into BM_CustomerManage (BelongOne,BelongTwo,Status,Name,Mobile,Addr,Remark,ShopId,InShop) values(@BelongOne,@BelongTwo,@Status,@Name,@Mobile,@Addr,@Remark,@ShopId,@InShop);select @@IDENTITY;";
+            var param = new[] {
                     new SqlParameter("@BelongOne",model.BelongOne),
                     new SqlParameter("@BelongTwo",model.BelongTwo),
                     new SqlParameter("@Status",model.Status),
@@ -167,8 +166,10 @@ namespace BAMENG.DAL
                     new SqlParameter("@ShopId",model.ShopId),
                     new SqlParameter("@InShop",model.InShop)
                 };
-                return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
-            }
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+
+            if (obj != null)
+                return Convert.ToInt32(obj);
             return 0;
         }
 
@@ -180,7 +181,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public bool IsExist(string mobile, string addr)
         {
-            string strSql = "select COUNT(1) from BM_CustomerManage where IsDel=0 and Status=1 and (Mobile =@Mobile or Addr =@Addr)";
+            string strSql = "select COUNT(1) from BM_CustomerManage where IsDel=0 and Status<>2 and (Mobile =@Mobile or Addr =@Addr)";
             var param = new[] {
                 new SqlParameter("@Mobile",mobile),
                 new SqlParameter("@Addr",addr)

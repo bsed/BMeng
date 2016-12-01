@@ -23,10 +23,15 @@ namespace BAMENG.DAL
         /// <param name="status"></param>
         /// <param name="lastId"></param>
         /// <returns></returns>
-        public List<OrderModel> GetOrderList(int masterUserId, int status, long lastId)
+        public List<OrderModel> GetOrderList(int masterUserId, int status, long lastId, int userIdentity)
         {
 
-            string strSql = "select top 10 * from BM_Orders where UserId=@UserId";
+            string strSql = "select top 10 * from BM_Orders where 1=1 ";
+            if (userIdentity == 1)
+                strSql += " and UserId=@UserId";
+            else
+                strSql += " and Ct_BelongId=@UserId";
+
             if (status >= 0) strSql += " and OrderStatus=" + status;
             if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
             strSql += " order by CreateTime desc";

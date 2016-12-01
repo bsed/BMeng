@@ -243,7 +243,18 @@ namespace BAMENG.LOGIC
                 return dal.GetUserIdByAuthToken(Token);
             }
         }
-
+        /// <summary>
+        /// 判断用户账户和所属门店是否激活
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if [is user active] [the specified user identifier]; otherwise, false.</returns>
+        public static bool IsUserActive(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.IsUserActive(userId);
+            }
+        }
 
         /// <summary>
         /// 设置盟友奖励
@@ -371,13 +382,14 @@ namespace BAMENG.LOGIC
             int amount = OrderLogic.CountOrders(userId);
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId, 0);
+                List<MallUserLevelModel> levels = dal.GeUserLevelList(ConstConfig.storeId, 0);
                 foreach (MallUserLevelModel level in levels)
                 {
-                    if (amount > level.UL_MemberNum)
+                    if (amount >= level.UL_MemberNum)
                     {
                         //更新用户等级
                         dal.updateUserLevel(userId, level.UL_ID);
+                        break;
                     }
                 }
             }
@@ -393,13 +405,14 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 int amount = dal.countByBelongOne(userId);
-                List<MallUserLevelModel> levels = dal.GeUserLevelList(userId, 1);
+                List<MallUserLevelModel> levels = dal.GeUserLevelList(ConstConfig.storeId, 1);
                 foreach (MallUserLevelModel level in levels)
                 {
-                    if (amount > level.UL_MemberNum)
+                    if (amount >= level.UL_MemberNum)
                     {
                         //更新用户等级
                         dal.updateUserLevel(userId, level.UL_ID);
+                        break;
                     }
                 }
             }
@@ -414,7 +427,7 @@ namespace BAMENG.LOGIC
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool ConvertToBean(int userId, int amount, ref ApiStatusCode code)
         {
-            if (amount < 100)
+            if (amount <= 2)
             {
                 code = ApiStatusCode.兑换的盟豆数量不能少于100;
                 return false;
@@ -480,6 +493,21 @@ namespace BAMENG.LOGIC
                 result.Add(convertFlow);
             }
             return result;
+        }
+
+
+
+        /// <summary>
+        /// 获取已兑换盟豆
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public static int AlreadyConvertTotal(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetAllConvertTotal(userId);
+            }
         }
 
         /// <summary>
@@ -572,7 +600,10 @@ namespace BAMENG.LOGIC
                         register.UserIdentity = 0;
                         register.username = model.UserName;
                         register.userGender = model.Sex == 1 ? "M" : "F";
-                        dal.AddUserInfo(register);
+                        if (dal.AddUserInfo(register) > 0)
+                        {
+                            masterUpdate(userId);
+                        }
 
                         scope.Complete();
                     }
@@ -695,7 +726,7 @@ namespace BAMENG.LOGIC
                 /**
                  * 判断商户是否开启签到功能
                  */
-                if (signCfg == null || !signCfg.EnableSign)
+                if (signCfg == null || !signCfg.EnableSign || signCfg.SignScore <= 0)
                 {
                     apiCode = ApiStatusCode.签到功能未开启;
                     return 0;
@@ -736,7 +767,7 @@ namespace BAMENG.LOGIC
                        * 判断昨天是否已经满足奖励条件
                        * 如果满足，则连续签到天数置0，重新计数
                        */
-                    if (memberSign.SignCount >= signCfg.ContinuousSignDay)
+                    if (memberSign.SignCount >= signCfg.ContinuousSignDay && signCfg.ContinuousSignRewardScore > 0)
                     {
                         RewardIntegral = signCfg.ContinuousSignRewardScore;
                         //重新计数
@@ -768,7 +799,7 @@ namespace BAMENG.LOGIC
                         * 判断连续签到天数是否满足奖励条件
                         * 满足条件后，获取奖励积分，并且连续签到天数置0
                         */
-                    if (SignCount >= signCfg.ContinuousSignDay)
+                    if (SignCount >= signCfg.ContinuousSignDay && signCfg.ContinuousSignRewardScore > 0)
                         RewardIntegral = signCfg.ContinuousSignRewardScore;
 
 
@@ -908,6 +939,7 @@ namespace BAMENG.LOGIC
                 item.money = model.Amount;
                 item.status = model.Income;
                 item.time = StringHelper.GetUTCTime(model.CreateTime);
+                item.remark = model.Remark;
                 result.Add(item);
             }
             return result;
@@ -1062,12 +1094,12 @@ namespace BAMENG.LOGIC
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>MyAllyIndexModel.</returns>
-        public static MyAllyIndexModel GetUserRank(int userId)
+        public static MyAllyIndexModel GetUserRank(int userId, int belongOne)
         {
 
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                return dal.GetUserRank(userId);
+                return dal.GetUserRank(userId, belongOne);
             }
         }
 

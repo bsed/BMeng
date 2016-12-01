@@ -9,7 +9,7 @@
 var _shareData = {
     title: document.title,
     desc: "",
-    img_url: "http://bmadmin.fancat.cn/static/img/mz@3x.png",
+    img_url: "http://" + window.location.host + "/app/images/appShareLogo.png",
     link: window.location.href,
     enable: true
 };

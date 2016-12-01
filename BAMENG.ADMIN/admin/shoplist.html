@@ -31,8 +31,8 @@
 
                                 </div>
                                 <div class="form-group m-r-sm">
-                                    <label class="control-label" for="goodBn">店铺名称：</label>
-                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="店铺名称" />
+                                    <label class="control-label" for="goodBn">门店名称：</label>
+                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="门店名称" />
                                 </div>
                             </div>
                             <p style="height: 8px;"></p>
@@ -53,13 +53,13 @@
                     <div class="ibox-content p-xxs no-top-border">
                         <div class="panel-body">
                             <div style="text-align:right;">
-                                <button type="button" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="shopHelper.dialog()">添加门店</button>
+                                <button type="button" id="btnShop" style="display:none;" class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal2" onclick="shopHelper.dialog()">添加门店</button>
                             </div>
                             <table class="table table-bordered table-hover table-center">
                                 <thead>
                                     <tr>
                                         <th>登录名</th>
-                                        <th>总店名称</th>
+                                        <th>门店名称</th>
                                         <th>联系人</th>
                                         <th>所在地</th>
                                         <th>联系方式</th>
@@ -90,8 +90,8 @@
             <td>{ActiveStatus}</td>
             <td>
                 <span class="cursor-point" onclick="shopHelper.dialog({ShopID});" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
-                &nbsp;
-                <span class="cursor-point" onclick="shopHelper.del({ShopID})"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>
+                <!--&nbsp;
+                <span class="cursor-point" onclick="shopHelper.del({ShopID})"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>-->
                 &nbsp;
                 <span class="cursor-point" onclick="shopHelper.updateActive({ShopID},{IsActive})"><i class="fa fa-cog tooltips" data-placement="top" data-toggle="tooltip" data-original-title="冻结/解冻"></i></span>
             </td>

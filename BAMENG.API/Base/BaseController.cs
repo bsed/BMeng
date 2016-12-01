@@ -198,11 +198,19 @@ namespace BAMENG.API
         /// <param name="filterContext">有关当前请求和操作的信息。</param>
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            Header = new Dictionary<string, string>();
-            Params = GetParams(filterContext.HttpContext.Request);
-            OS = GetQuery("os", "");
-            Version = GetQuery("version", "1.0.0");
-            timestamp = GetQuery("timestamp", "");
+            try
+            {
+                Header = new Dictionary<string, string>();
+                Params = GetParams(filterContext.HttpContext.Request);
+                OS = GetQuery("os", "");
+                Version = GetQuery("version", "1.0.0");
+                timestamp = GetQuery("timestamp", "");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("OnActionExecuting:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -223,13 +231,16 @@ namespace BAMENG.API
                         UserModel user = UserLogic.GetModel(UserId);
                         user.token = Authorization;
                         user.TempMengBeans = UserLogic.countTempBeansMoney(user.UserId, 0);
+                        if (user.ShopActive == 0)
+                            user.IsActive = 0;
                         return user;
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                LogHelper.Log(string.Format("GetUserData:message:{0},StackTrace:{1}", ex.Message,ex.StackTrace), LogHelperTag.ERROR);
+                Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             return null;
         }
@@ -253,7 +264,7 @@ namespace BAMENG.API
             }
             catch (Exception)
             {
-
+                Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             return 0;
         }

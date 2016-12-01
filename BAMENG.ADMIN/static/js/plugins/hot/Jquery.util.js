@@ -1,4 +1,5 @@
-﻿/*
+﻿/// <reference path="../../jquery.min.js" />
+/*
     版权所有:杭州火图科技有限公司
     地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼在地图中查看
     (c) Copyright Hangzhou Hot Technology Co., Ltd.
@@ -42,6 +43,57 @@ $.fn.extend({
         });
     }
 });
+
+
+function getIEVersion() {
+    var e = -1;
+    if (navigator.appName == "Microsoft Internet Explorer") {
+        var t = navigator.userAgent,
+        n = new RegExp("MSIE ([0-9]{1,}[.0-9]{0,})");
+        n.exec(t) != null && (e = parseFloat(RegExp.$1))
+    }
+    return e;
+}
+$.fn.OnlyNum = function () {//文本框只允许输入数字，使用：$('.OnlyNum').OnlyNum()
+    $(this).on("keydown",function (e) {
+        if (e.ctrlKey) return !0;
+        var t = t || window.event,
+        n = t.charCode || t.keyCode;
+        n != 8 && n != 9 && n != 46 && (n < 37 || n > 40) && (n < 48 || n > 57) && (n < 96 || n > 105) && (t.preventDefault ? t.preventDefault() : t.returnValue = !1, $(this).show("highlight", 150))
+    }).on("focus", function () {
+        this.style.imeMode = "disabled"
+    }).on("blur", function () {
+        $(this).val($(this).val().replace(/[^\d]/g, ""))
+    }),
+    getIEVersion() > 0 && $(this).bind("beforepaste",
+    function (e) {
+        clipboardData.setData("text", clipboardData.getData("text").replace(/[^\d]/g, ""))
+    })
+};
+
+$.fn.OnlyFloat = function () {//文本框只允许输入浮点类型
+    $(this).on("keydown",
+    function (e) {
+        function r(e, t) {
+            t.preventDefault ? t.preventDefault() : t.returnValue = !1,
+            $(e).show("highlight", 150)
+        }
+        if (e.ctrlKey) return !0;
+        var t = t || window.event,
+        n = t.charCode || t.keyCode;
+        n == 110 || n == 190 ? ($(this).val().indexOf(".") >= 0 || !$(this).val().length) && r(this, t) : n != 8 && n != 9 && n != 46 && (n < 37 || n > 40) && (n < 48 || n > 57) && (n < 96 || n > 105) && r(this, t)
+    }).on("focus",
+    function () {
+        this.style.imeMode = "disabled"
+    }).on("blur",
+    function () {
+        $(this).val($(this).val().replace(/[^\d.]/g, "").replace(/^\./g, ""))
+    }),
+    getIEVersion() > 0 && $(this).bind("beforepaste",
+    function (e) {
+        clipboardData.setData("text", clipboardData.getData("text").replace(/(^[0-9]([.][0-9]{1,2})?$)|(^1[0-9]([.][0-9]{1,2})?$)|(^2[0-3]([.][0-9]{1,2})?$)|(^24([.]0{1,2})?$)/g, ""))
+    })
+};
 
 
 

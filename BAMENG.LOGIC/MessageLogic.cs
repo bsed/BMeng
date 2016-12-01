@@ -48,14 +48,16 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.MessageFactory())
             {
                 if (model.ID > 0)
-                    return dal.UpdateMessageInfo(model);
-                else
                 {
                     using (TransactionScope scope = new TransactionScope())
                     {
+                        int messageId = model.ID;
 
-                        int messageId = dal.AddMessageInfo(model);
-                        if (messageId > 0)
+                        var data = dal.GetModel(model.ID);
+
+                        bool flag = dal.UpdateMessageInfo(model);
+
+                        if (flag && model.IsSend == 1 && data.IsSend == 0)
                         {
                             // TODO;添加门店记录
                             //如果给总后台发布消息通知
@@ -64,15 +66,53 @@ namespace BAMENG.LOGIC
 
                             if (userIdentity == 1 || userIdentity == 0)
                             {
-                                if (string.IsNullOrEmpty(model.SendTargetIds))
-                                    return false;
-                                string[] targetIds = model.SendTargetIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                if (targetIds == null || targetIds.Count() == 0)
-                                    return false;
-
-                                foreach (var targetid in targetIds)
+                                if (model.IsSendBelongShopId == 0 || !string.IsNullOrEmpty(model.SendTargetIds))
                                 {
-                                    dal.AddMessageSendTarget(messageId, Convert.ToInt32(targetid));
+                                    if (string.IsNullOrEmpty(model.SendTargetIds))
+                                        return false;
+                                    string[] targetIds = model.SendTargetIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                    if (targetIds == null || targetIds.Count() == 0)
+                                        return false;
+
+                                    foreach (var targetid in targetIds)
+                                    {
+                                        dal.AddMessageSendTarget(messageId, Convert.ToInt32(targetid));
+                                    }
+                                }
+                            }
+                            else
+                                dal.AddMessageSendTarget(messageId, ShopBelongId);
+                        }
+                        scope.Complete();
+                        return true;
+                    }
+                }
+                else
+                {
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+
+                        int messageId = dal.AddMessageInfo(model);
+                        if (messageId > 0 && model.IsSend == 1)
+                        {
+                            // TODO;添加门店记录
+                            //如果给总后台发布消息通知
+                            if (userIdentity == 1 && model.IsSendBelongShopId == 1)
+                                dal.AddMessageSendTarget(messageId, -1);
+                            if (userIdentity == 1 || userIdentity == 0)
+                            {
+                                if (model.IsSendBelongShopId == 0 || !string.IsNullOrEmpty(model.SendTargetIds))
+                                {
+                                    if (string.IsNullOrEmpty(model.SendTargetIds))
+                                        return false;
+                                    string[] targetIds = model.SendTargetIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                    if (targetIds == null || targetIds.Count() == 0)
+                                        return false;
+
+                                    foreach (var targetid in targetIds)
+                                    {
+                                        dal.AddMessageSendTarget(messageId, Convert.ToInt32(targetid));
+                                    }
                                 }
                             }
                             else
@@ -165,7 +205,7 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.MessageFactory())
             {
-                return dal.DeleteMessageInfo(messageId,shopId,type);
+                return dal.DeleteMessageInfo(messageId, shopId, type);
             }
         }
     }

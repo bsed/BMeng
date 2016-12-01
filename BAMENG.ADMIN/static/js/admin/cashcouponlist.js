@@ -204,8 +204,10 @@ var couponHelper = {
 };
 
 $(function () {
-    couponHelper.pageInit();
 
+    $('.OnlyNum').OnlyNum();
+
+    couponHelper.pageInit();
     $("#couponenable").change(function () {
         if ($(this).attr("checked"))
             $(this).setChecked(false);

@@ -110,35 +110,42 @@ namespace BAMENG.LOGIC
                 {
                     if (model.IsActive == 1)
                     {
-                        apiCode = ApiStatusCode.OK;
-                        if (!string.IsNullOrEmpty(model.UserHeadImg))
-                            model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
-                        model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
-                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
-                        model.MengBeans = model.MengBeans - model.MengBeansLocked;
-                        model.Score = model.Score - model.ScoreLocked;
-                        model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
 
-                        string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
-                        if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
-                            model.token = token;
-
-
-                        //添加登录日志
-                        LogLogic.AddLoginLog(new LoginLogModel()
+                        if (model.ShopActive == 1)
                         {
-                            UserId = model.UserId,
-                            UserIdentity = model.UserIdentity,
-                            BelongOne = model.BelongOne,
-                            ShopId = model.ShopId,
-                            AppSystem = AppSystem
-                        });
+                            apiCode = ApiStatusCode.OK;
+                            if (!string.IsNullOrEmpty(model.UserHeadImg))
+                                model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
+                            model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
+                            model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
+                            model.MengBeans = model.MengBeans - model.MengBeansLocked;
+                            model.Score = model.Score - model.ScoreLocked;
+                            model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
 
-                        //更新最后登录时间
-                        dal.UpdateLastLoginTime(model.UserId);
+                            string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
+                            if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
+                                model.token = token;
 
 
-                        return model;
+                            //添加登录日志
+                            LogLogic.AddLoginLog(new LoginLogModel()
+                            {
+                                UserId = model.UserId,
+                                UserIdentity = model.UserIdentity,
+                                BelongOne = model.BelongOne,
+                                ShopId = model.ShopId,
+                                AppSystem = AppSystem
+                            });
+
+                            //更新最后登录时间
+                            dal.UpdateLastLoginTime(model.UserId);
+                            return model;
+                        }
+                        else
+                        {
+                            apiCode = ApiStatusCode.账户已禁用;
+                            return null;
+                        }
                     }
                     else
                     {

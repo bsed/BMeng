@@ -25,8 +25,8 @@ $(function () {
                     $("#todayCustomerCount").text(todayData.NewCustomerCount);
                     $("#todayMessageCount").text(todayData.NewMessageCount);
 
-                    $("#yesterdayAllyCount").text(todayData.NewAllyCount);
-                    $("#yesterdayCustomerCount").text(todayData.NewCustomerCount);
+                    $("#yesterdayAllyCount").text(yesterdayData.NewAllyCount);
+                    $("#yesterdayCustomerCount").text(yesterdayData.NewCustomerCount);
 
                 }
             }

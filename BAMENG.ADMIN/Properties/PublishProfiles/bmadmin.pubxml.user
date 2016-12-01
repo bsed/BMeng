@@ -10,16 +10,16 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="admin/articleedit.html">
-      <publishTime>11/28/2016 15:01:00</publishTime>
+      <publishTime>11/30/2016 17:13:56</publishTime>
     </File>
     <File Include="admin/articlelist.html">
       <publishTime>11/18/2016 15:24:37</publishTime>
     </File>
     <File Include="admin/basesetting.html">
-      <publishTime>11/10/2016 13:13:21</publishTime>
+      <publishTime>11/30/2016 19:58:12</publishTime>
     </File>
     <File Include="admin/cashcouponlist.html">
-      <publishTime>11/25/2016 17:14:23</publishTime>
+      <publishTime>11/30/2016 20:05:45</publishTime>
     </File>
     <File Include="admin/cashcouponstatic.html">
       <publishTime>11/25/2016 12:45:37</publishTime>
@@ -37,7 +37,7 @@
       <publishTime>11/28/2016 16:28:45</publishTime>
     </File>
     <File Include="admin/customerlist.html">
-      <publishTime>11/03/2016 14:09:25</publishTime>
+      <publishTime>12/01/2016 11:27:46</publishTime>
     </File>
     <File Include="admin/customerstatic.html">
       <publishTime>11/24/2016 16:33:27</publishTime>
@@ -52,10 +52,13 @@
       <publishTime>11/09/2016 19:54:24</publishTime>
     </File>
     <File Include="admin/messageedit.html">
-      <publishTime>11/18/2016 17:46:11</publishTime>
+      <publishTime>11/30/2016 09:42:21</publishTime>
     </File>
     <File Include="admin/messagelist.html">
       <publishTime>11/18/2016 16:42:39</publishTime>
+    </File>
+    <File Include="admin/modifypassword.html">
+      <publishTime>11/29/2016 13:01:43</publishTime>
     </File>
     <File Include="admin/none.html">
       <publishTime>11/25/2016 11:53:40</publishTime>
@@ -73,7 +76,7 @@
       <publishTime>11/25/2016 17:51:31</publishTime>
     </File>
     <File Include="admin/shoplist.html">
-      <publishTime>11/09/2016 18:46:23</publishTime>
+      <publishTime>11/29/2016 16:05:28</publishTime>
     </File>
     <File Include="admin/userdetails.html">
       <publishTime>11/24/2016 17:36:16</publishTime>
@@ -82,7 +85,7 @@
       <publishTime>11/28/2016 15:17:29</publishTime>
     </File>
     <File Include="admin/userlist.html">
-      <publishTime>11/28/2016 19:52:34</publishTime>
+      <publishTime>12/01/2016 15:33:47</publishTime>
     </File>
     <File Include="app/about.html">
       <publishTime>11/24/2016 11:15:50</publishTime>
@@ -91,16 +94,25 @@
       <publishTime>11/19/2016 16:49:49</publishTime>
     </File>
     <File Include="app/couponshare.html">
-      <publishTime>11/28/2016 15:12:24</publishTime>
+      <publishTime>12/01/2016 09:42:49</publishTime>
     </File>
     <File Include="app/details.html">
-      <publishTime>11/28/2016 10:37:29</publishTime>
+      <publishTime>12/01/2016 09:43:29</publishTime>
     </File>
     <File Include="app/getcoupon.html">
-      <publishTime>11/28/2016 11:49:21</publishTime>
+      <publishTime>12/01/2016 15:37:19</publishTime>
+    </File>
+    <File Include="app/images/appShareCoupon.png">
+      <publishTime>12/01/2016 09:31:43</publishTime>
+    </File>
+    <File Include="app/images/appShareLogo.png">
+      <publishTime>12/01/2016 09:28:53</publishTime>
+    </File>
+    <File Include="app/images/default.jpg">
+      <publishTime>11/29/2016 10:11:11</publishTime>
     </File>
     <File Include="app/myqrcode.html">
-      <publishTime>11/27/2016 13:56:18</publishTime>
+      <publishTime>12/01/2016 09:47:07</publishTime>
     </File>
     <File Include="app/myqrcodetemplate.html">
       <publishTime>11/25/2016 15:53:50</publishTime>
@@ -118,25 +130,25 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>11/28/2016 21:00:31</publishTime>
+      <publishTime>12/01/2016 17:38:58</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>11/28/2016 20:50:47</publishTime>
+      <publishTime>12/01/2016 15:42:10</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>11/28/2016 20:50:47</publishTime>
+      <publishTime>12/01/2016 17:15:08</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>11/28/2016 20:50:47</publishTime>
+      <publishTime>12/01/2016 17:15:07</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>11/28/2016 20:51:52</publishTime>
+      <publishTime>12/01/2016 17:38:54</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>11/28/2016 20:50:47</publishTime>
+      <publishTime>12/01/2016 15:42:10</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
-      <publishTime>11/11/2016 16:33:40</publishTime>
+      <publishTime>11/29/2016 13:31:29</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/07/2015 19:04:38</publishTime>
@@ -223,10 +235,10 @@
       <publishTime>11/27/2016 16:02:19</publishTime>
     </File>
     <File Include="index.html">
-      <publishTime>11/24/2016 11:14:57</publishTime>
+      <publishTime>11/30/2016 09:20:53</publishTime>
     </File>
     <File Include="main.html">
-      <publishTime>11/17/2016 11:06:18</publishTime>
+      <publishTime>11/29/2016 11:40:28</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>10/25/2016 14:30:12</publishTime>
@@ -537,6 +549,12 @@
     <File Include="static/img/a9.jpg">
       <publishTime>10/21/2015 10:40:56</publishTime>
     </File>
+    <File Include="static/img/appShareCoupon.png">
+      <publishTime>12/01/2016 09:31:48</publishTime>
+    </File>
+    <File Include="static/img/appShareLogo.png">
+      <publishTime>12/01/2016 09:24:12</publishTime>
+    </File>
     <File Include="static/img/bg.png">
       <publishTime>10/21/2015 10:40:56</publishTime>
     </File>
@@ -586,7 +604,7 @@
       <publishTime>10/21/2015 10:40:56</publishTime>
     </File>
     <File Include="static/img/profile_small.jpg">
-      <publishTime>10/21/2015 10:40:56</publishTime>
+      <publishTime>11/29/2016 10:17:18</publishTime>
     </File>
     <File Include="static/img/progress.png">
       <publishTime>10/21/2015 10:40:56</publishTime>
@@ -625,19 +643,19 @@
       <publishTime>11/20/2015 08:40:00</publishTime>
     </File>
     <File Include="static/js/admin/apparticle.js">
-      <publishTime>11/25/2016 14:01:18</publishTime>
+      <publishTime>12/01/2016 09:58:59</publishTime>
     </File>
     <File Include="static/js/admin/articleedit.js">
-      <publishTime>11/28/2016 20:59:48</publishTime>
+      <publishTime>12/01/2016 10:08:16</publishTime>
     </File>
     <File Include="static/js/admin/articlelist.js">
-      <publishTime>11/24/2016 17:34:25</publishTime>
+      <publishTime>11/30/2016 19:26:58</publishTime>
     </File>
     <File Include="static/js/admin/basesetting.js">
-      <publishTime>11/22/2016 16:06:02</publishTime>
+      <publishTime>11/30/2016 19:57:32</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponlist.js">
-      <publishTime>11/25/2016 17:15:26</publishTime>
+      <publishTime>11/30/2016 19:58:54</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponstatic.js">
       <publishTime>11/25/2016 12:45:37</publishTime>
@@ -649,16 +667,16 @@
       <publishTime>11/28/2016 12:40:47</publishTime>
     </File>
     <File Include="static/js/admin/customerlist.js">
-      <publishTime>11/03/2016 14:09:45</publishTime>
+      <publishTime>11/29/2016 16:31:23</publishTime>
     </File>
     <File Include="static/js/admin/customerstatistics.js">
       <publishTime>11/24/2016 13:56:37</publishTime>
     </File>
     <File Include="static/js/admin/focuspic.js">
-      <publishTime>11/28/2016 20:05:21</publishTime>
+      <publishTime>11/29/2016 09:28:41</publishTime>
     </File>
     <File Include="static/js/admin/Home.js">
-      <publishTime>11/27/2016 15:58:24</publishTime>
+      <publishTime>11/29/2016 09:34:50</publishTime>
     </File>
     <File Include="static/js/admin/Login.js">
       <publishTime>11/07/2016 09:28:32</publishTime>
@@ -670,10 +688,13 @@
       <publishTime>11/09/2016 19:53:56</publishTime>
     </File>
     <File Include="static/js/admin/messageedit.js">
-      <publishTime>11/18/2016 17:45:24</publishTime>
+      <publishTime>12/01/2016 10:09:44</publishTime>
     </File>
     <File Include="static/js/admin/messagelist.js">
       <publishTime>11/18/2016 17:19:49</publishTime>
+    </File>
+    <File Include="static/js/admin/modifypassword.js">
+      <publishTime>11/29/2016 13:00:59</publishTime>
     </File>
     <File Include="static/js/admin/orderdetails.js">
       <publishTime>11/19/2016 16:34:53</publishTime>
@@ -688,10 +709,10 @@
       <publishTime>11/25/2016 17:51:31</publishTime>
     </File>
     <File Include="static/js/admin/shareConfig.js">
-      <publishTime>11/25/2016 13:55:10</publishTime>
+      <publishTime>12/01/2016 09:46:45</publishTime>
     </File>
     <File Include="static/js/admin/shoplist.js">
-      <publishTime>11/28/2016 09:48:09</publishTime>
+      <publishTime>11/29/2016 16:27:28</publishTime>
     </File>
     <File Include="static/js/admin/userdetails.js">
       <publishTime>11/24/2016 17:36:58</publishTime>
@@ -700,7 +721,7 @@
       <publishTime>11/28/2016 15:22:02</publishTime>
     </File>
     <File Include="static/js/admin/userlist.js">
-      <publishTime>11/27/2016 16:24:24</publishTime>
+      <publishTime>12/01/2016 15:15:57</publishTime>
     </File>
     <File Include="static/js/bootstrap.min.js">
       <publishTime>06/16/2015 16:12:50</publishTime>
@@ -904,7 +925,7 @@
       <publishTime>11/02/2016 15:35:51</publishTime>
     </File>
     <File Include="static/js/plugins/hot/Jquery.util.js">
-      <publishTime>11/28/2016 17:10:47</publishTime>
+      <publishTime>11/30/2016 20:05:40</publishTime>
     </File>
     <File Include="static/js/plugins/iCheck/icheck.min.js">
       <publishTime>10/21/2015 10:40:46</publishTime>
@@ -1432,7 +1453,7 @@
       <publishTime>10/21/2015 10:40:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/25/2016 16:32:46</publishTime>
+      <publishTime>12/01/2016 17:38:58</publishTime>
     </File>
   </ItemGroup>
 </Project>

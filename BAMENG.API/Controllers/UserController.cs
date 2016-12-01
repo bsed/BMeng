@@ -129,7 +129,7 @@ namespace BAMENG.API.Controllers
                 UserId = GetAuthUserId(),
                 orderbyCode = orderbyCode,
                 IsDesc = isDesc == 1
-            });
+            });           
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -163,6 +163,23 @@ namespace BAMENG.API.Controllers
             UserLogic.ConvertAudit(userId, id, status, ref code);
             return Json(new ResultModel(ApiStatusCode.OK));
         }
+
+
+        /// <summary>
+        /// 已兑换盟豆 POST: user/AlreadyConvertTotal
+        /// </summary>
+        /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
+        public ActionResult AlreadyConvertTotal()
+        {
+            var user = GetUserData();
+            int count = UserLogic.AlreadyConvertTotal(user.UserId);
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["alreadyConverCount"] = count;
+            dict["mengBeansCount"] = user.MengBeans;
+            return Json(new ResultModel(ApiStatusCode.OK, dict));
+        }
+
 
         /// <summary>
         /// 个人信息 POST: user/myinfo
@@ -201,12 +218,13 @@ namespace BAMENG.API.Controllers
                         // 设置当前流的位置为流的开始
                         stream.Seek(0, SeekOrigin.Begin);
                         if (FileUploadHelper.UploadFile(bytes, fileName))
-                            userInfo.UserHeadImg = WebConfig.reswebsite() + fileName;
+                            userInfo.UserHeadImg = fileName;
                         else
                             return Json(new ResultModel(ApiStatusCode.请上传图片));
 
 
-                        data["url"] = userInfo.UserHeadImg;
+                        data["url"] = WebConfig.reswebsite() + userInfo.UserHeadImg;
+                        content = userInfo.UserHeadImg;
                     }
                     break;
                 case (int)UserPropertyOptions.USER_2:
@@ -222,12 +240,17 @@ namespace BAMENG.API.Controllers
                     userInfo.UserCity = content;
                     break;
             }
-            UserPropertyOptions opt;
-            bool flg = Enum.TryParse(type.ToString(), out opt);
-
-            UserLogic.UpdateUserInfo(opt, userInfo);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
-
+            if (!string.IsNullOrEmpty(content))
+            {
+                UserPropertyOptions opt;
+                bool flg = Enum.TryParse(type.ToString(), out opt);
+                UserLogic.UpdateUserInfo(opt, userInfo);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            else
+            {
+                return Json(new ResultModel(ApiStatusCode.内容不能为空));
+            }
 
         }
 
@@ -258,7 +281,11 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult GetAllyReward()
         {
-            var data = UserLogic.GetRewardModel(GetAuthUserId());
+            var user = GetUserData();
+            int userId = user.UserIdentity == 1 ? user.UserId : user.BelongOne;
+            var data = UserLogic.GetRewardModel(userId);
+            if (data == null)
+                data = new RewardsSettingModel();
             return Json(new ResultModel(ApiStatusCode.OK, data));
 
         }
@@ -441,7 +468,7 @@ namespace BAMENG.API.Controllers
         {
             var user = GetUserData();
 
-            MyAllyIndexModel data = UserLogic.GetUserRank(user.UserId);
+            MyAllyIndexModel data = UserLogic.GetUserRank(user.UserId, user.BelongOne);
             if (data == null) data = new MyAllyIndexModel();
             data.OrderSuccessAmount = user.OrderSuccessAmount;
             data.CustomerAmount = user.CustomerAmount;

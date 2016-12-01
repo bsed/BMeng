@@ -140,9 +140,15 @@ namespace BAMENG.DAL
                             item.SendTargetName = GetMessageShopName(item.AuthorId);
                         else
                         {
-                            item.SendTargetName = GetMessageShopName(item.SendTargetIds);
-                            if (item.IsSendBelongShopId == 1)
-                                item.SendTargetName += " /总站";
+                            if (!string.IsNullOrEmpty(item.SendTargetIds))
+                            {
+                                item.SendTargetName = GetMessageShopName(item.SendTargetIds);
+                                if (item.IsSendBelongShopId == 1)
+                                    item.SendTargetName += " /总站";
+                            }
+                            else
+                                item.SendTargetName += "总站";
+
                         }
 
                     });
@@ -243,11 +249,13 @@ namespace BAMENG.DAL
         /// <exception cref="NotImplementedException"></exception>
         public bool UpdateMessageInfo(MessageModel model)
         {
-            string strSql = "update BM_MessageManage set Title=@Title,MessageBody=@MessageBody,IsSend=@IsSend where ID=@ID";
+            string strSql = "update BM_MessageManage set Title=@Title,MessageBody=@MessageBody,IsSend=@IsSend,IsSendBelongShopId=@IsSendBelongShopId,SendTargetIds=@SendTargetIds where ID=@ID";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
                 new SqlParameter("@MessageBody", model.MessageBody),
                 new SqlParameter("@IsSend", model.IsSend),
+                new SqlParameter("@IsSendBelongShopId", model.IsSendBelongShopId),
+                new SqlParameter("@SendTargetIds", model.SendTargetIds),
                 new SqlParameter("@ID", model.ID)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;

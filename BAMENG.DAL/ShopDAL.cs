@@ -99,33 +99,43 @@ namespace BAMENG.DAL
             ResultPageModel result = new ResultPageModel();
             if (model == null)
                 return result;
-            string strSql = @"select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,LoginPassword,IsActive,CreateTime from BM_ShopManage where 1=1 and IsDel<>1 ";
+            string strSql = @"select  S.ShopID,S.ShopName,S.ShopType,S.ShopBelongId,S.ShopProv,S.ShopCity,S.ShopArea,S.ShopAddress,S.Contacts,S.ContactWay,S.LoginName,S.LoginPassword,S.IsActive,S.CreateTime {0} from BM_ShopManage S ";
 
-            strSql += " and ShopType=@ShopType";
+            if (model.type == 2)
+            {
+                strSql = string.Format(strSql, ",S2.ShopName as BelongOneShopName ");
+                strSql += " left join BM_ShopManage S2 on S2.ShopID=S.ShopBelongId ";
+            }
+            else
+                strSql = string.Format(strSql, "");
+            strSql += " where 1=1 and S.IsDel<>1  and S.ShopType=@ShopType";
             if (ShopType == 2 && ShopBelongId > 0)
             {
-                strSql += " and ShopBelongId=@ShopBelongId";
+                strSql += " and S.ShopBelongId=@ShopBelongId";
             }
 
             if (!string.IsNullOrEmpty(model.key))
             {
-                strSql += string.Format(" and ShopName like '%{0}%' ", model.key);
+                if (model.type == 2)
+                    strSql += string.Format(" and (S.ShopName like '%{0}%' or S2.ShopName  like '%{0}%') ", model.key);
+                else
+                    strSql += string.Format(" and S.ShopName like '%{0}%' ", model.key);
             }
 
             if (!string.IsNullOrEmpty(model.province))
             {
-                strSql += " and ShopProv=@ShopProv";
+                strSql += " and S.ShopProv=@ShopProv";
             }
             if (!string.IsNullOrEmpty(model.city))
             {
-                strSql += " and ShopCity=@ShopCity";
+                strSql += " and S.ShopCity=@ShopCity";
             }
 
 
             if (!string.IsNullOrEmpty(model.startTime))
-                strSql += " and CONVERT(nvarchar(10),CreateTime,121)>=@startTime ";
+                strSql += " and CONVERT(nvarchar(10),S.CreateTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
             if (!string.IsNullOrEmpty(model.endTime))
-                strSql += " and CONVERT(nvarchar(10),CreateTime,121)<=@endTime ";
+                strSql += " and CONVERT(nvarchar(10),S.CreateTime,121)<=CONVERT(nvarchar(10),@endTime,121) ";
 
 
             var param = new[] {
@@ -139,7 +149,7 @@ namespace BAMENG.DAL
             };
 
             //生成sql语句
-            return getPageData<ShopModel>(model.PageSize, model.PageIndex, strSql, "CreateTime", false, param);
+            return getPageData<ShopModel>(model.PageSize, model.PageIndex, strSql, "S.CreateTime", false, param);
 
         }
         /// <summary>
@@ -159,13 +169,28 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
+        /// 根据总店ID，判断其所有分店是否全部冻结
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>true if [is all disable by shop identifier] [the specified shop identifier]; otherwise, false.</returns>
+        public bool IsAllDisableByShopID(int shopId)
+        {
+            string strSql = "select COUNT(1) from BM_ShopManage where ShopBelongId=@ShopID and IsActive=1  and IsDel=0";
+            var param = new[] {
+                new SqlParameter("@ShopID",shopId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) == 0;
+        }
+
+
+        /// <summary>
         /// 更新门店信息
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         public bool UpdateShopInfo(ShopModel model)
         {
-            string strSql = @"update BM_ShopManage set ShopName=@ShopName,ShopType=@ShopType,ShopBelongId=@ShopBelongId,ShopProv=@ShopProv,ShopCity=@ShopCity,ShopArea=@ShopArea,ShopAddress=@ShopAddress,Contacts=@Contacts,ContactWay=@ContactWay,IsActive=@IsActive";
+            string strSql = @"update BM_ShopManage set ShopName=@ShopName,ShopProv=@ShopProv,ShopCity=@ShopCity,ShopArea=@ShopArea,ShopAddress=@ShopAddress,Contacts=@Contacts,ContactWay=@ContactWay";
 
             if (!string.IsNullOrEmpty(model.LoginPassword))
                 strSql += ",LoginPassword=@LoginPassword";
@@ -173,8 +198,6 @@ namespace BAMENG.DAL
             strSql += " where ShopID=@ShopID";
             var param = new[] {
                         new SqlParameter("@ShopName", model.ShopName),
-                        new SqlParameter("@ShopType", model.ShopType),
-                        new SqlParameter("@ShopBelongId", model.ShopBelongId),
                         new SqlParameter("@ShopProv", model.ShopProv),
                         new SqlParameter("@ShopCity", model.ShopCity),
                         new SqlParameter("@ShopArea", model.ShopArea),
@@ -182,7 +205,6 @@ namespace BAMENG.DAL
                         new SqlParameter("@Contacts", model.Contacts),
                         new SqlParameter("@ContactWay", model.ContactWay),
                         new SqlParameter("@LoginPassword", EncryptHelper.MD5_8(model.LoginPassword)),
-                        new SqlParameter("@IsActive",model.IsActive),
                         new SqlParameter("@ShopID",model.ShopID)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
@@ -199,7 +221,7 @@ namespace BAMENG.DAL
         /// <returns>List&lt;ShopModel&gt;.</returns>
         public List<ShopModel> GetShopList(int shopType, int shopId)
         {
-            string strSql = "select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,CreateTime,IsActive from BM_ShopManage where 1=1 ";
+            string strSql = "select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,CreateTime,IsActive from BM_ShopManage where 1=1 and IsActive=1 ";
 
             strSql += " and ShopType=@ShopType";
             if (shopType == 2)
@@ -231,7 +253,23 @@ namespace BAMENG.DAL
             return 0;
         }
 
-
+        /// <summary>
+        /// 获取门店信息
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <returns>ShopModel.</returns>
+        public ShopModel GetShopModel(int shopId)
+        {
+            string strSql = "select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,CreateTime,IsActive from BM_ShopManage where 1=1 and IsActive=1 ";
+            strSql += " and ShopID=@ShopID";
+            var param = new[] {                        
+                new SqlParameter("@ShopID", shopId)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntity<ShopModel>(dr);
+            }
+        }
 
     }
 }

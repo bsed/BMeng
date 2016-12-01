@@ -109,10 +109,9 @@ var focusHelper = {
                             text: "即将更新...",
                             timer: 1500,
                             showConfirmButton: false
-                        });
-                        setTimeout(function () {
+                        }, function () {
                             window.location.reload();
-                        }, 1500);
+                        });
                     }
                     else
                         swal(ret.statusText, "", "warning");

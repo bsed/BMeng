@@ -77,7 +77,7 @@ namespace BAMENG.API.Controllers
             var user = GetUserData();
             ArticleModel model = new ArticleModel();
             model.ArticleBody = content;
-            model.ArticleIntro = content;
+            model.ArticleIntro = title;
             model.ArticleTitle = title;
             model.ArticleCover = "";
             model.ArticleStatus = 1;

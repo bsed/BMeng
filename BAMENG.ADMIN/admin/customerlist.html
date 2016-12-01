@@ -63,7 +63,8 @@
                                         <th>归属盟主</th>
                                         <th>手机</th>
                                         <th>客户地址</th>
-                                        <th>录入时间</th>
+                                        <th>状态</th>
+                                        <th>录入时间</th>                                        
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -80,17 +81,18 @@
 
     <template id="templist">
         <tr>
-            <td>{ID}</td>
+            <td>{NO}</td>
             <td>{Name}</td>
             <td>{BelongOneName}</td>
             <td>{BelongTwoName}</td>
             <td>{Mobile}</td>
             <td>{Addr}</td>
+            <td>{StatusText}</td>
             <td>{CreateTime}</td>
             <td>
                 <span class="cursor-point" onclick="customerHelper.dialog('{ID}');" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil tooltips" data-placement="top" data-toggle="tooltip" data-original-title="编辑"></i></span>
-                &nbsp;
-                <span class="cursor-point" onclick="customerHelper.del('{ID}')"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>
+                <!--&nbsp;
+                <span class="cursor-point" onclick="customerHelper.del('{ID}')"><i class="fa fa-trash tooltips" data-placement="top" data-toggle="tooltip" data-original-title="删除"></i></span>-->
             </td>
         </tr>
     </template>

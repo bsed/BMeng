@@ -76,12 +76,17 @@ namespace BAMENG.CONFIG
         [Description("无操作权限")]
         无操作权限 = 6009,
 
-
         [Description("找回密码失败")]
         找回密码失败 = 6010,
 
         [Description("密码修改失败")]
         密码修改失败 = 6011,
+
+        [Description("旧密码不正确")]
+        旧密码不对 = 6012,
+
+        [Description("无效手机号")]
+        无效手机号 = 6013,
 
 
         [Description("账户已存在")]
@@ -112,6 +117,8 @@ namespace BAMENG.CONFIG
 
         [Description("用户信息丢失。")]
         用户信息丢失 = 70037,
+        [Description("内容不能为空。")]
+        内容不能为空 = 70038,
 
 
         [Description("请上传图片")]
@@ -150,6 +157,10 @@ namespace BAMENG.CONFIG
         无效验证码 = 72002,
 
 
+        [Description("超出当天发送次数")]
+        超出当天发送次数 = 72003,
+
+
 
 
 
@@ -167,6 +178,8 @@ namespace BAMENG.CONFIG
 
         [Description("您来晚了，现金券已领完!")]
         现金券已领完 = 75002,
+        [Description("现金券不存在或已使用")]
+        优惠券不存在 = 75003,
     }
 
 

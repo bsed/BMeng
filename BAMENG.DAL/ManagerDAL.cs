@@ -19,6 +19,7 @@ using System.Data.SqlClient;
 using HotCoreUtils.DB;
 using BAMENG.CONFIG;
 using System.Data;
+using HotCoreUtils.Helper;
 
 namespace BAMENG.DAL
 {
@@ -166,6 +167,26 @@ namespace BAMENG.DAL
                 new SqlParameter("@UserName",model.UserName),
                 new SqlParameter("@UserMobile",model.UserMobile),
                 new SqlParameter("@UserEmail",model.UserEmail)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="oldPassword">The old password.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool ChanagePassword(int userId, int useridentity, string oldPassword, string password)
+        {
+            string strSql = "update BM_Manager set LoginPassword=@NewLoginPassword where ID=@ID and LoginPassword=@OldLoginPassword";
+            if (useridentity != 0)
+                strSql = "update BM_ShopManage set LoginPassword=@NewLoginPassword where ShopID=@ID and LoginPassword=@OldLoginPassword";
+            SqlParameter[] param = {
+                new SqlParameter("@NewLoginPassword",EncryptHelper.MD5(password)),
+                new SqlParameter("@ID", userId),
+                new SqlParameter("@OldLoginPassword",EncryptHelper.MD5(oldPassword))
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }

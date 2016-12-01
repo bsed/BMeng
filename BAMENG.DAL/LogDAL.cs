@@ -158,13 +158,14 @@ namespace BAMENG.DAL
         /// <returns>true if XXXX, false otherwise.</returns>
         public bool AddCustomerLog(LogBaseModel logModel)
         {
-            string strSql = @"insert into BM_CustomerLog(UserId,ShopId,AppSystem,BelongShopId,OperationType) values(@UserId,@ShopId,@AppSystem,@BelongShopId,@OperationType)";
+            string strSql = @"insert into BM_CustomerLog(UserId,ShopId,AppSystem,BelongShopId,OperationType,customerId) values(@UserId,@ShopId,@AppSystem,@BelongShopId,@OperationType,@customerId)";
             var param = new[] {
                 new SqlParameter("@UserId",logModel.UserId),
                 new SqlParameter("@ShopId",logModel.ShopId),
                 new SqlParameter("@AppSystem",logModel.AppSystem),
                 new SqlParameter("@BelongShopId",logModel.BelongShopId),
-                new SqlParameter("@OperationType",logModel.OperationType)
+                new SqlParameter("@OperationType",logModel.OperationType),
+                new SqlParameter("@customerId",logModel.objId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
@@ -176,13 +177,14 @@ namespace BAMENG.DAL
         /// <returns>true if XXXX, false otherwise.</returns>
         public bool AddCouponLog(LogBaseModel logModel)
         {
-            string strSql = @"insert into BM_CouponLog(UserId,ShopId,BelongShopId,Type,Money) values(@UserId,@ShopId,@BelongShopId,@Type,@Money)";
+            string strSql = @"insert into BM_CouponLog(UserId,ShopId,BelongShopId,Type,Money,CouponId) values(@UserId,@ShopId,@BelongShopId,@Type,@Money,@CouponId)";
             var param = new[] {
                 new SqlParameter("@UserId",logModel.UserId),
                 new SqlParameter("@ShopId",logModel.ShopId),
                 new SqlParameter("@BelongShopId",logModel.BelongShopId),
                 new SqlParameter("@Type",logModel.OperationType),
-                new SqlParameter("@Money",logModel.Money)
+                new SqlParameter("@Money",logModel.Money),
+                new SqlParameter("@CouponId",logModel.objId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
@@ -342,13 +344,13 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsMoneyListModel>(dr);
             }
         }
-/// <summary>
-/// 获取分店优惠卷统计
-/// </summary>
-/// <param name="shopId"></param>
-/// <param name="startTime"></param>
-/// <param name="endTime"></param>
-/// <returns></returns>
+        /// <summary>
+        /// 获取分店优惠卷统计
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
         public List<StatisticsMoneyListModel> CouponStatisticsPieByShop(int shopId, string startTime, string endTime)
         {
             string strSql = @"select log.BelongOneUserId ,shop.UB_UserRealName as xData ,sum(log.Money) as yData  from BM_GetCashCouponLog as log

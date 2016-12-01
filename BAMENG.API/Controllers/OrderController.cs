@@ -27,8 +27,9 @@ namespace BAMENG.API.Controllers
         /// <returns></returns>
         public ActionResult myList(int type, long lastId)
         {
-            int userId = GetAuthUserId();
-            var data = OrderLogic.GetMyOrderList(userId, type, lastId);
+            var user = GetUserData();
+            int userId = user.UserId;
+            var data = OrderLogic.GetMyOrderList(userId, type, lastId,user.UserIdentity);
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict["list"] = data;
             return Json(new ResultModel(ApiStatusCode.OK, dict));
@@ -74,11 +75,12 @@ namespace BAMENG.API.Controllers
             stream.Seek(0, SeekOrigin.Begin);
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
-                bool flag = OrderLogic.saveOrder(userId, userName, mobile, address, cashNo, memo, fileName);
+                ApiStatusCode apiCode = ApiStatusCode.SERVICEERROR;
+                bool flag = OrderLogic.saveOrder(userId, userName, mobile, address, cashNo, memo, fileName, ref apiCode);
                 if (!flag)
                 {
                     System.IO.File.Delete(Server.MapPath(fileName));
-                    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                    return Json(new ResultModel(apiCode));
                 }
                 else
                     return Json(new ResultModel(ApiStatusCode.OK));

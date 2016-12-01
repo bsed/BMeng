@@ -98,15 +98,13 @@
         $("#loadBox").show();
         hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
             if (ret) {
-                if (ret.status != 200) {
-                    $(".lodinggo").remove();
+                if (ret.status != 200) {                    
                     $.alert(ret.statusText);
                 }
                 else {
-                    $(".couponNo").text(ret.data.couponNo);
-                    $(".lodinggo").show();
-                    //$("#coupon_no").hide();
-                    //$("#coupon_success").show();
+                    $(".couponNo").text(ret.data.couponNo);                    
+                    $("#coupon_no").hide();
+                    $("#coupon_success").show();
                 }
             }
             $("#loadBox").hide();

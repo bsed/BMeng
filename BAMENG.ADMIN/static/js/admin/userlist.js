@@ -45,6 +45,7 @@ var userHelper = {
                             tempHtml = tempHtml.replace("{ShopName}", item.ShopProv + " " + item.ShopCity + " " + item.ShopName);
                             tempHtml = tempHtml.replace(/{RealName}/g, item.RealName);
                             tempHtml = tempHtml.replace("{NickName}", item.NickName);
+                            tempHtml = tempHtml.replace("{LevelName}", item.LevelName);
                             tempHtml = tempHtml.replace("{UserMobile}", item.UserMobile);
                             tempHtml = tempHtml.replace("{IsActive}", item.IsActive);
                             tempHtml = tempHtml.replace("{type}", self.isAlly);
@@ -192,7 +193,7 @@ var userHelper = {
         if (this.isAlly == 1) {
             $("#btnUser").hide();
             $(".allyText").text("客户信息提交量");
-            $("#allyLable").text("盟友名称")
+            $("#allyLable").text("盟友姓名")
         }
 
         var SHOP_INDENTITY = hotUtil.GetCookie("SHOP_INDENTITY");

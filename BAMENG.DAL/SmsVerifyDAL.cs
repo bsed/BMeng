@@ -78,6 +78,23 @@ namespace BAMENG.DAL
                 else return false;
             }
         }
+
+        /// <summary>
+        /// 获取当前发送次数
+        /// </summary>
+        /// <param name="phone">The phone.</param>
+        /// <param name="customerid">The customerid.</param>
+        /// <returns>System.Int32.</returns>
+        public int TodaySendCount(string phone, int customerid)
+        {
+            string sql = "SELECT COUNT(1) FROM Swt_SmsVerification WHERE SSV_Phone=@Mobile AND SSV_CustomerId=@StoreId and CONVERT(nvarchar(10),SSV_AddTime,121)=CONVERT(nvarchar(10),GETDATE(),121)";
+            var parameters = new[]{
+                    new SqlParameter("@Mobile", phone),
+                    new SqlParameter("@StoreId", customerid)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, sql, parameters));
+        }
+
         /// <summary>
         /// 判断是否通过验证
         /// </summary>

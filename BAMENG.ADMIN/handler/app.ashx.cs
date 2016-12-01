@@ -158,6 +158,12 @@ namespace BAMENG.ADMIN.handler
                     json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.未授权));
                 else
                 {
+                    if (!RegexHelper.IsValidMobileNo(usermobile))
+                    {
+                        json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.无效手机号));
+                        return;
+                    }
+
                     CashCouponLogModel logModel = CouponLogic.GetCashCouponLogIDByUserID(uid, cpid);
                     if (logModel != null)
                     {
@@ -177,6 +183,7 @@ namespace BAMENG.ADMIN.handler
                                 //添加优惠券领取操作日志
                                 LogLogic.AddCouponLog(new LogBaseModel()
                                 {
+                                    objId = model.CouponId,
                                     UserId = user.UserId,
                                     ShopId = logModel.ShopId,
                                     OperationType = 1,//0创建 1领取 2使用
@@ -185,7 +192,30 @@ namespace BAMENG.ADMIN.handler
                             }
                         }
                         if (flag)
+                        {
                             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+
+                            try
+                            {
+                                var shopData = ShopLogic.GetShopModel(logModel.ShopId);
+                                if (shopData != null)
+                                {
+                                    string errmsg = "";
+                                    string content = string.Format("您收到一张新的{0}元现金券，现金券使用码：{1}，您可在{2}前到门店消费使用。门店地址：{3}",
+                                        logModel.Money,
+                                        logModel.CouponNo,
+                                        logModel.StartTime.ToString("yyyy.MM.dd") + "-" + logModel.EndTime.ToString("yyyy.MM.dd"),
+                                        shopData.ShopProv + shopData.ShopCity + shopData.ShopAddress + shopData.ShopName
+                                        );
+                                    if (!string.IsNullOrEmpty(usermobile) && RegexHelper.IsValidMobileNo(usermobile))
+                                        SmsLogic.send(1, usermobile, content, out errmsg);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                            }
+                        }
                         else
                             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
                     }

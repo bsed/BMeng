@@ -9,7 +9,7 @@ namespace BAMENG.IDAL
 {
     public interface IOrderDAL :IDisposable
     {
-      List<OrderModel> GetOrderList(int masterUserId, int status, long lastId);
+      List<OrderModel> GetOrderList(int masterUserId, int status, long lastId, int userIdentity);
 
 
         /// <summary>

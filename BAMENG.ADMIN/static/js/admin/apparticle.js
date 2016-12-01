@@ -51,11 +51,11 @@ var articleInfoHelper = {
     }
 }
 
-$(function () {
-    _shareData.enable = false;
+$(function () {    
     if (parseInt(articleInfoHelper.idt) == 4 || parseInt(articleInfoHelper.idt) == 3) {
         $("#spanAmount").hide();
         $("#spanMessage").show();
+        _shareData.enable = false;
     }
     else
         enableShare();
