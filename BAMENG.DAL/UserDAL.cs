@@ -404,7 +404,7 @@ namespace BAMENG.DAL
         public int GetMinLevelID(int customerid, int type)
         {
             StringBuilder sql = new StringBuilder();
-            sql.AppendFormat("SELECT TOP 1 UL_ID FROM Mall_UserLevel WHERE UL_CustomerID={0} and UL_Type={1}  order by UL_Level", customerid, type);
+            sql.AppendFormat("SELECT TOP 1 UL_ID FROM Mall_UserLevel WHERE UL_CustomerID={0} and UL_Type={1}  order by UL_MemberNum", customerid, type);
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, sql.ToString());
             if (obj == null)
                 return 0;
@@ -580,6 +580,24 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
         }
 
+
+        /// <summary>
+        ///获取用户等级名称
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.String.</returns>
+        public string GetUserLevelName(int userId)
+        {
+            string strSql = @"select l.UL_LevelName from Hot_UserBaseInfo u with(nolock)
+                                left join Mall_UserLevel l on u.UB_LevelID = l.UL_ID
+                                where u.UB_UserID = @UB_UserID";
+            var param = new[] {
+                        new SqlParameter("@UB_UserID",userId)
+            };
+            return DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param).ToString();
+        }
+
+
         /// <summary>
         /// 获取他的盟友列表
         /// </summary>
@@ -642,12 +660,12 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public ResultPageModel GetLevelList(int storeId, int type)
         {
-            string strSql = @"select UL.* from Mall_UserLevel UL where UL.UL_CustomerID=@UL_CustomerID and UL.UL_Type=@UL_Type";
+            string strSql = @"select UL.* from Mall_UserLevel UL where UL.UL_CustomerID=@UL_CustomerID and UL.UL_Type=@UL_Type ";
             var param = new[] {
                     new SqlParameter("@UL_CustomerID", storeId),
                     new SqlParameter("@UL_Type", type)
             };
-            return getPageData<MallUserLevelModel>(50, 1, strSql, "UL.UL_Level", true, param);
+            return getPageData<MallUserLevelModel>(50, 1, strSql, "UL.UL_MemberNum", true, param);
         }
 
 

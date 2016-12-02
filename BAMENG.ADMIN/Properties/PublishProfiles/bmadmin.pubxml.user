@@ -94,13 +94,13 @@
       <publishTime>11/19/2016 16:49:49</publishTime>
     </File>
     <File Include="app/couponshare.html">
-      <publishTime>12/01/2016 09:42:49</publishTime>
+      <publishTime>12/02/2016 17:40:33</publishTime>
     </File>
     <File Include="app/details.html">
       <publishTime>12/01/2016 09:43:29</publishTime>
     </File>
     <File Include="app/getcoupon.html">
-      <publishTime>12/01/2016 15:37:19</publishTime>
+      <publishTime>12/02/2016 18:15:21</publishTime>
     </File>
     <File Include="app/images/appShareCoupon.png">
       <publishTime>12/01/2016 09:31:43</publishTime>
@@ -121,7 +121,7 @@
       <publishTime>11/25/2016 17:33:38</publishTime>
     </File>
     <File Include="app/register.html">
-      <publishTime>11/27/2016 13:57:41</publishTime>
+      <publishTime>12/02/2016 13:59:19</publishTime>
     </File>
     <File Include="ApplicationInsights.config">
       <publishTime>10/25/2016 14:30:11</publishTime>
@@ -130,19 +130,19 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>12/01/2016 17:38:58</publishTime>
+      <publishTime>12/02/2016 18:25:10</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
       <publishTime>12/01/2016 15:42:10</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>12/01/2016 17:15:08</publishTime>
+      <publishTime>12/02/2016 18:25:07</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>12/01/2016 17:15:07</publishTime>
+      <publishTime>12/02/2016 18:20:11</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/01/2016 17:38:54</publishTime>
+      <publishTime>12/02/2016 18:25:07</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
       <publishTime>12/01/2016 15:42:10</publishTime>
@@ -232,7 +232,7 @@
       <publishTime>10/31/2016 17:38:29</publishTime>
     </File>
     <File Include="home.html">
-      <publishTime>11/27/2016 16:02:19</publishTime>
+      <publishTime>12/02/2016 15:36:51</publishTime>
     </File>
     <File Include="index.html">
       <publishTime>11/30/2016 09:20:53</publishTime>
@@ -652,10 +652,10 @@
       <publishTime>11/30/2016 19:26:58</publishTime>
     </File>
     <File Include="static/js/admin/basesetting.js">
-      <publishTime>11/30/2016 19:57:32</publishTime>
+      <publishTime>12/02/2016 17:03:01</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponlist.js">
-      <publishTime>11/30/2016 19:58:54</publishTime>
+      <publishTime>12/02/2016 17:21:20</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponstatic.js">
       <publishTime>11/25/2016 12:45:37</publishTime>
@@ -676,7 +676,7 @@
       <publishTime>11/29/2016 09:28:41</publishTime>
     </File>
     <File Include="static/js/admin/Home.js">
-      <publishTime>11/29/2016 09:34:50</publishTime>
+      <publishTime>12/02/2016 16:49:34</publishTime>
     </File>
     <File Include="static/js/admin/Login.js">
       <publishTime>11/07/2016 09:28:32</publishTime>
@@ -688,7 +688,7 @@
       <publishTime>11/09/2016 19:53:56</publishTime>
     </File>
     <File Include="static/js/admin/messageedit.js">
-      <publishTime>12/01/2016 10:09:44</publishTime>
+      <publishTime>12/02/2016 15:23:37</publishTime>
     </File>
     <File Include="static/js/admin/messagelist.js">
       <publishTime>11/18/2016 17:19:49</publishTime>
@@ -715,7 +715,7 @@
       <publishTime>11/29/2016 16:27:28</publishTime>
     </File>
     <File Include="static/js/admin/userdetails.js">
-      <publishTime>11/24/2016 17:36:58</publishTime>
+      <publishTime>12/02/2016 16:23:06</publishTime>
     </File>
     <File Include="static/js/admin/userlevel.js">
       <publishTime>11/28/2016 15:22:02</publishTime>

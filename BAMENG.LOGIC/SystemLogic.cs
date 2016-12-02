@@ -79,13 +79,13 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.SystemFactory())
             {
                 //获取今日数据
-                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHH") + "_" + user.UserIndentity.ToString() + user.ID.ToString();
+                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHHmm") + "_" + user.UserIndentity.ToString() + user.ID.ToString();
                 AdminHomeDataModel todayData = WebCacheHelper<AdminHomeDataModel>.Get(todayKey);
                 if (todayData == null)
                 {
                     todayData = new AdminHomeDataModel();
                     todayData.NewAllyCount = dal.GetNewAllyCount(user.ID, user.UserIndentity);
-                    todayData.NewArticleCount = dal.GetNewArticleCount();
+                    todayData.NewArticleCount = dal.GetNewArticleCount(user.ID, user.UserIndentity);
                     todayData.NewCustomerCount = dal.GetNewCustomerCount(user.ID, user.UserIndentity);
                     todayData.NewMessageCount = dal.GetNewMessageCount(user.ID, user.UserIndentity);
                     WebCacheHelper.Insert(todayKey, todayData, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(todayKey)));

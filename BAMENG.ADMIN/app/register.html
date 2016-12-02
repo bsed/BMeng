@@ -117,7 +117,7 @@
             hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        $.alert("申请成功");
+                        $.alert("提交成功");
                     }
                     else
                         $.alert(ret.statusText);

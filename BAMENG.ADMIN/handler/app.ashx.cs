@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 
 namespace BAMENG.ADMIN.handler
@@ -167,68 +168,72 @@ namespace BAMENG.ADMIN.handler
                     CashCouponLogModel logModel = CouponLogic.GetCashCouponLogIDByUserID(uid, cpid);
                     if (logModel != null)
                     {
-                        bool flag = CouponLogic.UpdateUserCashCouponGetLog(new CashCouponLogModel()
+                        using (TransactionScope scope = new TransactionScope())
                         {
-                            UserId = uid,
-                            ID = logModel.ID,
-                            Name = username,
-                            Mobile = usermobile
-                        });
-                        if (flag)
-                        {
-                            var user = UserLogic.GetModel(uid);
-                            if (user != null)
+                            bool flag = CouponLogic.UpdateUserCashCouponGetLog(new CashCouponLogModel()
                             {
-                                CashCouponModel model = CouponLogic.GetModel(cpid, true);
-                                //添加优惠券领取操作日志
-                                LogLogic.AddCouponLog(new LogBaseModel()
-                                {
-                                    objId = model.CouponId,
-                                    UserId = user.UserId,
-                                    ShopId = logModel.ShopId,
-                                    OperationType = 1,//0创建 1领取 2使用
-                                    Money = logModel.Money
-                                });
-                            }
-                        }
-                        if (flag)
-                        {
-                            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+                                UserId = uid,
+                                ID = logModel.ID,
+                                Name = username,
+                                Mobile = usermobile
+                            });
+                            if (flag)
+                            {
+                                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
 
-                            try
-                            {
-                                var shopData = ShopLogic.GetShopModel(logModel.ShopId);
-                                if (shopData != null)
+                                CouponLogic.DeleteUserCashCoupon(logModel.CouponNo, logModel.CouponId, uid);
+                                var user = UserLogic.GetModel(uid);
+                                if (user != null)
                                 {
-                                    string errmsg = "";
-                                    string content = string.Format("您收到一张新的{0}元现金券，现金券使用码：{1}，您可在{2}前到门店消费使用。门店地址：{3}",
-                                        logModel.Money,
-                                        logModel.CouponNo,
-                                        logModel.StartTime.ToString("yyyy.MM.dd") + "-" + logModel.EndTime.ToString("yyyy.MM.dd"),
-                                        shopData.ShopProv + shopData.ShopCity + shopData.ShopAddress + shopData.ShopName
-                                        );
-                                    if (!string.IsNullOrEmpty(usermobile) && RegexHelper.IsValidMobileNo(usermobile))
-                                        SmsLogic.send(1, usermobile, content, out errmsg);
+                                    CashCouponModel model = CouponLogic.GetModel(cpid, true);
+                                    //添加优惠券领取操作日志
+                                    LogLogic.AddCouponLog(new LogBaseModel()
+                                    {
+                                        objId = model.CouponId,
+                                        UserId = user.UserId,
+                                        ShopId = logModel.ShopId,
+                                        OperationType = 1,//0创建 1领取 2使用
+                                        Money = logModel.Money
+                                    });
+                                }
+
+                                try
+                                {
+                                    var shopData = ShopLogic.GetShopModel(logModel.ShopId);
+                                    if (shopData != null)
+                                    {
+                                        string errmsg = "";
+                                        string content = string.Format("您收到一张新的{0}元现金券，现金券使用码：{1}，您可在{2}前到门店消费使用。门店地址：{3}",
+                                            logModel.Money,
+                                            logModel.CouponNo,
+                                            logModel.StartTime.ToString("yyyy.MM.dd") + "-" + logModel.EndTime.ToString("yyyy.MM.dd"),
+                                            shopData.ShopProv + shopData.ShopCity + shopData.ShopAddress + shopData.ShopName
+                                            );
+                                        if (!string.IsNullOrEmpty(usermobile) && RegexHelper.IsValidMobileNo(usermobile))
+                                            SmsLogic.send(1, usermobile, content, out errmsg);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
-                            }
+                            else
+                                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
+
+                            scope.Complete();
                         }
-                        else
-                            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
                     }
                     else
-                    {
                         json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
-                    }
+
                 }
 
             }
             catch (Exception ex)
             {
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.现金券已领完));
+                LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
 
         }

@@ -80,6 +80,18 @@ namespace BAMENG.LOGIC
                 return dal.DeleltUserInfo(userId);
             }
         }
+        /// <summary>
+        ///获取用户等级名称
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.String.</returns>
+        public static string GetUserLevelName(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetUserLevelName(userId);
+            }
+        }
 
         /// <summary>
         /// 冻结或解冻账户
@@ -114,6 +126,16 @@ namespace BAMENG.LOGIC
                     user.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", user.UserId);
                     user.MengBeans = user.MengBeans - user.MengBeansLocked;
                     user.Score = user.Score - user.ScoreLocked;
+                    if (user.IsActive == 1 && user.ShopActive == 1)
+                    {
+                        if (user.UserIdentity == 1)
+                            masterUpdate(user.UserId);
+                        else
+                            userUpdate(user.UserId);
+
+                        user.LevelName = GetUserLevelName(user.UserId);
+
+                    }
                 }
                 return user;
 
@@ -379,18 +401,26 @@ namespace BAMENG.LOGIC
         /// <param name="userId"></param>
         public static void userUpdate(int userId)
         {
-            int amount = OrderLogic.CountOrders(userId);
+            int amount = OrderLogic.CountOrdersByAllyUserId(userId,1);
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 List<MallUserLevelModel> levels = dal.GeUserLevelList(ConstConfig.storeId, 0);
+                bool isFind = false;
                 foreach (MallUserLevelModel level in levels)
                 {
                     if (amount >= level.UL_MemberNum)
                     {
                         //更新用户等级
                         dal.updateUserLevel(userId, level.UL_ID);
+                        isFind = true;
                         break;
                     }
+                }
+                if (!isFind)
+                {
+                    int leveid = dal.GetMinLevelID(ConstConfig.storeId, 0);
+                    //更新用户等级
+                    dal.updateUserLevel(userId, leveid);
                 }
             }
         }
@@ -406,15 +436,24 @@ namespace BAMENG.LOGIC
             {
                 int amount = dal.countByBelongOne(userId);
                 List<MallUserLevelModel> levels = dal.GeUserLevelList(ConstConfig.storeId, 1);
+                bool isFind = false;
                 foreach (MallUserLevelModel level in levels)
                 {
                     if (amount >= level.UL_MemberNum)
                     {
                         //更新用户等级
                         dal.updateUserLevel(userId, level.UL_ID);
+                        isFind = true;
                         break;
                     }
                 }
+                if (!isFind)
+                {
+                    int leveid= dal.GetMinLevelID(ConstConfig.storeId,1);
+                    //更新用户等级
+                    dal.updateUserLevel(userId, leveid);
+                }
+
             }
         }
 

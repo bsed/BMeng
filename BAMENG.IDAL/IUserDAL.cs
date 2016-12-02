@@ -82,6 +82,12 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         bool DeleltUserInfo(int userId);
 
+        /// <summary>
+        ///获取用户等级名称
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.String.</returns>
+        string GetUserLevelName(int userId);
 
         /// <summary>
         /// 获取商户的等级数量
@@ -100,6 +106,16 @@ namespace BAMENG.IDAL
         /// <param name="type"></param>
         /// <returns></returns>
         int GetMaxLevel(int storeId, int type);
+
+
+        /// <summary>
+        /// Gets the minimum level identifier.
+        /// </summary>
+        /// <param name="customerid">The customerid.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>System.Int32.</returns>
+        int GetMinLevelID(int customerid, int type);
+
 
         /// <summary>
         /// 获取等级信息

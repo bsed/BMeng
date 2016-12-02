@@ -129,15 +129,24 @@ namespace BAMENG.DAL
         /// <param name="userIdentity">0总后台 1总店，2分店</param>
         /// <param name="today">默认今天，否则昨天</param>
         /// <returns>System.Int32.</returns>
-        public int GetNewArticleCount(bool today = true)
+        public int GetNewArticleCount(int shopId, int userIdentity, bool today = true)
         {
-            string strSql = "select COUNT(1) from BM_ArticleList where  CONVERT(nvarchar(10),CreateTime,121)=@Date and AuthorIdentity in (1,2) and IsDel=0 ";
+            string strSql = "select COUNT(1) from BM_ArticleList where  CONVERT(nvarchar(10),CreateTime,121)=@Date  and IsDel=0 ";
+
+            if (userIdentity != 0)
+            {
+                strSql += " and AuthorId=@ShopId and AuthorIdentity=@AuthorIdentity";
+            }
+            else
+                strSql += " and AuthorIdentity in (1,2)";
 
             DateTime dtnow = DateTime.Now;
             if (!today)
                 dtnow = DateTime.Now.AddDays(-1);
 
             var param = new[] {
+                new SqlParameter("@ShopId",shopId),
+                new SqlParameter("@AuthorIdentity",userIdentity),
                 new SqlParameter("@Date",dtnow.ToString("yyyy-MM-dd"))
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));

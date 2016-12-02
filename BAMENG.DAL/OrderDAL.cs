@@ -33,9 +33,10 @@ namespace BAMENG.DAL
                 strSql += " and Ct_BelongId=@UserId";
 
             if (status >= 0) strSql += " and OrderStatus=" + status;
-            if (lastId > 0) strSql += " and CreateTime<" + StringHelper.GetTimeFromUTC(lastId);
+            if (lastId > 0) strSql += " and CreateTime< @Date ";
             strSql += " order by CreateTime desc";
             SqlParameter[] parameters = {
+                    new SqlParameter("@Date",StringHelper.GetTimeFromUTC(lastId)),
                     new SqlParameter("@UserId", masterUserId)
             };
 

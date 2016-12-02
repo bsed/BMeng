@@ -117,7 +117,7 @@ var couponHelper = {
         }, function () {
             var param = {
                 action: "DeleteCashCoupon",
-                userid: dataId
+                couponId: dataId
             }
             hotUtil.loading.show();
             hotUtil.ajaxCall(couponHelper.ajaxUrl, param, function (ret, err) {

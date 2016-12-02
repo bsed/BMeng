@@ -42,6 +42,7 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult list(int identity, int pageIndex, int pageSize)
         {
+            pageIndex = pageIndex > 0 ? pageIndex : 1;
 
             var userInfo = GetUserData();
 

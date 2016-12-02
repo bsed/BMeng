@@ -46,7 +46,11 @@ namespace BAMENG.API.Controllers
             int Integral = UserLogic.SignIn(GetAuthUserId(), ref apiCode);
             Dictionary<string, int> data = new Dictionary<string, int>();
             data["score"] = Integral;
-            return Json(new ResultModel(apiCode, data));
+            if (apiCode == ApiStatusCode.OK)
+                return Json(new ResultModel(apiCode, string.Format("积分+{0}" + Integral), data));
+            else
+                return Json(new ResultModel(apiCode, data));
+
         }
 
         /// <summary>
@@ -129,7 +133,7 @@ namespace BAMENG.API.Controllers
                 UserId = GetAuthUserId(),
                 orderbyCode = orderbyCode,
                 IsDesc = isDesc == 1
-            });           
+            });
             return Json(new ResultModel(ApiStatusCode.OK, data));
         }
 
@@ -387,6 +391,7 @@ namespace BAMENG.API.Controllers
         public ActionResult ChanagePassword(string oldPassword, string newPassword)
         {
             var user = GetUserData();
+
             if (UserLogic.ChanagePassword(user.UserId, oldPassword, newPassword))
                 return Json(new ResultModel(ApiStatusCode.OK));
             else
@@ -445,6 +450,30 @@ namespace BAMENG.API.Controllers
             return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
         }
 
+
+        /// <summary>
+        /// 给盟友发送优惠券 post: user/SendAllyCashCoupon
+        /// </summary>
+        /// <param name="couponId">优惠券ID</param>
+        /// <param name="ids">盟友ID，多个用|隔开</param>
+        /// <returns>ActionResult.</returns>
+        public ActionResult SendAllyCashCoupon(int couponId, string ids)
+        {
+            var user = GetUserData();
+            string[] TargetIds = null;
+            //如果是盟主身份，则需要判断发送目标
+            if (user.UserIdentity == 1 && !string.IsNullOrEmpty(ids))
+            {
+                if (string.IsNullOrEmpty(ids))
+                    return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+
+                TargetIds = ids.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                if (TargetIds.Length <= 0)
+                    return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+            }
+            bool flag = CouponLogic.AddSendAllyCoupon(user.UserId, couponId, TargetIds);
+            return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
+        }
 
 
         /// <summary>

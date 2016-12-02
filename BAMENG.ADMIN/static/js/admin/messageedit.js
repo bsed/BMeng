@@ -15,6 +15,7 @@ var messageHelper = {
     ajaxUrl: "/handler/HQ.ashx",
     dataId: hotUtil.getQuery("messageid"),
     type: hotUtil.getQuery("type"),
+    identity: 0,
     loadShop: function () {
         var param = {
             action: "GetMessageShopList"
@@ -23,12 +24,15 @@ var messageHelper = {
             if (ret) {
                 if (ret.status == 200) {
                     var html = "";
-                    $.each(ret.data, function (i, item) {
-                        html += "<option value='" + item.ShopID + "'>" + item.ShopName + "</option>";
-                    });
-                    $("#sendtarget").html(html);
-                    if (!hotUtil.isNullOrEmpty(html))
-                        $("#div_sendtarget").show();
+                    if (ret.data.useridentity != 2) {
+                        $.each(ret.data.list, function (i, item) {
+                            html += "<option value='" + item.ShopID + "'>" + item.ShopName + "</option>";
+                        });
+                        $("#sendtarget").html(html);
+                        if (!hotUtil.isNullOrEmpty(html))
+                            $("#div_sendtarget").show();
+                    }
+                    messageHelper.identity = ret.data.useridentity;
                 }
             }
         });
@@ -57,7 +61,7 @@ var messageHelper = {
                         $("#issendSelect").hide();
                         $("#issendText").show();
                         $("#sendtarget").attr("disabled", "disabled");
-                    }                                       
+                    }
                     if (!hotUtil.isNullOrEmpty(ret.data.SendTargetIds)) {
                         $("#sendtarget").val(ret.data.SendTargetIds.split(","));
                     }
@@ -70,17 +74,20 @@ var messageHelper = {
     },
     edit: function () {
         var sendtarget = $("#sendtarget").val();
-        if (!$("#sendbelongShop").attr("checked")) {
-            if (sendtarget == null) {
-                swal("请选择发送对象", "", "warning");
-                return false;
+        if (messageHelper.identity != 2) {
+            if (!$("#sendbelongShop").attr("checked")) {
+                if (sendtarget == null) {
+                    swal("请选择发送对象", "", "warning");
+                    return false;
+                }
+            }
+            else {
+                if (sendtarget == null)
+                    sendtarget = "";
             }
         }
-        else {
-            if (sendtarget == null)
-                sendtarget = "";
-        }
-
+        else
+            sendtarget = "";
         var self = this;
         var postData = {
             action: "EditMessage",

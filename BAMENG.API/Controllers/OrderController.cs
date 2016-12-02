@@ -25,6 +25,7 @@ namespace BAMENG.API.Controllers
         /// <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
         /// <param name="lastId">最后的时间</param>
         /// <returns></returns>
+        [ActionAuthorize]
         public ActionResult myList(int type, long lastId)
         {
             var user = GetUserData();
@@ -41,6 +42,7 @@ namespace BAMENG.API.Controllers
         /// </summary>
         /// <param name="id">订单id</param>
         /// <returns></returns>
+        [ActionAuthorize]
         public ActionResult details(string id)
         {
             var data = OrderLogic.getOrderDetail(id);
@@ -57,6 +59,7 @@ namespace BAMENG.API.Controllers
         /// <param name="cashNo">现金卷编号</param>
         /// <param name="memo">备注</param>
         /// <returns></returns>
+        [ActionAuthorize]
         public ActionResult create(string userName, string mobile, string address, string cashNo, string memo)
         {
             int userId = GetAuthUserId();
@@ -95,6 +98,7 @@ namespace BAMENG.API.Controllers
         /// <param name="orderId">订单号</param>
         /// <param name="status">状态  0 未成交 1 已成交 2退单</param>
         /// <returns></returns>
+        [ActionAuthorize]
         public ActionResult update(string orderId, int status)
         {
             int userId = GetAuthUserId();
@@ -108,6 +112,7 @@ namespace BAMENG.API.Controllers
         /// 上传成交凭证 POST: order/UploadSuccessVoucher
         /// </summary>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        [ActionAuthorize]
         public ActionResult UploadSuccessVoucher(string orderId
             , string customer, string mobile, decimal price, string memo)
         {
@@ -147,6 +152,7 @@ namespace BAMENG.API.Controllers
         /// <param name="type">-1全部 0 未成交 1 已成交 2退单</param>
         /// <param name="lastId">最后的时间</param>
         /// <returns></returns>
+        [ActionAuthorize]
         public ActionResult customerOrderList(int type, long lastId)
         {
             int userId = GetAuthUserId();

@@ -35,8 +35,8 @@ var userdetailsHelper = {
                         $("#spanUserMobile").text(ret.data.UserMobile);
                         $("#spanShopName").text(ret.data.ShopProv + " " + ret.data.ShopCity + " " + ret.data.ShopName);
                         $("#spanNickName").text(ret.data.NickName);
-                        $("#spanUserScore").text(ret.data.Score - ret.data.ScoreLocked);
-                        $("#spanMengBeans").text(ret.data.MengBeans - ret.data.MengBeansLocked);
+                        $("#spanUserScore").text(ret.data.Score);
+                        $("#spanMengBeans").text(ret.data.MengBeans);
                         $("#spanOrderSuccessAmount").text(ret.data.OrderSuccessAmount);
                         $("#spanCustomerAmount").text(ret.data.CustomerAmount);
                     }

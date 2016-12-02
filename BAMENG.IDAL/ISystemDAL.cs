@@ -71,6 +71,6 @@ namespace BAMENG.IDAL
         /// <param name="userIdentity">0总后台 1总店，2分店</param>
         /// <param name="today">默认今天，否则昨天</param>
         /// <returns>System.Int32.</returns>
-        int GetNewArticleCount(bool today = true);
+        int GetNewArticleCount(int shopId, int userIdentity, bool today = true);
     }
 }

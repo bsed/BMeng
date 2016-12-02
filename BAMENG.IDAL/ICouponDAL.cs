@@ -81,6 +81,9 @@ namespace BAMENG.IDAL
         /// <returns>true if XXXX, false otherwise.</returns>
         bool UpdateUserCashCouponGetLog(CashCouponLogModel model);
 
+
+
+        bool DeleteUserCashCoupon(string couponNo, int couponId, int userId);
         /// <summary>
         /// 更新现金券的领取记录
         /// </summary>

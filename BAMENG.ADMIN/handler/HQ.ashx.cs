@@ -29,7 +29,7 @@ namespace BAMENG.ADMIN.handler
                   , context.Request.UrlReferrer != null ? StringHelper.ToString(context.Request.UrlReferrer.AbsoluteUri) : ""
                  );
             try
-            {                
+            {
                 DoRequest(context);
                 LogHelper.Log(resultMsg, LogHelperTag.INFO, WebConfig.debugMode());
             }
@@ -290,11 +290,11 @@ namespace BAMENG.ADMIN.handler
         private void GetHomeData()
         {
             List<AdminHomeDataModel> data = SystemLogic.GetHomeData(user);
-            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["list"] = data;
+            dict["identity"] = user.UserIndentity;
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, dict));
         }
-
-
-
 
 
         /// <summary>
@@ -523,22 +523,6 @@ namespace BAMENG.ADMIN.handler
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.删除失败));
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -1004,8 +988,18 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void GetMessageShopList()
         {
-            var data = ShopLogic.GetShopList(user.UserIndentity == 0 ? 1 : 2, user.ID);
-            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            if (user.UserIndentity != 2)
+            {
+                var data = ShopLogic.GetShopList(user.UserIndentity == 0 ? 1 : 2, user.ID);
+                dict["list"] = data;
+            }
+            else
+            {
+                dict["list"] = null;
+            }
+            dict["useridentity"] = user.UserIndentity;
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, dict));
 
         }
 

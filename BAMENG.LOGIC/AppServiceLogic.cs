@@ -82,7 +82,7 @@ namespace BAMENG.LOGIC
                 bool flag = GlobalProvider.IsVersionUpdate(newVersion, currentVersion);
                 if (flag)
                 {
-                    verData.serverVersion = "1.0.2";
+                    verData.serverVersion = newVersion;
                     verData.updateType = Convert.ToInt32(ConfigLogic.GetValue("EnableAppCoerceUpdate"));
                     verData.updateTip = ConfigLogic.GetValue("AppUpateContent");
                     verData.updateUrl = ConfigLogic.GetValue("AppUpateUrl");
@@ -108,44 +108,41 @@ namespace BAMENG.LOGIC
                 UserModel model = dal.Login(loginName, password);
                 if (model != null)
                 {
-                    if (model.IsActive == 1)
+                    if (model.IsActive == 1 && model.ShopActive == 1)
                     {
+                        apiCode = ApiStatusCode.OK;
+                        if (!string.IsNullOrEmpty(model.UserHeadImg))
+                            model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
+                        model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
+                        model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
+                        model.MengBeans = model.MengBeans - model.MengBeansLocked;
+                        model.Score = model.Score - model.ScoreLocked;
+                        model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
 
-                        if (model.ShopActive == 1)
-                        {
-                            apiCode = ApiStatusCode.OK;
-                            if (!string.IsNullOrEmpty(model.UserHeadImg))
-                                model.UserHeadImg = WebConfig.reswebsite() + model.UserHeadImg;
-                            model.myqrcodeUrl = WebConfig.articleDetailsDomain() + "/app/myqrcode.html?userid=" + model.UserId;
-                            model.myShareQrcodeUrl = WebConfig.articleDetailsDomain() + string.Format("/resource/app/qrcode/{0}/index.html", model.UserId);
-                            model.MengBeans = model.MengBeans - model.MengBeansLocked;
-                            model.Score = model.Score - model.ScoreLocked;
-                            model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
+                        string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
+                        if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
+                            model.token = token;
 
-                            string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
-                            if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
-                                model.token = token;
-
-
-                            //添加登录日志
-                            LogLogic.AddLoginLog(new LoginLogModel()
-                            {
-                                UserId = model.UserId,
-                                UserIdentity = model.UserIdentity,
-                                BelongOne = model.BelongOne,
-                                ShopId = model.ShopId,
-                                AppSystem = AppSystem
-                            });
-
-                            //更新最后登录时间
-                            dal.UpdateLastLoginTime(model.UserId);
-                            return model;
-                        }
+                        if (model.UserIdentity == 1)
+                            UserLogic.masterUpdate(model.UserId);
                         else
+                            UserLogic.userUpdate(model.UserId);
+
+                        model.LevelName = UserLogic.GetUserLevelName(model.UserId);
+
+                        //添加登录日志
+                        LogLogic.AddLoginLog(new LoginLogModel()
                         {
-                            apiCode = ApiStatusCode.账户已禁用;
-                            return null;
-                        }
+                            UserId = model.UserId,
+                            UserIdentity = model.UserIdentity,
+                            BelongOne = model.BelongOne,
+                            ShopId = model.ShopId,
+                            AppSystem = AppSystem
+                        });
+
+                        //更新最后登录时间
+                        dal.UpdateLastLoginTime(model.UserId);
+                        return model;
                     }
                     else
                     {

@@ -15,20 +15,21 @@ $(function () {
     hotUtil.ajaxCall("handler/HQ.ashx", postData, function (ret, err) {
         if (ret) {
             if (ret.status == 200) {
-                if (ret.data != null) {
-                    var todayData = ret.data[0];
-                    var yesterdayData = ret.data[1];
-
-
+                if (ret.data.list != null) {
+                    var todayData = ret.data.list[0];
+                    var yesterdayData = ret.data.list[1];
                     $("#todayAllyCount").text(todayData.NewAllyCount);
                     $("#todayArticleCount").text(todayData.NewArticleCount);
+                    $("#todayArticleCount2").text(todayData.NewArticleCount);
                     $("#todayCustomerCount").text(todayData.NewCustomerCount);
                     $("#todayMessageCount").text(todayData.NewMessageCount);
-
                     $("#yesterdayAllyCount").text(yesterdayData.NewAllyCount);
                     $("#yesterdayCustomerCount").text(yesterdayData.NewCustomerCount);
-
-                }
+                }                
+                if (ret.data.identity != 0)
+                    $("#articleMsg2").show();
+                else
+                    $("#articleMsg").show();               
             }
         }
     });

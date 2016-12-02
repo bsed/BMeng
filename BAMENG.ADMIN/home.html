@@ -31,10 +31,15 @@
                                     <h1 class="no-margins"  id="todayCustomerCount">0</h1>
                                     <small>新增客户信息量</small>
                                 </div>
-                                <div class="col-md-2" style="cursor:pointer;" onclick="hotUtil.newTab('admin/articlelist.html?type=0', '资讯审核列表')">
+                                <div class="col-md-2" style="cursor:pointer;display:none;" id="articleMsg" onclick="hotUtil.newTab('admin/articlelist.html?type=0', '资讯审核列表')">
                                     <h1 class="no-margins"  id="todayArticleCount">0</h1>
-                                    <small>新增审核资讯</small>
+                                    <small >新增审核资讯</small>
                                 </div>
+                                <div class="col-md-2" style="cursor:pointer;display:none;" id="articleMsg2"  onclick="hotUtil.newTab('admin/articlelist.html', '资讯列表')">
+                                    <h1 class="no-margins" id="todayArticleCount2">0</h1>
+                                    <small>新增资讯</small>
+                                </div>
+
                                 <div class="col-md-2" style="cursor:pointer;" onclick="hotUtil.newTab('admin/messagelist.html?type=2','接收消息')">
                                     <h1 class="no-margins"  id="todayMessageCount">0</h1>
                                     <small>新消息</small>

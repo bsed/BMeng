@@ -47,6 +47,8 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.MessageFactory())
             {
+                if (userIdentity == 2)
+                    model.SendTargetIds = ShopBelongId.ToString();
                 if (model.ID > 0)
                 {
                     using (TransactionScope scope = new TransactionScope())
@@ -90,7 +92,7 @@ namespace BAMENG.LOGIC
                 else
                 {
                     using (TransactionScope scope = new TransactionScope())
-                    {
+                    {                        
 
                         int messageId = dal.AddMessageInfo(model);
                         if (messageId > 0 && model.IsSend == 1)

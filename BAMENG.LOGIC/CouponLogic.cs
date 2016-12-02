@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BAMENG.LOGIC
 {
@@ -221,52 +222,101 @@ namespace BAMENG.LOGIC
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool AddSendCoupon(int userId, int userIdentity, int sendToUserId, int couponId)
         {
-            using (var dal = FactoryDispatcher.CouponFactory())
+            using (TransactionScope scope = new TransactionScope())
             {
-                bool flag = dal.AddSendCoupon(userId, sendToUserId, couponId);
-
-                //如果盟主自己分享或发送给盟友，则创建现金券记录
-                if (flag && userIdentity == 1)
+                using (var dal = FactoryDispatcher.CouponFactory())
                 {
+                    bool flag = dal.AddSendCoupon(userId, sendToUserId, couponId);
+
+                    //如果盟主自己分享或发送给盟友，则创建现金券记录
+                    if (flag && userIdentity == 1)
+                    {
+                        CashCouponModel couponModel = dal.GetModel(couponId);
+                        if (couponModel != null)
+                        {
+                            int BelongOneUserId = userId;
+
+                            int belongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId);
+                            if (belongOneShopId == 0)
+                                belongOneShopId = couponModel.ShopId;
+
+                            dal.CreateUserCashCouponLog(new CashCouponLogModel()
+                            {
+                                CouponId = couponId,
+                                CouponNo = StringHelper.CreateCheckCode(10).ToLower(),
+                                UserId = sendToUserId > 0 ? sendToUserId : userId,
+                                IsShare = sendToUserId > 0 ? 0 : 1,
+                                Money = couponModel.Money,
+                                StartTime = couponModel.StartTime,
+                                EndTime = couponModel.EndTime,
+                                ShopId = couponModel.ShopId,
+                                BelongOneUserId = BelongOneUserId,
+                                BelongOneShopId = belongOneShopId
+                            });
+                        }
+                    }
+                    if (flag && userIdentity == 0)
+                    {
+                        dal.UpdateCouponShareStatus(userId, couponId);
+                    }
+
+                    scope.Complete();
+                    return flag;
+                }
+            }
+        }
+
+
+        /// <summary>
+        ///给盟友发送优惠券
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="TargetIds">The target ids.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddSendAllyCoupon(int userId, int couponId, string[] TargetIds)
+        {
+            using (TransactionScope scope = new TransactionScope())
+            {
+                using (var dal = FactoryDispatcher.CouponFactory())
+                {
+                    bool flag = dal.AddSendCoupon(userId, 0, couponId);
+
+                    //如果盟主自己分享或发送给盟友，则创建现金券记录
                     CashCouponModel couponModel = dal.GetModel(couponId);
                     if (couponModel != null)
                     {
                         int BelongOneUserId = userId;
-                        if (sendToUserId > 0)
+                        string cpNo = StringHelper.CreateCheckCode(10).ToLower();
+                        foreach (var item in TargetIds)
                         {
-                            var user = UserLogic.GetModel(sendToUserId);
-                            if (user != null)
-                                BelongOneUserId = user.BelongOne;
+                            int sendToUserId = Convert.ToInt32(item);
+
+                            int belongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId);
+                            if (belongOneShopId == 0)
+                                belongOneShopId = couponModel.ShopId;
+
+                            dal.CreateUserCashCouponLog(new CashCouponLogModel()
+                            {
+                                CouponId = couponId,
+                                CouponNo = cpNo,
+                                UserId = sendToUserId,
+                                IsShare = 0,
+                                Money = couponModel.Money,
+                                StartTime = couponModel.StartTime,
+                                EndTime = couponModel.EndTime,
+                                ShopId = couponModel.ShopId,
+                                BelongOneUserId = BelongOneUserId,
+                                BelongOneShopId = belongOneShopId
+                            });
                         }
-
-                        int belongOneShopId = ShopLogic.GetBelongShopId(couponModel.ShopId);
-                        if (belongOneShopId == 0)
-                            belongOneShopId = couponModel.ShopId;
-
-                        dal.CreateUserCashCouponLog(new CashCouponLogModel()
-                        {
-                            CouponId = couponId,
-                            CouponNo = StringHelper.CreateCheckCode(10).ToLower(),
-                            UserId = sendToUserId > 0 ? sendToUserId : userId,
-                            IsShare = sendToUserId > 0 ? 0 : 1,
-                            Money = couponModel.Money,
-                            StartTime = couponModel.StartTime,
-                            EndTime = couponModel.EndTime,
-                            ShopId = couponModel.ShopId,
-                            BelongOneUserId = BelongOneUserId,
-                            BelongOneShopId = belongOneShopId
-                        });
                     }
+                    scope.Complete();
+                    return flag;
                 }
-
-                if (flag && userIdentity == 0)
-                {
-                    dal.UpdateCouponShareStatus(userId, couponId);
-                }
-
-                return flag;
             }
         }
+
 
 
         /// <summary>
@@ -306,6 +356,21 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.CouponFactory())
             {
                 return dal.UpdateUserCashCouponGetLog(model);
+            }
+        }
+
+        /// <summary>
+        /// 删除优惠券
+        /// </summary>
+        /// <param name="couponNo">The coupon no.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Boolean.</returns>
+        public static bool DeleteUserCashCoupon(string couponNo, int couponId, int userId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.DeleteUserCashCoupon(couponNo, couponId, userId);
             }
         }
     }

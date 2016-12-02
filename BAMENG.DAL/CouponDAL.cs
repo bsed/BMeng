@@ -49,7 +49,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@IsEnable", model.IsEnable),
                 new SqlParameter("@ShopId", model.ShopId)
             };
-            object obj= DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            object obj = DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
             if (obj != null)
                 return Convert.ToInt32(obj);
             return 0;
@@ -263,7 +263,7 @@ namespace BAMENG.DAL
             CashCouponModel model = new CashCouponModel();
             string strSql = SELECT_SQL + " and CouponId=@CouponId";
             if (isValid)
-                strSql += " and EndTime>@Date IsEnable=1 ";
+                strSql += " and EndTime>@Date and IsEnable=1 ";
             var parms = new[] {
                new SqlParameter("@CouponId",couponId),
                new SqlParameter("@Date",DateTime.Now)
@@ -294,6 +294,25 @@ namespace BAMENG.DAL
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms) > 0;
         }
+
+        /// <summary>
+        /// Deletes the user cash coupon.
+        /// </summary>
+        /// <param name="couponNo">The coupon no.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Boolean.</returns>
+        public bool DeleteUserCashCoupon(string couponNo, int couponId, int userId)
+        {
+            string strSql = "update BM_GetCashCouponLog set IsDel=1 where UserId<>@UserId and CouponId=@CouponId and CouponNo=@CouponNo and IsGet=0";
+            var parms = new[] {
+               new SqlParameter("@CouponId",couponId),
+               new SqlParameter("@CouponNo",couponNo),
+               new SqlParameter("@UserId",userId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms) > 0;
+        }
+
 
         /// <summary>
         /// 更新现金券的领取记录
@@ -331,7 +350,7 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public CashCouponLogModel GetCashCouponLogIDByUserID(int userId, int couponId)
         {
-            string strSql = "select top 1 * from BM_GetCashCouponLog where UserId=@UserId and CouponId=@CouponId and IsGet=0  and IsShare=1";
+            string strSql = "select top 1 * from BM_GetCashCouponLog where UserId=@UserId and CouponId=@CouponId and IsGet=0  and IsShare=1 and IsDel=0";
             var param = new[] {
                 new SqlParameter("@UserId",userId),
                 new SqlParameter("@CouponId",couponId)
@@ -350,7 +369,7 @@ namespace BAMENG.DAL
         public List<CashCouponModel> getEnabledCashCouponList(int shopId)
         {
             List<CashCouponModel> list = new List<CashCouponModel>();
-            string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and EndTime>@Date and IsEnable=1 order by CouponId desc";
+            string strSql = "select * from BM_CashCoupon where ShopId=@ShopId and EndTime>@Date and IsEnable=1 and  IsDel=0 order by CouponId desc";
             var parms = new[] {
                 new SqlParameter("@ShopId",shopId),
                 new SqlParameter("@Date",DateTime.Now)
@@ -371,9 +390,9 @@ namespace BAMENG.DAL
         /// <returns>List&lt;CashCouponModel&gt;.</returns>
         public List<CashCouponModel> GetEnableCashCouponListByUserId(int userId)
         {
-            string strSql = @"select g.ID as CouponId,c.Title,g.CouponNo,g.StartTime,g.EndTime,g.Money from BM_GetCashCouponLog g
+            string strSql = @"select g.CouponId as CouponId,c.Title,g.CouponNo,g.StartTime,g.EndTime,g.Money from BM_GetCashCouponLog g
                                 left join BM_CashCoupon c on c.CouponId = g.CouponId
-                                where c.IsEnable = 1 and g.UserId =@UserId and g.EndTime>@Date  and isShare=0  order by g.ID desc";
+                                where c.IsEnable = 1 and g.UserId =@UserId and g.EndTime>@Date  and isShare=0 and c.IsDel=0  order by g.ID desc";
 
             var parms = new[] {
                 new SqlParameter("@UserId",userId),
