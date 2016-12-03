@@ -83,7 +83,7 @@ namespace BAMENG.LOGIC
                 if (flag)
                 {
                     verData.serverVersion = newVersion;
-                    verData.updateType = Convert.ToInt32(ConfigLogic.GetValue("EnableAppCoerceUpdate"));
+                    verData.updateType = Convert.ToInt32(ConfigLogic.GetValue("EnableAppCoerceUpdate")) == 1 ? 2 : 1;
                     verData.updateTip = ConfigLogic.GetValue("AppUpateContent");
                     verData.updateUrl = ConfigLogic.GetValue("AppUpateUrl");
                 }

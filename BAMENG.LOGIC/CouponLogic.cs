@@ -243,7 +243,7 @@ namespace BAMENG.LOGIC
                             dal.CreateUserCashCouponLog(new CashCouponLogModel()
                             {
                                 CouponId = couponId,
-                                CouponNo = StringHelper.CreateCheckCode(10).ToLower(),
+                                CouponNo = couponModel.ShopId.ToString() + StringHelper.CreateCheckCode(10).ToLower(),
                                 UserId = sendToUserId > 0 ? sendToUserId : userId,
                                 IsShare = sendToUserId > 0 ? 0 : 1,
                                 Money = couponModel.Money,
@@ -287,7 +287,7 @@ namespace BAMENG.LOGIC
                     if (couponModel != null)
                     {
                         int BelongOneUserId = userId;
-                        string cpNo = StringHelper.CreateCheckCode(10).ToLower();
+                        string cpNo = couponModel.ShopId.ToString() + StringHelper.CreateCheckCode(10).ToLower();
                         foreach (var item in TargetIds)
                         {
                             int sendToUserId = Convert.ToInt32(item);
