@@ -117,25 +117,33 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void MyQrcode()
         {
-            string auth = GetFormValue("auth", "");
-            int userId = 0;
-            if (!string.IsNullOrEmpty(auth))
+            try
             {
-                userId = UserLogic.GetUserIdByAuthToken(auth);
-                if (userId == 0)
-                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
-                else
+                string auth = GetFormValue("auth", "");
+                int userId = 0;
+                if (!string.IsNullOrEmpty(auth))
                 {
-                    string sourceFileName = Server.MapPath("/app/myqrcodetemplate.html");
-                    string destPath = Server.MapPath(string.Format("/resource/app/qrcode/{0}", userId));
-                    if (!Directory.Exists(destPath))
-                        Directory.CreateDirectory(destPath);
-                    File.Copy(sourceFileName, destPath + "/index.html", true);
-                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+                    userId = UserLogic.GetUserIdByAuthToken(auth);
+                    if (userId == 0)
+                        json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+                    else
+                    {
+                        string sourceFileName = Server.MapPath("/app/myqrcodetemplate.html");
+                        string destPath = Server.MapPath(string.Format("/resource/app/qrcode/{0}", userId));
+                        if (!Directory.Exists(destPath))
+                            Directory.CreateDirectory(destPath);
+                        File.Copy(sourceFileName, destPath + "/index.html", true);
+                        json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+                    }
                 }
+                else
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
             }
-            else
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("MyQrcode:>Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 

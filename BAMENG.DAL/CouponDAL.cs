@@ -304,7 +304,7 @@ namespace BAMENG.DAL
         /// <returns>System.Boolean.</returns>
         public bool DeleteUserCashCoupon(string couponNo, int couponId, int userId)
         {
-            string strSql = "update BM_GetCashCouponLog set IsDel=1 where UserId<>@UserId and CouponId=@CouponId and CouponNo=@CouponNo and IsGet=0";
+            string strSql = "delete from BM_GetCashCouponLog where UserId<>@UserId and CouponId=@CouponId and CouponNo=@CouponNo and IsGet=0";
             var parms = new[] {
                new SqlParameter("@CouponId",couponId),
                new SqlParameter("@CouponNo",couponNo),

@@ -92,12 +92,12 @@ namespace BAMENG.API.Controllers
         }
 
         /// <summary>
-        /// 发送短信(用于修改手机号码)-需要签名授权 POST: sys/sendsms
+        /// 发送短信(用于修改手机号码)-需要签名授权 POST: sys/SendUserSms
         /// </summary>
         /// <param name="mobile">The mobile.</param>
         /// <returns>ActionResult.</returns>
         [ActionAuthorize]
-        public ActionResult SendSms(string mobile)
+        public ActionResult SendUserSms(string mobile)
         {
             ApiStatusCode apiCode;
             SmsLogic.SendSms(1, mobile, out apiCode);

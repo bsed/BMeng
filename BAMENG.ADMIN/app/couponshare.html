@@ -19,14 +19,14 @@
                 <div class="nrnr">
                     <p id="code"></p>
                     <p style="margin: 10px;color: #000;font-size:14px;">
-                        立刻扫码领取<span id="couponMoney"></span> 现金抵用券！
+                        立刻扫码领取<span id="couponMoney"></span> 现金现金券！
                         <br/>使用有效期：<span id="couponTime"></span>
                     </p>
                 </div>
             </div>
             <div style="display:none" class="bacimg textc" id="myNone">
                 <div style="margin:18%;top:80px;" class="nrnr">
-                    <p><b><i style="font-style:normal; color:#B91719; font-size:20px;">对不起！<br />优惠券已经被他人领取</i></b></p>
+                    <p><b><i style="font-style:normal; color:#B91719; font-size:20px;">对不起！<br />现金券已经被他人领取</i></b></p>
                 </div>
             </div>
         </div>
@@ -71,15 +71,19 @@
                     $("#myNone").show();                    
                 }
                 else {
-                    $("#couponMoney").text(ret.data.money + " 元");                    
+                    $("#myQrcode").show();
+                    $("#couponMoney").text(ret.data.money + " 元");
                     $("#couponTime").text(ret.data.time);
                     $("#code").qrcode({
                         render: "image",
                         size: 200,
                         text: ret.data.url
                     });
-                    $("#myQrcode").show();
+                    
                 }
+            }
+            else {
+                $.alert("服务器开小差了，请稍后再试！");
             }
             $("#loadBox").hide();
         });

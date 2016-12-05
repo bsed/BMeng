@@ -361,9 +361,15 @@ namespace BAMENG.LOGIC
             , string nickname, string userName
             , int sex, ref ApiStatusCode apiCode)
         {
+
             using (var dal = FactoryDispatcher.UserFactory())
             {
-                if (dal.ExistApplyFriend(mobile))
+
+                if (!RegexHelper.IsValidMobileNo(mobile))
+                {
+                    apiCode = ApiStatusCode.无效手机号;
+                }
+                else if (dal.ExistApplyFriend(mobile))
                 {
                     apiCode = ApiStatusCode.你已申请请耐心等到审核;
                 }
