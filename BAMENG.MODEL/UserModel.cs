@@ -162,6 +162,14 @@ namespace BAMENG.MODEL
         public int BelongOne { get; set; }
 
 
+
+        /// <summary>
+        /// 所属盟主姓名
+        /// </summary>
+        /// <value>The name of the belong one user.</value>
+        public string BelongOneUserName { get; set; }
+
+
         /// <summary>
         /// 所属门店类型1总店  2分店
         /// </summary>

@@ -180,6 +180,9 @@ namespace BAMENG.CONFIG
         现金券已领完 = 75002,
         [Description("现金券不存在或已使用")]
         优惠券不存在 = 75003,
+
+        [Description("该优惠券您已转发")]
+        您已转发 = 75004,
     }
 
 

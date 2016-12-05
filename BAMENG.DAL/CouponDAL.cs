@@ -464,6 +464,22 @@ namespace BAMENG.DAL
         }
 
 
+        /// <summary>
+        ///判断用户是否已转发
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if [is send coupon by user identifier] [the specified user identifier]; otherwise, false.</returns>
+        public bool IsSendCouponByUserId(int userId, int couponId)
+        {
+            string strSql = "select COUNT(1) from BM_CouponSend where UserId=@UserId and CouponId=@CouponId";
+            var parm = new[] {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@CouponId", couponId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm)) > 0;
+        }
+
 
     }
 }

@@ -275,7 +275,7 @@ namespace BAMENG.LOGIC
         /// <param name="TargetIds">The target ids.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool AddSendAllyCoupon(int userId, int couponId, string[] TargetIds)
-        {
+        {            
             using (TransactionScope scope = new TransactionScope())
             {
                 using (var dal = FactoryDispatcher.CouponFactory())
@@ -317,6 +317,21 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+
+        /// <summary>
+        ///判断用户是否已转发
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if [is send coupon by user identifier] [the specified user identifier]; otherwise, false.</returns>
+        public static bool IsSendCouponByUserId(int userId, int couponId)
+        {
+            using (var dal = FactoryDispatcher.CouponFactory())
+            {
+                return dal.IsSendCouponByUserId(userId, couponId);
+            }
+        }
 
 
         /// <summary>

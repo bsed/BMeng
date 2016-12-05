@@ -446,6 +446,10 @@ namespace BAMENG.API.Controllers
         public ActionResult SendCashCoupon(int couponId, int toUserId = 0)
         {
             var user = GetUserData();
+
+            if (CouponLogic.IsSendCouponByUserId(user.UserId, couponId))
+                return Json(new ResultModel(ApiStatusCode.您已转发));
+
             bool flag = CouponLogic.AddSendCoupon(user.UserId, user.UserIdentity, toUserId, couponId);
             return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
         }
@@ -457,10 +461,16 @@ namespace BAMENG.API.Controllers
         /// <param name="couponId">优惠券ID</param>
         /// <param name="ids">盟友ID，多个用|隔开</param>
         /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
         public ActionResult SendAllyCashCoupon(int couponId, string ids)
         {
             var user = GetUserData();
             string[] TargetIds = null;
+
+
+            if (CouponLogic.IsSendCouponByUserId(user.UserId, couponId))
+                return Json(new ResultModel(ApiStatusCode.您已转发));
+
             //如果是盟主身份，则需要判断发送目标
             if (user.UserIdentity == 1 && !string.IsNullOrEmpty(ids))
             {
@@ -470,9 +480,13 @@ namespace BAMENG.API.Controllers
                 TargetIds = ids.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 if (TargetIds.Length <= 0)
                     return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+
+
+                bool flag = CouponLogic.AddSendAllyCoupon(user.UserId, couponId, TargetIds);
+                return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
             }
-            bool flag = CouponLogic.AddSendAllyCoupon(user.UserId, couponId, TargetIds);
-            return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
+            else
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
         }
 
 

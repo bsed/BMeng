@@ -235,11 +235,15 @@ namespace BAMENG.API
                             user.IsActive = 0;
                         return user;
                     }
+                    else
+                        Json(new ResultModel(ApiStatusCode.SERVICEERROR));
                 }
+                else
+                    Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             catch (Exception ex)
             {
-                LogHelper.Log(string.Format("GetUserData:message:{0},StackTrace:{1}", ex.Message,ex.StackTrace), LogHelperTag.ERROR);
+                LogHelper.Log(string.Format("GetUserData:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             return null;
@@ -260,10 +264,15 @@ namespace BAMENG.API
                     {
                         return UserLogic.GetUserIdByAuthToken(Authorization);
                     }
+                    else
+                        Json(new ResultModel(ApiStatusCode.SERVICEERROR));
                 }
+                else
+                    Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Log(string.Format("GetUserData:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             return 0;

@@ -170,5 +170,14 @@ namespace BAMENG.IDAL
         /// <param name="couponId">The coupon identifier.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         bool UpdateCouponShareStatus(int userId, int couponId);
+
+
+        /// <summary>
+        ///判断用户是否已转发
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="couponId">The coupon identifier.</param>
+        /// <returns>true if [is send coupon by user identifier] [the specified user identifier]; otherwise, false.</returns>
+        bool IsSendCouponByUserId(int userId, int couponId);
     }
 }

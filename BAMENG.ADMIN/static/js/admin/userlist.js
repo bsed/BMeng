@@ -40,9 +40,11 @@ var userHelper = {
                         self.loaclData = ret.data.Rows;
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
+                            tempHtml = tempHtml.replace("{NO}", i+1);
                             tempHtml = tempHtml.replace("{LoginName}", item.LoginName);
                             tempHtml = tempHtml.replace(/{UserId}/gm, item.UserId);
                             tempHtml = tempHtml.replace("{ShopName}", item.ShopProv + " " + item.ShopCity + " " + item.ShopName);
+                            tempHtml = tempHtml.replace('{BelongOneName}', item.BelongOneUserName);
                             tempHtml = tempHtml.replace(/{RealName}/g, item.RealName);
                             tempHtml = tempHtml.replace("{NickName}", item.NickName);
                             tempHtml = tempHtml.replace("{LevelName}", item.LevelName);
@@ -57,11 +59,15 @@ var userHelper = {
                             tempHtml = tempHtml.replace("{CustomerAmount}", item.CustomerAmount);
                             tempHtml = tempHtml.replace("{ActiveStatus}", item.IsActive == 1 ? "<span style='color:red;'>激活</span>" : "已冻结")
 
-                            tempHtml = tempHtml.replace("{RegTime}", item.CreateTime);                           
+                            tempHtml = tempHtml.replace("{RegTime}", item.CreateTime);
 
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
+
+                        if (self.isAlly == 1) {                            
+                            $(".belongOneName").show();
+                        }
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
@@ -193,7 +199,8 @@ var userHelper = {
         if (this.isAlly == 1) {
             $("#btnUser").hide();
             $(".allyText").text("客户信息提交量");
-            $("#allyLable").text("盟友姓名")
+            $("#allyLable").text("盟友姓名");
+            $(".belongOneName").show();
         }
 
         var SHOP_INDENTITY = hotUtil.GetCookie("SHOP_INDENTITY");

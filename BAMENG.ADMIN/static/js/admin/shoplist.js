@@ -39,6 +39,7 @@ var shopHelper = {
                         self.loaclData = ret.data.Rows;
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
+                            tempHtml = tempHtml.replace("{NO}", i + 1);
                             tempHtml = tempHtml.replace("{LoginName}", item.LoginName);
                             tempHtml = tempHtml.replace(/{ShopID}/gm, item.ShopID);
                             if (self.type == 2)

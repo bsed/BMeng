@@ -64,7 +64,7 @@
       <publishTime>11/25/2016 11:53:40</publishTime>
     </File>
     <File Include="admin/orderdetails.html">
-      <publishTime>11/19/2016 16:32:36</publishTime>
+      <publishTime>12/03/2016 13:44:42</publishTime>
     </File>
     <File Include="admin/orderlist.html">
       <publishTime>11/19/2016 15:19:53</publishTime>
@@ -76,7 +76,7 @@
       <publishTime>11/25/2016 17:51:31</publishTime>
     </File>
     <File Include="admin/shoplist.html">
-      <publishTime>11/29/2016 16:05:28</publishTime>
+      <publishTime>12/05/2016 11:05:53</publishTime>
     </File>
     <File Include="admin/userdetails.html">
       <publishTime>11/24/2016 17:36:16</publishTime>
@@ -85,7 +85,7 @@
       <publishTime>11/28/2016 15:17:29</publishTime>
     </File>
     <File Include="admin/userlist.html">
-      <publishTime>12/01/2016 15:33:47</publishTime>
+      <publishTime>12/05/2016 11:05:39</publishTime>
     </File>
     <File Include="app/about.html">
       <publishTime>11/24/2016 11:15:50</publishTime>
@@ -130,22 +130,22 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>12/03/2016 10:10:08</publishTime>
+      <publishTime>12/05/2016 10:40:44</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>12/01/2016 15:42:10</publishTime>
+      <publishTime>12/05/2016 10:05:00</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>12/02/2016 18:25:07</publishTime>
+      <publishTime>12/05/2016 10:40:40</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>12/02/2016 18:20:11</publishTime>
+      <publishTime>12/05/2016 10:40:40</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/02/2016 18:25:07</publishTime>
+      <publishTime>12/05/2016 10:40:41</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>12/01/2016 15:42:10</publishTime>
+      <publishTime>12/05/2016 10:40:40</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
       <publishTime>11/29/2016 13:31:29</publishTime>
@@ -712,7 +712,7 @@
       <publishTime>12/01/2016 09:46:45</publishTime>
     </File>
     <File Include="static/js/admin/shoplist.js">
-      <publishTime>11/29/2016 16:27:28</publishTime>
+      <publishTime>12/05/2016 11:06:56</publishTime>
     </File>
     <File Include="static/js/admin/userdetails.js">
       <publishTime>12/02/2016 16:23:06</publishTime>
@@ -721,7 +721,7 @@
       <publishTime>11/28/2016 15:22:02</publishTime>
     </File>
     <File Include="static/js/admin/userlist.js">
-      <publishTime>12/01/2016 15:15:57</publishTime>
+      <publishTime>12/05/2016 11:06:17</publishTime>
     </File>
     <File Include="static/js/bootstrap.min.js">
       <publishTime>06/16/2015 16:12:50</publishTime>
