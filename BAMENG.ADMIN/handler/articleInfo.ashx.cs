@@ -33,20 +33,15 @@ namespace BAMENG.ADMIN.handler
                     context.Response.End();
                 }
             }
-            else
-            {
-                //json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
-                //context.Response.ContentType = "application/json";
-                //context.Response.Write(json);
-                //context.Response.End();
-            }
             ArticleModel data = ArticleLogic.GetModel(articleId);
-            if (data != null && !string.IsNullOrEmpty(data.ArticleCover))
-                data.ArticleCover = WebConfig.articleDetailsDomain() + data.ArticleCover;
-            else
+            if (data != null)
             {
-                data.ArticleCover = "http://" + context.Request.Url.Host + "/app/images/appShareLogo.png";
+                if (string.IsNullOrEmpty(data.ArticleCover))
+                    data.ArticleCover = WebConfig.articleDetailsDomain() + data.ArticleCover;
+                else
+                    data.ArticleCover = "http://" + context.Request.Url.Host + "/app/images/appShareLogo.png";
             }
+
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
 
 
@@ -54,12 +49,12 @@ namespace BAMENG.ADMIN.handler
             string clientip = GetClientIP;
             string cookieKey = "HOTBMUSER" + articleId.ToString();
             string cookie = CookieHelper.GetCookieVal(cookieKey);
-            if (string.IsNullOrEmpty(cookie))
+            if (string.IsNullOrEmpty(cookie) && userId == 0)
             {
                 cookie = Guid.NewGuid().ToString("n");
                 CookieHelper.SetCookieValByCurrentDomain(cookieKey, 1, cookie);
             }
-            if (cookie.Length != 32)
+            if (cookie.Length != 32 && userId == 0)
             {
                 goto Finish;
             }

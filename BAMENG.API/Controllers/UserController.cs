@@ -238,7 +238,7 @@ namespace BAMENG.API.Controllers
                     userInfo.RealName = content;
                     break;
                 case (int)UserPropertyOptions.USER_5:
-                    userInfo.UserGender = content;
+                    userInfo.UserGender = content.ToUpper();
                     break;
                 case (int)UserPropertyOptions.USER_6:
                     userInfo.UserCity = content;

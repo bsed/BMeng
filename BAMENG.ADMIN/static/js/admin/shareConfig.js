@@ -16,7 +16,7 @@ var _shareData = {
 
 //获取分享数据对象
 function getShareData() {
-    if (/(android)/i.test(navigator.userAgent)) {
+    if (/(bmandroid)/i.test(navigator.userAgent)) {
         android.sendShare(_shareData.title, _shareData.desc, _shareData.link, _shareData.img_url);
         return;
     }
@@ -28,7 +28,7 @@ function getShareData() {
 
 //是否启用分享
 function enableShare() {
-    if (/(android)/i.test(navigator.userAgent)) {
+    if (/(bmandroid)/i.test(navigator.userAgent)) {
         android.enableShare(_shareData.enable);
     }
 }

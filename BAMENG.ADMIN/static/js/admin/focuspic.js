@@ -61,7 +61,7 @@ var focusHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init((p) => {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 focusHelper.loadList(page);
                             });
@@ -138,7 +138,7 @@ var focusHelper = {
             hotUtil.ajaxCall(focusHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        swal("删除成功", "您已经永久删除了这条信息。", "success");
                         focusHelper.loadList(focusHelper.pageIndex);
                     }
                     else {
@@ -159,7 +159,7 @@ var focusHelper = {
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("设置成功！", "", "success");
+                    swal("设置成功", "", "success");
                     focusHelper.loadList(focusHelper.pageIndex);
                 }
                 else {

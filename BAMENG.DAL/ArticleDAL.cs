@@ -235,7 +235,7 @@ namespace BAMENG.DAL
             if (shopId > 0)
                 strSql += " and A.AuthorId=@AuthorId";
 
-            strSql += " order by A.PublishTime desc";
+            strSql += " order by A.TopTime desc";
 
 
             var param = new[] {

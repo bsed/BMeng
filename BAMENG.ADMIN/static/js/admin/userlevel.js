@@ -87,7 +87,7 @@ var levelHelper = {
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("提交成功！", "", "success");
+                    swal("提交成功", "", "success");
                     levelHelper.loadlevelList(parseInt($("#leveltype").val()));
                     $(".close").click();
                 }
@@ -116,7 +116,7 @@ var levelHelper = {
             hotUtil.ajaxCall(levelHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        swal("删除成功", "您已经永久删除了这条信息。", "success");
                         levelHelper.loadlevelList(type);
 
                     }

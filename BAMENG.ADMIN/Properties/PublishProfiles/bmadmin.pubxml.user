@@ -43,7 +43,7 @@
       <publishTime>11/24/2016 16:33:27</publishTime>
     </File>
     <File Include="admin/focuspic.html">
-      <publishTime>11/28/2016 19:52:18</publishTime>
+      <publishTime>12/06/2016 15:12:24</publishTime>
     </File>
     <File Include="admin/loginstatic.html">
       <publishTime>11/24/2016 11:32:01</publishTime>
@@ -88,16 +88,16 @@
       <publishTime>12/05/2016 11:05:39</publishTime>
     </File>
     <File Include="app/about.html">
-      <publishTime>11/24/2016 11:15:50</publishTime>
+      <publishTime>12/06/2016 13:53:28</publishTime>
     </File>
     <File Include="app/agreement.html">
-      <publishTime>11/19/2016 16:49:49</publishTime>
+      <publishTime>12/06/2016 13:50:15</publishTime>
     </File>
     <File Include="app/couponshare.html">
-      <publishTime>12/05/2016 16:07:55</publishTime>
+      <publishTime>12/06/2016 15:35:49</publishTime>
     </File>
     <File Include="app/details.html">
-      <publishTime>12/01/2016 09:43:29</publishTime>
+      <publishTime>12/06/2016 17:38:12</publishTime>
     </File>
     <File Include="app/getcoupon.html">
       <publishTime>12/05/2016 16:05:31</publishTime>
@@ -111,14 +111,17 @@
     <File Include="app/images/default.jpg">
       <publishTime>11/29/2016 10:11:11</publishTime>
     </File>
+    <File Include="app/images/none.png">
+      <publishTime>12/06/2016 16:32:41</publishTime>
+    </File>
     <File Include="app/myqrcode.html">
-      <publishTime>12/01/2016 09:47:07</publishTime>
+      <publishTime>12/06/2016 15:35:10</publishTime>
     </File>
     <File Include="app/myqrcodetemplate.html">
-      <publishTime>11/25/2016 15:53:50</publishTime>
+      <publishTime>12/06/2016 15:35:32</publishTime>
     </File>
     <File Include="app/policy.html">
-      <publishTime>11/25/2016 17:33:38</publishTime>
+      <publishTime>12/06/2016 13:46:51</publishTime>
     </File>
     <File Include="app/register.html">
       <publishTime>12/05/2016 17:02:33</publishTime>
@@ -130,25 +133,25 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>12/05/2016 17:04:47</publishTime>
+      <publishTime>12/06/2016 17:38:22</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>12/05/2016 10:05:00</publishTime>
+      <publishTime>12/06/2016 10:59:35</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>12/05/2016 16:07:32</publishTime>
+      <publishTime>12/06/2016 10:59:36</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>12/05/2016 10:40:40</publishTime>
+      <publishTime>12/06/2016 10:59:35</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/05/2016 17:04:44</publishTime>
+      <publishTime>12/06/2016 10:59:36</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>12/05/2016 10:40:40</publishTime>
+      <publishTime>12/06/2016 10:59:35</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
-      <publishTime>11/29/2016 13:31:29</publishTime>
+      <publishTime>12/06/2016 10:55:24</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/07/2015 19:04:38</publishTime>
@@ -484,7 +487,7 @@
       <publishTime>10/21/2015 20:13:58</publishTime>
     </File>
     <File Include="static/css/weui.min-bm-diy.css">
-      <publishTime>11/25/2016 17:48:52</publishTime>
+      <publishTime>12/06/2016 16:43:32</publishTime>
     </File>
     <File Include="static/fonts/fontawesome-webfont.eot_">
       <publishTime>10/08/2015 01:16:26</publishTime>
@@ -643,19 +646,19 @@
       <publishTime>11/20/2015 08:40:00</publishTime>
     </File>
     <File Include="static/js/admin/apparticle.js">
-      <publishTime>12/01/2016 09:58:59</publishTime>
+      <publishTime>12/06/2016 17:38:41</publishTime>
     </File>
     <File Include="static/js/admin/articleedit.js">
-      <publishTime>12/01/2016 10:08:16</publishTime>
+      <publishTime>12/06/2016 16:15:57</publishTime>
     </File>
     <File Include="static/js/admin/articlelist.js">
-      <publishTime>11/30/2016 19:26:58</publishTime>
+      <publishTime>12/06/2016 14:10:24</publishTime>
     </File>
     <File Include="static/js/admin/basesetting.js">
       <publishTime>12/02/2016 17:03:01</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponlist.js">
-      <publishTime>12/02/2016 17:21:20</publishTime>
+      <publishTime>12/05/2016 20:10:00</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponstatic.js">
       <publishTime>11/25/2016 12:45:37</publishTime>
@@ -664,16 +667,16 @@
       <publishTime>11/25/2016 12:45:37</publishTime>
     </File>
     <File Include="static/js/admin/coupongetlist.js">
-      <publishTime>11/28/2016 12:40:47</publishTime>
+      <publishTime>12/05/2016 20:09:50</publishTime>
     </File>
     <File Include="static/js/admin/customerlist.js">
-      <publishTime>11/29/2016 16:31:23</publishTime>
+      <publishTime>12/06/2016 14:12:20</publishTime>
     </File>
     <File Include="static/js/admin/customerstatistics.js">
       <publishTime>11/24/2016 13:56:37</publishTime>
     </File>
     <File Include="static/js/admin/focuspic.js">
-      <publishTime>11/29/2016 09:28:41</publishTime>
+      <publishTime>12/06/2016 14:11:25</publishTime>
     </File>
     <File Include="static/js/admin/Home.js">
       <publishTime>12/02/2016 16:49:34</publishTime>
@@ -685,13 +688,13 @@
       <publishTime>11/24/2016 11:31:51</publishTime>
     </File>
     <File Include="static/js/admin/managerlist.js">
-      <publishTime>11/09/2016 19:53:56</publishTime>
+      <publishTime>12/06/2016 14:12:50</publishTime>
     </File>
     <File Include="static/js/admin/messageedit.js">
       <publishTime>12/02/2016 15:23:37</publishTime>
     </File>
     <File Include="static/js/admin/messagelist.js">
-      <publishTime>11/18/2016 17:19:49</publishTime>
+      <publishTime>12/06/2016 14:13:09</publishTime>
     </File>
     <File Include="static/js/admin/modifypassword.js">
       <publishTime>11/29/2016 13:00:59</publishTime>
@@ -700,7 +703,7 @@
       <publishTime>11/19/2016 16:34:53</publishTime>
     </File>
     <File Include="static/js/admin/orderlist.js">
-      <publishTime>11/19/2016 15:20:36</publishTime>
+      <publishTime>12/05/2016 20:09:19</publishTime>
     </File>
     <File Include="static/js/admin/orderstatic.js">
       <publishTime>11/25/2016 17:51:31</publishTime>
@@ -709,19 +712,19 @@
       <publishTime>11/25/2016 17:51:31</publishTime>
     </File>
     <File Include="static/js/admin/shareConfig.js">
-      <publishTime>12/01/2016 09:46:45</publishTime>
+      <publishTime>12/06/2016 09:37:45</publishTime>
     </File>
     <File Include="static/js/admin/shoplist.js">
-      <publishTime>12/05/2016 11:06:56</publishTime>
+      <publishTime>12/06/2016 14:14:35</publishTime>
     </File>
     <File Include="static/js/admin/userdetails.js">
       <publishTime>12/02/2016 16:23:06</publishTime>
     </File>
     <File Include="static/js/admin/userlevel.js">
-      <publishTime>11/28/2016 15:22:02</publishTime>
+      <publishTime>12/06/2016 14:14:09</publishTime>
     </File>
     <File Include="static/js/admin/userlist.js">
-      <publishTime>12/05/2016 11:06:17</publishTime>
+      <publishTime>12/06/2016 14:14:26</publishTime>
     </File>
     <File Include="static/js/bootstrap.min.js">
       <publishTime>06/16/2015 16:12:50</publishTime>
@@ -779,6 +782,9 @@
     </File>
     <File Include="static/js/jquery-ui.custom.min.js">
       <publishTime>10/21/2015 10:40:46</publishTime>
+    </File>
+    <File Include="static/js/jQuery.asyncLoading.js">
+      <publishTime>12/06/2016 17:32:21</publishTime>
     </File>
     <File Include="static/js/jquery.min.js">
       <publishTime>11/21/2016 11:54:40</publishTime>
@@ -1414,7 +1420,7 @@
       <publishTime>11/12/2016 11:35:26</publishTime>
     </File>
     <File Include="static/js/plugins/summernote/summernote.min.js">
-      <publishTime>11/12/2016 13:25:09</publishTime>
+      <publishTime>12/06/2016 17:34:59</publishTime>
     </File>
     <File Include="static/js/plugins/sweetalert/sweetalert.min.js">
       <publishTime>11/07/2016 17:42:03</publishTime>

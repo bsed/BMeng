@@ -54,7 +54,7 @@ var customerHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init((p) => {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 customerHelper.loadList(page);
                             });
@@ -91,7 +91,7 @@ var customerHelper = {
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("提交成功！", "", "success");
+                    swal("提交成功", "", "success");
                     customerHelper.loadList(customerHelper.pageIndex);
                     $(".close").click();
                 }
@@ -120,7 +120,7 @@ var customerHelper = {
             hotUtil.ajaxCall(customerHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        swal("删除成功", "您已经永久删除了这条信息。", "success");
                         customerHelper.loadList(customerHelper.pageIndex);
                     }
                     else {

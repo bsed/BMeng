@@ -119,7 +119,7 @@ namespace BAMENG.DAL
             if (type == 2)
             {
                 orderby = true;
-                orderbyField = "C.Status";
+                orderbyField = "C.Status asc,C.InShopTime desc,C.CreateTime desc";
             }
             var param = new[] {
                 new SqlParameter("@UserID",UserId),

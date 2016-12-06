@@ -84,6 +84,7 @@ namespace BAMENG.API.Controllers
         /// <param name="mobile">The mobile.</param>
         /// <param name="type">1普通短信  2语音短信</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
+        [ActionAuthorize(AuthLogin = false)]
         public ActionResult SendSms(string mobile, int type)
         {
             ApiStatusCode apiCode;

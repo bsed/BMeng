@@ -118,7 +118,7 @@ namespace BAMENG.LOGIC
                         model.MengBeans = model.MengBeans - model.MengBeansLocked;
                         model.Score = model.Score - model.ScoreLocked;
                         model.TempMengBeans = UserLogic.countTempBeansMoney(model.UserId, 0);
-
+                        model.UserGender = model.UserGender.ToUpper();
                         string token = EncryptHelper.MD5(StringHelper.CreateCheckCode(20));
                         if (dal.IsAuthTokenExist(model.UserId) ? dal.UpdateUserAuthToken(model.UserId, token) : dal.AddUserAuthToken(model.UserId, token))
                             model.token = token;

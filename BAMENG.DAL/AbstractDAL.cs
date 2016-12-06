@@ -91,7 +91,14 @@ namespace BAMENG.DAL
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, SqlParameter[] commandParameters, Action<List<T>> callback, bool orderby = false) where T : new()
         {
             PageSize = PageSize > 0 ? PageSize : 20;
-            string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+            string querySql = string.Empty;
+            var fields = orderbyField.Split(',');
+
+            if (fields.Length > 1)
+                querySql = DbHelperSQLP.buildPageOrderBySql(PageIndex, PageSize, strSql, orderbyField);
+            else
+                querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
             ResultPageModel result = new ResultPageModel();
@@ -131,7 +138,14 @@ namespace BAMENG.DAL
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, bool orderby, params SqlParameter[] commandParameters) where T : new()
         {
             PageSize = PageSize > 0 ? PageSize : 20;
-            string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+            string querySql = string.Empty;
+            var fields = orderbyField.Split(',');
+
+            if (fields.Length > 1)
+                querySql = DbHelperSQLP.buildPageOrderBySql(PageIndex, PageSize, strSql, orderbyField);
+            else
+                querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
             ResultPageModel result = new ResultPageModel();
@@ -156,10 +170,17 @@ namespace BAMENG.DAL
         }
 
 
-        public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField,params SqlParameter[] commandParameters) where T : new()
+        public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, params SqlParameter[] commandParameters) where T : new()
         {
             PageSize = PageSize > 0 ? PageSize : 20;
-            string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField);
+            string querySql = string.Empty;
+            var fields = orderbyField.Split(',');
+
+            if (fields.Length > 1)
+                querySql = DbHelperSQLP.buildPageOrderBySql(PageIndex, PageSize, strSql, orderbyField);
+            else
+                querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField);
+
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
             ResultPageModel result = new ResultPageModel();
@@ -196,7 +217,14 @@ namespace BAMENG.DAL
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, Action<List<T>> callback, bool orderby = false) where T : new()
         {
             PageSize = PageSize > 0 ? PageSize : 20;
-            string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+            string querySql = string.Empty;
+            var fields = orderbyField.Split(',');
+
+            if (fields.Length > 1)
+                querySql = DbHelperSQLP.buildPageOrderBySql(PageIndex, PageSize, strSql, orderbyField);
+            else
+                querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
             ResultPageModel result = new ResultPageModel();
@@ -234,7 +262,14 @@ namespace BAMENG.DAL
         public ResultPageModel getPageData<T>(int PageSize, int PageIndex, string strSql, string orderbyField, bool orderby = false) where T : new()
         {
             PageSize = PageSize > 0 ? PageSize : 20;
-            string querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+            string querySql = string.Empty;
+            var fields = orderbyField.Split(',');
+
+            if (fields.Length > 1)
+                querySql = DbHelperSQLP.buildPageOrderBySql(PageIndex, PageSize, strSql, orderbyField);
+            else
+                querySql = DbHelperSQLP.buildPageSql(PageIndex, PageSize, strSql, orderbyField, orderby);
+
             string recordCountSql = DbHelperSQLP.buildRecordCountSql(strSql);
 
             ResultPageModel result = new ResultPageModel();
@@ -258,94 +293,7 @@ namespace BAMENG.DAL
             return result;
         }
 
-        /// <summary>   
-        /// 根据需要得实体类信息   
-        /// </summary>   
-        /// <typeparam name="T">需要一个对象有一个无参数的实例化方法</typeparam>   
-        /// <param name="dr">table数据源</param>   
-        /// <returns>返回整理好了集合</returns>           
-        public static List<T> GetEntityList<T>(IDataReader dr) where T : new()
-        {
-            List<T> entityList = new List<T>();
 
-            int fieldCount = -1;
-
-            while (dr.Read())
-            {
-                if (-1 == fieldCount)
-                    fieldCount = dr.FieldCount;
-
-                // 得到实体类对象   
-                T t = (T)Activator.CreateInstance(typeof(T));
-
-                for (int i = 0; i < fieldCount; i++)
-                {
-                    PropertyInfo prop = t.GetType().GetProperty(dr.GetName(i),
-                        BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
-
-                    if (null != prop)
-                    {
-                        // 为了能用在默认为null的值上   
-                        // 如 DateTime? tt = null;
-                        if (null == dr[i] || Convert.IsDBNull(dr[i]))
-                        {
-                            if (prop.PropertyType.Name == "DateTime" || prop.PropertyType.Name == "Date")
-                                prop.SetValue(t, DateTime.Parse("1975-1-1"), null);
-                            else if (prop.PropertyType.Name == "String")
-                                prop.SetValue(t, "", null);
-                            else
-                                prop.SetValue(t, null, null);
-                        }
-                        else
-                            prop.SetValue(t, dr[i], null);
-                    }
-                }
-
-                entityList.Add(t);
-            }
-            dr.Close();
-            return entityList;
-        }
-
-        public T GetEntity<T>(IDataReader dr) where T : new()
-        {
-            T entity = default(T);
-
-            int fieldCount = -1;
-
-            if (dr.Read())
-            {
-                if (-1 == fieldCount)
-                    fieldCount = dr.FieldCount;
-
-                // 得到实体类对象   
-                T t = (T)Activator.CreateInstance(typeof(T));
-
-                for (int i = 0; i < fieldCount; i++)
-                {
-                    PropertyInfo prop = t.GetType().GetProperty(dr.GetName(i),
-                        BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
-
-                    if (null != prop)
-                    {
-                        // 为了能用在默认为null的值上   
-                        // 如 DateTime? tt = null;   
-                        if (null == dr[i] || Convert.IsDBNull(dr[i]))
-                            if (prop.PropertyType.Name == "DateTime" || prop.PropertyType.Name == "Date")
-                                prop.SetValue(t, DateTime.Parse("1975-1-1"), null);
-                            else if (prop.PropertyType.Name == "String")
-                                prop.SetValue(t, "", null);
-                            else
-                                prop.SetValue(t, null, null);
-                        else
-                            prop.SetValue(t, dr[i], null);
-                    }
-                }
-                entity = t;
-            }
-            dr.Close();
-            return entity;
-        }
 
     }
 

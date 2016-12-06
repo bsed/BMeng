@@ -231,7 +231,13 @@ namespace BAMENG.ADMIN.handler
                     }
                     else
                     {
-                        if (!IsBuildThumbnail ? FileUploadHelper.UploadFile(oFile, FileName) : FileUploadHelper.UploadPicFileAndThumbnail(oFile, FileName, ThmbnailW, ThmbnailH, ThumbnailMode.HW))
+
+                        System.Drawing.Image _tempbmp = System.Drawing.Image.FromStream(oFile.InputStream);
+                        bool isbt = IsBuildThumbnail;
+                        if (_tempbmp.Width == ThmbnailW && _tempbmp.Height == ThmbnailH)
+                            isbt = false;
+
+                        if (!isbt ? FileUploadHelper.UploadFile(oFile, FileName) : FileUploadHelper.UploadPicFileAndThumbnail(oFile, FileName, ThmbnailW, ThmbnailH, ThumbnailMode.HW))
                         {
                             if (UploadType)
                             {
@@ -242,7 +248,7 @@ namespace BAMENG.ADMIN.handler
                                 }
                                 else
                                 {
-                                    responseMsg = "{success:true,fileUrl:\""+ FileName + "\"}";
+                                    responseMsg = "{success:true,fileUrl:\"" + FileName + "\"}";
                                 }
                             }
                             else

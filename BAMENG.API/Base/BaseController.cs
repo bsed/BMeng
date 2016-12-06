@@ -231,6 +231,7 @@ namespace BAMENG.API
                         UserModel user = UserLogic.GetModel(UserId);
                         user.token = Authorization;
                         user.TempMengBeans = UserLogic.countTempBeansMoney(user.UserId, 0);
+                        user.UserGender = user.UserGender.ToUpper();
                         if (user.ShopActive == 0)
                             user.IsActive = 0;
                         return user;

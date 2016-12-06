@@ -54,7 +54,7 @@ var orderHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init((p) => {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 orderHelper.loadList(page);
                             });

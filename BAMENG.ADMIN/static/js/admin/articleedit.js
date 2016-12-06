@@ -183,7 +183,7 @@ var articleHelper = {
                     if (ret) {
                         if (ret.status == 200) {
                             $(".btn-yes,.btn-no").hide();
-                            swal("操作成功！", "", "success");
+                            swal("操作成功", "", "success");
                         }
                         else {
                             swal(ret.statusText, "", "warning");
@@ -231,7 +231,9 @@ $(document).ready(function () {
                 success: function (data) {
                     var obj = eval('(' + data + ')');
                     editor.insertImage($editable, obj.fileUrl);
-                    hotUtil.loading.close();
+                    setTimeout(function () {
+                        hotUtil.loading.close();
+                    }, 2000);
                 }
             });
         }

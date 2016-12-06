@@ -128,6 +128,7 @@
     <Content Include="app\getcoupon.html" />
     <Content Include="app\images\appShareCoupon.png" />
     <Content Include="app\images\appShareLogo.png" />
+    <Content Include="app\images\none.png" />
     <Content Include="app\myqrcodetemplate.html" />
     <Content Include="app\policy.html" />
     <Content Include="app\register.html" />
@@ -187,6 +188,7 @@
     <Content Include="static\js\admin\userlist.js" />
     <Content Include="static\js\admin\cashcouponlist.js" />
     <Content Include="static\js\demoLeftData.js" />
+    <Content Include="static\js\jQuery.asyncLoading.js" />
     <Content Include="static\js\plugins\CtiyPicker\css\cityPicker.css" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityList.js" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityPicker.js" />

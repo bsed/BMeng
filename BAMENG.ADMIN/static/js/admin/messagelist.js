@@ -59,7 +59,7 @@ var messageHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init((p) => {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 messageHelper.loadList(page);
                             });
@@ -116,7 +116,7 @@ var messageHelper = {
             hotUtil.ajaxCall(messageHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        swal("删除成功", "您已经永久删除了这条信息。", "success");
                         messageHelper.loadList(messageHelper.pageIndex);
                     }
                     else {

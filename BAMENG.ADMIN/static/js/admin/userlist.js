@@ -40,7 +40,7 @@ var userHelper = {
                         self.loaclData = ret.data.Rows;
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
-                            tempHtml = tempHtml.replace("{NO}", i+1);
+                            tempHtml = tempHtml.replace("{NO}", i + 1);
                             tempHtml = tempHtml.replace("{LoginName}", item.LoginName);
                             tempHtml = tempHtml.replace(/{UserId}/gm, item.UserId);
                             tempHtml = tempHtml.replace("{ShopName}", item.ShopProv + " " + item.ShopCity + " " + item.ShopName);
@@ -65,13 +65,19 @@ var userHelper = {
                         });
                         $("#listMode").html(listhtml);
 
-                        if (self.isAlly == 1) {                            
+                        if (self.isAlly == 1) {
                             $(".belongOneName").show();
                         }
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init((p) => {
+                        //pageinate.init((p) => {
+                        //    goTo(p, function (page) {
+                        //        userHelper.loadList(page);
+                        //    });
+                        //});
+
+                        pageinate.init(function () {
                             goTo(p, function (page) {
                                 userHelper.loadList(page);
                             });
@@ -109,7 +115,7 @@ var userHelper = {
         hotUtil.ajaxCall(this.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("提交成功！", "", "success");
+                    swal("提交成功", "", "success");
                     userHelper.loadList(userHelper.pageIndex);
                     $(".close").click();
                 }
@@ -138,7 +144,7 @@ var userHelper = {
             hotUtil.ajaxCall(userHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        swal("删除成功", "您已经永久删除了这条信息。", "success");
                         userHelper.loadList(userHelper.pageIndex);
                     }
                     else {

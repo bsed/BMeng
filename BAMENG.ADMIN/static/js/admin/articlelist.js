@@ -79,7 +79,7 @@ var articleHelper = {
                             $("#listMode2").html(listhtml);
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init((p) => {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 articleHelper.loadList(page);
                             });
@@ -140,7 +140,7 @@ var articleHelper = {
             hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
                 if (ret) {
                     if (ret.status == 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        swal("删除成功", "您已经永久删除了这条信息。", "success");
                         articleHelper.loadList(articleHelper.pageIndex);
                     }
                     else {
@@ -184,7 +184,7 @@ var articleHelper = {
         hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
-                    swal("设置成功！", "", "success");
+                    swal("设置成功", "", "success");
                     $("#enableTop_" + dataId).text(active == 0 ? "取消置顶" : "置顶");
                     articleHelper.loadList(articleHelper.pageIndex);
                 }
@@ -219,7 +219,7 @@ var articleHelper = {
                 hotUtil.ajaxCall(articleHelper.ajaxUrl, param, function (ret, err) {
                     if (ret) {
                         if (ret.status == 200) {
-                            swal("操作成功！", "", "success");
+                            swal("操作成功", "", "success");
                             articleHelper.loadList(articleHelper.pageIndex);
                         }
                         else {

@@ -653,6 +653,8 @@ namespace BAMENG.DAL
                 {
                     if (!string.IsNullOrEmpty(item.UserHeadImg))
                         item.UserHeadImg = WebConfig.reswebsite() + item.UserHeadImg;
+
+                    item.UserGender = item.UserGender.ToUpper();
                 });
             }), isDesc);
         }
