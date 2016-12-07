@@ -70,14 +70,16 @@ namespace BAMENG.LOGIC
         /// 创建订单
         /// </summary>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="shopId">The shop identifier.</param>
         /// <param name="userName">Name of the user.</param>
         /// <param name="mobile">The mobile.</param>
         /// <param name="address">The address.</param>
         /// <param name="cashNo">The cash no.</param>
         /// <param name="memo">The memo.</param>
         /// <param name="filename">The filename.</param>
+        /// <param name="apiCode">The API code.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool saveOrder(int userId, string userName, string mobile, string address, string cashNo, string memo, string filename, ref ApiStatusCode apiCode)
+        public static bool saveOrder(int userId, int shopId, string userName, string mobile, string address, string cashNo, string memo, string filename, ref ApiStatusCode apiCode)
         {
 
             try
@@ -105,7 +107,7 @@ namespace BAMENG.LOGIC
                     if (!string.IsNullOrEmpty(cashNo))
                     {
                         coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
-                        if (coupon != null && coupon.ID > 0)
+                        if (coupon != null && coupon.ID > 0 && coupon.ShopId == shopId)
                         {
                             model.CashCouponAmount = coupon.Money;
                             model.CashCouponBn = cashNo;

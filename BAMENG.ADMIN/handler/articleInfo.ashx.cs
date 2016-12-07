@@ -18,79 +18,90 @@ namespace BAMENG.ADMIN.handler
 
         public new void ProcessRequest(HttpContext context)
         {
-            int articleId = GetFormValue("articleId", 0);
-            string auth = GetFormValue("auth", "");
-            string json = string.Empty;
-            int userId = 0;
-            if (!string.IsNullOrEmpty(auth))
+            try
             {
-                userId = UserLogic.GetUserIdByAuthToken(auth);
-                if (userId == 0)
+                int articleId = GetFormValue("articleId", 0);
+                string auth = GetFormValue("auth", "");
+                string json = string.Empty;
+                int userId = 0;
+                if (!string.IsNullOrEmpty(auth))
                 {
-                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
-                    context.Response.ContentType = "application/json";
-                    context.Response.Write(json);
-                    context.Response.End();
+                    userId = UserLogic.GetUserIdByAuthToken(auth);
+                    if (userId == 0)
+                    {
+                        json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+                        context.Response.ContentType = "application/json";
+                        context.Response.Write(json);
+                        context.Response.End();
+                    }
                 }
-            }
-            ArticleModel data = ArticleLogic.GetModel(articleId);
-            if (data != null)
-            {
-                if (string.IsNullOrEmpty(data.ArticleCover))
-                    data.ArticleCover = WebConfig.articleDetailsDomain() + data.ArticleCover;
-                else
-                    data.ArticleCover = "http://" + context.Request.Url.Host + "/app/images/appShareLogo.png";
-            }
-
-            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
-
-
-            //相同的资讯是否被一个人浏览（cookie + Ip）
-            string clientip = GetClientIP;
-            string cookieKey = "HOTBMUSER" + articleId.ToString();
-            string cookie = CookieHelper.GetCookieVal(cookieKey);
-            if (string.IsNullOrEmpty(cookie) && userId == 0)
-            {
-                cookie = Guid.NewGuid().ToString("n");
-                CookieHelper.SetCookieValByCurrentDomain(cookieKey, 1, cookie);
-            }
-            if (cookie.Length != 32 && userId == 0)
-            {
-                goto Finish;
-            }
-
-            ReadLogModel logModel = new ReadLogModel()
-            {
-                UserId = userId,
-                cookie = cookie,
-                ClientIp = clientip,
-                ArticleId = articleId,
-                IsRead = 1,
-                ReadTime = DateTime.Now
-            };
-            int type = data.AuthorIdentity;
-            //判断是否已经阅读
-            if (!LogLogic.IsRead(articleId, type, userId, cookie, clientip))
-            {
-                //添加阅读日志
-                if (type == 3 || type == 4)
+                ArticleModel data = ArticleLogic.GetModel(articleId);
+                if (data != null)
                 {
-                    if (LogLogic.IsRead(userId, articleId))
-                        LogLogic.UpdateReadStatus(userId, articleId);
+                    if (!string.IsNullOrEmpty(data.ArticleCover))
+                        data.ArticleCover = WebConfig.articleDetailsDomain() + data.ArticleCover;
                     else
-                        LogLogic.AddReadLog(logModel);
+                        data.ArticleCover = "http://" + context.Request.Url.Host + "/app/images/appShareLogo.png";
+                }
+
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+
+
+                //相同的资讯是否被一个人浏览（cookie + Ip）
+                string clientip = GetClientIP;
+                string cookieKey = "HOTBMUSER" + articleId.ToString();
+                string cookie = CookieHelper.GetCookieVal(cookieKey);
+                if (string.IsNullOrEmpty(cookie) && userId == 0)
+                {
+                    cookie = Guid.NewGuid().ToString("n");
+                    CookieHelper.SetCookieValByCurrentDomain(cookieKey, 1, cookie);
                 }
                 else
-                    LogLogic.AddReadLog(logModel);
+                    cookie = string.Empty;
+                if (cookie.Length != 32 && userId == 0)
+                {
+                    goto Finish;
+                }
 
-                ArticleLogic.UpdateArticleAmount(articleId);
+                ReadLogModel logModel = new ReadLogModel()
+                {
+                    UserId = userId,
+                    cookie = cookie,
+                    ClientIp = clientip,
+                    ArticleId = articleId,
+                    IsRead = 1,
+                    ReadTime = DateTime.Now
+                };
+                if (data != null)
+                {
+                    int type = data.AuthorIdentity;
+                    //判断是否已经阅读
+                    if (!LogLogic.IsRead(articleId, type, userId, cookie, clientip))
+                    {
+                        //添加阅读日志
+                        if (type == 3 || type == 4)
+                        {
+                            if (LogLogic.IsRead(userId, articleId))
+                                LogLogic.UpdateReadStatus(userId, articleId);
+                            else
+                                LogLogic.AddReadLog(logModel);
+                        }
+                        else
+                            LogLogic.AddReadLog(logModel);
+
+                        ArticleLogic.UpdateArticleAmount(articleId);
+                    }
+                }
+                goto Finish;
+
+                Finish:
+                context.Response.ContentType = "application/json";
+                context.Response.Write(json);
             }
-
-            goto Finish;
-
-            Finish:
-            context.Response.ContentType = "application/json";
-            context.Response.Write(json);
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+            }
         }
 
         public new bool IsReusable

@@ -47,7 +47,7 @@ namespace BAMENG.API.Controllers
             Dictionary<string, int> data = new Dictionary<string, int>();
             data["score"] = Integral;
             if (apiCode == ApiStatusCode.OK)
-                return Json(new ResultModel(apiCode, string.Format("积分+{0}" + Integral), data));
+                return Json(new ResultModel(apiCode, string.Format("积分+{0}",Integral), data));
             else
                 return Json(new ResultModel(apiCode, data));
 

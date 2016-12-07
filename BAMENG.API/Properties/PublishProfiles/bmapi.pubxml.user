@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/BAMENG.API.dll">
-      <publishTime>12/06/2016 10:59:39</publishTime>
+      <publishTime>12/07/2016 11:47:00</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
       <publishTime>12/06/2016 10:59:35</publishTime>
@@ -22,7 +22,7 @@
       <publishTime>12/06/2016 10:59:35</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/06/2016 10:59:36</publishTime>
+      <publishTime>12/07/2016 11:46:56</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
       <publishTime>12/06/2016 10:59:35</publishTime>

@@ -25,7 +25,7 @@ var articleInfoHelper = {
             auth: hotUtil.auth(),
             articleId: hotUtil.getQuery("articleId")
         }
-        self.show();
+        //self.show();
         hotUtil.ajaxCall("/handler/articleinfo.ashx", postData, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
@@ -56,22 +56,6 @@ var articleInfoHelper = {
                         _shareData.img_url = ret.data.ArticleCover;
                     }
                     $(".bodyContent").show();
-                    //setTimeout(function () {
-                    //    var reg2 = /<img.*?data-bm-src="([^"]+)"/ig;
-                    //    var m2 = data.match(new RegExp(reg2));
-                    //    if (m2 != null) {
-                    //        for (var i = 0; i < m2.length; i++) {
-                    //            var u = "images/none.png?v=" + i;
-                    //            var result2 = new RegExp(reg2).exec(m2[i]);
-                    //            if (result2 != null) {
-                    //                var url2 = result2[1];
-                    //                data = data.replace(u, url2);
-                    //                $("#articleInfo").html(data);
-                    //            }
-                    //        }
-                    //    }
-                    //}, 1000);
-
 
                     $(".scrollLoading").load(function () {
                         //图片默认隐藏  
@@ -86,7 +70,7 @@ var articleInfoHelper = {
                 else
                     $.alert(ret.statusText);
             }
-            self.hide();
+            //self.hide();
         });
     }
 }

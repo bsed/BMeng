@@ -1067,14 +1067,14 @@ namespace BAMENG.ADMIN.handler
             string endTime = GetFormValue("endTime", "");
             if (type != 0)
             {
-                beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
+                beginTime = DateTime.Now.AddDays(-(type-1)).ToString("yyyy-MM-dd");
                 endTime = DateTime.Now.ToString("yyyy-MM-dd");
             }
             else
             {
                 if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
                 {
-                    beginTime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
                     endTime = DateTime.Now.ToString("yyyy-MM-dd");
                 }
                 else
@@ -1103,14 +1103,14 @@ namespace BAMENG.ADMIN.handler
             string endTime = GetFormValue("endTime", "");
             if (type != 0)
             {
-                beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
                 endTime = DateTime.Now.ToString("yyyy-MM-dd");
             }
             else
             {
                 if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
                 {
-                    beginTime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
                     endTime = DateTime.Now.ToString("yyyy-MM-dd");
                 }
                 else
@@ -1131,10 +1131,24 @@ namespace BAMENG.ADMIN.handler
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");
-            if (type <= 0) type = 7;
-
-            beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
-            endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
 
             var data = LogLogic.CouponStatistics(user, type, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -1146,10 +1160,24 @@ namespace BAMENG.ADMIN.handler
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");
-            if (type <= 0) type = 7;
-
-            beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
-            endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
 
             var data = LogLogic.CouponStatisticsPie(user, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -1164,10 +1192,24 @@ namespace BAMENG.ADMIN.handler
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");
-            if (type <= 0) type = 7;
-
-            beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
-            endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
 
             var data = LogLogic.OrderStatistic(user, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -1181,10 +1223,24 @@ namespace BAMENG.ADMIN.handler
             int type = GetFormValue("type", 0);
             string beginTime = GetFormValue("beginTime", "");
             string endTime = GetFormValue("endTime", "");
-            if (type <= 0) type = 7;
-
-            beginTime = DateTime.Now.AddDays(-type).ToString("yyyy-MM-dd");
-            endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
 
             var data = LogLogic.OrderStatisticsPie(user, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));

@@ -62,7 +62,9 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult create(string userName, string mobile, string address, string cashNo, string memo)
         {
-            int userId = GetAuthUserId();
+
+            var user = GetUserData();
+            int userId = user.UserId;
 
             string imgContent = string.Empty;
             HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
@@ -79,7 +81,7 @@ namespace BAMENG.API.Controllers
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
                 ApiStatusCode apiCode = ApiStatusCode.SERVICEERROR;
-                bool flag = OrderLogic.saveOrder(userId, userName, mobile, address, cashNo, memo, fileName, ref apiCode);
+                bool flag = OrderLogic.saveOrder(userId,user.ShopId, userName, mobile, address, cashNo, memo, fileName, ref apiCode);
                 if (!flag)
                 {
                     System.IO.File.Delete(Server.MapPath(fileName));
