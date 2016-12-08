@@ -79,7 +79,7 @@ namespace BAMENG.LOGIC
             using (var dal = FactoryDispatcher.SystemFactory())
             {
                 //获取今日数据
-                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHHmm") + "_" + user.UserIndentity.ToString() + user.ID.ToString();
+                string todayKey = "HOMEDATA" + DateTime.Now.ToString("yyyyMMddHH") + "_" + user.UserIndentity.ToString() + user.ID.ToString();
                 AdminHomeDataModel todayData = WebCacheHelper<AdminHomeDataModel>.Get(todayKey);
                 if (todayData == null)
                 {

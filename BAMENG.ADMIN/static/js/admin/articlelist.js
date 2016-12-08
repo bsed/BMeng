@@ -127,7 +127,7 @@ var articleHelper = {
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "删除",            
+            confirmButtonText: "删除",
             closeOnConfirm: false,
         }, function () {
             var param = {
@@ -207,7 +207,7 @@ var articleHelper = {
             closeOnConfirm: false,
             inputPlaceholder: "理由"
         }, function (inputValue) {
-            if (inputValue) {                
+            if (inputValue) {
                 var param = {
                     action: "UpdateArticleCode",
                     articleId: dataId,
@@ -230,6 +230,9 @@ var articleHelper = {
                 });
             }
         });
+    },
+    copyText: function (dataId) {
+        window.open("/app/details.html?articleId=" + dataId, "_blank");
     }
 };
 
