@@ -106,7 +106,18 @@ namespace BAMENG.LOGIC
                 return dal.UpdateUserActive(userId, active);
             }
         }
-
+        /// <summary>
+        /// 判断用户是否存在
+        /// </summary>
+        /// <param name="loginName">Name of the login.</param>
+        /// <returns>true if the specified login name is exist; otherwise, false.</returns>
+        public static bool IsExist(string loginName)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.IsExist(loginName);
+            }
+        }
 
         /// <summary>
         /// 获取用户信息
@@ -407,7 +418,7 @@ namespace BAMENG.LOGIC
         /// <param name="userId"></param>
         public static void userUpdate(int userId)
         {
-            int amount = OrderLogic.CountOrdersByAllyUserId(userId,1);
+            int amount = OrderLogic.CountOrdersByAllyUserId(userId, 1);
             using (var dal = FactoryDispatcher.UserFactory())
             {
                 List<MallUserLevelModel> levels = dal.GeUserLevelList(ConstConfig.storeId, 0);
@@ -455,7 +466,7 @@ namespace BAMENG.LOGIC
                 }
                 if (!isFind)
                 {
-                    int leveid= dal.GetMinLevelID(ConstConfig.storeId,1);
+                    int leveid = dal.GetMinLevelID(ConstConfig.storeId, 1);
                     //更新用户等级
                     dal.updateUserLevel(userId, leveid);
                 }
@@ -472,7 +483,7 @@ namespace BAMENG.LOGIC
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool ConvertToBean(int userId, int amount, ref ApiStatusCode code)
         {
-            if (amount <= 2)
+            if (amount < 100)
             {
                 code = ApiStatusCode.兑换的盟豆数量不能少于100;
                 return false;

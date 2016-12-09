@@ -30,7 +30,7 @@ namespace BAMENG.API.Controllers
         {
             var user = GetUserData();
             int userId = user.UserId;
-            var data = OrderLogic.GetMyOrderList(userId, type, lastId,user.UserIdentity);
+            var data = OrderLogic.GetMyOrderList(userId, type, lastId, user.UserIdentity);
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict["list"] = data;
             return Json(new ResultModel(ApiStatusCode.OK, dict));
@@ -81,14 +81,17 @@ namespace BAMENG.API.Controllers
             if (FileUploadHelper.UploadFile(bytes, fileName))
             {
                 ApiStatusCode apiCode = ApiStatusCode.SERVICEERROR;
-                bool flag = OrderLogic.saveOrder(userId,user.ShopId, userName, mobile, address, cashNo, memo, fileName, ref apiCode);
+                bool flag = OrderLogic.saveOrder(userId, user.ShopId, userName, mobile, address, cashNo, memo, fileName, ref apiCode);
                 if (!flag)
                 {
                     System.IO.File.Delete(Server.MapPath(fileName));
-                    return Json(new ResultModel(apiCode));
+                    if (apiCode == ApiStatusCode.OK)
+                        return Json(new ResultModel(apiCode, "订单创建成功"));
+                    else
+                        return Json(new ResultModel(apiCode));
                 }
                 else
-                    return Json(new ResultModel(ApiStatusCode.OK));
+                    return Json(new ResultModel(apiCode));
             }
             else
                 return Json(new ResultModel(ApiStatusCode.请上传图片));
@@ -106,7 +109,10 @@ namespace BAMENG.API.Controllers
             int userId = GetAuthUserId();
             ApiStatusCode code = ApiStatusCode.OK;
             OrderLogic.Update(userId, orderId, status, ref code);
-            return Json(new ResultModel(code));
+            if (code == ApiStatusCode.OK)
+                return Json(new ResultModel(code, "保存成功"));
+            else
+                return Json(new ResultModel(code));
         }
 
 

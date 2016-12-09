@@ -143,7 +143,7 @@ namespace BAMENG.API.Controllers
         public ActionResult UpdateInShop(int cid, int status)
         {
             if (CustomerLogic.UpdateInShopStatus(cid, status))
-                return Json(new ResultModel(ApiStatusCode.OK));
+                return Json(new ResultModel(ApiStatusCode.OK, "保存成功"));
             else
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
         }

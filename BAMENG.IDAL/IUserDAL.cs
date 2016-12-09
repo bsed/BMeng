@@ -41,6 +41,9 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         ResultPageModel GetApplyFriendList(SearchModel model);
 
+
+        bool IsExist(string loginName);
+
         /// <summary>
         /// 添加用户信息
         /// </summary>

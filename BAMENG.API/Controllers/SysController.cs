@@ -88,8 +88,16 @@ namespace BAMENG.API.Controllers
         public ActionResult SendSms(string mobile, int type)
         {
             ApiStatusCode apiCode;
-            SmsLogic.SendSms(type, mobile, out apiCode);
-            return Json(new ResultModel(apiCode));
+
+            if (UserLogic.IsExist(mobile))
+                SmsLogic.SendSms(type, mobile, out apiCode);
+            else
+                apiCode = ApiStatusCode.账户不存在;
+
+            if (apiCode == ApiStatusCode.OK)
+                return Json(new ResultModel(apiCode, "短信已发送成功，请注意查收!"));
+            else
+                return Json(new ResultModel(apiCode));
         }
 
         /// <summary>
@@ -102,7 +110,10 @@ namespace BAMENG.API.Controllers
         {
             ApiStatusCode apiCode;
             SmsLogic.SendSms(1, mobile, out apiCode);
-            return Json(new ResultModel(apiCode));
+            if (apiCode == ApiStatusCode.OK)
+                return Json(new ResultModel(apiCode, "短信已发送成功，请注意查收!"));
+            else
+                return Json(new ResultModel(apiCode));
         }
 
 
@@ -158,7 +169,7 @@ namespace BAMENG.API.Controllers
                 Dictionary<string, object> dict = new Dictionary<string, object>();
                 dict["picurl"] = fileName;
 
-                return Json(new ResultModel(ApiStatusCode.OK, dict));
+                return Json(new ResultModel(ApiStatusCode.OK, "上传成功", dict));
             }
             else
                 return Json(new ResultModel(ApiStatusCode.请上传图片));

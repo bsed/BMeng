@@ -47,7 +47,7 @@ namespace BAMENG.API.Controllers
             Dictionary<string, int> data = new Dictionary<string, int>();
             data["score"] = Integral;
             if (apiCode == ApiStatusCode.OK)
-                return Json(new ResultModel(apiCode, string.Format("积分+{0}",Integral), data));
+                return Json(new ResultModel(apiCode, string.Format("积分+{0}", Integral), data));
             else
                 return Json(new ResultModel(apiCode, data));
 
@@ -66,7 +66,7 @@ namespace BAMENG.API.Controllers
             if (SmsLogic.IsPassVerify(mobile, verifyCode))
             {
                 if (UserLogic.ForgetPwd(mobile, password))
-                    return Json(new ResultModel(ApiStatusCode.OK));
+                    return Json(new ResultModel(ApiStatusCode.OK, "密码设置成功"));
                 else
                     return Json(new ResultModel(ApiStatusCode.找回密码失败));
             }
@@ -84,6 +84,7 @@ namespace BAMENG.API.Controllers
             var data = UserLogic.getTempBeansRecordsList(userId, lastId);
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict["list"] = data;
+            dict["TempMengBeans"] = lastId == 0 ? UserLogic.countTempBeansMoney(userId, 0) : 0;
             return Json(new ResultModel(ApiStatusCode.OK, dict));
         }
         /// <summary>
@@ -97,7 +98,10 @@ namespace BAMENG.API.Controllers
             int userId = GetAuthUserId();
             ApiStatusCode code = ApiStatusCode.OK;
             UserLogic.ConvertToBean(userId, amount, ref code);
-            return Json(new ResultModel(code));
+            if (code == ApiStatusCode.OK)
+                return Json(new ResultModel(code, "提交成功"));
+            else
+                return Json(new ResultModel(code));
         }
 
 
@@ -165,7 +169,7 @@ namespace BAMENG.API.Controllers
             ApiStatusCode code = ApiStatusCode.OK;
             int userId = GetAuthUserId();
             UserLogic.ConvertAudit(userId, id, status, ref code);
-            return Json(new ResultModel(ApiStatusCode.OK));
+            return Json(new ResultModel(code));
         }
 
 
@@ -249,7 +253,7 @@ namespace BAMENG.API.Controllers
                 UserPropertyOptions opt;
                 bool flg = Enum.TryParse(type.ToString(), out opt);
                 UserLogic.UpdateUserInfo(opt, userInfo);
-                return Json(new ResultModel(ApiStatusCode.OK, data));
+                return Json(new ResultModel(ApiStatusCode.OK, "保存成功", data));
             }
             else
             {
@@ -272,7 +276,7 @@ namespace BAMENG.API.Controllers
             if (user.UserIdentity == 1)
             {
                 bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward);
-                return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败));
+                return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败, flag ? "保存成功" : "保存失败"));
             }
             else
                 return Json(new ResultModel(ApiStatusCode.无操作权限));
@@ -393,7 +397,7 @@ namespace BAMENG.API.Controllers
             var user = GetUserData();
 
             if (UserLogic.ChanagePassword(user.UserId, oldPassword, newPassword))
-                return Json(new ResultModel(ApiStatusCode.OK));
+                return Json(new ResultModel(ApiStatusCode.OK, "密码设置成功"));
             else
                 return Json(new ResultModel(ApiStatusCode.密码修改失败));
 
@@ -415,7 +419,7 @@ namespace BAMENG.API.Controllers
                 userInfo.UserId = GetAuthUserId();
                 userInfo.UserMobile = mobile;
                 if (UserLogic.UpdateUserInfo(UserPropertyOptions.USER_3, userInfo))
-                    return Json(new ResultModel(ApiStatusCode.OK));
+                    return Json(new ResultModel(ApiStatusCode.OK, "修改成功"));
             }
             return Json(new ResultModel(ApiStatusCode.无效验证码));
         }
@@ -451,7 +455,11 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.您已转发));
 
             bool flag = CouponLogic.AddSendCoupon(user.UserId, user.UserIdentity, toUserId, couponId);
-            return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
+            if (flag)
+                return Json(new ResultModel(ApiStatusCode.OK, "转发成功"));
+            else
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+
         }
 
 
@@ -483,7 +491,10 @@ namespace BAMENG.API.Controllers
 
 
                 bool flag = CouponLogic.AddSendAllyCoupon(user.UserId, couponId, TargetIds);
-                return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.SERVICEERROR));
+                if (flag)
+                    return Json(new ResultModel(ApiStatusCode.OK, "转发成功"));
+                else
+                    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             else
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
