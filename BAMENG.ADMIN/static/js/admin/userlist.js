@@ -71,12 +71,6 @@ var userHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        //pageinate.init((p) => {
-                        //    goTo(p, function (page) {
-                        //        userHelper.loadList(page);
-                        //    });
-                        //});
-
                         pageinate.init(function () {
                             goTo(p, function (page) {
                                 userHelper.loadList(page);
@@ -224,8 +218,8 @@ var userHelper = {
                 },
                 usermobile: "required",
                 userloginname: {
-                    required: !0,
-                    minlength: 5
+                    required: !0,                    
+                    mobile:true
                 },
                 usernickname: "required",
                 password: {
@@ -239,8 +233,8 @@ var userHelper = {
                 },
                 usermobile: e + "请输入您的手机号码",
                 userloginname: {
-                    required: e + "请输入您的登录名",
-                    minlength: e + "登录名必须5个字符以上"
+                    required: e + "请输入您的登录名",                    
+                    mobile: e + "请输入正确的手机号码"
                 },
                 usernickname: e + "请输入昵称",
                 password: {
@@ -268,6 +262,12 @@ $.validator.setDefaults({
     errorClass: "help-block m-b-none",
     validClass: "help-block m-b-none"
 });
+$.validator.addMethod('mobile', function (value, element) {
+
+    // /^1\d{10}$/ 来自的正则
+    return this.optional(element) || /^1\d{10}$/.test(value);
+
+}, '请输入正确的手机号码');
 
 $(function () {
     userHelper.pageInit();
