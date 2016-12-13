@@ -87,17 +87,25 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize(AuthLogin = false)]
         public ActionResult SendSms(string mobile, int type)
         {
-            ApiStatusCode apiCode;
+            try
+            {
+                ApiStatusCode apiCode;
 
-            if (UserLogic.IsExist(mobile))
-                SmsLogic.SendSms(type, mobile, out apiCode);
-            else
-                apiCode = ApiStatusCode.账户不存在;
+                if (UserLogic.IsExist(mobile))
+                    SmsLogic.SendSms(type, mobile, out apiCode);
+                else
+                    apiCode = ApiStatusCode.账户不存在;
 
-            if (apiCode == ApiStatusCode.OK)
-                return Json(new ResultModel(apiCode, "短信已发送成功，请注意查收!"));
-            else
-                return Json(new ResultModel(apiCode));
+                if (apiCode == ApiStatusCode.OK)
+                    return Json(new ResultModel(apiCode, "短信已发送成功，请注意查收!"));
+                else
+                    return Json(new ResultModel(apiCode));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("SendSms:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -108,12 +116,20 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SendUserSms(string mobile)
         {
-            ApiStatusCode apiCode;
-            SmsLogic.SendSms(1, mobile, out apiCode);
-            if (apiCode == ApiStatusCode.OK)
-                return Json(new ResultModel(apiCode, "短信已发送成功，请注意查收!"));
-            else
-                return Json(new ResultModel(apiCode));
+            try
+            {
+                ApiStatusCode apiCode;
+                SmsLogic.SendSms(1, mobile, out apiCode);
+                if (apiCode == ApiStatusCode.OK)
+                    return Json(new ResultModel(apiCode, "短信已发送成功，请注意查收!"));
+                else
+                    return Json(new ResultModel(apiCode));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("SendUserSms:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -125,23 +141,31 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult FocusPic(int type)
         {
-            var data = FocusPicLogic.GetAppList(type);
-            if (data == null || data.Count() == 0)
+            try
             {
-                data = new List<FocusPicModel>();
-                data.Add(new FocusPicModel()
+                var data = FocusPicLogic.GetAppList(type);
+                if (data == null || data.Count() == 0)
                 {
-                    PicUrl = WebConfig.articleDetailsDomain() + "/app/images/default.jpg",
-                    CreateTime = DateTime.Now,
-                    Description = "默认图",
-                    IsEnable = 1,
-                    Type = type,
-                    Sort = 1,
-                    Title = "默认图",
-                    LinkUrl = ""
-                });
+                    data = new List<FocusPicModel>();
+                    data.Add(new FocusPicModel()
+                    {
+                        PicUrl = WebConfig.articleDetailsDomain() + "/app/images/default.jpg",
+                        CreateTime = DateTime.Now,
+                        Description = "默认图",
+                        IsEnable = 1,
+                        Type = type,
+                        Sort = 1,
+                        Title = "默认图",
+                        LinkUrl = ""
+                    });
+                }
+                return Json(new ResultModel(ApiStatusCode.OK, data));
             }
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("FocusPic:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -152,27 +176,35 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult UploadPic()
         {
-            string imgContent = string.Empty;
-            HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
-            if (oFile == null)
+            try
             {
-                return Json(new ResultModel(ApiStatusCode.请上传图片));
-            }
-            string fileName = GetUploadImagePath();
-            Stream stream = oFile.InputStream;
-            byte[] bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
-            // 设置当前流的位置为流的开始
-            stream.Seek(0, SeekOrigin.Begin);
-            if (FileUploadHelper.UploadFile(bytes, fileName))
-            {
-                Dictionary<string, object> dict = new Dictionary<string, object>();
-                dict["picurl"] = fileName;
+                string imgContent = string.Empty;
+                HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
+                if (oFile == null)
+                {
+                    return Json(new ResultModel(ApiStatusCode.请上传图片));
+                }
+                string fileName = GetUploadImagePath();
+                Stream stream = oFile.InputStream;
+                byte[] bytes = new byte[stream.Length];
+                stream.Read(bytes, 0, bytes.Length);
+                // 设置当前流的位置为流的开始
+                stream.Seek(0, SeekOrigin.Begin);
+                if (FileUploadHelper.UploadFile(bytes, fileName))
+                {
+                    Dictionary<string, object> dict = new Dictionary<string, object>();
+                    dict["picurl"] = fileName;
 
-                return Json(new ResultModel(ApiStatusCode.OK, "上传成功", dict));
+                    return Json(new ResultModel(ApiStatusCode.OK, "上传成功", dict));
+                }
+                else
+                    return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
-            else
-                return Json(new ResultModel(ApiStatusCode.请上传图片));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("UploadPic:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -186,8 +218,16 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyLocation(string mylocation, string lnglat)
         {
-            SystemLogic.AddMyLocation(GetAuthUserId(), mylocation, lnglat);
-            return Json(new ResultModel(ApiStatusCode.OK));
+            try
+            {
+                SystemLogic.AddMyLocation(GetAuthUserId(), mylocation, lnglat);
+                return Json(new ResultModel(ApiStatusCode.OK));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("MyLocation:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 

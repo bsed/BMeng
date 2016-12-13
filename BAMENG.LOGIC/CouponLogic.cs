@@ -59,7 +59,7 @@ namespace BAMENG.LOGIC
                     LogLogic.AddCouponLog(new LogBaseModel()
                     {
                         objId = flag,
-                        UserId = 0,
+                        UserId = flag,
                         ShopId = model.ShopId,
                         OperationType = 0,//0创建 1领取 2使用
                         Money = model.Money

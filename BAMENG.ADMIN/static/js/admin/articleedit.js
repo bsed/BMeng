@@ -49,6 +49,7 @@ var articleHelper = {
                     $("#articleTop").setChecked(ret.data.EnableTop == 1);
                     $("#articlePublish").setChecked(ret.data.EnablePublish == 1);
                     $("#txtcover").val(ret.data.ArticleCover);
+                    $(".imgpreview").attr("src", ret.data.ArticleCover);
                     $("#articleShopName").val(ret.data.ShopProv + "/" + ret.data.ShopCity + "/" + ret.data.ShopName);
 
 

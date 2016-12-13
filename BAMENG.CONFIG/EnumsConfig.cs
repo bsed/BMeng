@@ -88,6 +88,12 @@ namespace BAMENG.CONFIG
         [Description("无效手机号")]
         无效手机号 = 6013,
 
+        [Description("姓名不能为空")]
+        姓名不能为空 = 6014,
+
+        [Description("地址不能为空")]
+        地址不能为空 = 6015,
+
 
         [Description("账户已存在")]
         账户已存在 = 7000,

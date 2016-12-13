@@ -253,7 +253,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@ShopId",shopId)
             };
             strSql += " group by  CONVERT(nvarchar(10),CreateTime,121),OperationType";
-            strSql += " order by CONVERT(nvarchar(10),CreateTime,121)";
+            strSql += " order by CONVERT(nvarchar(10),CreateTime,121),OperationType";
 
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {
@@ -288,7 +288,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@ShopId",shopId)
             };
             strSql += " group by CONVERT(nvarchar(10),CreateTime,121),Type";
-            strSql += " order by CONVERT(nvarchar(10),CreateTime,121)";
+            strSql += " order by CONVERT(nvarchar(10),CreateTime,121),Type ";
 
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {
@@ -409,7 +409,7 @@ namespace BAMENG.DAL
 
         public List<StatisticsListModel> OrderStatistics(int shopId, int userIdentity, string startTime, string endTime)
         {
-            string strSql = @"select CONVERT(nvarchar(10),orderTime,121) as xData,COUNT(1) as yData from BM_Orders 
+            string strSql = @"select CONVERT(nvarchar(10),orderTime,121) as xData,COUNT(1) as yData,OrderStatus as Code from BM_Orders 
                                 where 
                                 CONVERT(nvarchar(10),orderTime,121)>=@startTime
                                 and CONVERT(nvarchar(10),orderTime,121)<=@endTime";
@@ -424,8 +424,8 @@ namespace BAMENG.DAL
                 new SqlParameter("@endTime",endTime),
                 new SqlParameter("@ShopId",shopId)
             };
-            strSql += " group by CONVERT(nvarchar(10),orderTime,121)";
-            strSql += " order by CONVERT(nvarchar(10),orderTime,121)";
+            strSql += " group by CONVERT(nvarchar(10),orderTime,121),OrderStatus";
+            strSql += " order by CONVERT(nvarchar(10),orderTime,121),OrderStatus";
 
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
             {

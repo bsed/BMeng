@@ -39,6 +39,9 @@ var userdetailsHelper = {
                         $("#spanMengBeans").text(ret.data.MengBeans);
                         $("#spanOrderSuccessAmount").text(ret.data.OrderSuccessAmount);
                         $("#spanCustomerAmount").text(ret.data.CustomerAmount);
+
+                        $("#spanUserCity").text(ret.data.UserCity);
+                        $("#spanUserSex").text(ret.data.UserGender=="M"?"男":"女");
                     }
                 }
             }

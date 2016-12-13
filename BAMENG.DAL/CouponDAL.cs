@@ -49,7 +49,7 @@ namespace BAMENG.DAL
                 new SqlParameter("@IsEnable", model.IsEnable),
                 new SqlParameter("@ShopId", model.ShopId)
             };
-            object obj = DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
             if (obj != null)
                 return Convert.ToInt32(obj);
             return 0;

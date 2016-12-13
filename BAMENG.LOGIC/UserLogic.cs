@@ -640,9 +640,8 @@ namespace BAMENG.LOGIC
 
                 if (status == 1)
                 {
-                    using (TransactionScope scope = new TransactionScope())
-                    {
-
+                    //using (TransactionScope scope = new TransactionScope())
+                    //{
                         dal.updateApplyFriendStatus(id, 1);
                         UserRegisterModel register = new UserRegisterModel();
                         register.belongOne = userId;
@@ -660,9 +659,8 @@ namespace BAMENG.LOGIC
                         {
                             masterUpdate(userId);
                         }
-
-                        scope.Complete();
-                    }
+                    //    scope.Complete();
+                    //}
                 }
                 else if (status == 2)
                 {

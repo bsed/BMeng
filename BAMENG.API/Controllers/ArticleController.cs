@@ -1,6 +1,7 @@
 ﻿using BAMENG.CONFIG;
 using BAMENG.LOGIC;
 using BAMENG.MODEL;
+using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,27 +43,35 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult list(int identity, int pageIndex, int pageSize)
         {
-            pageIndex = pageIndex > 0 ? pageIndex : 1;
+            try
+            {
+                pageIndex = pageIndex > 0 ? pageIndex : 1;
 
-            var userInfo = GetUserData();
+                var userInfo = GetUserData();
 
 
-            //当前用户所属门店ID
-            int shopId = userInfo.ShopId;
-            //如果当前用户所属分店，且当前其他类型为总店，那么shopid=当前用户门店所属的总店ID
-            if (userInfo.ShopType == 2 && identity == 1)
-                shopId = userInfo.ShopBelongId;
+                //当前用户所属门店ID
+                int shopId = userInfo.ShopId;
+                //如果当前用户所属分店，且当前其他类型为总店，那么shopid=当前用户门店所属的总店ID
+                if (userInfo.ShopType == 2 && identity == 1)
+                    shopId = userInfo.ShopBelongId;
 
-            if (identity == 0)
-                shopId = 0;
+                if (identity == 0)
+                    shopId = 0;
 
-            ResultPageModel data = ArticleLogic.GetAppArticleList(identity, pageIndex, pageSize, userInfo.UserId, shopId, userInfo.UserIdentity);
+                ResultPageModel data = ArticleLogic.GetAppArticleList(identity, pageIndex, pageSize, userInfo.UserId, shopId, userInfo.UserIdentity);
 
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["list"] = data;
-            if (pageIndex == 1 && (identity == 0 || identity == 1 || identity == 2))
-                dict["top"] = ArticleLogic.GetAppTopArticleList(identity, userInfo.UserIdentity, shopId);
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["list"] = data;
+                if (pageIndex == 1 && (identity == 0 || identity == 1 || identity == 2))
+                    dict["top"] = ArticleLogic.GetAppTopArticleList(identity, userInfo.UserIdentity, shopId);
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("list:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -75,67 +84,75 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult create(string title, string content, string ids)
         {
-            var user = GetUserData();
-            ArticleModel model = new ArticleModel();
-            model.ArticleBody = content;
-            model.ArticleIntro = title;
-            model.ArticleTitle = title;
-            model.ArticleCover = "";
-            model.ArticleStatus = 1;
-            model.AuthorId = user.UserId;
-            model.AuthorIdentity = user.UserIdentity == 0 ? 4 : 3;
-            model.AuthorName = user.RealName;
-            model.EnablePublish = 1;
-            model.EnableTop = 0;
-            model.PublishTime = DateTime.Now;
-            model.TopTime = DateTime.Now;
-            model.UpdateTime = DateTime.Now;
-            //如果当前创建资讯的用户身份为盟友，则发送目标为盟主的ID
-            //如果当前创建资讯的用户身份为盟主时，则发送目标为 2（盟友）
-            model.SendTargetId = user.UserIdentity == 1 ? 2 : user.BelongOne;
-
-            string[] TargetIds = null;
-
-            //如果是盟主身份，则需要判断发送目标
-            if (user.UserIdentity == 1)
+            try
             {
-                if (string.IsNullOrEmpty(ids))
-                    return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+                var user = GetUserData();
+                ArticleModel model = new ArticleModel();
+                model.ArticleBody = content;
+                model.ArticleIntro = title;
+                model.ArticleTitle = title;
+                model.ArticleCover = "";
+                model.ArticleStatus = 1;
+                model.AuthorId = user.UserId;
+                model.AuthorIdentity = user.UserIdentity == 0 ? 4 : 3;
+                model.AuthorName = user.RealName;
+                model.EnablePublish = 1;
+                model.EnableTop = 0;
+                model.PublishTime = DateTime.Now;
+                model.TopTime = DateTime.Now;
+                model.UpdateTime = DateTime.Now;
+                //如果当前创建资讯的用户身份为盟友，则发送目标为盟主的ID
+                //如果当前创建资讯的用户身份为盟主时，则发送目标为 2（盟友）
+                model.SendTargetId = user.UserIdentity == 1 ? 2 : user.BelongOne;
 
-                TargetIds = ids.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                if (TargetIds.Length <= 0)
-                    return Json(new ResultModel(ApiStatusCode.缺少发送目标));
-            }
+                string[] TargetIds = null;
 
-            int articleId = ArticleLogic.AddArticle(model);
-            ApiStatusCode apiCode = ApiStatusCode.OK;
-            if (articleId > 0)
-            {
-                ReadLogModel logModel = new ReadLogModel()
-                {
-                    ArticleId = articleId,
-                    ClientIp = "",
-                    cookie = "",
-                    IsRead = 0,
-                    ReadTime = DateTime.Now
-                };
+                //如果是盟主身份，则需要判断发送目标
                 if (user.UserIdentity == 1)
                 {
-                    foreach (var TargetId in TargetIds)
+                    if (string.IsNullOrEmpty(ids))
+                        return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+
+                    TargetIds = ids.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (TargetIds.Length <= 0)
+                        return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+                }
+
+                int articleId = ArticleLogic.AddArticle(model);
+                ApiStatusCode apiCode = ApiStatusCode.OK;
+                if (articleId > 0)
+                {
+                    ReadLogModel logModel = new ReadLogModel()
                     {
-                        logModel.UserId = Convert.ToInt32(TargetId);
+                        ArticleId = articleId,
+                        ClientIp = "",
+                        cookie = "",
+                        IsRead = 0,
+                        ReadTime = DateTime.Now
+                    };
+                    if (user.UserIdentity == 1)
+                    {
+                        foreach (var TargetId in TargetIds)
+                        {
+                            logModel.UserId = Convert.ToInt32(TargetId);
+                            LogLogic.AddReadLog(logModel);
+                        }
+                    }
+                    else
+                    {
+                        logModel.UserId = user.BelongOne;
                         LogLogic.AddReadLog(logModel);
                     }
                 }
                 else
-                {
-                    logModel.UserId = user.BelongOne;
-                    LogLogic.AddReadLog(logModel);
-                }
+                    apiCode = ApiStatusCode.发送失败;
+                return Json(new ResultModel(apiCode));
             }
-            else
-                apiCode = ApiStatusCode.发送失败;
-            return Json(new ResultModel(apiCode));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("create:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
     }
 }

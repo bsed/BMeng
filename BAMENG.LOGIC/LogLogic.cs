@@ -282,73 +282,74 @@ namespace BAMENG.LOGIC
                     {
                         if (!data1.xData.Contains(item.xData))
                         {
-                            data1.xData.Add(item.xData);
-
                             if (item.Code == 0)
                             {
+                                data1.xData.Add(item.xData);
                                 data1.yData.Add(item.yData);
                                 data1.total += item.yData;
                             }
                             else
                             {
+                                data1.xData.Add(item.xData);
                                 data1.yData.Add(0);
+                                data1.total += 0;
                             }
                         }
-
                         if (!data2.xData.Contains(item.xData))
                         {
-                            data2.xData.Add(item.xData);
-
                             if (item.Code == 1)
                             {
+
+                                data2.xData.Add(item.xData);
                                 data2.yData.Add(item.yData);
                                 data2.total += item.yData;
                             }
                             else
                             {
+                                data2.xData.Add(item.xData);
                                 data2.yData.Add(0);
+                                data2.total += 0;
                             }
                         }
-
-
                         if (!data3.xData.Contains(item.xData))
                         {
-                            data3.xData.Add(item.xData);
-
                             if (item.Code == 2)
                             {
+
+                                data3.xData.Add(item.xData);
                                 data3.yData.Add(item.yData);
                                 data3.total += item.yData;
                             }
                             else
                             {
+                                data3.xData.Add(item.xData);
                                 data3.yData.Add(0);
+                                data3.total += 0;
                             }
                         }
+
                     }
 
+                    if (data1.xData.Count() == 0)
+                    {
+                        string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                        data1.xData.Add(dtime);
+                        data1.yData.Add(0);
+                        data2.xData.Add(dtime);
+                        data2.yData.Add(0);
+                        data3.xData.Add(dtime);
+                        data3.yData.Add(0);
+                    }
+
+
+                    result.Add(data1);
+                    result.Add(data2);
+                    result.Add(data3);
                 }
-
-                if (data1.xData.Count() == 0)
-                {
-                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
-                    data1.xData.Add(dtime);
-                    data1.yData.Add(0);
-                    data2.xData.Add(dtime);
-                    data2.yData.Add(0);
-                    data3.xData.Add(dtime);
-                    data3.yData.Add(0);
-                }
-
-
-                result.Add(data1);
-                result.Add(data2);
-                result.Add(data3);
-
                 return result;
             }
-        }
 
+        }
 
         public static List<StatisticsMoneyModel> CouponStatistics(AdminLoginModel user, int type, string startTime, string endTime)
         {
@@ -359,59 +360,57 @@ namespace BAMENG.LOGIC
                 StatisticsMoneyModel data2 = new StatisticsMoneyModel();
                 StatisticsMoneyModel data3 = new StatisticsMoneyModel();
                 List<StatisticsMoneyListModel> lst = dal.CouponStatistics(user.ID, user.UserIndentity, startTime, endTime);
-
-
-
                 if (lst != null && lst.Count() > 0)
                 {
                     foreach (var item in lst)
                     {
+
                         if (!data1.xData.Contains(item.xData))
                         {
-                            data1.xData.Add(item.xData);
-
                             if (item.Code == 0)
                             {
+                                data1.xData.Add(item.xData);
                                 data1.yData.Add(item.yData);
                                 data1.total += item.yData;
                             }
                             else
                             {
+                                data1.xData.Add(item.xData);
                                 data1.yData.Add(0);
+                                data1.total += 0;
                             }
                         }
 
                         if (!data2.xData.Contains(item.xData))
                         {
-                            data2.xData.Add(item.xData);
-
                             if (item.Code == 1)
                             {
+                                data2.xData.Add(item.xData);
                                 data2.yData.Add(item.yData);
                                 data2.total += item.yData;
                             }
                             else
                             {
+                                data2.xData.Add(item.xData);
                                 data2.yData.Add(0);
+                                data2.total += 0;
                             }
                         }
-
-
                         if (!data3.xData.Contains(item.xData))
                         {
-                            data3.xData.Add(item.xData);
-
                             if (item.Code == 2)
                             {
+                                data3.xData.Add(item.xData);
                                 data3.yData.Add(item.yData);
                                 data3.total += item.yData;
                             }
                             else
                             {
+                                data3.xData.Add(item.xData);
                                 data3.yData.Add(0);
+                                data3.total += 0;
                             }
                         }
-
                     }
 
                 }
@@ -440,7 +439,7 @@ namespace BAMENG.LOGIC
         {
             StatisticsMoneyPieModel data1 = new StatisticsMoneyPieModel();
 
-          
+
             using (var dal = FactoryDispatcher.LogFactory())
             {
                 List<StatisticsMoneyListModel> lst = null;
@@ -486,21 +485,52 @@ namespace BAMENG.LOGIC
                 List<StatisticsModel> result = new List<StatisticsModel>();
 
                 List<StatisticsListModel> listTotal = dal.OrderStatistics(user.ID, user.UserIndentity, startTime, endTime);
-                List<StatisticsListModel> listFinish = dal.OrderFinishStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                //List<StatisticsListModel> listFinish = dal.OrderFinishStatistics(user.ID, user.UserIndentity, startTime, endTime);
 
                 StatisticsModel data1 = new StatisticsModel();
                 StatisticsModel data2 = new StatisticsModel();
 
                 foreach (var item in listTotal)
                 {
-                    data1.xData.Add(item.xData);
-                    data1.yData.Add(item.yData);
-                    data1.total += item.yData;
+                    if (!data1.xData.Contains(item.xData))
+                    {
+                        if (item.Code == 0)
+                        {
+                            data1.xData.Add(item.xData);
+                            data1.yData.Add(item.yData);
+                            data1.total += item.yData;
+                        }
+                        else
+                        {
+                            data1.xData.Add(item.xData);
+                            data1.yData.Add(0);
+                            data1.total += 0;
+                        }
+                    }
+                    if (item.Code == 1)
+                    {
+                        if (!data2.xData.Contains(item.xData))
+                        {
+                            data2.xData.Add(item.xData);
+                            data2.yData.Add(item.yData);
+                            data2.total += item.yData;
+                        }
+                        else
+                        {
+                            data2.xData.Add(item.xData);
+                            data2.yData.Add(0);
+                            data2.total += 0;
+                        }
+                    }
 
-                    data2.xData.Add(item.xData);
-                    int finishAmount = getFininshAmount(item.xData, listFinish);
-                    data2.yData.Add(finishAmount);
-                    data2.total += finishAmount;
+                    //data1.xData.Add(item.xData);
+                    //data1.yData.Add(item.yData);
+                    //data1.total += item.yData;
+
+                    //data2.xData.Add(item.xData);
+                    //int finishAmount = getFininshAmount(item.xData, listFinish);
+                    //data2.yData.Add(finishAmount);
+                    //data2.total += finishAmount;
                 }
 
                 if (data1.xData.Count() == 0)

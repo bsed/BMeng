@@ -222,25 +222,33 @@ namespace BAMENG.API
         {
             try
             {
-                if (Header.ContainsKey("Authorization"))
+                if (Header != null && Header.ContainsKey("Authorization"))
                 {
                     string Authorization = Header["Authorization"];
                     if (!string.IsNullOrEmpty(Authorization))
                     {
                         int UserId = UserLogic.GetUserIdByAuthToken(Authorization);
                         UserModel user = UserLogic.GetModel(UserId);
-                        user.token = Authorization;
-                        user.TempMengBeans = UserLogic.countTempBeansMoney(user.UserId, 0);
-                        user.UserGender = user.UserGender.ToUpper();
-                        if (user.ShopActive == 0)
-                            user.IsActive = 0;
-                        return user;
+                        if (user != null)
+                        {
+                            user.token = Authorization;
+                            user.TempMengBeans = UserLogic.countTempBeansMoney(user.UserId, 0);
+                            user.UserGender = user.UserGender.ToUpper();
+                            if (user.ShopActive == 0)
+                                user.IsActive = 0;
+                            return user;
+                        }
+                        else
+                        {
+                            Json(new ResultModel(ApiStatusCode.令牌失效));
+                        }
+
                     }
                     else
-                        Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                        Json(new ResultModel(ApiStatusCode.令牌失效));
                 }
                 else
-                    Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                    Json(new ResultModel(ApiStatusCode.令牌失效));
             }
             catch (Exception ex)
             {
@@ -258,7 +266,7 @@ namespace BAMENG.API
         {
             try
             {
-                if (Header.ContainsKey("Authorization"))
+                if (Header != null && Header.ContainsKey("Authorization"))
                 {
                     string Authorization = Header["Authorization"];
                     if (!string.IsNullOrEmpty(Authorization))
@@ -266,14 +274,14 @@ namespace BAMENG.API
                         return UserLogic.GetUserIdByAuthToken(Authorization);
                     }
                     else
-                        Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                        Json(new ResultModel(ApiStatusCode.令牌失效));
                 }
                 else
-                    Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                    Json(new ResultModel(ApiStatusCode.令牌失效));
             }
             catch (Exception ex)
             {
-                LogHelper.Log(string.Format("GetUserData:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                LogHelper.Log(string.Format("GetAuthUserId:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
             return 0;

@@ -1,6 +1,7 @@
 ﻿using BAMENG.CONFIG;
 using BAMENG.LOGIC;
 using BAMENG.MODEL;
+using HotCoreUtils.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,21 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult list(int type, int pageIndex, int pageSize)
         {
-            UserModel user = GetUserData();
-            if (user != null)
+            try
             {
-                var data = CustomerLogic.GetAppCustomerList(user.UserId, user.UserIdentity, type, pageIndex, pageSize);
-                return Json(new ResultModel(ApiStatusCode.OK, data));
+                UserModel user = GetUserData();
+                if (user != null)
+                {
+                    var data = CustomerLogic.GetAppCustomerList(user.UserId, user.UserIdentity, type, pageIndex, pageSize);
+                    return Json(new ResultModel(ApiStatusCode.OK, data));
+                }
+                return Json(new ResultModel(ApiStatusCode.令牌失效));
             }
-            return Json(new ResultModel(ApiStatusCode.令牌失效));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("list:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 审核 POST: customer/audit
@@ -42,23 +51,31 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult audit(int cid, int status)
         {
-            var user = GetUserData();
-            if (CustomerLogic.UpdateStatus(cid, status, user.UserId))
+            try
             {
-                //添加客户操作日志
-                LogLogic.AddCustomerLog(new LogBaseModel()
+                var user = GetUserData();
+                if (CustomerLogic.UpdateStatus(cid, status, user.UserId))
                 {
-                    objId = cid,
-                    UserId = user.UserId,
-                    ShopId = user.ShopId,
-                    AppSystem = OS,
-                    OperationType = status
-                });
+                    //添加客户操作日志
+                    LogLogic.AddCustomerLog(new LogBaseModel()
+                    {
+                        objId = cid,
+                        UserId = user.UserId,
+                        ShopId = user.ShopId,
+                        AppSystem = OS,
+                        OperationType = status
+                    });
 
-                return Json(new ResultModel(ApiStatusCode.OK));
+                    return Json(new ResultModel(ApiStatusCode.OK));
+                }
+                else
+                    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
-            else
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("audit:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 创建客户 POST: customer/create
@@ -71,39 +88,35 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult create(string username, string mobile, string address, string remark)
         {
-            var user = GetUserData();
-            //信息以电话和客户地址做为唯一性的判断标准,判断客户所属
-            if (!CustomerLogic.IsExist(mobile, address))
+            try
             {
-                int flag = CustomerLogic.InsertCustomerInfo(new CustomerModel()
-                {
-                    BelongOne = user.UserId,
-                    BelongTwo = user.UserIdentity == 1 ? user.UserId : user.BelongOne,
-                    Addr = address,
-                    Mobile = mobile,
-                    ShopId = user.ShopId,
-                    Name = username,
-                    Remark = remark,
-                    Status = user.UserIdentity == 1 ? 1 : 0
-                });
+                if(string.IsNullOrEmpty(username))                
+                    return Json(new ResultModel(ApiStatusCode.姓名不能为空));
+                if (string.IsNullOrEmpty(mobile)|| !RegexHelper.IsValidMobileNo(mobile))
+                    return Json(new ResultModel(ApiStatusCode.无效手机号));
+                if (string.IsNullOrEmpty(address))
+                    return Json(new ResultModel(ApiStatusCode.地址不能为空));
 
-                if (flag > 0)
-                {
 
-                    //添加客户操作日志
-                    LogLogic.AddCustomerLog(new LogBaseModel()
+                var user = GetUserData();
+                //信息以电话和客户地址做为唯一性的判断标准,判断客户所属
+                if (!CustomerLogic.IsExist(mobile, address))
+                {
+                    int flag = CustomerLogic.InsertCustomerInfo(new CustomerModel()
                     {
-                        objId = flag,
-                        UserId = user.UserId,
+                        BelongOne = user.UserId,
+                        BelongTwo = user.UserIdentity == 1 ? user.UserId : user.BelongOne,
+                        Addr = address,
+                        Mobile = mobile,
                         ShopId = user.ShopId,
-                        AppSystem = OS,
-                        OperationType = 0 //操作类型0提交，1有效 2无效
+                        Name = username,
+                        Remark = remark,
+                        Status = user.UserIdentity == 1 ? 1 : 0
                     });
 
-                    if (user.UserIdentity == 1)
+                    if (flag > 0)
                     {
-                        UserLogic.AddUserCustomerAmount(user.UserId);
-                        //如果是盟主创建客户，则需要添加一条有效客户日志
+
                         //添加客户操作日志
                         LogLogic.AddCustomerLog(new LogBaseModel()
                         {
@@ -111,14 +124,34 @@ namespace BAMENG.API.Controllers
                             UserId = user.UserId,
                             ShopId = user.ShopId,
                             AppSystem = OS,
-                            OperationType = 1
+                            OperationType = 0 //操作类型0提交，1有效 2无效
                         });
+
+                        if (user.UserIdentity == 1)
+                        {
+                            UserLogic.AddUserCustomerAmount(user.UserId);
+                            //如果是盟主创建客户，则需要添加一条有效客户日志
+                            //添加客户操作日志
+                            LogLogic.AddCustomerLog(new LogBaseModel()
+                            {
+                                objId = flag,
+                                UserId = user.UserId,
+                                ShopId = user.ShopId,
+                                AppSystem = OS,
+                                OperationType = 1
+                            });
+                        }
                     }
+                    return Json(new ResultModel(ApiStatusCode.OK));
                 }
-                return Json(new ResultModel(ApiStatusCode.OK));
+                else
+                    return Json(new ResultModel(ApiStatusCode.客户已存在));
             }
-            else
-                return Json(new ResultModel(ApiStatusCode.客户已存在));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("create:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -129,8 +162,16 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult details(int cid)
         {
-            var data = CustomerLogic.GetModel(cid);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            try
+            {
+                var data = CustomerLogic.GetModel(cid);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("details:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -142,10 +183,18 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult UpdateInShop(int cid, int status)
         {
-            if (CustomerLogic.UpdateInShopStatus(cid, status))
-                return Json(new ResultModel(ApiStatusCode.OK, "保存成功"));
-            else
+            try
+            {
+                if (CustomerLogic.UpdateInShopStatus(cid, status))
+                    return Json(new ResultModel(ApiStatusCode.OK, "保存成功"));
+                else
+                    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("UpdateInShop:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
     }
 }

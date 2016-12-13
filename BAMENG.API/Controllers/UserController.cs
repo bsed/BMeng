@@ -31,9 +31,17 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize(AuthLogin = false)]
         public ActionResult Login(string loginName, string password)
         {
-            ApiStatusCode apiCode = ApiStatusCode.OK;
-            UserModel userData = AppServiceLogic.Instance.Login(loginName, password, OS, ref apiCode);
-            return Json(new ResultModel(apiCode, userData));
+            try
+            {
+                ApiStatusCode apiCode = ApiStatusCode.OK;
+                UserModel userData = AppServiceLogic.Instance.Login(loginName, password, OS, ref apiCode);
+                return Json(new ResultModel(apiCode, userData));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("Login user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 签到  POST: user/signin
@@ -42,14 +50,22 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SignIn()
         {
-            ApiStatusCode apiCode = ApiStatusCode.OK;
-            int Integral = UserLogic.SignIn(GetAuthUserId(), ref apiCode);
-            Dictionary<string, int> data = new Dictionary<string, int>();
-            data["score"] = Integral;
-            if (apiCode == ApiStatusCode.OK)
-                return Json(new ResultModel(apiCode, string.Format("积分+{0}", Integral), data));
-            else
-                return Json(new ResultModel(apiCode, data));
+            try
+            {
+                ApiStatusCode apiCode = ApiStatusCode.OK;
+                int Integral = UserLogic.SignIn(GetAuthUserId(), ref apiCode);
+                Dictionary<string, int> data = new Dictionary<string, int>();
+                data["score"] = Integral;
+                if (apiCode == ApiStatusCode.OK)
+                    return Json(new ResultModel(apiCode, string.Format("积分+{0}", Integral), data));
+                else
+                    return Json(new ResultModel(apiCode, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("SignIn user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
 
         }
 
@@ -63,14 +79,22 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize(AuthLogin = false)]
         public ActionResult ForgetPwd(string mobile, string password, string verifyCode)
         {
-            if (SmsLogic.IsPassVerify(mobile, verifyCode))
+            try
             {
-                if (UserLogic.ForgetPwd(mobile, password))
-                    return Json(new ResultModel(ApiStatusCode.OK, "密码设置成功"));
-                else
-                    return Json(new ResultModel(ApiStatusCode.找回密码失败));
+                if (SmsLogic.IsPassVerify(mobile, verifyCode))
+                {
+                    if (UserLogic.ForgetPwd(mobile, password))
+                        return Json(new ResultModel(ApiStatusCode.OK, "密码设置成功"));
+                    else
+                        return Json(new ResultModel(ApiStatusCode.找回密码失败));
+                }
+                return Json(new ResultModel(ApiStatusCode.无效验证码));
             }
-            return Json(new ResultModel(ApiStatusCode.无效验证码));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ForgetPwd user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -80,12 +104,20 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult TempSettleBeanList(int lastId)
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.getTempBeansRecordsList(userId, lastId);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["list"] = data;
-            dict["TempMengBeans"] = lastId == 0 ? UserLogic.countTempBeansMoney(userId, 0) : 0;
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+            try
+            {
+                int userId = GetAuthUserId();
+                var data = UserLogic.getTempBeansRecordsList(userId, lastId);
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["list"] = data;
+                dict["TempMengBeans"] = lastId == 0 ? UserLogic.countTempBeansMoney(userId, 0) : 0;
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("TempSettleBeanList user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 兑换盟豆 POST: user/ConvertToBean
@@ -95,13 +127,21 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult ConvertToBean(int amount)
         {
-            int userId = GetAuthUserId();
-            ApiStatusCode code = ApiStatusCode.OK;
-            UserLogic.ConvertToBean(userId, amount, ref code);
-            if (code == ApiStatusCode.OK)
-                return Json(new ResultModel(code, "提交成功"));
-            else
-                return Json(new ResultModel(code));
+            try
+            {
+                int userId = GetAuthUserId();
+                ApiStatusCode code = ApiStatusCode.OK;
+                UserLogic.ConvertToBean(userId, amount, ref code);
+                if (code == ApiStatusCode.OK)
+                    return Json(new ResultModel(code, "提交成功"));
+                else
+                    return Json(new ResultModel(code));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ConvertToBean user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -113,11 +153,19 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult ConvertFlow(int lastId)
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.getConvertFlow(userId, lastId);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["list"] = data;
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+            try
+            {
+                int userId = GetAuthUserId();
+                var data = UserLogic.getConvertFlow(userId, lastId);
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["list"] = data;
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ConvertFlow user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 盟友列表 POST: user/allylist
@@ -130,15 +178,23 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public JsonResult allylist(int pageIndex, int pageSize, int orderbyCode, int isDesc)
         {
-            var data = UserLogic.GetAllyList(new SearchModel()
+            try
             {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                UserId = GetAuthUserId(),
-                orderbyCode = orderbyCode,
-                IsDesc = isDesc == 1
-            });
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+                var data = UserLogic.GetAllyList(new SearchModel()
+                {
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    UserId = GetAuthUserId(),
+                    orderbyCode = orderbyCode,
+                    IsDesc = isDesc == 1
+                });
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("allylist user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -150,11 +206,19 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult ConvertAuditList(int lastId, int type = 0)
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.getMasterConvertFlow(userId, lastId, type);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["list"] = data;
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+            try
+            {
+                int userId = GetAuthUserId();
+                var data = UserLogic.getMasterConvertFlow(userId, lastId, type);
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["list"] = data;
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ConvertAuditList user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -166,10 +230,18 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult ConvertAudit(int id, int status)
         {
-            ApiStatusCode code = ApiStatusCode.OK;
-            int userId = GetAuthUserId();
-            UserLogic.ConvertAudit(userId, id, status, ref code);
-            return Json(new ResultModel(code));
+            try
+            {
+                ApiStatusCode code = ApiStatusCode.OK;
+                int userId = GetAuthUserId();
+                UserLogic.ConvertAudit(userId, id, status, ref code);
+                return Json(new ResultModel(code));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ConvertAudit user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -180,12 +252,20 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult AlreadyConvertTotal()
         {
-            var user = GetUserData();
-            int count = UserLogic.AlreadyConvertTotal(user.UserId);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["alreadyConverCount"] = count;
-            dict["mengBeansCount"] = user.MengBeans;
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+            try
+            {
+                var user = GetUserData();
+                int count = UserLogic.AlreadyConvertTotal(user.UserId);
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["alreadyConverCount"] = count;
+                dict["mengBeansCount"] = user.MengBeans;
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AlreadyConvertTotal user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -196,8 +276,16 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyInfo()
         {
-            var data = GetUserData();
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            try
+            {
+                var data = GetUserData();
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("MyInfo user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -209,57 +297,65 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult UpdateInfo(int type, string content)
         {
-            UserModel userInfo = new UserModel();
-            userInfo.UserId = GetAuthUserId();
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            switch (type)
+            try
             {
-                case (int)UserPropertyOptions.USER_1:
-                    {
-                        HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
-                        if (oFile == null)
-                            return Json(new ResultModel(ApiStatusCode.请上传图片));
-                        string fileName = GetUploadImagePath();
-                        Stream stream = oFile.InputStream;
-                        byte[] bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
-                        // 设置当前流的位置为流的开始
-                        stream.Seek(0, SeekOrigin.Begin);
-                        if (FileUploadHelper.UploadFile(bytes, fileName))
-                            userInfo.UserHeadImg = fileName;
-                        else
-                            return Json(new ResultModel(ApiStatusCode.请上传图片));
+                UserModel userInfo = new UserModel();
+                userInfo.UserId = GetAuthUserId();
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                switch (type)
+                {
+                    case (int)UserPropertyOptions.USER_1:
+                        {
+                            HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
+                            if (oFile == null)
+                                return Json(new ResultModel(ApiStatusCode.请上传图片));
+                            string fileName = GetUploadImagePath();
+                            Stream stream = oFile.InputStream;
+                            byte[] bytes = new byte[stream.Length];
+                            stream.Read(bytes, 0, bytes.Length);
+                            // 设置当前流的位置为流的开始
+                            stream.Seek(0, SeekOrigin.Begin);
+                            if (FileUploadHelper.UploadFile(bytes, fileName))
+                                userInfo.UserHeadImg = fileName;
+                            else
+                                return Json(new ResultModel(ApiStatusCode.请上传图片));
 
 
-                        data["url"] = WebConfig.reswebsite() + userInfo.UserHeadImg;
-                        content = userInfo.UserHeadImg;
-                    }
-                    break;
-                case (int)UserPropertyOptions.USER_2:
-                    userInfo.NickName = content;
-                    break;
-                case (int)UserPropertyOptions.USER_4:
-                    userInfo.RealName = content;
-                    break;
-                case (int)UserPropertyOptions.USER_5:
-                    userInfo.UserGender = content.ToUpper();
-                    break;
-                case (int)UserPropertyOptions.USER_6:
-                    userInfo.UserCity = content;
-                    break;
-            }
-            if (!string.IsNullOrEmpty(content))
-            {
-                UserPropertyOptions opt;
-                bool flg = Enum.TryParse(type.ToString(), out opt);
-                UserLogic.UpdateUserInfo(opt, userInfo);
-                return Json(new ResultModel(ApiStatusCode.OK, "保存成功", data));
-            }
-            else
-            {
-                return Json(new ResultModel(ApiStatusCode.内容不能为空));
-            }
+                            data["url"] = WebConfig.reswebsite() + userInfo.UserHeadImg;
+                            content = userInfo.UserHeadImg;
+                        }
+                        break;
+                    case (int)UserPropertyOptions.USER_2:
+                        userInfo.NickName = content;
+                        break;
+                    case (int)UserPropertyOptions.USER_4:
+                        userInfo.RealName = content;
+                        break;
+                    case (int)UserPropertyOptions.USER_5:
+                        userInfo.UserGender = content.ToUpper();
+                        break;
+                    case (int)UserPropertyOptions.USER_6:
+                        userInfo.UserCity = content;
+                        break;
+                }
+                if (!string.IsNullOrEmpty(content))
+                {
+                    UserPropertyOptions opt;
+                    bool flg = Enum.TryParse(type.ToString(), out opt);
+                    UserLogic.UpdateUserInfo(opt, userInfo);
+                    return Json(new ResultModel(ApiStatusCode.OK, "保存成功", data));
+                }
+                else
+                {
+                    return Json(new ResultModel(ApiStatusCode.内容不能为空));
+                }
 
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("UpdateInfo user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -272,14 +368,22 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult setallyRaward(decimal creward, decimal orderreward, decimal shopreward)
         {
-            var user = GetUserData();
-            if (user.UserIdentity == 1)
+            try
             {
-                bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward);
-                return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败, flag ? "保存成功" : "保存失败"));
+                var user = GetUserData();
+                if (user.UserIdentity == 1)
+                {
+                    bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward);
+                    return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败, flag ? "保存成功" : "保存失败"));
+                }
+                else
+                    return Json(new ResultModel(ApiStatusCode.无操作权限));
             }
-            else
-                return Json(new ResultModel(ApiStatusCode.无操作权限));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("setallyRaward user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -289,12 +393,20 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult GetAllyReward()
         {
-            var user = GetUserData();
-            int userId = user.UserIdentity == 1 ? user.UserId : user.BelongOne;
-            var data = UserLogic.GetRewardModel(userId);
-            if (data == null)
-                data = new RewardsSettingModel();
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            try
+            {
+                var user = GetUserData();
+                int userId = user.UserIdentity == 1 ? user.UserId : user.BelongOne;
+                var data = UserLogic.GetRewardModel(userId);
+                if (data == null)
+                    data = new RewardsSettingModel();
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("GetAllyReward user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
 
         }
 
@@ -306,11 +418,19 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult scoreList(int lastId)
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.getScoreList(userId, lastId);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["list"] = data;
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+            try
+            {
+                int userId = GetAuthUserId();
+                var data = UserLogic.getScoreList(userId, lastId);
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["list"] = data;
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("scoreList user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -321,9 +441,17 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult BeanFlowList(int lastId)
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.getBeansRecordsList(userId, lastId);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            try
+            {
+                int userId = GetAuthUserId();
+                var data = UserLogic.getBeansRecordsList(userId, lastId);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("BeanFlowList user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -334,8 +462,16 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public JsonResult AllyInfo(int userid)
         {
-            var data = UserLogic.GetModel(userid);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            try
+            {
+                var data = UserLogic.GetModel(userid);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AllyInfo user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -348,9 +484,17 @@ namespace BAMENG.API.Controllers
             , string nickname, string userName
             , int sex)
         {
-            ApiStatusCode apiCode = ApiStatusCode.OK;
-            UserLogic.AllyApply(userId, mobile, password, nickname, userName, sex, ref apiCode);
-            return Json(new ResultModel(apiCode));
+            try
+            {
+                ApiStatusCode apiCode = ApiStatusCode.OK;
+                UserLogic.AllyApply(userId, mobile, password, nickname, userName, sex, ref apiCode);
+                return Json(new ResultModel(apiCode));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AllyInfo user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 盟友申请列表 POST: user/AllyApplylist
@@ -362,14 +506,22 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult AllyApplylist(int pageIndex, int pageSize)
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.GetApplyFriendList(new SearchModel()
+            try
             {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                UserId = userId
-            });
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+                int userId = GetAuthUserId();
+                var data = UserLogic.GetApplyFriendList(new SearchModel()
+                {
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    UserId = userId
+                });
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AllyApplylist user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 盟友申请审核 POST: user/AllyApplyAudit
@@ -380,10 +532,18 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult AllyApplyAudit(int id, int status)
         {
-            ApiStatusCode code = ApiStatusCode.OK;
-            int userId = GetAuthUserId();
-            UserLogic.AllyApplyAudit(userId, id, status, ref code);
-            return Json(new ResultModel(ApiStatusCode.OK, code));
+            try
+            {
+                ApiStatusCode code = ApiStatusCode.OK;
+                int userId = GetAuthUserId();
+                UserLogic.AllyApplyAudit(userId, id, status, ref code);
+                return Json(new ResultModel(ApiStatusCode.OK, code));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AllyApplyAudit user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
         /// <summary>
         /// 修改密码 POST: user/ChanagePassword
@@ -394,12 +554,20 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult ChanagePassword(string oldPassword, string newPassword)
         {
-            var user = GetUserData();
+            try
+            {
+                var user = GetUserData();
 
-            if (UserLogic.ChanagePassword(user.UserId, oldPassword, newPassword))
-                return Json(new ResultModel(ApiStatusCode.OK, "密码设置成功"));
-            else
-                return Json(new ResultModel(ApiStatusCode.密码修改失败));
+                if (UserLogic.ChanagePassword(user.UserId, oldPassword, newPassword))
+                    return Json(new ResultModel(ApiStatusCode.OK, "密码设置成功"));
+                else
+                    return Json(new ResultModel(ApiStatusCode.密码修改失败));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AllyApplyAudit user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
 
         }
 
@@ -412,16 +580,24 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult ChanageMobile(string mobile, string verifyCode)
         {
-            if (SmsLogic.IsPassVerify(mobile, verifyCode))
+            try
             {
-                SmsLogic.UpdateVerifyCodeInvalid(mobile, verifyCode);
-                UserModel userInfo = new UserModel();
-                userInfo.UserId = GetAuthUserId();
-                userInfo.UserMobile = mobile;
-                if (UserLogic.UpdateUserInfo(UserPropertyOptions.USER_3, userInfo))
-                    return Json(new ResultModel(ApiStatusCode.OK, "修改成功"));
+                if (SmsLogic.IsPassVerify(mobile, verifyCode))
+                {
+                    SmsLogic.UpdateVerifyCodeInvalid(mobile, verifyCode);
+                    UserModel userInfo = new UserModel();
+                    userInfo.UserId = GetAuthUserId();
+                    userInfo.UserMobile = mobile;
+                    if (UserLogic.UpdateUserInfo(UserPropertyOptions.USER_3, userInfo))
+                        return Json(new ResultModel(ApiStatusCode.OK, "修改成功"));
+                }
+                return Json(new ResultModel(ApiStatusCode.无效验证码));
             }
-            return Json(new ResultModel(ApiStatusCode.无效验证码));
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("ChanageMobile user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -431,11 +607,19 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyCashCouponList()
         {
-            int userId = GetAuthUserId();
-            var data = UserLogic.getMyCashCouponList(userId);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict["list"] = data;
-            return Json(new ResultModel(ApiStatusCode.OK, dict));
+            try
+            {
+                int userId = GetAuthUserId();
+                var data = UserLogic.getMyCashCouponList(userId);
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict["list"] = data;
+                return Json(new ResultModel(ApiStatusCode.OK, dict));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("MyCashCouponList user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -449,16 +633,24 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SendCashCoupon(int couponId, int toUserId = 0)
         {
-            var user = GetUserData();
+            try
+            {
+                var user = GetUserData();
 
-            if (CouponLogic.IsSendCouponByUserId(user.UserId, couponId))
-                return Json(new ResultModel(ApiStatusCode.您已转发));
+                if (CouponLogic.IsSendCouponByUserId(user.UserId, couponId))
+                    return Json(new ResultModel(ApiStatusCode.您已转发));
 
-            bool flag = CouponLogic.AddSendCoupon(user.UserId, user.UserIdentity, toUserId, couponId);
-            if (flag)
-                return Json(new ResultModel(ApiStatusCode.OK, "转发成功"));
-            else
+                bool flag = CouponLogic.AddSendCoupon(user.UserId, user.UserIdentity, toUserId, couponId);
+                if (flag)
+                    return Json(new ResultModel(ApiStatusCode.OK, "转发成功"));
+                else
+                    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("MyCashCouponList user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
 
         }
 
@@ -472,32 +664,40 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult SendAllyCashCoupon(int couponId, string ids)
         {
-            var user = GetUserData();
-            string[] TargetIds = null;
-
-
-            if (CouponLogic.IsSendCouponByUserId(user.UserId, couponId))
-                return Json(new ResultModel(ApiStatusCode.您已转发));
-
-            //如果是盟主身份，则需要判断发送目标
-            if (user.UserIdentity == 1 && !string.IsNullOrEmpty(ids))
+            try
             {
-                if (string.IsNullOrEmpty(ids))
-                    return Json(new ResultModel(ApiStatusCode.缺少发送目标));
-
-                TargetIds = ids.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                if (TargetIds.Length <= 0)
-                    return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+                var user = GetUserData();
+                string[] TargetIds = null;
 
 
-                bool flag = CouponLogic.AddSendAllyCoupon(user.UserId, couponId, TargetIds);
-                if (flag)
-                    return Json(new ResultModel(ApiStatusCode.OK, "转发成功"));
+                if (CouponLogic.IsSendCouponByUserId(user.UserId, couponId))
+                    return Json(new ResultModel(ApiStatusCode.您已转发));
+
+                //如果是盟主身份，则需要判断发送目标
+                if (user.UserIdentity == 1 && !string.IsNullOrEmpty(ids))
+                {
+                    if (string.IsNullOrEmpty(ids))
+                        return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+
+                    TargetIds = ids.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (TargetIds.Length <= 0)
+                        return Json(new ResultModel(ApiStatusCode.缺少发送目标));
+
+
+                    bool flag = CouponLogic.AddSendAllyCoupon(user.UserId, couponId, TargetIds);
+                    if (flag)
+                        return Json(new ResultModel(ApiStatusCode.OK, "转发成功"));
+                    else
+                        return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                }
                 else
                     return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
-            else
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("SendAllyCashCoupon user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
 
@@ -508,9 +708,17 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult MyBusiness()
         {
-            var user = GetUserData();
-            var data = UserLogic.MyBusinessAmount(user.UserId, user.UserIdentity);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+            try
+            {
+                var user = GetUserData();
+                var data = UserLogic.MyBusinessAmount(user.UserId, user.UserIdentity);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("MyBusiness user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
 
         /// <summary>
@@ -520,14 +728,22 @@ namespace BAMENG.API.Controllers
         [ActionAuthorize]
         public ActionResult AllyHomeSummary()
         {
-            var user = GetUserData();
+            try
+            {
+                var user = GetUserData();
 
-            MyAllyIndexModel data = UserLogic.GetUserRank(user.UserId, user.BelongOne);
-            if (data == null) data = new MyAllyIndexModel();
-            data.OrderSuccessAmount = user.OrderSuccessAmount;
-            data.CustomerAmount = user.CustomerAmount;
-            data.AllyAmount = UserLogic.GetAllyCount(user.BelongOne);
-            return Json(new ResultModel(ApiStatusCode.OK, data));
+                MyAllyIndexModel data = UserLogic.GetUserRank(user.UserId, user.BelongOne);
+                if (data == null) data = new MyAllyIndexModel();
+                data.OrderSuccessAmount = user.OrderSuccessAmount;
+                data.CustomerAmount = user.CustomerAmount;
+                data.AllyAmount = UserLogic.GetAllyCount(user.BelongOne);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AllyHomeSummary user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
 
         }
     }

@@ -249,7 +249,8 @@ $(function () {
         data: cityData,//数据在citylist.js 中
         target: '.modal-cityChoice',
         hideCityInput: "#shopcity",
-        hideProvinceInput: "#shopprov"
+        hideProvinceInput: "#shopprov",
+        showHot:false
     }).init();
 
 
