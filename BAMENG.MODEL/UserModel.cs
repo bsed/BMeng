@@ -1069,6 +1069,12 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The cash coupon amount.</value>
         public int cashCouponAmount { get; set; }
+
+        /// <summary>
+        ///我的联盟中，盟友审核数量
+        /// </summary>
+        /// <value>The ally apply amount.</value>
+        public int allyApplyAmount { get; set; }
     }
 
 
@@ -1331,5 +1337,31 @@ namespace BAMENG.MODEL
     }
 
 
+    public class UserSignLogModel
+    {
+
+        public int UserId { get; set; }
+
+
+        public int BelongOneUserId { get; set; }
+
+
+        public int ShopId { get; set; }
+
+
+        public int BelongOneShopId { get; set; }
+
+
+        public decimal Amount { get; set; }
+
+
+        public decimal Reward { get; set; }
+
+        public string Remark { get; set; }
+
+        public string UserAddress { get; set; }
+
+        public string AppSystem { get; set; }
+    }
 
 }

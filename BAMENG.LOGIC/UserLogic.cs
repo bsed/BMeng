@@ -642,23 +642,23 @@ namespace BAMENG.LOGIC
                 {
                     //using (TransactionScope scope = new TransactionScope())
                     //{
-                        dal.updateApplyFriendStatus(id, 1);
-                        UserRegisterModel register = new UserRegisterModel();
-                        register.belongOne = userId;
-                        register.loginName = model.Mobile;
-                        register.loginPassword = model.Password;
-                        register.mobile = model.Mobile;
-                        register.nickname = model.NickName;
-                        register.ShopId = dal.getUserShopId(userId);
-                        register.BelongShopId = ShopLogic.GetBelongShopId(register.ShopId);
-                        register.storeId = ConstConfig.storeId;
-                        register.UserIdentity = 0;
-                        register.username = model.UserName;
-                        register.userGender = model.Sex == 1 ? "M" : "F";
-                        if (dal.AddUserInfo(register) > 0)
-                        {
-                            masterUpdate(userId);
-                        }
+                    dal.updateApplyFriendStatus(id, 1);
+                    UserRegisterModel register = new UserRegisterModel();
+                    register.belongOne = userId;
+                    register.loginName = model.Mobile;
+                    register.loginPassword = model.Password;
+                    register.mobile = model.Mobile;
+                    register.nickname = model.NickName;
+                    register.ShopId = dal.getUserShopId(userId);
+                    register.BelongShopId = ShopLogic.GetBelongShopId(register.ShopId);
+                    register.storeId = ConstConfig.storeId;
+                    register.UserIdentity = 0;
+                    register.username = model.UserName;
+                    register.userGender = model.Sex == 1 ? "M" : "F";
+                    if (dal.AddUserInfo(register) > 0)
+                    {
+                        masterUpdate(userId);
+                    }
                     //    scope.Complete();
                     //}
                 }
@@ -743,21 +743,38 @@ namespace BAMENG.LOGIC
                 model.cashCouponAmount = data.Count();
             }
 
-
+            if (userIdentity == 1)
+                model.allyApplyAmount = AllyApplyCount(userId);
             return model;
+        }
+
+        /// <summary>
+        /// 获取盟友申请得审核的数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public static int AllyApplyCount(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.AllyApplyCount(userId);
+            }
         }
 
 
         /// <summary>
         /// 签到功能
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="appsystem">The appsystem.</param>
+        /// <param name="addr">The addr.</param>
         /// <param name="apiCode">The API code.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static int SignIn(int userId, ref ApiStatusCode apiCode)
+        public static int SignIn(UserModel user, string appsystem, string addr, ref ApiStatusCode apiCode)
         {
+            int userId = user.UserId;
             try
-            {
+            {            
                 string outputMsg = string.Empty;
                 /**
                 * 输出签到积分，从区间中随机获取
@@ -861,46 +878,64 @@ namespace BAMENG.LOGIC
                 else
                     SignCount = 0;
 
-
-                using (var dal = FactoryDispatcher.UserFactory())
+                using (TransactionScope scope = new TransactionScope())
                 {
-
-                    /**
-                     * 更新会员签到数据
-                     */
-                    memberSign.SignCount = SignCount;
-                    memberSign.TotalSignIntegral += (Integral + RewardIntegral);
-                    memberSign.lastSignTime = DateTime.Now;
-                    memberSign.TotalSignDays += 1;
-                    if (memberSign.ID > 0)
-                        dal.UpdateMemberSignInfo(memberSign);
-                    else
-                        memberSign.ID = dal.AddMemberSignInfo(memberSign);
-
-                    /**
-                     * 更新签到缓存
-                     */
-                    RefreshMemberSignCache(userId, memberSign);
-                    //将签到获得积分，冲入用户积分账号中
-                    if (dal.addUserIntegral(userId, Integral + RewardIntegral) > 0)
+                    using (var dal = FactoryDispatcher.UserFactory())
                     {
-                        /**
-                         * 添加签到日志
-                         */
-                        BeansRecordsModel model2 = new BeansRecordsModel();
-                        model2.Amount = Integral + RewardIntegral;
-                        model2.UserId = userId;
-                        model2.LogType = 1;
-                        model2.Income = 1;
-                        model2.Remark = "签到";
-                        model2.OrderId = "";
-                        model2.CreateTime = DateTime.Now;
-                        dal.AddBeansRecords(model2);
-                        apiCode = ApiStatusCode.OK;
-                    }
 
+                        /**
+                         * 更新会员签到数据
+                         */
+                        memberSign.SignCount = SignCount;
+                        memberSign.TotalSignIntegral += (Integral + RewardIntegral);
+                        memberSign.lastSignTime = DateTime.Now;
+                        memberSign.TotalSignDays += 1;
+                        if (memberSign.ID > 0)
+                            dal.UpdateMemberSignInfo(memberSign);
+                        else
+                            memberSign.ID = dal.AddMemberSignInfo(memberSign);
+
+                        /**
+                         * 更新签到缓存
+                         */
+                        RefreshMemberSignCache(userId, memberSign);
+                        //将签到获得积分，冲入用户积分账号中
+                        if (dal.addUserIntegral(userId, Integral + RewardIntegral) > 0)
+                        {
+                            /**
+                             * 添加签到日志
+                             */
+                            BeansRecordsModel model2 = new BeansRecordsModel();
+                            model2.Amount = Integral + RewardIntegral;
+                            model2.UserId = userId;
+                            model2.LogType = 1;
+                            model2.Income = 1;
+                            model2.Remark = "签到";
+                            model2.OrderId = "";
+                            model2.CreateTime = DateTime.Now;
+                            dal.AddBeansRecords(model2);
+
+                            UserSignLogModel signLog = new UserSignLogModel()
+                            {
+                                UserId = userId,
+                                BelongOneUserId = user.BelongOne,
+                                ShopId = user.ShopId,
+                                BelongOneShopId = user.ShopBelongId,
+                                AppSystem = appsystem,
+                                Amount = Integral + RewardIntegral,
+                                Reward = RewardIntegral,
+                                UserAddress = addr,
+                                Remark = "签到" + (RewardIntegral > 0 ? ",连续签到奖励" + RewardIntegral + "积分" : "")
+                            };
+                            dal.AddUserSignLog(signLog);
+
+                            apiCode = ApiStatusCode.OK;
+                        }
+
+                    }
+                    scope.Complete();
+                    return Integral + RewardIntegral;
                 }
-                return Integral + RewardIntegral;
             }
             catch (Exception ex)
             {

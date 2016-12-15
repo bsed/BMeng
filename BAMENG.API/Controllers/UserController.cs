@@ -53,13 +53,13 @@ namespace BAMENG.API.Controllers
             try
             {
                 ApiStatusCode apiCode = ApiStatusCode.OK;
-                int Integral = UserLogic.SignIn(GetAuthUserId(), ref apiCode);
+                int Integral = UserLogic.SignIn(GetUserData(), this.OS, Addr, ref apiCode);
                 Dictionary<string, int> data = new Dictionary<string, int>();
                 data["score"] = Integral;
                 if (apiCode == ApiStatusCode.OK)
                     return Json(new ResultModel(apiCode, string.Format("积分+{0}", Integral), data));
                 else
-                    return Json(new ResultModel(apiCode, data));
+                    return Json(new ResultModel(apiCode));
             }
             catch (Exception ex)
             {
@@ -745,6 +745,42 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
 
+        }
+
+        /// <summary>
+        /// 消息提醒 POST: user/remind
+        /// </summary>
+        /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
+        public ActionResult Remind()
+        {
+            try
+            {
+                var user = GetUserData();
+
+                Dictionary<string, object> data = new Dictionary<string, object>();
+
+                data["messageCount"] = ArticleLogic.GetNotReadMessageCount(user.UserId, user.UserIdentity == 1 ? 4 : 3);
+                bool isbusiness = false;
+                if (user.UserIdentity == 1)
+                {
+                    //客户数量
+                    int customerAmount = CustomerLogic.GetCustomerCount(user.UserId, user.UserIdentity, 0);
+                    //兑换数量
+                    int exchangeAmount = UserLogic.GetConvertCount(user.UserId, 0);
+
+                    int allyApplyAmount = UserLogic.AllyApplyCount(user.UserId);
+                    if (customerAmount > 0 || exchangeAmount > 0 || allyApplyAmount > 0)
+                        isbusiness = true;
+                }
+                data["businessRemind"] = isbusiness;
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("Remind user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
         }
     }
 }

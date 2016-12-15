@@ -35,13 +35,14 @@ var articleInfoHelper = {
                     $("#articleAmount").text(ret.data.BrowseAmount);
                     var data = ret.data.ArticleBody;
 
-                    var reg = /<img.*?src="([^"]+)"/ig;
-                    if (data.match(new RegExp(/<img.*?data-bm-src="([^"]+)"/ig)) != null) {
-                        var m = data.match(new RegExp(reg));
-                        if (m != null) {
-                            for (var i = 0; i < m.length; i++) {
-                                var result = new RegExp(reg).exec(m[i]);
-                                if (result != null) {
+                    // var reg = /<img.*?src="([^"]+)"/ig;
+                    var reg = /<img.*?src="([^"]+)"[^>]+>/ig;                               
+                    var m = data.match(new RegExp(reg));
+                    if (m != null) {
+                        for (var i = 0; i < m.length; i++) {
+                            var result = new RegExp(reg).exec(m[i]);
+                            if (result != null) {
+                                if (result[0].match(new RegExp(/<img.*?data-bm-src="([^"]+)"/ig)) != null) {                                    
                                     var url = result[1];
                                     data = data.replace(url, "images/none.png?v=" + i);
                                 }
@@ -59,22 +60,14 @@ var articleInfoHelper = {
                     }
                     $(".bodyContent").show();
 
-                    
-                    if (data.match(new RegExp(/<img.*?data-bm-src="([^"]+)"/ig)) != null) {
-                        $(".scrollLoading").load(function () {
-                            //图片默认隐藏  
-                            $(this).hide();
-                            //使用fadeIn特效  
-                            $(this).stop().fadeIn("5000");
-                        });
-                        // 异步加载图片，实现逐屏加载图片
-                        $(".scrollLoading").scrollLoading();
-                    }
-                    else {
-                        $(".scrollLoading").scrollLoading({ attr: "src" });
-                    }
-
-
+                    $(".scrollLoading").load(function () {
+                        //图片默认隐藏  
+                        $(this).hide();
+                        //使用fadeIn特效  
+                        $(this).stop().fadeIn("5000");
+                    });
+                    // 异步加载图片，实现逐屏加载图片
+                    $("#articleInfo img").scrollLoading();
                 }
                 else
                     $.alert(ret.statusText);

@@ -90,9 +90,9 @@ namespace BAMENG.API.Controllers
         {
             try
             {
-                if(string.IsNullOrEmpty(username))                
+                if (string.IsNullOrEmpty(username))
                     return Json(new ResultModel(ApiStatusCode.姓名不能为空));
-                if (string.IsNullOrEmpty(mobile)|| !RegexHelper.IsValidMobileNo(mobile))
+                if (string.IsNullOrEmpty(mobile) || !RegexHelper.IsValidMobileNo(mobile))
                     return Json(new ResultModel(ApiStatusCode.无效手机号));
                 if (string.IsNullOrEmpty(address))
                     return Json(new ResultModel(ApiStatusCode.地址不能为空));
@@ -111,7 +111,8 @@ namespace BAMENG.API.Controllers
                         ShopId = user.ShopId,
                         Name = username,
                         Remark = remark,
-                        Status = user.UserIdentity == 1 ? 1 : 0
+                        Status = user.UserIdentity == 1 ? 1 : 0,
+                        BelongOneShopId = user.ShopBelongId
                     });
 
                     if (flag > 0)

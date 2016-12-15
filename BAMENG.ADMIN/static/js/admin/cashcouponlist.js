@@ -46,8 +46,8 @@ var couponHelper = {
                             tempHtml = tempHtml.replace("{Title}", item.Title);
                             tempHtml = tempHtml.replace("{Money}", item.Money);
                             tempHtml = tempHtml.replace("{StatusName}", "<span style='color:red;'>" + item.StatusName + "</span>");
-                            tempHtml = tempHtml.replace("{Time}", item.StartTime + " 至 " + item.EndTime);
-
+                            tempHtml = tempHtml.replace("{Time}", item.time);
+                            tempHtml = tempHtml.replace("{Remark}", item.Remark);
                             tempHtml = tempHtml.replace("{ActiveText}", item.IsEnable == 1 ? "禁用" : "启用");
                             listhtml += tempHtml;
                         });
@@ -169,6 +169,7 @@ var couponHelper = {
             $("#couponstarttime").val(data.StartTime);
             $("#couponendtime").val(data.EndTime);
             $("#couponenable").setChecked(data.IsEnable == 1);
+            $("#couponremark").val(data.Remark);
         }
         else {
             $("#modal-title").text("添加现金券");
@@ -188,13 +189,19 @@ var couponHelper = {
                 coupontitle: "required",
                 couponmoney: "required",
                 couponstarttime: "required",
-                couponendtime: "required"
+                couponendtime: "required",
+                couponremark: {                    
+                    maxlength: 20,
+                }
             },
             messages: {
                 coupontitle: e + "请输入标题",
                 couponmoney: e + "请上传图片",
                 couponstarttime: e + "请输入开始时间",
-                couponendtime: e + "请输入结束时间"
+                couponendtime: e + "请输入结束时间",
+                couponremark: {                    
+                    maxlength: 20
+                }
             },
             submitHandler: function (form) {
                 couponHelper.edit();

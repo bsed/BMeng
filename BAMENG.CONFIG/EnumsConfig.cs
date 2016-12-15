@@ -189,6 +189,12 @@ namespace BAMENG.CONFIG
 
         [Description("该优惠券您已转发")]
         您已转发 = 75004,
+
+        [Description("非本店现金券")]
+        非本店现金券 = 75005,
+
+        [Description("现金券已使用")]
+        现金券已使用 = 75006,
     }
 
 

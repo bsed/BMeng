@@ -335,14 +335,15 @@ namespace BAMENG.DAL
                 strSql = @"select O.*,S.ShopName from BM_Orders O
                             left join BM_ShopManage S on S.ShopID=O.ShopId 
                             where 1=1 ";
+
                 strSql += " and O.ShopId=@ShopId";
             }
             else
             {
                 strSql = @"select O.*,S.ShopName from BM_Orders O
-                            left join BM_ShopManage S on S.ShopBelongId=O.ShopId 
-                            where 1=1 ";
-                strSql += " and (O.ShopId=@ShopId or S.ShopBelongId=@ShopId) ";
+                           left join BM_ShopManage S on S.ShopID=O.ShopId 
+                           where 1=1 ";
+                strSql += " and (O.ShopId=@ShopId or O.BelongOneShopId=@ShopId) ";
             }
             if (!string.IsNullOrEmpty(model.key))
                 strSql += string.Format(" and O.Ct_Name like '%{0}%' ", model.key);
@@ -350,9 +351,9 @@ namespace BAMENG.DAL
                 strSql += "  and OrderStatus=@OrderStatus";
 
             if (!string.IsNullOrEmpty(model.startTime))
-                strSql += " and CONVERT(nvarchar(10),O.CreateTime,121)>=@startTime ";
+                strSql += " and CONVERT(nvarchar(10),O.CreateTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
             if (!string.IsNullOrEmpty(model.endTime))
-                strSql += " and CONVERT(nvarchar(10),O.CreateTime,121)<=@endTime ";
+                strSql += " and CONVERT(nvarchar(10),O.CreateTime,121)<=CONVERT(nvarchar(10),@endTime,121) ";
 
 
             var param = new[] {

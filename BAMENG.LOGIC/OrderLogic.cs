@@ -107,8 +107,18 @@ namespace BAMENG.LOGIC
                     if (!string.IsNullOrEmpty(cashNo))
                     {
                         coupon = dal.getEnableCashCouponLogModel(mobile, cashNo);
-                        if (coupon != null && coupon.ID > 0 && coupon.ShopId == shopId)
+                        if (coupon != null && coupon.ID > 0)
                         {
+                            if (coupon.ShopId != shopId)
+                            {
+                                apiCode = ApiStatusCode.非本店现金券;
+                                return false;
+                            }
+                            if (coupon.IsUse != 0)
+                            {
+                                apiCode = ApiStatusCode.现金券已使用;
+                                return false;
+                            }
                             model.CashCouponAmount = coupon.Money;
                             model.CashCouponBn = cashNo;
                             model.ShopId = coupon.ShopId;

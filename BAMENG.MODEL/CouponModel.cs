@@ -86,6 +86,11 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The create time.</value>
         public DateTime CreateTime { get; set; }
+
+
+        public string Remark { get; set; }
+
+        public string time { get; set; }
     }
 
 
@@ -102,6 +107,7 @@ namespace BAMENG.MODEL
         public int ID { get; set; }
 
 
+        public string Remark { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>

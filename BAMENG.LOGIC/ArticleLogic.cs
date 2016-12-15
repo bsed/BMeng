@@ -44,7 +44,7 @@ namespace BAMENG.LOGIC
         /// <param name="shopId">门店ID</param>
         /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
         /// <returns>ResultPageModel.</returns>
-        public static ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId,int shopId, int userIdentity)
+        public static ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId, int shopId, int userIdentity)
         {
             using (var dal = FactoryDispatcher.ArticleFactory())
             {
@@ -97,11 +97,11 @@ namespace BAMENG.LOGIC
         /// <param name="articleId"></param>
         /// <param name="enable"></param>
         /// <returns></returns>
-        public static bool SetArticleEnableTop(int articleId, bool enable)
+        public static bool SetArticleEnableTop(int articleId, bool enable,int useridentity)
         {
             using (var dal = FactoryDispatcher.ArticleFactory())
             {
-                return dal.SetArticleEnableTop(articleId, enable);
+                return dal.SetArticleEnableTop(articleId, enable, useridentity);
             }
         }
         /// <summary>
@@ -171,5 +171,18 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 获取用户未读消息数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <returns>System.Int32.</returns>
+        public static int GetNotReadMessageCount(int userId, int userIdentity)
+        {
+            using (var dal = FactoryDispatcher.ArticleFactory())
+            {
+                return dal.GetNotReadMessageCount(userId, userIdentity);
+            }
+        }
     }
 }

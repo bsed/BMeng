@@ -71,7 +71,7 @@ var userHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init(function () {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 userHelper.loadList(page);
                             });
@@ -216,7 +216,10 @@ var userHelper = {
                     required: !0,
                     minlength: 2
                 },
-                usermobile: "required",
+                usermobile: {
+                    required: !0,
+                    mobile: true
+                },
                 userloginname: {
                     required: !0,                    
                     mobile:true
@@ -231,7 +234,10 @@ var userHelper = {
                     required: e + "请输入" + (userHelper.isAlly == 1 ? "盟友" : "盟主") + "名称",
                     minlength: e + "联系人必须两个字符以上"
                 },
-                usermobile: e + "请输入您的手机号码",
+                usermobile: {
+                    required: e + "请输入手机号码",
+                    mobile: e + "请输入正确的手机号码"
+                },
                 userloginname: {
                     required: e + "请输入您的登录名",                    
                     mobile: e + "请输入正确的手机号码"
@@ -268,7 +274,6 @@ $.validator.addMethod('mobile', function (value, element) {
     return this.optional(element) || /^1\d{10}$/.test(value);
 
 }, '请输入正确的手机号码');
-
 $(function () {
     userHelper.pageInit();
 });

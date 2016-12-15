@@ -212,7 +212,7 @@ namespace BAMENG.DAL
                 {
                     item.ArticleUrl = string.Format("{0}/app/details.html?articleId={1}&idt={2}", WebConfig.articleDetailsDomain(), item.ArticleId, AuthorIdentity);
                     item.ArticleCover = WebConfig.reswebsite() + item.ArticleCover;
-                    item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(),3);
+                    item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 3);
                 });
             });
         }
@@ -252,7 +252,7 @@ namespace BAMENG.DAL
                     {
                         item.ArticleUrl = WebConfig.articleDetailsDomain() + "/app/details.html?articleId=" + item.ArticleId;
                         item.ArticleCover = WebConfig.reswebsite() + item.ArticleCover;
-                        item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(),3);
+                        item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 3);
                     });
                 }
                 return data;
@@ -306,8 +306,10 @@ namespace BAMENG.DAL
         /// <param name="articleId"></param>
         /// <param name="enable"></param>
         /// <returns></returns>
-        public bool SetArticleEnableTop(int articleId, bool enable)
+        public bool SetArticleEnableTop(int articleId, bool enable, int useridentity)
         {
+            DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, string.Format("update BM_ArticleList set EnableTop=0 where AuthorIdentity={0}", useridentity));
+
             string strSql = "update BM_ArticleList set EnableTop=@EnableTop";
             if (enable)
                 strSql += ",TopTime=@TopTime ";
@@ -393,6 +395,25 @@ namespace BAMENG.DAL
                 new SqlParameter("@ArticleId",articleId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+
+        /// <summary>
+        /// 获取用户未读消息数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <returns>System.Int32.</returns>
+        public int GetNotReadMessageCount(int userId, int userIdentity)
+        {
+            string strSql = @"select COUNT(1) from BM_ReadLog r
+                            left join BM_ArticleList a on a.ArticleId=r.ArticleId
+                             where AuthorIdentity=@AuthorIdentity and r.IsRead=0 and r.UserId=@UserId";
+            var param = new[] {
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@AuthorIdentity",userIdentity)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
         }
     }
 }

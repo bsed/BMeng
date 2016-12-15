@@ -1,7 +1,7 @@
 .IIInsomnia-city-picker{
 	position: absolute;
 	border: 2px solid #c9cbce;
-	width: 370px;
+	width: 430px;
 	background: #ffffff;
 	z-index: 999999;
 	font-size: 0;
@@ -14,7 +14,7 @@
 	border-width: 10px;
 	border-style: solid;
 	position: absolute;
-	left: 20px;
+	left: 50px;
 	z-index: 999999;
 }
 .IIInsomnia-city-picker:before{
@@ -112,7 +112,7 @@
 	background: #ffffff;
 	position: absolute;
 	top: 29px;
-	width: 312px;
+	width: 370px;
 	padding: 10px 10px 5px 10px;
 }
 .IIInsomnia-city-picker .IIInsomnia-city{

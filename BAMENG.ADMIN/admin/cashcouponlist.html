@@ -41,8 +41,8 @@
                             </div>
                             <p style="height: 8px;"></p>
                             <div class="form-inline" style="max-width: 926px; text-align: right;">
-                                <button type="button" onclick="focusHelper.search()" class="btn btn-success">筛选</button>
-                                <button type="button" onclick="focusHelper.searchAll()" class="btn btn-success">显示全部</button>
+                                <button type="button" onclick="couponHelper.search()" class="btn btn-success">筛选</button>
+                                <button type="button" onclick="couponHelper.searchAll()" class="btn btn-success">显示全部</button>
                             </div>
                         </div>
                     </div>
@@ -68,6 +68,7 @@
                                         <th>有效期</th>
                                         <th>金额</th>
                                         <th>状态</th>
+                                        <th>备注</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -89,6 +90,7 @@
             <td>{Time}</td>
             <td>{Money}</td>
             <td>{StatusName}</td>
+            <td>{Remark}</td>
             <td>                
                 <span class="cursor-point" onclick="couponHelper.newTab('{CouponId}')">领取记录</span>
                 &nbsp;
@@ -140,6 +142,15 @@
                                     <input type="checkbox" id="couponenable" style="display: none;" class="js-switch" checked="checked"  />
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="couponremark" name="couponremark" rows="5" class="form-control"></textarea>
+                                    <span class="help-block"><i class="fa fa-info-circle"></i>最大20个字符</span>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-5">
                                     <button class="btn btn-success" type="submit">提交</button>

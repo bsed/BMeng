@@ -2,6 +2,7 @@
 /// <reference path="../jquery.min.js" />
 /// <reference path="../plugins/hot/Jquery.util.js" />
 /// <reference path="../plugins/layui/layui.js" />
+/// <reference path="../plugins/CtiyPicker/js/cityPicker.js" />
 
 /*
     版权所有:杭州火图科技有限公司
@@ -57,7 +58,7 @@ var shopHelper = {
 
                         //初始化分页
                         var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init(function(p) {
+                        pageinate.init(function (p) {
                             goTo(p, function (page) {
                                 shopHelper.loadList(page);
                             });
@@ -213,45 +214,27 @@ var shopHelper = {
     }
 };
 
-
-$.validator.setDefaults({
-    highlight: function (e) {
-        $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
-    },
-    success: function (e) {
-        e.closest(".form-group").removeClass("has-error").addClass("has-success")
-    },
-    errorElement: "span",
-    errorPlacement: function (e, r) {
-        e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
-    },
-    errorClass: "help-block m-b-none",
-    validClass: "help-block m-b-none"
-});
-
-
 $(function () {
     shopHelper.loadList(shopHelper.pageIndex);
-    var cityPicker = new IIInsomniaCityPicker({
-        data: cityData,//数据在citylist.js 中
-        target: '.cityChoice',
-        hideCityInput: "#city",
-        hideProvinceInput: "#province"
-    }).init();
-
 
     if (parseInt(shopHelper.type) != 2)
         $("#btnShop").show();
 
 
-
-    new IIInsomniaCityPicker({
+    $(".cityChoice").CityPicker({
         data: cityData,//数据在citylist.js 中
-        target: '.modal-cityChoice',
+        target: 'cityChoice',
+        hideCityInput: "#city",
+        hideProvinceInput: "#province",
+        showHot: false
+    });
+    $(".modal-cityChoice").CityPicker({
+        data: cityData,//数据在citylist.js 中
+        target: 'modal-cityChoice',
         hideCityInput: "#shopcity",
         hideProvinceInput: "#shopprov",
-        showHot:false
-    }).init();
+        showHot: false
+    });
 
 
     var e = "<i class='fa fa-times-circle'></i> ";
@@ -263,7 +246,10 @@ $(function () {
                 required: !0,
                 minlength: 2
             },
-            usermobile: "required",
+            usermobile: {
+                required: !0,
+                mobile: true
+            },
             userloginname: {
                 required: !0,
                 minlength: 5
@@ -279,7 +265,10 @@ $(function () {
                 required: e + "请输入联系人",
                 minlength: e + "联系人必须两个字符以上"
             },
-            usermobile: e + "请输入您的手机号码",
+            usermobile: {
+                required: e + "请输入您的手机号码",
+                mobile: e + "请输入正确的手机号码"
+            },
             userloginname: {
                 required: e + "请输入您的登录名",
                 minlength: e + "登录名必须5个字符以上"

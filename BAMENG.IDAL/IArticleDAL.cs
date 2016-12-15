@@ -82,10 +82,11 @@ namespace BAMENG.IDAL
         /// <summary>
         /// 设置资讯置顶状态
         /// </summary>
-        /// <param name="articleId"></param>
-        /// <param name="enable"></param>
-        /// <returns></returns>
-        bool SetArticleEnableTop(int articleId, bool enable);
+        /// <param name="articleId">The article identifier.</param>
+        /// <param name="enable">if set to true [enable].</param>
+        /// <param name="useridentity">The useridentity.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool SetArticleEnableTop(int articleId, bool enable, int useridentity);
 
         /// <summary>
         /// 设置资讯发布状态
@@ -112,5 +113,12 @@ namespace BAMENG.IDAL
         /// <returns>true if XXXX, false otherwise.</returns>
         bool UpdateArticleAmount(int articleId);
 
+        /// <summary>
+        /// 获取用户未读消息数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <returns>System.Int32.</returns>
+        int GetNotReadMessageCount(int userId, int userIdentity);
     }
 }

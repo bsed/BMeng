@@ -419,6 +419,12 @@ namespace BAMENG.IDAL
         /// </summary>
         bool UpdateMemberSignInfo(MemberSignModel model);
 
+        /// <summary>
+        /// 添加签到日志
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        int AddUserSignLog(UserSignLogModel model);
 
 
         /// <summary>
@@ -497,5 +503,13 @@ namespace BAMENG.IDAL
         /// <param name="belongOne">The belong one.</param>
         /// <returns>MyAllyIndexModel.</returns>
         MyAllyIndexModel GetUserRank(int userId, int belongOne);
+
+
+        /// <summary>
+        /// 获取盟友申请得审核的数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        int AllyApplyCount(int userId);
     }
 }

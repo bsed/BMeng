@@ -182,10 +182,12 @@ var focusHelper = {
             $("#focusdescription").val(data.Description);
             $("#focussort").val(data.Sort);
             $("#focusenable").setChecked(data.IsEnable == 1);
+            $(".imgpreview").attr("src", data.PicUrl);
         }
         else {
             $("#modal-title").text("添加轮播图");
             $("#signupForm input").val("");
+            $(".imgpreview").attr("src", "/static/img/bg.png");
         }
 
     },

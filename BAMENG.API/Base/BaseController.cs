@@ -129,6 +129,8 @@ namespace BAMENG.API
         /// <value>The os.</value>
         public string OS { get; set; }
 
+        public string Addr { get; set; }
+
         /// <summary>
         /// 时间戳
         /// </summary>
@@ -205,6 +207,7 @@ namespace BAMENG.API
                 OS = GetQuery("os", "");
                 Version = GetQuery("version", "1.0.0");
                 timestamp = GetQuery("timestamp", "");
+                Addr = GetQuery("addr", "杭州");
             }
             catch (Exception ex)
             {

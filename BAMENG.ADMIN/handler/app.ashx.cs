@@ -279,6 +279,7 @@ namespace BAMENG.ADMIN.handler
                     Dictionary<string, object> data = new Dictionary<string, object>();
                     data["time"] = model.StartTime.ToString("yyyy.MM.dd") + "-" + model.EndTime.ToString("yyyy.MM.dd");
                     data["money"] = model.Money;
+                    data["remark"] = model.Remark;
                     data["url"] = "http://" + ctx.Request.Url.Host + string.Format("/app/getcoupon.html?userid={0}&cpid={1}&sign={2}", uid, cpid, currentSign);
                     json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
                 }

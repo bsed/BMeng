@@ -23,7 +23,7 @@ namespace BAMENG.DAL
 {
     public class CustomerDAL : AbstractDAL, ICustomerDAL
     {
-        private const string APP_SELECT = @"select C.ID,C.BelongOne,C.BelongTwo,C.Status,C.InShop,C.Name,C.Mobile,C.Addr,C.Remark,C.ShopId,C.CreateTime,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName,S.ShopName from BM_CustomerManage C 
+        private const string APP_SELECT = @"select C.ID,C.BelongOne,C.BelongTwo,C.Status,C.InShop,C.Name,C.Mobile,C.Addr,C.Remark,C.ShopId,C.BelongOneShopId,C.CreateTime,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName,S.ShopName from BM_CustomerManage C 
                                                 left join Hot_UserBaseInfo U with(nolock) on U.UB_UserID=C.BelongOne
                                                 left join Hot_UserBaseInfo UB with(nolock) on UB.UB_UserID=C.BelongTwo
                                                 left join BM_ShopManage S with(nolock) on  S.ShopID=C.ShopId
@@ -61,7 +61,12 @@ namespace BAMENG.DAL
                 strSql += " and C.BelongTwo= @BelongOne";
 
             if (shopId > 0)
-                strSql += " and C.ShopId= @ShopId";
+            {
+                if (model.type != 1)
+                    strSql += " and C.ShopId= @ShopId";
+                else
+                    strSql += " and (C.ShopId= @ShopId or C.BelongOneShopId = @ShopId )";
+            }
 
             if (!string.IsNullOrEmpty(model.key))
             {
@@ -154,7 +159,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public int InsertCustomerInfo(CustomerModel model)
         {
-            string strSql = "insert into BM_CustomerManage (BelongOne,BelongTwo,Status,Name,Mobile,Addr,Remark,ShopId,InShop) values(@BelongOne,@BelongTwo,@Status,@Name,@Mobile,@Addr,@Remark,@ShopId,@InShop);select @@IDENTITY;";
+            string strSql = "insert into BM_CustomerManage (BelongOne,BelongTwo,Status,Name,Mobile,Addr,Remark,ShopId,InShop,BelongOneShopId) values(@BelongOne,@BelongTwo,@Status,@Name,@Mobile,@Addr,@Remark,@ShopId,@InShop,@BelongOneShopId);select @@IDENTITY;";
             var param = new[] {
                     new SqlParameter("@BelongOne",model.BelongOne),
                     new SqlParameter("@BelongTwo",model.BelongTwo),
@@ -164,7 +169,8 @@ namespace BAMENG.DAL
                     new SqlParameter("@Addr",model.Addr),
                     new SqlParameter("@Remark",model.Remark),
                     new SqlParameter("@ShopId",model.ShopId),
-                    new SqlParameter("@InShop",model.InShop)
+                    new SqlParameter("@InShop",model.InShop),
+                    new SqlParameter("@BelongOneShopId",model.BelongOneShopId)
                 };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
 

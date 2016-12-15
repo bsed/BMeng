@@ -145,7 +145,12 @@ namespace BAMENG.DAL
             }
             strSql += " and ue.UserIdentity=@UserIdentity ";
             if (ShopId > 0)
-                strSql += " and ue.ShopId=@ShopId ";
+            {
+                if (model.type == 1)
+                    strSql += " and (ue.ShopId=@ShopId or ue.BelongShopId=@ShopId) ";
+                else
+                    strSql += " and ue.ShopId=@ShopId ";
+            }
             if (!string.IsNullOrEmpty(model.startTime))
                 strSql += " and CONVERT(nvarchar(10),ue.CreateTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
             if (!string.IsNullOrEmpty(model.endTime))
@@ -1570,6 +1575,39 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }
 
+
+
+
+
+        /// <summary>
+        /// 添加签到日志
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public int AddUserSignLog(UserSignLogModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into BM_UserSignLog(");
+            strSql.Append("UserId,BelongOneUserId,ShopId,BelongOneShopId,Amount,Reward,Remark,UserAddress,AppSystem)");
+            strSql.Append(" values (");
+            strSql.Append("@UserId,@BelongOneUserId,@ShopId,@BelongOneShopId,@Amount,@Reward,@Remark,@UserAddress,@AppSystem)");            
+            var parameters = new[] {
+                    new SqlParameter("@BelongOneUserId", model.BelongOneUserId),
+                    new SqlParameter("@UserId",model.UserId),
+                    new SqlParameter("@ShopId", model.ShopId),
+                    new SqlParameter("@BelongOneShopId", model.BelongOneShopId),
+                    new SqlParameter("@Amount", model.Amount),
+                    new SqlParameter("@Reward", model.Reward),
+                    new SqlParameter("@Remark", model.Remark),
+                    new SqlParameter("@UserAddress", model.UserAddress),
+                    new SqlParameter("@AppSystem", model.AppSystem)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
+        }
+
+
+
+
         /// <param name="userId">The user identifier.</param>
         /// <returns>MemberSignModel.</returns>
         public MemberSignModel GetMemberSignModel(int userId)
@@ -1774,6 +1812,22 @@ namespace BAMENG.DAL
             {
                 return DbHelperSQLP.GetEntity<MyAllyIndexModel>(dr);
             }
+        }
+
+
+
+        /// <summary>
+        /// 获取盟友申请得审核的数量
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public int AllyApplyCount(int userId)
+        {
+            string strSql = "select COUNT(1) from BM_ApplyFriend where UserId=@UserId and Status=0";
+            var param = new[] {
+                new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param));
         }
 
     }

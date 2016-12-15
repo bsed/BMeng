@@ -243,7 +243,7 @@ namespace BAMENG.LOGIC
                             dal.CreateUserCashCouponLog(new CashCouponLogModel()
                             {
                                 CouponId = couponId,
-                                CouponNo = couponModel.ShopId.ToString() + StringHelper.CreateCheckCode(10).ToLower(),
+                                CouponNo = couponModel.ShopId.ToString() + StringHelper.CreateCheckCodeWithNum(10).ToLower(),
                                 UserId = sendToUserId > 0 ? sendToUserId : userId,
                                 IsShare = sendToUserId > 0 ? 0 : 1,
                                 Money = couponModel.Money,
@@ -275,7 +275,7 @@ namespace BAMENG.LOGIC
         /// <param name="TargetIds">The target ids.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool AddSendAllyCoupon(int userId, int couponId, string[] TargetIds)
-        {            
+        {
             using (TransactionScope scope = new TransactionScope())
             {
                 using (var dal = FactoryDispatcher.CouponFactory())
@@ -287,7 +287,7 @@ namespace BAMENG.LOGIC
                     if (couponModel != null)
                     {
                         int BelongOneUserId = userId;
-                        string cpNo = couponModel.ShopId.ToString() + StringHelper.CreateCheckCode(10).ToLower();
+                        string cpNo = couponModel.ShopId.ToString() + StringHelper.CreateCheckCodeWithNum(10).ToLower();
                         foreach (var item in TargetIds)
                         {
                             int sendToUserId = Convert.ToInt32(item);

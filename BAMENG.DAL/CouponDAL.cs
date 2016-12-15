@@ -30,7 +30,7 @@ namespace BAMENG.DAL
     public class CouponDAL : AbstractDAL, ICouponDAL
     {
 
-        private const string SELECT_SQL = "select CouponId,ShopId,Title,Money,StartTime,EndTime,IsEnable,CreateTime from BM_CashCoupon where IsDel=0 ";
+        private const string SELECT_SQL = "select CouponId,ShopId,Title,Money,StartTime,EndTime,IsEnable,CreateTime,Remark from BM_CashCoupon where IsDel=0 ";
 
         /// <summary>
         /// 添加现金券
@@ -40,14 +40,15 @@ namespace BAMENG.DAL
         /// <exception cref="System.NotImplementedException"></exception>
         public int AddCashCoupon(CashCouponModel model)
         {
-            string strSql = "insert into BM_CashCoupon(ShopId,Title,Money,StartTime,EndTime,IsEnable) values(@ShopId,@Title,@Money,@StartTime,@EndTime,@IsEnable);select @@IDENTITY;";
+            string strSql = "insert into BM_CashCoupon(ShopId,Title,Money,StartTime,EndTime,IsEnable,Remark) values(@ShopId,@Title,@Money,@StartTime,@EndTime,@IsEnable,@Remark);select @@IDENTITY;";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
                 new SqlParameter("@Money", model.Money),
                 new SqlParameter("@StartTime", model.StartTime),
                 new SqlParameter("@EndTime", model.EndTime),
                 new SqlParameter("@IsEnable", model.IsEnable),
-                new SqlParameter("@ShopId", model.ShopId)
+                new SqlParameter("@ShopId", model.ShopId),
+                new SqlParameter("@Remark", model.Remark)
             };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm);
             if (obj != null)
@@ -111,7 +112,7 @@ namespace BAMENG.DAL
             {
                 items.ForEach((item) =>
                 {
-                    if (DateTime.Compare(item.EndTime, DateTime.Now) > 0)
+                    if (DateTime.Compare(item.EndTime.AddHours(24), DateTime.Now) >= 0)
                     {
                         if (item.IsEnable == 1)
                             item.StatusName = "启用";
@@ -121,7 +122,7 @@ namespace BAMENG.DAL
                     else
                         item.StatusName = "已过期";
 
-
+                    item.time = item.StartTime.ToString("yyyy.MM.dd") + " 至 " + item.EndTime.ToString("yyyy.MM.dd");
                 });
             }));
         }
@@ -134,14 +135,15 @@ namespace BAMENG.DAL
         /// <exception cref="System.NotImplementedException"></exception>
         public bool UpdateCashCoupon(CashCouponModel model)
         {
-            string strSql = "update BM_CashCoupon set Title=@Title,Money=@Money,StartTime=@StartTime,EndTime=@EndTime,IsEnable=@IsEnable where CouponId=@CouponId";
+            string strSql = "update BM_CashCoupon set Title=@Title,Money=@Money,StartTime=@StartTime,EndTime=@EndTime,IsEnable=@IsEnable,Remark=@Remark where CouponId=@CouponId";
             var parm = new[] {
                 new SqlParameter("@Title", model.Title),
                 new SqlParameter("@Money", model.Money),
                 new SqlParameter("@StartTime", model.StartTime),
                 new SqlParameter("@EndTime", model.EndTime),
                 new SqlParameter("@IsEnable", model.IsEnable),
-                new SqlParameter("@CouponId", model.CouponId)
+                new SqlParameter("@CouponId", model.CouponId),
+                new SqlParameter("@Remark", model.Remark)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parm) > 0;
         }
@@ -231,7 +233,7 @@ namespace BAMENG.DAL
 
 
         /// <summary>
-        /// 获取可用的优惠卷信息
+        /// 获取优惠卷信息
         /// </summary>
         /// <param name="mobile"></param>
         /// <param name="cashNo"></param>
@@ -240,7 +242,7 @@ namespace BAMENG.DAL
         {
 
             CashCouponLogModel model = new CashCouponLogModel();
-            string strSql = "select * from BM_GetCashCouponLog where CouponNo=@CouponNo and Mobile=@Mobile and IsGet=1 and IsDel=0 and IsUse=0";
+            string strSql = "select * from BM_GetCashCouponLog where CouponNo=@CouponNo and Mobile=@Mobile and IsGet=1 and IsDel=0 ";
             var parms = new[] {
                new SqlParameter("@CouponNo",cashNo),
                new SqlParameter("@Mobile",mobile)
@@ -350,7 +352,9 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public CashCouponLogModel GetCashCouponLogIDByUserID(int userId, int couponId)
         {
-            string strSql = "select top 1 * from BM_GetCashCouponLog where UserId=@UserId and CouponId=@CouponId and IsGet=0  and IsShare=1 and IsDel=0";
+            string strSql = @"select top 1 L.*,C.Remark from BM_GetCashCouponLog L
+                                left join BM_CashCoupon C on C.CouponId=L.CouponId
+                                where L.UserId=@UserId and L.CouponId=@CouponId and L.IsGet=0  and L.IsShare=1 and L.IsDel=0";
             var param = new[] {
                 new SqlParameter("@UserId",userId),
                 new SqlParameter("@CouponId",couponId)

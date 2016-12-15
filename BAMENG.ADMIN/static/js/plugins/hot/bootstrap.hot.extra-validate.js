@@ -21,6 +21,12 @@ $.validator.setDefaults({
     errorClass: "help-block m-b-none",
     validClass: "help-block m-b-none"
 });
+$.validator.addMethod('mobile', function (value, element) {
+
+    // /^1\d{10}$/ 来自的正则
+    return this.optional(element) || /^1\d{10}$/.test(value);
+
+}, '请输入正确的手机号码');
 
 /**
     * 一些验证扩展方法

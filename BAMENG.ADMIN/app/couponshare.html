@@ -15,12 +15,17 @@
     <div class="bm">
         <div class="lodinggo">
             <div style="display:none;" class="bacimg textc" id="myQrcode">                
-                <div class="nrnr">
+                <div  style="margin: 18%;" class="nrnr">
                     <p id="code"></p>
                     <p style="margin: 10px;color: #000;font-size:14px;">
                         立刻扫码领取<span id="couponMoney"></span> 现金现金券！
                         <br/>使用有效期：<span id="couponTime"></span>
                     </p>
+                </div>
+                <div style="margin: 100% 12%; text-align:left;" class="nrnr">
+                    <strong>备注：</strong>
+                    <div style="font-size:12px;" class="couponRemark">                        
+                    </div>
                 </div>
             </div>
             <div style="display:none" class="bacimg textc" id="myNone">
@@ -28,8 +33,16 @@
                     <p><b><i style="font-style:normal; color:#B91719; font-size:20px;">对不起！<br />现金券已经被他人领取</i></b></p>
                 </div>
             </div>
-        </div>
+
+ 
+
+        </div>        
     </div>
+
+
+
+
+
     <div class="col-sm-12" id="loadBox" style="display:none;">
         <div class="cover"></div>
         <div class="spiner-example">
@@ -56,6 +69,7 @@
         _shareData.img_url = "http://" + window.location.host + "/app/images/appShareCoupon.png";
         enableShare();
 
+
         var param = {
             action: "GetCouponInfo",
             userid: hotUtil.getQuery("userid"),
@@ -73,6 +87,7 @@
                     $("#myQrcode").show();
                     $("#couponMoney").text(ret.data.money + " 元");
                     $("#couponTime").text(ret.data.time);
+                    $(".couponRemark").html(ret.data.remark);
                     $("#code").qrcode({
                         render: "image",
                         size: 200,

@@ -394,7 +394,8 @@ namespace BAMENG.ADMIN.handler
                 startTime = GetFormValue("startTime", ""),
                 endTime = GetFormValue("endTime", ""),
                 key = GetFormValue("key", ""),
-                searchType = GetFormValue("searchType", 0)
+                searchType = GetFormValue("searchType", 0),
+                type=user.UserIndentity
             };
             int currentUserId = user.UserIndentity != 0 ? user.ID : 0;
             var data = UserLogic.GetUserList(currentUserId, GetFormValue("ally", 1), model);
@@ -487,7 +488,8 @@ namespace BAMENG.ADMIN.handler
                 startTime = GetFormValue("startTime", ""),
                 endTime = GetFormValue("endTime", ""),
                 key = GetFormValue("key", ""),
-                searchType = GetFormValue("searchType", 0)
+                searchType = GetFormValue("searchType", 0),
+                type=user.UserIndentity
             };
             var data = CustomerLogic.GetCustomerList(model, user.UserIndentity == 0 ? 0 : user.ID);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -609,12 +611,12 @@ namespace BAMENG.ADMIN.handler
 
             bool flag = false;
             if (type == 1)//置顶
-                flag = ArticleLogic.SetArticleEnableTop(articleId, active == 1);
+                flag = ArticleLogic.SetArticleEnableTop(articleId, active == 1,user.UserIndentity);
             else if (type == 2)//发布
                 flag = ArticleLogic.SetArticleEnablePublish(articleId, active == 1);
             else if (type == 3)//删除
                 flag = ArticleLogic.DeleteArticle(articleId);
-            else if (type == 4)//删除
+            else if (type == 4)//审核
                 flag = ArticleLogic.SetArticleStatus(articleId, active, remark);
 
             if (flag)
@@ -873,7 +875,8 @@ namespace BAMENG.ADMIN.handler
                 StartTime = Convert.ToDateTime(GetFormValue("couponstarttime", DateTime.Now.ToString("yyyy-MM-dd"))),
                 EndTime = Convert.ToDateTime(GetFormValue("couponendtime", DateTime.Now.AddDays(5).ToString("yyyy-MM-dd"))),
                 ShopId = user.ID,
-                IsEnable = GetFormValue("couponenable", 1)
+                IsEnable = GetFormValue("couponenable", 1),
+                Remark=GetFormValue("couponremark", "")
             });
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
         }

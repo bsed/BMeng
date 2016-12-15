@@ -99,12 +99,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\cashcouponstaticpie.html" />
-    <Content Include="admin\customerareastatic.html" />
     <Content Include="admin\coupongetlist.html" />
     <Content Include="admin\modifypassword.html" />
     <Content Include="admin\none.html" />
-    <Content Include="admin\cashcouponstatic.html" />
     <Content Include="admin\customerstatic.html" />
     <Content Include="admin\loginstatic.html" />
     <Content Include="admin\messageedit.html" />
@@ -191,6 +188,7 @@
     <Content Include="static\js\jQuery.asyncLoading.js" />
     <Content Include="static\js\plugins\CtiyPicker\css\cityPicker.css" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityList.js" />
+    <None Include="static\js\plugins\CtiyPicker\js\cityPickerbak" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityPicker.js" />
     <Content Include="static\js\plugins\hot\bootstrap.hot.extra-validate.js" />
     <Content Include="static\js\plugins\hot\Jquery.util.js" />
