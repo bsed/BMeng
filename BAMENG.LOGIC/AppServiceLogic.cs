@@ -48,6 +48,7 @@ namespace BAMENG.LOGIC
 
             data.baseData.agreementUrl = WebConfig.articleDetailsDomain() + "/app/agreement.html";
 
+            data.baseData.registerUrl = WebConfig.articleDetailsDomain() + "/app/register.html";
 
             data.baseData.userStatus = 1;
 
@@ -57,9 +58,7 @@ namespace BAMENG.LOGIC
             else
                 data.baseData.enableSignIn = Convert.ToInt32(v);
 
-
-
-
+            
             return data;
         }
 

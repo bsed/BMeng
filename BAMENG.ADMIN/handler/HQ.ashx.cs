@@ -935,20 +935,20 @@ namespace BAMENG.ADMIN.handler
             });
             if (flag)
             {
-                if (user.UserIndentity == 1 && GetFormValue("issend", 1) == 1 && GetFormValue("sendbelongshop", 0) == 1)
-                {
-                    try
-                    {
-                        string errmsg = "";
-                        string sendmobile = ConfigLogic.GetValue("BindMobile");
-                        if (!string.IsNullOrEmpty(sendmobile) && RegexHelper.IsValidMobileNo(sendmobile))
-                            SmsLogic.send(1, sendmobile, "您有一条新的未读消息", out errmsg);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
-                    }
-                }
+                //if (user.UserIndentity == 1 && GetFormValue("issend", 1) == 1 && GetFormValue("sendbelongshop", 0) == 1)
+                //{
+                //    try
+                //    {
+                //        string errmsg = "";
+                //        string sendmobile = ConfigLogic.GetValue("BindMobile");
+                //        if (!string.IsNullOrEmpty(sendmobile) && RegexHelper.IsValidMobileNo(sendmobile))
+                //            SmsLogic.send(1, sendmobile, "您有一条新的未读消息", out errmsg);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        LogHelper.Log(string.Format("Message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                //    }
+                //}
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
             }
             else

@@ -233,6 +233,18 @@ namespace BAMENG.MODEL
         /// <value>The note.</value>
         public string note { get; set; }
 
+        /// <summary>
+        /// 订单金额
+        /// </summary>
+        /// <value>The fianlamount.</value>
+        public decimal fianlamount { get; set; }
+
+        /// <summary>
+        /// 现金券金额
+        /// </summary>
+        /// <value>The cashcouponmoney.</value>
+        public decimal cashcouponmoney { get; set; }
+
 
     }
 }

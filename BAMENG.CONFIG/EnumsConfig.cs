@@ -93,7 +93,8 @@ namespace BAMENG.CONFIG
 
         [Description("地址不能为空")]
         地址不能为空 = 6015,
-
+        [Description("无效的盟主ID")]
+        无效的盟主ID = 6016,
 
         [Description("账户已存在")]
         账户已存在 = 7000,
@@ -112,6 +113,9 @@ namespace BAMENG.CONFIG
 
         [Description("你已申请，请耐心等待")]
         你已申请请耐心等到审核 = 7006,
+
+        [Description("非法请求")]
+        非法请求 = 7007,
 
         [Description("用户信息丢失，请重新登录")]
         没有登录 = 70034,

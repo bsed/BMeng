@@ -9,11 +9,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
     <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
-    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
-    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-    <link href="/static/css/animate.min.css" rel="stylesheet">
-    <link href="/static/css/style.min.css?v=4.0.0" rel="stylesheet">
-    <script src="/static/js/jquery.min.js"></script>
     <title>注册申请</title>
     <style>
         .cover {
@@ -37,19 +32,29 @@
             bottom: 0;
             right: 0;
         }
+
+        .weui_cell {
+            font-size: 14px !important;
+        }
+
+        .weui_cells {
+            line-height: 1.711765;
+        }
     </style>
 </head>
-<body>
+<body style="background-color: #F5F2F2;">
     <div class="bm">
-        <header class='demos-header'>
-            <h2 style="margin:15px;font-weight:bold; text-align:center" class="demos-title">注册申请</h2>
-        </header>
-
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">昵称</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input class="weui_input" type="text" id="txtNickName" placeholder="请输入昵称">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">手机</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" id="txtUserMobile" maxlength="11" placeholder="请输入手机">
                 </div>
             </div>
             <div class="weui_cell">
@@ -64,16 +69,16 @@
                     <input class="weui_input" type="password" id="txtConfirmPwd" placeholder="确认密码">
                 </div>
             </div>
+            <div class="weui_cell" id="div_mid">
+                <div class="weui_cell_hd"><label class="weui_label">盟主ID</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" id="mid" placeholder="请输入盟主ID">
+                </div>
+            </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input class="weui_input" type="text" id="txtUserName" placeholder="请输入姓名">
-                </div>
-            </div>
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label">手机</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="number" id="txtUserMobile" placeholder="请输入手机">
                 </div>
             </div>
             <div class="weui_cell">
@@ -83,8 +88,8 @@
                     <option value="0">女</option>
                 </select>
             </div>
-            <button onclick="save()" style="width: 95%;" class="weui_btn weui_btn_primary anniu ">提交</button>
         </div>
+        <button onclick="save()" style="width: 95%;top:20px;" class="weui_btn weui_btn_primary anniu">提交</button>
         <div class="col-sm-12" id="loadBox" style="display:none;">
             <div class="cover"></div>
             <div class="spiner-example">
@@ -98,9 +103,15 @@
     </div>
 </body>
 </html>
+<script src="/static/js/jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
 <script src="/static/js/plugins/hot/Jquery.util.js"></script>
 <script>
+
+    $(function () {
+        if (parseInt(hotUtil.getQuery("userid", 0)) > 0)
+            $("#div_mid").hide();
+    });
 
     function save() {
         if (checkForm()) {
@@ -111,7 +122,8 @@
                 username: $("#txtUserName").val(),
                 usermobile: $("#txtUserMobile").val(),
                 sex: $("#sltSex").val(),
-                userid: hotUtil.getQuery("userid")
+                userid: hotUtil.getQuery("userid"),
+                mid: $("#mid").val()
             };
             $("#loadBox").show();
             hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
@@ -132,6 +144,14 @@
             $.alert("请输入昵称");
             return false;
         }
+        if (hotUtil.isNullOrEmpty($("#txtUserMobile").val())) {
+            $.alert("请输入手机号码");
+            return false;
+        }
+        if (!hotUtil.isMobile($("#txtUserMobile").val())) {
+            $.alert("请输入有效的手机号码");
+            return false;
+        }
         if (hotUtil.isNullOrEmpty($("#txtPwd").val())) {
             $.alert("请输入登录密码");
             return false;
@@ -140,17 +160,16 @@
             $.alert("两次密码不一致");
             return false;
         }
-        if (hotUtil.isNullOrEmpty($("#txtUserName").val())) {
-            $.alert("请输入姓名");
-            return false;
+
+        if (parseInt(hotUtil.getQuery("userid", 0)) == 0) {
+            if (hotUtil.isNullOrEmpty($("#mid").val()) || parseInt($("#mid").val()) <= 0) {
+                $.alert("请输入有效的盟主ID");
+                return false;
+            }
         }
 
-        if (hotUtil.isNullOrEmpty($("#txtUserMobile").val())) {
-            $.alert("请输入手机号码");
-            return false;
-        }
-        if (!hotUtil.isMobile($("#txtUserMobile").val())) {
-            $.alert("请输入有效的手机号码");
+        if (hotUtil.isNullOrEmpty($("#txtUserName").val())) {
+            $.alert("请输入姓名");
             return false;
         }
         return true;

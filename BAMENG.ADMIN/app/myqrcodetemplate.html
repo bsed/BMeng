@@ -17,6 +17,7 @@
                 <p id="code">
                 </p>
                 <p style="margin:10px;font-size: 13px;color: #676a6c;"><b>扫码二维码，成为我的盟友吧!</b></p>
+                <p style="margin:10px;font-size: 13px;color: #676a6c;"><b>盟主ID：<span id="spanUserId"></span></b></p>
             </div>
         </div>
     </div>
@@ -27,10 +28,14 @@
 <script>
     $(function () {
         var arrs = window.location.href.split("/");
+
+        var userid = arrs[arrs.length - 2];
+        $("#spanUserId").text(2000 + parseInt(userid));
+
         $("#code").qrcode({
             render: "image",
             size: 200,
-            text: "http://" + window.location.host + "/app/register.html?userid=" + arrs[arrs.length - 2]
+            text: "http://" + window.location.host + "/app/about.html"
         });
     });
 </script>

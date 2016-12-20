@@ -55,7 +55,7 @@ function getIEVersion() {
     return e;
 }
 $.fn.OnlyNum = function () {//文本框只允许输入数字，使用：$('.OnlyNum').OnlyNum()
-    $(this).on("keydown",function (e) {
+    $(this).on("keydown", function (e) {
         if (e.ctrlKey) return !0;
         var t = t || window.event,
         n = t.charCode || t.keyCode;
@@ -216,7 +216,7 @@ $.extend(hotUtil, {
     * @brief 获得页面参数
     * @param 参数名
     * */
-    getQuery: function (name) {
+    getQuery: function (name, def) {
         var strHref = window.document.location.href;
         var intPos = strHref.indexOf("?");
         var strRight = strHref.substr(intPos + 1);
@@ -226,7 +226,7 @@ $.extend(hotUtil, {
             if (arrTemp[0].toUpperCase() == name.toUpperCase()) return arrTemp[1];
         }
         if (arguments.length == 1)
-            return "";
+            return def || "";
         if (arguments.length == 2)
             return arguments[1];
     },

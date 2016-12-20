@@ -273,6 +273,8 @@ namespace BAMENG.LOGIC
                 result.address = order.Ct_Address;
                 result.remark = order.Memo;
                 result.note = order.Note;
+                result.cashcouponmoney = order.CashCouponAmount;
+                result.fianlamount = order.FianlAmount;
             }
             return result;
         }

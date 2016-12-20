@@ -32,15 +32,23 @@ namespace BAMENG.DAL
         /// <summary>
         /// 获取用户基本信息SQL 语句
         /// </summary>
+        //private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
+        //                    ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
+        //                    ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId,ue.CustomerAmount,ue.OrderSuccessAmount,S.IsActive as ShopActive,'' as BelongOneUserName
+        //                     from BM_User_extend ue
+        //                    inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID =ue.UserId
+        //                    left join BM_ShopManage S with(nolock) on S.ShopID=ue.ShopId
+        //                    left join Mall_UserLevel L on L.UL_ID=U.UB_LevelID 
+        //                    where 1=1 and  U.UB_IsDelete=0 ";
         private const string APP_USER_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
-                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId,ue.CustomerAmount,ue.OrderSuccessAmount,S.IsActive as ShopActive,'' as BelongOneUserName
+                            ,S.ShopName,S.ShopProv,S.ShopCity,L.UL_LevelName as LevelName,U.UB_BelongOne as BelongOne,S.ShopType,S.ShopBelongId,ue.CustomerAmount,ue.OrderSuccessAmount,S.IsActive as ShopActive,U2.UB_UserRealName as BelongOneUserName
                              from BM_User_extend ue
                             inner join Hot_UserBaseInfo U with(nolock) on U.UB_UserID =ue.UserId
+                            left join Hot_UserBaseInfo U2 with(nolock) on U2.UB_UserID =U.UB_BelongOne
                             left join BM_ShopManage S with(nolock) on S.ShopID=ue.ShopId
                             left join Mall_UserLevel L on L.UL_ID=U.UB_LevelID 
                             where 1=1 and  U.UB_IsDelete=0 ";
-
 
         private const string APP_USER_ALLY_SELECT = @"select ue.UserId,ue.UserIdentity,U.UB_UserCity as UserCity,U.UB_UserGender as UserGender,ue.MerchantID,ue.ShopId,ue.IsActive,ue.Score,ue.ScoreLocked,ue.MengBeans,ue.MengBeansLocked,ue.CreateTime
                             ,U.UB_UserLoginName as LoginName,U.UB_UserRealName as RealName,U.UB_UserNickName as NickName,U.UB_UserMobile as UserMobile,U.UB_WxHeadImg as UserHeadImg
@@ -184,6 +192,23 @@ namespace BAMENG.DAL
                 return data;
             }
 
+        }
+
+
+
+        /// <summary>
+        /// 判断用户是否存在
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if the specified user identifier is exist; otherwise, false.</returns>
+        public bool IsExist(int userId)
+        {
+            string strSql = "select COUNT(1) from BM_User_extend where UserId=@UserId";
+            var param = new[] {
+                        new SqlParameter("@UserId", userId)
+                        };
+
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
         }
 
         /// <summary>

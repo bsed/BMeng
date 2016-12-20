@@ -18,6 +18,7 @@
             <div class="bacfff textc">
                 <p id="code"></p>
                 <p style="margin:10px;font-size: 13px;color: #676a6c;"><b>扫码二维码，成为我的盟友吧!</b></p>
+                <p style="margin:10px;font-size: 13px;color: #676a6c;"><b>盟主ID：<span id="spanUserId"></span></b></p>
             </div>
         </div>
         <div class="col-sm-12" id="loadBox" style="display:none;">
@@ -40,10 +41,14 @@
 <script src="/static/js/admin/shareConfig.js"></script>
 <script>
     $(function () {
+
+        var userid = hotUtil.getQuery("userid");
+        $("#spanUserId").text(2000 + parseInt(userid));
+
         $("#code").qrcode({
             render: "image",
             size: 200,
-            text: "http://" + window.location.host + "/app/register.html?userid=" + hotUtil.getQuery("userid")
+            text: "http://" + window.location.host + "/app/about.html"
         });
         var param = {
             action: "myqrcode",

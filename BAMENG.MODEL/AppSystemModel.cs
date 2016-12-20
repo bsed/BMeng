@@ -68,6 +68,8 @@ namespace BAMENG.MODEL
         public string agreementUrl { get; set; }
 
 
+        public string registerUrl { get; set; }
+
         /// <summary>
         ///启用签到 1启用，0禁用
         /// </summary>

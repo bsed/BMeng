@@ -43,7 +43,7 @@
       <publishTime>12/07/2016 20:31:39</publishTime>
     </File>
     <File Include="admin/focuspic.html">
-      <publishTime>12/06/2016 15:12:24</publishTime>
+      <publishTime>12/15/2016 16:18:04</publishTime>
     </File>
     <File Include="admin/loginstatic.html">
       <publishTime>12/07/2016 20:31:00</publishTime>
@@ -115,16 +115,16 @@
       <publishTime>12/06/2016 16:32:41</publishTime>
     </File>
     <File Include="app/myqrcode.html">
-      <publishTime>12/09/2016 11:22:58</publishTime>
+      <publishTime>12/17/2016 10:22:56</publishTime>
     </File>
     <File Include="app/myqrcodetemplate.html">
-      <publishTime>12/09/2016 11:23:09</publishTime>
+      <publishTime>12/17/2016 10:36:11</publishTime>
     </File>
     <File Include="app/policy.html">
       <publishTime>12/06/2016 13:46:51</publishTime>
     </File>
     <File Include="app/register.html">
-      <publishTime>12/05/2016 17:02:33</publishTime>
+      <publishTime>12/19/2016 16:31:19</publishTime>
     </File>
     <File Include="ApplicationInsights.config">
       <publishTime>10/25/2016 14:30:11</publishTime>
@@ -133,22 +133,22 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>12/15/2016 15:47:30</publishTime>
+      <publishTime>12/17/2016 10:37:25</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>12/15/2016 15:37:59</publishTime>
+      <publishTime>12/17/2016 10:37:21</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>12/15/2016 15:47:26</publishTime>
+      <publishTime>12/17/2016 10:37:22</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>12/15/2016 15:37:59</publishTime>
+      <publishTime>12/17/2016 10:37:21</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/15/2016 15:47:27</publishTime>
+      <publishTime>12/17/2016 10:37:22</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>12/15/2016 15:37:59</publishTime>
+      <publishTime>12/17/2016 10:37:21</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
       <publishTime>12/09/2016 17:29:57</publishTime>
@@ -676,7 +676,7 @@
       <publishTime>11/24/2016 13:56:37</publishTime>
     </File>
     <File Include="static/js/admin/focuspic.js">
-      <publishTime>12/06/2016 14:11:25</publishTime>
+      <publishTime>12/15/2016 16:20:51</publishTime>
     </File>
     <File Include="static/js/admin/Home.js">
       <publishTime>12/02/2016 16:49:34</publishTime>
@@ -931,7 +931,7 @@
       <publishTime>12/15/2016 12:06:41</publishTime>
     </File>
     <File Include="static/js/plugins/hot/Jquery.util.js">
-      <publishTime>11/30/2016 20:05:40</publishTime>
+      <publishTime>12/17/2016 10:17:11</publishTime>
     </File>
     <File Include="static/js/plugins/iCheck/icheck.min.js">
       <publishTime>10/21/2015 10:40:46</publishTime>

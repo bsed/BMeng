@@ -96,19 +96,31 @@ namespace BAMENG.ADMIN.handler
         {
 
             int uid = GetFormValue("userid", 0);
+            int mid = GetFormValue("mid", 0);
             string nickName = GetFormValue("nickname", "");
             string pwd = GetFormValue("pwd", "");
             string username = GetFormValue("username", "");
             string usermobile = GetFormValue("usermobile", "");
             int sex = GetFormValue("sex", 0);
+            if (mid > 0)
+            {
+                uid = mid;
+                uid = uid - 2000;
+            }
             if (uid > 0)
             {
                 ApiStatusCode code = ApiStatusCode.OK;
-                bool flag = UserLogic.AllyApply(uid, usermobile, pwd, nickName, username, sex, ref code);
-                json = JsonHelper.JsonSerializer(new ResultModel(code));
+
+                if (UserLogic.IsExist(uid))
+                {
+                    bool flag = UserLogic.AllyApply(uid, usermobile, pwd, nickName, username, sex, ref code);
+                    json = JsonHelper.JsonSerializer(new ResultModel(code));
+                }
+                else
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.无效的盟主ID));
             }
             else
-                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.账户已存在));
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.无效的盟主ID));
         }
 
 

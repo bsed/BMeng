@@ -118,7 +118,18 @@ namespace BAMENG.LOGIC
                 return dal.IsExist(loginName);
             }
         }
-
+        /// <summary>
+        /// 判断用户是否存在
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if the specified user identifier is exist; otherwise, false.</returns>
+        public static bool IsExist(int userId)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.IsExist(userId);
+            }
+        }
         /// <summary>
         /// 获取用户信息
         /// </summary>

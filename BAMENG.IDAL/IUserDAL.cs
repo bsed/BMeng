@@ -43,7 +43,12 @@ namespace BAMENG.IDAL
 
 
         bool IsExist(string loginName);
-
+        /// <summary>
+        /// 判断用户是否存在
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true if the specified user identifier is exist; otherwise, false.</returns>
+        bool IsExist(int userId);
         /// <summary>
         /// 添加用户信息
         /// </summary>
