@@ -99,7 +99,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\cashcouponstatic.html" />
+    <Content Include="admin\cashcouponstaticpie.html" />
     <Content Include="admin\coupongetlist.html" />
+    <Content Include="admin\customerstaticpie.html" />
+    <Content Include="admin\usersignstatic.html" />
     <Content Include="admin\modifypassword.html" />
     <Content Include="admin\none.html" />
     <Content Include="admin\customerstatic.html" />
@@ -164,6 +168,8 @@
     <Content Include="static\js\admin\coupongetlist.js" />
     <Content Include="static\js\admin\customerstatistics.js" />
     <Content Include="static\js\admin\Home.js" />
+    <Content Include="static\js\admin\customerstaticpie.js" />
+    <Content Include="static\js\admin\usersigntatistics.js" />
     <Content Include="static\js\admin\loginstatistics.js" />
     <Content Include="static\js\admin\messageedit.js" />
     <Content Include="static\js\admin\articleedit.js" />

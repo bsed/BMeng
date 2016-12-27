@@ -175,6 +175,74 @@ namespace BAMENG.DAL
         }
 
 
+
+        /// <summary>
+        /// 登录流水
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetUserLoginList(int shopId, int userIdentity, SearchModel model)
+        {
+
+            string strSql = @"select l.LoginTime,s.ShopName,u.UB_UserRealName from BM_UserLoginLog l with(nolock)
+                                left join BM_ShopManage s with(nolock) on s.ShopID=l.ShopId
+                                left join Hot_UserBaseInfo u with(nolock) on u.UB_UserID=l.UserId
+                                where 
+                                CONVERT(nvarchar(10),l.LoginTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),l.LoginTime,121)<=@endTime
+                                and l.UserIdentity=1 
+                            ";
+
+            if (userIdentity == 1)
+                strSql += " and l.BelongShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and l.ShopId=@ShopId";
+
+            var param = new[] {
+                new SqlParameter("@startTime",model.startTime),
+                new SqlParameter("@endTime",model.endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            //生成sql语句
+            return getPageData<UserLoginModel>(model.PageSize, model.PageIndex, strSql, "l.LoginTime", param);
+        }
+
+
+        /// <summary>
+        /// 获取签到流水
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetSignLoginList(int shopId, int userIdentity, SearchModel model)
+        {
+
+            string strSql = @"select u.UB_UserRealName,s.CreateTime as LoginTime,s.UserAddress as ShopName from BM_UserSignLog s
+                                left join Hot_UserBaseInfo u with(nolock) on u.UB_UserID=s.UserId
+                                where 
+                                CONVERT(nvarchar(10),s.CreateTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),s.CreateTime,121)<=@endTime                                 
+                            ";
+
+            if (userIdentity == 1)
+                strSql += " and s.BelongOneShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and s.ShopId=@ShopId";
+
+            var param = new[] {
+                new SqlParameter("@startTime",model.startTime),
+                new SqlParameter("@endTime",model.endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            //生成sql语句
+            return getPageData<UserLoginModel>(model.PageSize, model.PageIndex, strSql, "s.CreateTime", param);
+        }
+
+
+
         /// <summary>
         /// 获取用户实体信息
         /// </summary>
@@ -1615,7 +1683,7 @@ namespace BAMENG.DAL
             strSql.Append("insert into BM_UserSignLog(");
             strSql.Append("UserId,BelongOneUserId,ShopId,BelongOneShopId,Amount,Reward,Remark,UserAddress,AppSystem)");
             strSql.Append(" values (");
-            strSql.Append("@UserId,@BelongOneUserId,@ShopId,@BelongOneShopId,@Amount,@Reward,@Remark,@UserAddress,@AppSystem)");            
+            strSql.Append("@UserId,@BelongOneUserId,@ShopId,@BelongOneShopId,@Amount,@Reward,@Remark,@UserAddress,@AppSystem)");
             var parameters = new[] {
                     new SqlParameter("@BelongOneUserId", model.BelongOneUserId),
                     new SqlParameter("@UserId",model.UserId),

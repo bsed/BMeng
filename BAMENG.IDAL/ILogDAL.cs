@@ -102,7 +102,15 @@ namespace BAMENG.IDAL
         /// <returns>List&lt;StatisticsListModel&gt;.</returns>
         List<StatisticsListModel> LoginStatistics(int shopId, int userIdentity, string startTime, string endTime);
 
-
+        /// <summary>
+        /// 获取签到统计
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        List<StatisticsListModel> UserSignStatistics(int shopId, int userIdentity, string startTime, string endTime);
 
 
         /// <summary>
@@ -162,7 +170,7 @@ namespace BAMENG.IDAL
         /// <param name="endTime"></param>
         /// <param name="orderStatus"></param>
         /// <returns></returns>
-        List<StatisticsListModel> OrderFinishStatistics(int shopId, int userIdentity, string startTime, string endTime );
+        List<StatisticsListModel> OrderFinishStatistics(int shopId, int userIdentity, string startTime, string endTime);
 
 
         List<StatisticsListModel> OrderStatistics(int shopId, int userIdentity, string startTime, string endTime);
@@ -175,7 +183,7 @@ namespace BAMENG.IDAL
         /// <param name="endTime"></param>
         /// <returns></returns>
         List<StatisticsListModel> OrderStatisticsPieByBelongShop(int belongShopId, string startTime, string endTime);
-        
+
         /// <summary>
         /// 获取管理员订单饼图统计
         /// </summary>
@@ -192,5 +200,17 @@ namespace BAMENG.IDAL
         /// <param name="endTime"></param>
         /// <returns></returns>
         List<StatisticsListModel> OrderStatisticsPieByShop(int shopId, string startTime, string endTime);
+
+
+        /// <summary>
+        ///客户饼状图
+        /// </summary>
+        /// <param name="shopid">The shopid.</param>
+        /// <param name="useridentity">The useridentity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        List<StatisticsListModel> CustomerStatisticsPie(int shopid, int useridentity, string startTime, string endTime);
+
     }
 }

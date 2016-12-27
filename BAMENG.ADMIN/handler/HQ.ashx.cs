@@ -240,6 +240,16 @@ namespace BAMENG.ADMIN.handler
                     case "LOGINSTATISTICS":// 登录统计
                         LoginStatistics();
                         break;
+                    case "GETUSERLOGINLIST": //登录流水
+                        GetUserLoginList();
+                        break;
+
+                    case "USERSIGNSTATISTICS":// 签到统计
+                        UserSignStatistics();
+                        break;
+                    case "GETSIGNLOGINLIST": //签到流水
+                        GetSignLoginList();
+                        break;
 
                     case "CUSTOMERSTATISTICS": //客户统计
                         CustomerStatistics();
@@ -258,6 +268,9 @@ namespace BAMENG.ADMIN.handler
 
                     case "ORDERSTATISTICSPIE":
                         OrderStatisticsPie();
+                        break;
+                    case "CUSTOMERSTATISTICSPIE":
+                        CustomerStatisticsPie();
                         break;
                     #endregion
 
@@ -395,7 +408,7 @@ namespace BAMENG.ADMIN.handler
                 endTime = GetFormValue("endTime", ""),
                 key = GetFormValue("key", ""),
                 searchType = GetFormValue("searchType", 0),
-                type=user.UserIndentity
+                type = user.UserIndentity
             };
             int currentUserId = user.UserIndentity != 0 ? user.ID : 0;
             var data = UserLogic.GetUserList(currentUserId, GetFormValue("ally", 1), model);
@@ -489,7 +502,7 @@ namespace BAMENG.ADMIN.handler
                 endTime = GetFormValue("endTime", ""),
                 key = GetFormValue("key", ""),
                 searchType = GetFormValue("searchType", 0),
-                type=user.UserIndentity
+                type = user.UserIndentity
             };
             var data = CustomerLogic.GetCustomerList(model, user.UserIndentity == 0 ? 0 : user.ID);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -611,7 +624,7 @@ namespace BAMENG.ADMIN.handler
 
             bool flag = false;
             if (type == 1)//置顶
-                flag = ArticleLogic.SetArticleEnableTop(articleId, active == 1,user.UserIndentity);
+                flag = ArticleLogic.SetArticleEnableTop(articleId, active == 1, user.UserIndentity);
             else if (type == 2)//发布
                 flag = ArticleLogic.SetArticleEnablePublish(articleId, active == 1);
             else if (type == 3)//删除
@@ -876,7 +889,7 @@ namespace BAMENG.ADMIN.handler
                 EndTime = Convert.ToDateTime(GetFormValue("couponendtime", DateTime.Now.AddDays(5).ToString("yyyy-MM-dd"))),
                 ShopId = user.ID,
                 IsEnable = GetFormValue("couponenable", 1),
-                Remark=GetFormValue("couponremark", "")
+                Remark = GetFormValue("couponremark", "")
             });
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
         }
@@ -1070,7 +1083,7 @@ namespace BAMENG.ADMIN.handler
             string endTime = GetFormValue("endTime", "");
             if (type != 0)
             {
-                beginTime = DateTime.Now.AddDays(-(type-1)).ToString("yyyy-MM-dd");
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
                 endTime = DateTime.Now.ToString("yyyy-MM-dd");
             }
             else
@@ -1089,6 +1102,37 @@ namespace BAMENG.ADMIN.handler
             var data = LogLogic.LoginStatistics(user, type, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
+
+        /// <summary>
+        /// 用户签到统计
+        /// </summary>
+        private void UserSignStatistics()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
+            var data = LogLogic.UserSignStatistics(user, type, beginTime, endTime);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
 
 
         /// <summary>
@@ -1248,6 +1292,39 @@ namespace BAMENG.ADMIN.handler
             var data = LogLogic.OrderStatisticsPie(user, beginTime, endTime);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
+
+
+        /// <summary>
+        ///客户信息饼状图
+        /// </summary>
+        private void CustomerStatisticsPie()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
+
+            var data = LogLogic.CustomerStatisticsPie(user, beginTime, endTime);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
         #endregion
 
 
@@ -1280,6 +1357,85 @@ namespace BAMENG.ADMIN.handler
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.旧密码不对));
+        }
+
+
+
+
+        /// <summary>
+        /// 登录流水
+        /// </summary>
+        private void GetUserLoginList()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
+
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = beginTime,
+                endTime = endTime
+            };
+            var data = LogLogic.GetUserLoginList(user.ID, user.UserIndentity, model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+        /// <summary>
+        /// 签到流水
+        /// </summary>
+        private void GetSignLoginList()
+        {
+            int type = GetFormValue("type", 0);
+            string beginTime = GetFormValue("beginTime", "");
+            string endTime = GetFormValue("endTime", "");
+            if (type != 0)
+            {
+                beginTime = DateTime.Now.AddDays(-(type - 1)).ToString("yyyy-MM-dd");
+                endTime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(beginTime) || string.IsNullOrEmpty(endTime))
+                {
+                    beginTime = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+                    endTime = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    beginTime = Convert.ToDateTime(beginTime).ToString("yyyy-MM-dd");
+                    endTime = Convert.ToDateTime(endTime).ToString("yyyy-MM-dd");
+                }
+            }
+
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = beginTime,
+                endTime = endTime
+            };
+            var data = LogLogic.GetSignLoginList(user.ID, user.UserIndentity, model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
     }
 }

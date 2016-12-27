@@ -77,7 +77,7 @@ var chartsHelper = {
     loadData: function (type) {
         var self = this;
         var param = {
-            action: "loginstatistics",
+            action: "UserSignStatistics",
             beginTime: $("#beginTime").val(),
             endTime: $("#endTime").val(),
             type: type
@@ -107,7 +107,7 @@ var chartsHelper = {
         self.loaclData = [];
         this.pageIndex = page;
         var postData = {
-            action: "GetUserLoginList",
+            action: "GetSignLoginList",
             pageIndex: page,
             pageSize: 20,
             beginTime: $("#beginTime").val(),

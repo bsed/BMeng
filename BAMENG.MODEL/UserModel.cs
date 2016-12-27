@@ -204,6 +204,18 @@ namespace BAMENG.MODEL
     }
 
 
+    public class UserLoginModel
+    {
+        public DateTime LoginTime { get; set; }
+
+
+        public string ShopName { get; set; }
+
+
+        public string UB_UserRealName { get; set; }
+    }
+
+
     /// <summary>
     /// Class UserRegisterModel.
     /// </summary>

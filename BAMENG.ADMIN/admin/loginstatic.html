@@ -56,11 +56,37 @@
                                 <button type="button" class="btn btn-success" onclick="chartsHelper.loadData(0)">筛选</button>
                             </div>
                         </div>
-                        
+
                         <div class="echarts" id="echarts-line-chart" style="height:500px;"></div>
 
                         <div class="chart-info">
-                           当前统计总登录次数:<span class="login-total">0</span>
+                            当前统计总登录次数:<span class="login-total">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">
+                            <div style="text-align:right;">
+                            </div>
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>                                        
+                                        <th>姓名</th>                                        
+                                        <th>登录时间</th>
+                                        <th>所属门店</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode"></tbody>
+                            </table>
+                            <p style="float: left; margin: 20px 0;">共<span class="pagination_recordCount">0</span>条记录，当前第<span class="pagination_pageIndex">1</span> /<span class="pagination_pageCount">1</span>，每页<span class="pagination_pageSize">20</span>条记录</p>
+                            <ul style="float: right;" class="pagination pagination-split"></ul>
                         </div>
                     </div>
                 </div>
@@ -68,7 +94,14 @@
         </div>
     </div>
 
-
+    <template id="templist">
+        <tr>
+            <td>{NO}</td>            
+            <td>{UserName}</td>            
+            <td>{LoginTime}</td>
+            <td>{ShopName}</td>
+        </tr>
+    </template>
 
     <script src="/static/js/jquery.min.js?v=2.1.4"></script>
     <script src="/static/js/plugins/hot/Jquery.util.js"></script>

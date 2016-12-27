@@ -26,6 +26,26 @@ namespace BAMENG.IDAL
         /// <param name="model"></param>
         /// <returns></returns>
         ResultPageModel GetUserList(int ShopId, int UserIdentity, SearchModel model);
+
+
+        /// <summary>
+        /// 登录流水
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetUserLoginList(int shopId, int userIdentity, SearchModel model);
+
+        /// <summary>
+        /// 获取签到流水
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetSignLoginList(int shopId, int userIdentity, SearchModel model);
+
         /// <summary>
         /// 获取他的盟友列表
         /// </summary>

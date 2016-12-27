@@ -246,6 +246,59 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 获取签到统计
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        public static StatisticsModel UserSignStatistics(AdminLoginModel user, int type, string startTime, string endTime)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                StatisticsModel data = new StatisticsModel();
+                List<StatisticsListModel> lst = null;
+                string cacheKey = string.Format("BMSIGN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
+                if (type != 0)
+                {
+                    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
+                    if (lst == null)
+                    {
+                        lst = dal.UserSignStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                    }
+                }
+                else
+                    lst = dal.UserSignStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                if (lst != null && lst.Count() > 0)
+                {
+                    int len = lst.Count();
+                    if (len < 5)
+                    {
+                        string t = lst[0].xData;
+                        data.xData.Add(Convert.ToDateTime(t).AddDays(-1).ToString("yyyy-MM-dd"));
+                        data.yData.Add(0);
+                    }
+                    foreach (var item in lst)
+                    {
+                        data.xData.Add(item.xData);
+                        data.yData.Add(item.yData);
+                        data.total += item.yData;
+                    }
+                }
+
+                if (data.xData.Count() == 0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data.xData.Add(dtime);
+                    data.yData.Add(0);
+                }
+
+                return data;
+            }
+        }
 
         /// <summary>
         ///获取客户统计
@@ -604,6 +657,93 @@ namespace BAMENG.LOGIC
                 return data1;
             }
         }
+
+
+
+
+        /// <summary>
+        ///客户饼状图
+        /// </summary>
+        /// <param name="shopid">The shopid.</param>
+        /// <param name="useridentity">The useridentity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        public static StatisticsPieModel CustomerStatisticsPie(AdminLoginModel user, string startTime, string endTime)
+        {
+            StatisticsPieModel data1 = new StatisticsPieModel();
+
+
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                List<StatisticsListModel> lst = dal.CustomerStatisticsPie(user.ID, user.UserIndentity, startTime, endTime);
+
+                if (lst != null && lst.Count() > 0)
+                {
+                    foreach (var item in lst)
+                    {
+                        data1.xData.Add(item.xData);
+                        PieCountModel pie = new PieCountModel();
+                        pie.name = item.xData;
+                        pie.value = item.yData;
+                        data1.yData.Add(pie);
+                        data1.total += item.yData;
+                    }
+                }
+
+
+                if (data1.xData.Count() == 0)
+                {
+                    string dtime = DateTime.Now.ToString("yyyy-MM-dd");
+                    data1.xData.Add(dtime);
+                    PieCountModel pie = new PieCountModel();
+                    pie.name = "";
+                    pie.value = 0;
+                    data1.yData.Add(pie);
+                }
+
+                return data1;
+            }
+        }
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// 登录流水
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetUserLoginList(int shopId, int userIdentity, SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetUserLoginList(shopId, userIdentity, model);
+            }
+        }
+
+        /// <summary>
+        /// 签到流水.
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetSignLoginList(int shopId, int userIdentity, SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetSignLoginList(shopId, userIdentity, model);
+            }
+        }
+
     }
 }
 

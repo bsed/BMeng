@@ -225,6 +225,43 @@ namespace BAMENG.DAL
             }
         }
 
+        /// <summary>
+        /// 获取签到统计
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        public List<StatisticsListModel> UserSignStatistics(int shopId, int userIdentity, string startTime, string endTime)
+        {
+            string strSql = @"select CONVERT(nvarchar(10),CreateTime,121) as xData,COUNT(1) as yData from BM_UserSignLog 
+                                where 
+                                CONVERT(nvarchar(10),CreateTime,121)>=@startTime
+                                and CONVERT(nvarchar(10),CreateTime,121)<=@endTime
+                                ";
+
+            if (userIdentity == 1)
+                strSql += " and BelongOneShopId=@ShopId";
+            else if (userIdentity == 2)
+                strSql += " and ShopId=@ShopId";
+
+
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopId)
+            };
+            strSql += " group by  CONVERT(nvarchar(10),CreateTime,121)";
+            strSql += " order by CONVERT(nvarchar(10),CreateTime,121)";
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+
+
+
 
         /// <summary>
         ///获取客户统计
@@ -447,7 +484,7 @@ namespace BAMENG.DAL
             string strSql = @"select log.ShopId,shop.ShopName as xData ,count(1) as yData  from BM_Orders as log
                         left join BM_ShopManage as shop on log.shopId=shop.shopid
                                 where CONVERT(nvarchar(10), log.orderTime, 121)>=@startTime
-                                and CONVERT(nvarchar(10), log.orderTime, 121)<=@endTime and log.BelongOneShopId=@ShopId 
+                                and CONVERT(nvarchar(10), log.orderTime, 121)<=@endTime and (log.BelongOneShopId=@ShopId or log.ShopId=@ShopId)
                                 group by log.ShopId,shop.ShopName
                                 order by count(1) desc";
             var param = new[] {
@@ -508,5 +545,42 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
             }
         }
+
+
+        /// <summary>
+        ///客户饼状图
+        /// </summary>
+        /// <param name="shopid">The shopid.</param>
+        /// <param name="useridentity">The useridentity.</param>
+        /// <param name="startTime">The start time.</param>
+        /// <param name="endTime">The end time.</param>
+        /// <returns>List&lt;StatisticsListModel&gt;.</returns>
+        public List<StatisticsListModel> CustomerStatisticsPie(int shopid, int useridentity, string startTime, string endTime)
+        {
+            string strSql = @"select shop.ShopName as xData,COUNT(1) as yData from BM_CustomerManage as c
+                            left join BM_ShopManage as shop on c.ShopId=shop.shopid
+                            where 1=1  and c.Status=1 
+                            and CONVERT(nvarchar(10), c.CreateTime, 121)>=@startTime
+                            and CONVERT(nvarchar(10), c.CreateTime, 121)<=@endTime 
+                            ";
+
+            if (useridentity == 0)
+                strSql += " and  shop.ShopType=1";
+            else if (useridentity == 1)
+                strSql += " and  (log.BelongOneShopId=@ShopId or log.ShopId=@ShopId)";
+            else if (useridentity == 1)
+                strSql += " and  shop.ShopId=@ShopId";
+            strSql += "group by shop.ShopName    order by count(1) desc";
+            var param = new[] {
+                new SqlParameter("@startTime",startTime),
+                new SqlParameter("@endTime",endTime),
+                new SqlParameter("@ShopId",shopid)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+            }
+        }
+
     }
 }

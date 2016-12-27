@@ -22,10 +22,10 @@
       <publishTime>12/15/2016 11:33:45</publishTime>
     </File>
     <File Include="admin/cashcouponstatic.html">
-      <publishTime>12/08/2016 08:58:24</publishTime>
+      <publishTime>12/14/2016 16:37:52</publishTime>
     </File>
     <File Include="admin/cashcouponstaticpie.html">
-      <publishTime>12/07/2016 20:31:50</publishTime>
+      <publishTime>12/14/2016 16:37:58</publishTime>
     </File>
     <File Include="admin/coupongetlist.html">
       <publishTime>12/15/2016 10:06:50</publishTime>
@@ -42,11 +42,14 @@
     <File Include="admin/customerstatic.html">
       <publishTime>12/07/2016 20:31:39</publishTime>
     </File>
+    <File Include="admin/customerstaticpie.html">
+      <publishTime>12/26/2016 20:04:26</publishTime>
+    </File>
     <File Include="admin/focuspic.html">
       <publishTime>12/15/2016 16:18:04</publishTime>
     </File>
     <File Include="admin/loginstatic.html">
-      <publishTime>12/07/2016 20:31:00</publishTime>
+      <publishTime>12/23/2016 10:28:58</publishTime>
     </File>
     <File Include="admin/managerlist.html">
       <publishTime>12/08/2016 09:11:32</publishTime>
@@ -70,10 +73,10 @@
       <publishTime>11/19/2016 15:19:53</publishTime>
     </File>
     <File Include="admin/orderstatic.html">
-      <publishTime>12/07/2016 20:31:32</publishTime>
+      <publishTime>12/26/2016 19:59:58</publishTime>
     </File>
     <File Include="admin/orderstaticpie.html">
-      <publishTime>12/07/2016 20:31:27</publishTime>
+      <publishTime>12/26/2016 19:59:49</publishTime>
     </File>
     <File Include="admin/shoplist.html">
       <publishTime>12/15/2016 12:07:15</publishTime>
@@ -86,6 +89,9 @@
     </File>
     <File Include="admin/userlist.html">
       <publishTime>12/15/2016 13:47:04</publishTime>
+    </File>
+    <File Include="admin/usersignstatic.html">
+      <publishTime>12/23/2016 15:50:42</publishTime>
     </File>
     <File Include="app/about.html">
       <publishTime>12/06/2016 13:53:28</publishTime>
@@ -115,10 +121,10 @@
       <publishTime>12/06/2016 16:32:41</publishTime>
     </File>
     <File Include="app/myqrcode.html">
-      <publishTime>12/17/2016 10:22:56</publishTime>
+      <publishTime>12/22/2016 17:41:00</publishTime>
     </File>
     <File Include="app/myqrcodetemplate.html">
-      <publishTime>12/17/2016 10:36:11</publishTime>
+      <publishTime>12/22/2016 17:41:09</publishTime>
     </File>
     <File Include="app/policy.html">
       <publishTime>12/06/2016 13:46:51</publishTime>
@@ -133,22 +139,22 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>12/17/2016 10:37:25</publishTime>
+      <publishTime>12/26/2016 20:05:18</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
       <publishTime>12/17/2016 10:37:21</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>12/17/2016 10:37:22</publishTime>
+      <publishTime>12/26/2016 20:05:14</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>12/17/2016 10:37:21</publishTime>
+      <publishTime>12/26/2016 20:05:14</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/17/2016 10:37:22</publishTime>
+      <publishTime>12/26/2016 20:05:15</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>12/17/2016 10:37:21</publishTime>
+      <publishTime>12/23/2016 15:57:52</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
       <publishTime>12/09/2016 17:29:57</publishTime>
@@ -672,6 +678,9 @@
     <File Include="static/js/admin/customerlist.js">
       <publishTime>12/06/2016 14:12:20</publishTime>
     </File>
+    <File Include="static/js/admin/customerstaticpie.js">
+      <publishTime>12/26/2016 20:04:07</publishTime>
+    </File>
     <File Include="static/js/admin/customerstatistics.js">
       <publishTime>11/24/2016 13:56:37</publishTime>
     </File>
@@ -685,7 +694,7 @@
       <publishTime>11/07/2016 09:28:32</publishTime>
     </File>
     <File Include="static/js/admin/loginstatistics.js">
-      <publishTime>12/07/2016 20:30:20</publishTime>
+      <publishTime>12/23/2016 15:27:22</publishTime>
     </File>
     <File Include="static/js/admin/managerlist.js">
       <publishTime>12/06/2016 14:12:50</publishTime>
@@ -725,6 +734,9 @@
     </File>
     <File Include="static/js/admin/userlist.js">
       <publishTime>12/15/2016 14:54:48</publishTime>
+    </File>
+    <File Include="static/js/admin/usersigntatistics.js">
+      <publishTime>12/23/2016 15:50:35</publishTime>
     </File>
     <File Include="static/js/bootstrap.min.js">
       <publishTime>06/16/2015 16:12:50</publishTime>
@@ -1420,7 +1432,7 @@
       <publishTime>11/12/2016 11:35:26</publishTime>
     </File>
     <File Include="static/js/plugins/summernote/summernote.min.js">
-      <publishTime>12/06/2016 17:34:59</publishTime>
+      <publishTime>12/20/2016 14:11:41</publishTime>
     </File>
     <File Include="static/js/plugins/sweetalert/sweetalert.min.js">
       <publishTime>11/07/2016 17:42:03</publishTime>
