@@ -88,5 +88,46 @@ namespace BAMENG.MODEL
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+
+
+        /// <summary>
+        /// Gets or sets the is save.
+        /// </summary>
+        /// <value>The is save.</value>
+        public int isSave { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the data img.
+        /// </summary>
+        /// <value>The data img.</value>
+        public string DataImg { get; set; }
+    }
+
+
+    public class CustomerResModel
+    {
+        public int UserId { get; set; }
+
+        public string Name { get; set; }
+
+        public string Mobile { get; set; }
+
+        public string Addr { get; set; }
+
+        public string Remark { get; set; }
+
+        public string DataImg { get; set; }
+
+        public string SubmitName { get; set; }
+
+        /// <summary>
+        /// 1 图片资料
+        /// </summary>
+        /// <value>The type.</value>
+        public int Type { get; set; }
+
+        public DateTime CreateTime { get; set; }
     }
 }

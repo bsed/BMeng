@@ -1,0 +1,138 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />
+    <title>新增工作汇报</title>
+</head>
+
+<body style="background-color: #F5F2F2;">
+    <div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" id="reportTitle" placeholder="汇报标题">
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells_title">汇报内容</div>
+
+        <div class="weui_cells weui_cells_form" id="listMode">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea class="weui_textarea" placeholder="" style='overflow:scroll;overflow-y:hidden;overflow-x:hidden' onfocus="window.activeobj=this;this.clock=setInterval(function(){activeobj.style.height=activeobj.scrollHeight+'px';},200);" onblur="clearInterval(this.clock);"></textarea>
+                </div>
+            </div>
+        </div>
+        <p style="height:40px;"></p>
+        <a href="javascript:saveReport();" class="weui_btn weui_btn_primary anniu ">提交</a>
+    </div>
+
+    <script type="text/template" id="templateList">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <textarea class="weui_textarea workreport" data-title="{title}" placeholder="{title}" style='overflow:scroll;overflow-y:hidden;overflow-x:hidden' onfocus="window.activeobj=this;this.clock=setInterval(function(){activeobj.style.height=activeobj.scrollHeight+'px';},200);" onblur="clearInterval(this.clock);"></textarea>
+            </div>
+        </div>
+    </script>
+
+</body>
+</html>
+
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
+<script src="/static/js/plugins/hot/Jquery.util.js"></script>
+<script>
+
+    var jsonBody = [];
+    function loadList() {
+        var self = this;
+        var postData = {
+            action: "getworklist"
+        }
+        $.showLoading();
+        hotUtil.ajaxCall("/handler/app.ashx", postData, function (ret, err) {
+            if (ret) {
+                if (ret.status == 200) {
+                    if (ret.data) {
+                        var listhtml = "";
+                        $.each(ret.data.Rows, function (i, item) {
+                            listhtml += $("#templateList").html();
+                            listhtml = listhtml.replace(/{title}/gm, item.WorkTitle);
+                        });
+                        $("#listMode").html(listhtml);
+                    }
+                }
+                else
+                    $.alert(ret.statusText);
+            }
+            $.hideLoading();
+        });
+    }
+
+    function saveReport() {
+        jsonBody = [];        
+        if (checkForm()) {
+            var postData = {
+                action: "saveReport",
+                auth: hotUtil.auth(),
+                jsonbody: JSON.stringify(jsonBody),
+                addr: hotUtil.getQuery("addr", ''),
+                title: $("#reportTitle").val()
+            }
+            $.showLoading();
+            hotUtil.ajaxCall("/handler/app.ashx", postData, function (ret, err) {
+                if (ret) {
+                    if (ret.status == 200) {
+                        $.alert("提交成功", function () {
+                            $(".workreport").val("");
+                        });
+                    }
+                    else
+                        $.alert(ret.statusText);
+                }
+                $.hideLoading();
+            });
+        }
+
+
+
+    }
+
+    function checkForm() {
+        var success = true;
+        if (hotUtil.isNullOrEmpty($("#reportTitle").val())) {
+            $.alert("请输入标题");
+            success = false;
+            return false;
+        }
+
+        $(".workreport").each(function () {
+            if (hotUtil.isNullOrEmpty($(this).val())) {
+                success = false;
+                $.alert("汇报内容不能为空");
+                return false;
+            }
+            var json = {
+                title: $(this).attr("data-title"),
+                content: $(this).val()
+            };
+            jsonBody.push(json);
+        });
+
+        return success;
+    }
+
+
+
+    $(function () {
+        loadList();
+    });
+</script>

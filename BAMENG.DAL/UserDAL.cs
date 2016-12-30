@@ -1096,12 +1096,13 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public int AddRewardSetting(RewardsSettingModel model)
         {
-            string strSql = "insert into BM_RewardsSetting(UserId,CustomerReward,OrderReward,ShopReward) values(@UserId,@CustomerReward,@OrderReward,@ShopReward)";
+            string strSql = "insert into BM_RewardsSetting(UserId,CustomerReward,OrderReward,ShopReward,ExtraReward) values(@UserId,@CustomerReward,@OrderReward,@ShopReward,@ExtraReward)";
             SqlParameter[] param = {
                 new SqlParameter("@UserId", model.UserId),
                 new SqlParameter("@CustomerReward", model.CustomerReward),
                 new SqlParameter("@OrderReward", model.OrderReward),
-                new SqlParameter("@ShopReward", model.ShopReward)
+                new SqlParameter("@ShopReward", model.ShopReward),
+                new SqlParameter("@ExtraReward", model.ExtraReward)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
         }
@@ -1113,12 +1114,13 @@ namespace BAMENG.DAL
         /// <returns>true if XXXX, false otherwise.</returns>
         public bool UpdateRewardSetting(RewardsSettingModel model)
         {
-            string strSql = "update  BM_RewardsSetting set CustomerReward=@CustomerReward,OrderReward=@OrderReward,ShopReward=@ShopReward,UpdateTime=@UpdateTime where UserId=@UserId";
+            string strSql = "update  BM_RewardsSetting set CustomerReward=@CustomerReward,OrderReward=@OrderReward,ShopReward=@ShopReward,ExtraReward=@ExtraReward,UpdateTime=@UpdateTime where UserId=@UserId";
             SqlParameter[] param = {
                 new SqlParameter("@UserId", model.UserId),
                 new SqlParameter("@CustomerReward", model.CustomerReward),
                 new SqlParameter("@OrderReward", model.OrderReward),
                 new SqlParameter("@ShopReward", model.ShopReward),
+                new SqlParameter("@ExtraReward", model.ExtraReward),
                 new SqlParameter("@UpdateTime", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
@@ -1131,7 +1133,7 @@ namespace BAMENG.DAL
         /// <returns>RewardsSettingModel.</returns>
         public RewardsSettingModel GetRewardModel(int userId)
         {
-            string strSql = "select top 1 UserId,CustomerReward,OrderReward,ShopReward,UpdateTime,CreateTime from BM_RewardsSetting where UserId=@UserId";
+            string strSql = "select top 1 UserId,CustomerReward,OrderReward,ShopReward,ExtraReward,UpdateTime,CreateTime from BM_RewardsSetting where UserId=@UserId";
             SqlParameter[] param = {
                 new SqlParameter("@UserId", userId)
             };
@@ -1922,6 +1924,136 @@ namespace BAMENG.DAL
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param));
         }
+
+
+
+        /// <summary>
+        /// 获取用户工作汇报列表
+        /// </summary>
+        /// <param name="UserId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetAppUserReportList(int UserId, int pageIndex, int pageSize)
+        {
+            string strSql = "select ID,ReportTitle,CreateTime from BM_UserReport where UserId=@UserId ";
+            string orderbyField = "CreateTime";
+            var param = new[] {
+                new SqlParameter("@UserID",UserId),
+            };
+            //生成sql语句
+            return getPageData<AppUserReportListModel>(pageSize, pageIndex, strSql, orderbyField, param, (items =>
+            {
+                items.ForEach(item =>
+                {
+                    item.time = StringHelper.GetConvertFriendlyTime(item.CreateTime.ToString(), 7);
+                    item.reportUrl = WebConfig.articleDetailsDomain() + "/app/reportdetail.html?workid=" + item.ID;
+                });
+            }));
+        }
+
+
+        /// <summary>
+        /// 获取工作汇报实体
+        /// </summary>
+        /// <param name="workid">The workid.</param>
+        /// <returns>UserReportModel.</returns>
+        public UserReportModel GetUserReportModel(int workid)
+        {
+            string strSql = "select ID,UserId,ShopId,ReportTitle,Addr,JsonContent,CreateTime from BM_UserReport where ID=@ID";
+            var param = new[] {
+                new SqlParameter("@ID",workid)
+            };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param))
+            {
+                var data = DbHelperSQLP.GetEntity<UserReportModel>(dr);
+                if (data != null)
+                {
+                    data.time = StringHelper.GetConvertFriendlyTime(data.CreateTime.ToString(), 7);
+                }
+                return data;
+            }
+        }
+
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool DeleteUserReport(int ID)
+        {
+            string strSql = "delete from BM_UserReport where ID=@ID";
+            var param = new[] {
+                new SqlParameter("@ID",ID)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+
+        /// <summary>
+        /// 获取工作汇报
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetUserReportList(int shopId, SearchModel model)
+        {
+            string strSql = @"select u.UB_UserRealName as UserName,u.UB_UserMobile as UserMobile,r.ID,r.UserId,r.ShopId,r.ReportTitle,r.Addr,r.JsonContent,r.CreateTime from BM_UserReport r
+                              left join Hot_UserBaseInfo u with(nolock) on u.UB_UserID=r.UserId
+                                where r.ShopId=@ShopId
+                            ";
+
+
+            if (!string.IsNullOrEmpty(model.key))
+            {
+                strSql += string.Format(" and (u.UB_UserRealName like '{0}' or r.ReportTitle like '%{0}%' or u.UB_UserMobile='{0}')", model.key);
+            }
+
+            if (!string.IsNullOrEmpty(model.startTime))
+                strSql += " and CONVERT(nvarchar(10),r.CreateTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
+            if (!string.IsNullOrEmpty(model.endTime))
+                strSql += " and CONVERT(nvarchar(10),r.CreateTime,121)<=CONVERT(nvarchar(10),@endTime,121) ";
+
+
+            string orderbyField = "r.CreateTime";
+            var param = new[] {
+                new SqlParameter("@ShopId",shopId),
+                new SqlParameter("@startTime",model.startTime),
+                new SqlParameter("@endTime",model.endTime)
+            };
+            //生成sql语句
+            return getPageData<UserReportModel>(model.PageSize, model.PageIndex, strSql, orderbyField, param, (items =>
+            {
+                items.ForEach(item =>
+                {
+                    item.time = StringHelper.GetConvertFriendlyTime(item.CreateTime.ToString(), 7);
+                });
+            }));
+        }
+
+
+        /// <summary>
+        /// 添加用户工作汇报
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public int AddAppUserReport(UserReportModel model)
+        {
+            string strSql = "insert into BM_UserReport(UserId,ShopId,ReportTitle,Addr,JsonContent,CreateTime) values(@UserId,@ShopId,@ReportTitle,@Addr,@JsonContent,@CreateTime)";
+            var param = new[] {
+                new SqlParameter("@UserId",model.UserId),
+                new SqlParameter("@ShopId",model.ShopId),
+                new SqlParameter("@ReportTitle",model.ReportTitle),
+                new SqlParameter("@Addr",model.Addr),
+                new SqlParameter("@JsonContent",model.JsonContent),
+                new SqlParameter("@CreateTime",DateTime.Now)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+
+        }
+
+
 
     }
 }

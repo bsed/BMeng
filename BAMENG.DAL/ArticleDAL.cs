@@ -73,6 +73,38 @@ namespace BAMENG.DAL
                 return Convert.ToInt32(obj);
             }
         }
+
+
+
+        /// <summary>
+        /// 添加站内信息
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public int AddMailInfo(MailModel model)
+        {
+            string strSql = @"insert into BM_Mail(AuthorId,AuthorName,SendType,Title,BodyContent,CoverUrl,ReplyUserId,ReplyPid) values(@AuthorId,@AuthorName,@SendType,@Title,@BodyContent,@CoverUrl,@ReplyUserId,@ReplyPid);select @@IDENTITY";
+            var param = new[] {
+                        new SqlParameter("@AuthorId", model.AuthorId),
+                        new SqlParameter("@AuthorName", model.AuthorName),
+                        new SqlParameter("@SendType", model.SendType),
+                        new SqlParameter("@Title", model.Title),
+                        new SqlParameter("@BodyContent", model.BodyContent),
+                        new SqlParameter("@CoverUrl", model.CoverUrl),
+                        new SqlParameter("@ReplyUserId", model.ReplyUserId),
+                        new SqlParameter("@ReplyPid", model.ReplyPid)
+            };
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
         /// <summary>
         /// 删除资讯
         /// </summary>
@@ -147,9 +179,9 @@ namespace BAMENG.DAL
 
 
             if (!string.IsNullOrEmpty(model.startTime))
-                strSql += " and CONVERT(nvarchar(10),A.CreateTime,121)>=@startTime ";
+                strSql += " and CONVERT(nvarchar(10),A.CreateTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
             if (!string.IsNullOrEmpty(model.endTime))
-                strSql += " and CONVERT(nvarchar(10),A.CreateTime,121)<=@endTime ";
+                strSql += " and CONVERT(nvarchar(10),A.CreateTime,121)<=CONVERT(nvarchar(10),@endTime,121) ";
             var param = new[] {
                 new SqlParameter("@startTime", model.startTime),
                 new SqlParameter("@endTime", model.endTime),
@@ -212,10 +244,125 @@ namespace BAMENG.DAL
                 {
                     item.ArticleUrl = string.Format("{0}/app/details.html?articleId={1}&idt={2}", WebConfig.articleDetailsDomain(), item.ArticleId, AuthorIdentity);
                     item.ArticleCover = WebConfig.reswebsite() + item.ArticleCover;
-                    item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 3);
+                    item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 7);
                 });
             });
         }
+
+
+
+        /// <summary>
+        /// 获取站内消息
+        /// </summary>
+        /// <param name="AuthorIdentity">类型 1盟主和盟友，2系统反馈消息</param>
+        /// <param name="pageindex">The pageindex.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="isPush">是否获取推送的消息</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetAppMailList(int AuthorIdentity, int pageindex, int pageSize, int userId, bool isPush, bool isAll = false)
+        {
+            string strSql = @"select A.ID as ArticleId,a.Title as ArticleTitle,a.Title as ArticleIntro,a.CoverUrl as ArticleCover,0 as BrowseAmount,a.ReplyTime as PublishTime ,ISNULL(R.IsRead,0) as IsRead
+                                 from BM_Mail A with(nolock)
+                                 left join BM_MailReadLog R with(nolock) on R.MailId=A.ID                                  
+                                 where R.UserId=@UserId ";
+
+            if (AuthorIdentity == 2)
+                strSql += " and A.SendType=@AuthorIdentity";
+            else
+                strSql += " and A.SendType<>2";
+
+            if (!isAll)
+            {
+                if (isPush)
+                    strSql += " and A.AuthorId=@UserId ";
+                else
+                    strSql += " and A.AuthorId<>@UserId ";
+            }
+
+            string orderbyField = "A.ReplyTime";
+
+            var param = new[] {
+                new SqlParameter("@AuthorIdentity", AuthorIdentity),
+                new SqlParameter("@UserId", userId)
+            };
+            //生成sql语句
+            return getPageData<ArticleBaseModel>(pageSize, pageindex, strSql, orderbyField, param, (items) =>
+            {
+                items.ForEach((item) =>
+                {
+                    item.ArticleUrl = string.Format("{0}/app/maildetails.html?articleId={1}&idt={2}", WebConfig.articleDetailsDomain(), item.ArticleId, AuthorIdentity);
+                    item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 7);
+                });
+            });
+        }
+
+
+        /// <summary>
+        /// 获取留言列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetMailList(SearchModel model)
+        {
+            string strSql = @"select ID,AuthorId,AuthorName,Title,BodyContent,CoverUrl,SendTime from BM_Mail where SendType=2 and ReplyPid=0 ";
+
+            if (!string.IsNullOrEmpty(model.key))
+            {
+                strSql += " and AuthorName=@AuthorName";
+            }
+
+            if (!string.IsNullOrEmpty(model.startTime))
+                strSql += " and CONVERT(nvarchar(10),SendTime,121)>=CONVERT(nvarchar(10),@startTime,121) ";
+            if (!string.IsNullOrEmpty(model.endTime))
+                strSql += " and CONVERT(nvarchar(10),SendTime,121)<=CONVERT(nvarchar(10),@endTime,121) ";
+
+            string orderbyField = "SendTime";
+            var param = new[] {
+                new SqlParameter("@startTime", model.startTime),
+                new SqlParameter("@endTime", model.endTime),
+                new SqlParameter("@AuthorName", model.key)
+            };
+            //生成sql语句
+            return getPageData<MailModel>(model.PageSize, model.PageIndex, strSql, orderbyField, param, (items) =>
+            {
+                items.ForEach((item) =>
+                {
+                    item.time = StringHelper.GetConvertFriendlyTime(item.SendTime.ToString(), 7);
+                });
+            });
+
+        }
+
+
+        /// <summary>
+        /// 获取评论列表
+        /// </summary>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <param name="pageindex">The pageindex.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetReplyMailList(int mailId, int pageindex, int pageSize)
+        {
+            string strSql = @"select ID,AuthorId,AuthorName,SendType,Title,BodyContent,CoverUrl,SendTime,ReplyTime from BM_Mail where ReplyPid=@ReplyPid";
+
+            string orderbyField = "ReplyTime";
+
+            var param = new[] {
+                new SqlParameter("@ReplyPid", mailId)
+            };
+            //生成sql语句
+            return getPageData<MailModel>(pageSize, pageindex, strSql, orderbyField, param, (items) =>
+             {
+                 items.ForEach((item) =>
+                 {
+                     item.time = StringHelper.GetConvertFriendlyTime(item.ReplyTime.ToString(), 7);
+                     if (string.IsNullOrEmpty(item.CoverUrl))
+                         item.CoverUrl = WebConfig.articleDetailsDomain() + "/static/img/mz@3x.png";
+                 });
+             }, true);
+        }
+
 
         /// <summary>
         /// 获取置顶资讯数据
@@ -252,7 +399,7 @@ namespace BAMENG.DAL
                     {
                         item.ArticleUrl = WebConfig.articleDetailsDomain() + "/app/details.html?articleId=" + item.ArticleId;
                         item.ArticleCover = WebConfig.reswebsite() + item.ArticleCover;
-                        item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 3);
+                        item.PublishTimeText = StringHelper.GetConvertFriendlyTime(item.PublishTime.ToString(), 7);
                     });
                 }
                 return data;
@@ -278,6 +425,32 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntity<ArticleModel>(dr);
             }
         }
+
+
+
+        /// <summary>
+        /// 获取信息实体
+        /// </summary>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>MailModel.</returns>
+        public MailModel GetMailModel(int mailId)
+        {
+            string strSql = "select ID,AuthorId,AuthorName,SendType,Title,BodyContent,CoverUrl,SendTime,IsRead,ReplyUserId,ReplyPid,ReplyTime from BM_Mail where ID=@ID and ReplyPid=0";
+            var param = new[] {
+                new SqlParameter("@ID",mailId)
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                var data = DbHelperSQLP.GetEntity<MailModel>(dr);
+                if (data != null)
+                    data.time = StringHelper.GetConvertFriendlyTime(data.SendTime.ToString(), 7);
+
+
+                return data;
+            }
+        }
+
+
 
         /// <summary>
         /// 设置资讯发布状态
@@ -406,12 +579,11 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public int GetNotReadMessageCount(int userId, int userIdentity)
         {
-            string strSql = @"select COUNT(1) from BM_ReadLog r
-                            left join BM_ArticleList a on a.ArticleId=r.ArticleId
-                             where AuthorIdentity=@AuthorIdentity and r.IsRead=0 and r.UserId=@UserId";
+            string strSql = @"select COUNT(1) from BM_MailReadLog r
+                            left join BM_Mail a on a.ID=r.MailId
+                             where a.SendType<>2 and r.IsRead=0 and r.UserId=@UserId";
             var param = new[] {
-                new SqlParameter("@UserId",userId),
-                new SqlParameter("@AuthorIdentity",userIdentity)
+                new SqlParameter("@UserId",userId)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
         }

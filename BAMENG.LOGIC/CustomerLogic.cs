@@ -53,7 +53,20 @@ namespace BAMENG.LOGIC
                 return dal.GetAppCustomerList(UserId, identity, type, pageIndex, pageSize);
             }
         }
-
+        /// <summary>
+        ///获取客户资源列表
+        /// </summary>
+        /// <param name="UserId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetAppCustomerResList(int UserId, int pageIndex, int pageSize)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.GetAppCustomerResList(UserId, pageIndex, pageSize);
+            }
+        }
 
         /// <summary>
         /// 添加客户
@@ -67,6 +80,21 @@ namespace BAMENG.LOGIC
                 return dal.InsertCustomerInfo(model);
             }
         }
+
+        /// <summary>
+        /// 添加客户资源
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public static int InsertCustomerRes(CustomerResModel model)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.InsertCustomerRes(model);
+            }
+        }
+
+
 
         /// <summary>
         /// 修改客户

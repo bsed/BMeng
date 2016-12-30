@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />    
+    <link rel="stylesheet" type="text/css" href="css/online-min.css">
+    <link rel="stylesheet" type="text/css" href="css/cmnt.min.css">
+    <link rel="stylesheet" type="text/css" href="css/weui.min-gggeren-diy.css">
+    <title>详情</title>
+    <style>
+        html, body {
+            overflow-x: hidden;
+            height:100%;
+        }
+    </style>
+</head>
+
+<body style="max-width:640px;margin:0 auto;">
+
+    <div class="bm" style="position:relative">
+        <div class="bodyContent" style="display:none;">
+            <header class='demos-header'>
+                <h3 style="margin:15px 28px;" class="demos-title"></h3>
+            </header>
+            <span style="color:#686868; font-size:12px;"><img class="bmingyd" src="/static/img/sj@3x.png">&nbsp;<span id="articleTime">--:--</span></span>
+            <span id="spanMessage" style="color:#686868; font-size:12px;"><img class="bmingyd" src="/static/img/mz@3x.png">&nbsp;<span class="authorName"></span></span>
+            <article style="margin-top:10px;padding:0px 25px;min-height:100px" class="weui_article">
+                <section id="articleInfo"></section>
+            </article>
+        </div>
+    </div>
+
+
+
+    <div id="full" class="weui-popup-container " style="z-index:100;display:none;">
+        <div class="weui-popup-overlay"></div>
+        <div class="weui-popup-modal v">
+
+            <aside class="cmnt_wrap">
+                <div class="cmnt_tp">
+                    <span class="fl">
+                        <a href="javascript:void(0);" class="cmnt_cancel close-popup" id="j_cmnt_cancel" data-sudaclick="article_new_cms_send_cancel">取消</a>
+                    </span><span class="fr">
+                        <a href="javascript:mailsHelper.addReply();" class="cmnt_smt" id="j_cmnt_smt" data-sudaclick="article_new_cms_send_cmnt">发送</a>
+                    </span>
+                </div>
+                <div class="cmnt_login">
+                    <p class="fl" style="color:#ccc">我：@<span class="authorName"></span></p>
+                </div>
+                <div class="cmntarea" style="border-radius:6px">
+                    <textarea id="j_cmnt_input" class="newarea" name="" placeholder="说说你的看法"></textarea>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div class="item-action">
+        <div>
+            <!--别删-->
+        </div>
+        <div class="add-to-cart yuanjiaoo ">
+            <a class="open-popup" href="javascript:;" data-target="#full" style="z-index:99;display:block"> 编辑回复</a>
+        </div>
+    </div>
+    <div class="f_hot_cmnt" style="display: none;border-bottom:none;">
+        <p style="text-align: center;color: #9c9c9c;">--------------&nbsp;&nbsp;留言区&nbsp;&nbsp;--------------</p>
+        <p style="height:14px; background-color:#fff"></p>
+
+        <div class="cmnt_list" id="j_hotlist">
+
+        </div>
+        <div class="weui-infinite-scroll" style="display:none;">
+            <div class="infinite-preloader"></div><!-- 菊花 -->
+            正在加载... <!-- 文案，可以自行修改 -->
+        </div>
+    </div>
+
+    <script type="text/template" id="templateList">
+        <div class="cmnt_item">
+            <img src="{url}" alt="" class="cmnt_pic">
+            <div class="cmnt_info">
+                <span class="cmnt_name cmnt_nick">{authorname}</span>
+                <span class="cmnt_time">{NO}楼</span>
+            </div><div class="timetime">
+                {time}
+            </div>
+            <div class="cmnt_text m-cmt-list-item">
+                <div class="m-cmt-list-item-tb">
+                    <div class="m-cmt-list-item-body">
+                        {content}
+                    </div>
+                </div>
+            </div>
+            <div class="cmnt_op" style="padding: 0"></div>
+        </div>
+    </script>
+
+    <!--end-->
+    <p style="height:48px"></p>
+</body>
+</html>
+<link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
+<link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
+<script src="/static/js/plugins/hot/Jquery.util.js"></script>
+<script src="/static/js/fastclick.js"></script>
+<script src="/static/js/admin/appmail.js"></script>

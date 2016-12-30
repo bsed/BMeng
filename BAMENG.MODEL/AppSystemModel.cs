@@ -70,6 +70,13 @@ namespace BAMENG.MODEL
 
         public string registerUrl { get; set; }
 
+
+        /// <summary>
+        /// 工作汇报地址
+        /// </summary>
+        /// <value>The report URL.</value>
+        public string reportUrl { get; set; }
+
         /// <summary>
         ///启用签到 1启用，0禁用
         /// </summary>

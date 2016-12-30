@@ -1,0 +1,88 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />
+    <title>工作汇报详情</title>
+    <style>
+        .weui_panel_title:after {
+            bottom: 0;
+            border-bottom: none !important;
+            -webkit-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="weui_panel weui_panel_access weui_panel_title">
+        <div class="weui_panel_bd">
+            <div class="weui_media_box weui_media_text">
+                <h4 class="weui_media_title demos-title"></h4>
+                <ul class="weui_media_info">
+                    <li class="weui_media_info_meta reportTime"></li>
+                    <li class="weui_media_info_meta weui_media_info_meta_extra reportAddr"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="weui_panel weui_panel_access">
+        <div class="weui_panel_bd" id="listMode">
+
+        </div>
+    </div>
+    <script type="text/template" id="templateList">
+        <div class="weui_media_box weui_media_text">
+            <h4 class="weui_media_title">{title}</h4>
+            <p class="weui_media_desc">{content}</p>
+        </div>
+    </script>
+</body>
+</html>
+
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/jquery-weui.min.js"></script>
+<script src="/static/js/plugins/hot/Jquery.util.js"></script>
+<script>
+    function loadList() {
+        var self = this;
+        var postData = {
+            action: "getuserreportlist",
+            workid: hotUtil.getQuery("workid", 0)
+        }
+        $.showLoading();
+        hotUtil.ajaxCall("/handler/app.ashx", postData, function (ret, err) {
+            if (ret) {
+                if (ret.status == 200) {
+                    if (ret.data) {
+                        var listhtml = "";
+                        $(".demos-title").text(ret.data.ReportTitle);
+                        $(".reportAddr").text(ret.data.Addr);
+                        $(".reportTime").text("时间:" + ret.data.time);
+                        var rows = JSON.parse(ret.data.JsonContent);
+                        $.each(rows, function (i, item) {
+                            listhtml += $("#templateList").html();
+                            listhtml = listhtml.replace("{title}", item.title);
+                            listhtml = listhtml.replace("{content}", item.content);
+                        });
+                        $("#listMode").html(listhtml);
+                    }
+                }
+                else
+                    $.alert(ret.statusText);
+            }
+            $.hideLoading();
+        });
+    }
+
+    $(function () {
+        loadList();
+    });
+</script>

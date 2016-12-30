@@ -38,6 +38,14 @@ namespace BAMENG.IDAL
         /// <returns>ResultPageModel.</returns>
         ResultPageModel GetAppCustomerList(int UserId, int identity, int type, int pageIndex, int pageSize);
 
+        /// <summary>
+        ///获取客户资源列表
+        /// </summary>
+        /// <param name="UserId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetAppCustomerResList(int UserId, int pageIndex, int pageSize);
 
 
         /// <summary>
@@ -60,6 +68,13 @@ namespace BAMENG.IDAL
         /// <param name="model"></param>
         /// <returns></returns>
         int InsertCustomerInfo(CustomerModel model);
+        /// <summary>
+        /// 添加客户资源
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        int InsertCustomerRes(CustomerResModel model);
+
 
         /// <summary>
         /// 删除客户

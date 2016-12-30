@@ -178,4 +178,45 @@ namespace BAMENG.MODEL
         public string ShopCity { get; set; }
 
     }
+
+
+
+    /// <summary>
+    /// 站内信
+    /// </summary>
+    public class MailModel
+    {
+        public int ID { get; set; }
+
+        public int AuthorId { get; set; }
+
+        public string AuthorName { get; set; }
+
+        /// <summary>
+        /// 发送类型 0盟主发给盟友，1盟友发给盟主，2发给霸盟
+        /// </summary>
+        /// <value>The type of the send.</value>
+        public int SendType { get; set; }
+
+        public string Title { get; set; }
+
+        public string BodyContent { get; set; }
+
+        public string CoverUrl { get; set; }
+
+        public DateTime SendTime { get; set; }
+
+        public int IsRead { get; set; }
+
+        public int ReplyUserId { get; set; }
+
+        public int ReplyPid { get; set; }
+
+        public DateTime ReplyTime { get; set; }
+
+
+        public string time { get; set; }
+
+    }
+
 }

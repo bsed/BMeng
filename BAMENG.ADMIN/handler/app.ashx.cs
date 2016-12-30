@@ -76,6 +76,21 @@ namespace BAMENG.ADMIN.handler
                     case "COUPONGET":
                         CouponGet();
                         break;
+                    case "GETREPLYMAILLIST":
+                        GetReplyMailList();
+                        break;
+                    case "ADDREPLY":
+                        addReply();
+                        break;
+                    case "GETWORKLIST":
+                        getworklist();
+                        break;
+                    case "SAVEREPORT":
+                        saveReport();
+                        break;
+                    case "GETUSERREPORTLIST":
+                        getUserReportList();
+                        break;
                     default:
                         break;
                 }
@@ -301,5 +316,117 @@ namespace BAMENG.ADMIN.handler
                 }
             }
         }
+
+
+        /// <summary>
+        /// 获取评论列表
+        /// </summary>
+        private void GetReplyMailList()
+        {
+            int PageIndex = GetFormValue("pageIndex", 1),
+                            PageSize = GetFormValue("pageSize", 20),
+                            MailId = GetFormValue("mailid", 0);
+            var data = ArticleLogic.GetReplyMailList(MailId, PageIndex, PageSize);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        private void addReply()
+        {
+            int mailid = GetFormValue("mailid", 0);
+            int SendType = GetFormValue("sendtype", 0);
+            string content = HttpUtility.UrlDecode(GetFormValue("content", ""));
+            string auth = GetFormValue("auth", "");
+            string title = HttpUtility.UrlDecode(GetFormValue("title", ""));
+            int userId = 0;
+            if (!string.IsNullOrEmpty(auth))
+            {
+                userId = UserLogic.GetUserIdByAuthToken(auth);
+                if (userId == 0)
+                {
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+                    return;
+                }
+                var user = UserLogic.GetModel(userId);
+
+
+                MailModel model = new MailModel();
+                model.AuthorId = -1;
+                model.AuthorName = user.NickName;
+                model.Title = title;
+                model.BodyContent = content;
+                model.CoverUrl = user.UserHeadImg;
+                model.SendType = SendType;
+                model.ReplyPid = mailid;
+                model.ReplyUserId = userId;
+                if (ArticleLogic.AddMailInfo(model) > 0)
+                {
+                    //将该消息接收人的已阅读状态改为未读
+                    LogLogic.UpdateMailNotReadStatus(userId, mailid);
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+                }
+            }
+            else
+            {
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+            }
+        }
+
+
+
+        private void getworklist()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 50))
+            };
+            var data = SystemLogic.GetWorkReportList(model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+        /// <summary>
+        /// 保存工作汇报
+        /// </summary>
+        private void saveReport()
+        {
+            string jsonbody = GetFormValue("jsonbody", "");
+            string reportTitle = GetFormValue("title", "");
+            string auth = GetFormValue("auth", "");
+            string addr = HttpUtility.UrlDecode(GetFormValue("addr", "杭州"));
+            if (!string.IsNullOrEmpty(auth))
+            {
+                int userId = UserLogic.GetUserIdByAuthToken(auth);
+                if (userId == 0)
+                {
+                    json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+                    return;
+                }
+                var user = UserLogic.GetModel(userId);
+                UserLogic.AddAppUserReport(new UserReportModel()
+                {
+                    UserId = userId,
+                    ShopId = user.ShopId,
+                    Addr = addr,
+                    ReportTitle = reportTitle,
+                    JsonContent = jsonbody
+                });
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            }
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.令牌失效));
+        }
+
+
+        /// <summary>
+        /// 获取汇报详情
+        /// </summary>
+        private void getUserReportList()
+        {
+            int workid = GetFormValue("workid", 0);
+            var data = UserLogic.GetUserReportModel(workid);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
     }
 }

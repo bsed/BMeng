@@ -536,5 +536,47 @@ namespace BAMENG.IDAL
         /// <param name="userId">The user identifier.</param>
         /// <returns>System.Int32.</returns>
         int AllyApplyCount(int userId);
+
+
+        /// <summary>
+        /// 获取用户工作汇报列表
+        /// </summary>
+        /// <param name="UserId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetAppUserReportList(int UserId, int pageIndex, int pageSize);
+
+
+        /// <summary>
+        /// 添加用户工作汇报
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        int AddAppUserReport(UserReportModel model);
+
+        /// <summary>
+        /// 获取工作汇报实体
+        /// </summary>
+        /// <param name="workid">The workid.</param>
+        /// <returns>UserReportModel.</returns>
+        UserReportModel GetUserReportModel(int workid);
+
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool DeleteUserReport(int ID);
+
+        /// <summary>
+        /// 获取工作汇报
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetUserReportList(int shopId, SearchModel model);
+
     }
 }

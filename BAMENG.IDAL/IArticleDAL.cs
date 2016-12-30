@@ -40,7 +40,38 @@ namespace BAMENG.IDAL
         /// <param name="shopId">The shop identifier.</param>
         /// <param name="userIdentity">用户身份，1盟主.0盟友</param>
         /// <returns>ResultPageModel.</returns>
-        ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId,int shopId, int userIdentity);
+        ResultPageModel GetAppArticleList(int AuthorIdentity, int pageindex, int pageSize, int userId, int shopId, int userIdentity);
+
+
+
+        /// <summary>
+        /// 获取站内消息
+        /// </summary>
+        /// <param name="AuthorIdentity">类型 1盟主和盟友，2系统反馈消息</param>
+        /// <param name="pageindex">The pageindex.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="isPush">是否获取推送的消息</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetAppMailList(int AuthorIdentity, int pageindex, int pageSize, int userId, bool isPush, bool isAll = false);
+
+
+        /// <summary>
+        /// 获取留言列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetMailList(SearchModel model);
+
+
+        /// <summary>
+        /// 获取评论列表
+        /// </summary>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <param name="pageindex">The pageindex.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetReplyMailList(int mailId, int pageindex, int pageSize);
 
 
         /// <summary>
@@ -60,11 +91,28 @@ namespace BAMENG.IDAL
         ArticleModel GetModel(int articleId);
 
         /// <summary>
+        /// 获取信息实体
+        /// </summary>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>MailModel.</returns>
+        MailModel GetMailModel(int mailId);
+
+
+        /// <summary>
         /// 添加资讯
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         int AddArticle(ArticleModel model);
+
+        /// <summary>
+        /// 添加站内信息
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        int AddMailInfo(MailModel model);
+
+
         /// <summary>
         /// 修改资讯
         /// </summary>

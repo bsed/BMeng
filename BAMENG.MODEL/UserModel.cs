@@ -947,6 +947,11 @@ namespace BAMENG.MODEL
         /// <value>The shop reward.</value>
         public decimal ShopReward { get; set; }
 
+        /// <summary>
+        /// 额外奖励
+        /// </summary>
+        /// <value>The extra reward.</value>
+        public string ExtraReward { get; set; }
 
         /// <summary>
         /// 更新时间

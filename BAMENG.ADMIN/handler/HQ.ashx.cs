@@ -281,6 +281,33 @@ namespace BAMENG.ADMIN.handler
                     case "MODIFYPASSWORD":
                         modifypassword();
                         break;
+
+                    case "GETMAILLIST":
+                        GetMailList();
+                        break;
+                    case "ADDREPLY":
+                        addReply();
+                        break;
+
+                    case "GETWORKREPORTLIST":
+                        getWorkReportList();
+                        break;
+                    case "EDITWORKREPORT":
+                        EditWorkReport();
+                        break;
+                    case "DELETEWORKREPORT":
+                        DeleteWorkReport();
+                        break;
+
+                    case "DELETEUSERREPORT":
+                        DeleteUserReport();
+                        break;
+                    case "GETUSERREPORTLIST":
+                        GetUserReportList();
+                        break;
+                    case "GETUSERREPORTMODEL":
+                        GetUserReportModel();
+                        break;
                     default:
                         break;
                 }
@@ -1437,5 +1464,129 @@ namespace BAMENG.ADMIN.handler
             var data = LogLogic.GetSignLoginList(user.ID, user.UserIndentity, model);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
+
+
+        private void GetMailList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+            };
+            var data = ArticleLogic.GetMailList(model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+        private void addReply()
+        {
+            int mailid = GetFormValue("mailid", 0);
+            int SendType = GetFormValue("sendtype", 0);
+            string content = HttpUtility.UrlDecode(GetFormValue("content", ""));
+            string title = HttpUtility.UrlDecode(GetFormValue("title", ""));
+            int userId = 0;
+            MailModel model = new MailModel();
+            model.AuthorId = -1;
+            model.AuthorName = "霸盟";
+            model.Title = title;
+            model.BodyContent = content;
+            model.CoverUrl = WebConfig.articleDetailsDomain() + "/static/img/profile_small.jpg";
+            model.SendType = 2;
+            model.ReplyPid = mailid;
+            model.ReplyUserId = user.ID;
+            if (ArticleLogic.AddMailInfo(model) > 0)
+            {
+                //将该消息接收人的已阅读状态改为未读
+                LogLogic.UpdateMailNotReadStatus(userId, mailid);
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            }
+        }
+
+
+        /// <summary>
+        /// 获取工作汇报
+        /// </summary>
+        private void getWorkReportList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+            };
+            var data = SystemLogic.GetWorkReportList(model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+        private void EditWorkReport()
+        {
+            int workid = GetFormValue("workid", 0);
+            string content = HttpUtility.UrlDecode(GetFormValue("content", ""));
+            bool flag = workid > 0 ? SystemLogic.UpdateWorkReport(workid, content) : SystemLogic.AddWorkReport(content) > 0;
+            if (flag)
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.保存失败));
+        }
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        private void DeleteWorkReport()
+        {
+            int workid = GetFormValue("workid", 0);
+            if (SystemLogic.DeleteWorkReport(workid))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.保存失败));
+
+        }
+
+
+        /// <summary>
+        /// 获取用户工作汇报
+        /// </summary>
+        private void GetUserReportList()
+        {
+            SearchModel model = new SearchModel()
+            {
+                PageIndex = Convert.ToInt32(GetFormValue("pageIndex", 1)),
+                PageSize = Convert.ToInt32(GetFormValue("pageSize", 20)),
+                startTime = GetFormValue("startTime", ""),
+                endTime = GetFormValue("endTime", ""),
+                key = GetFormValue("key", ""),
+            };
+            var data = UserLogic.GetUserReportList(user.ID, model);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        /// 获取工作汇报
+        /// </summary>
+        private void GetUserReportModel()
+        {
+            int workid = GetFormValue("workid", 0);
+            var data = UserLogic.GetUserReportModel(workid);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+        }
+
+
+        /// <summary>
+        /// 删除用户工作汇报
+        /// </summary>
+        private void DeleteUserReport()
+        {
+            int workid = GetFormValue("workid", 0);
+            if (UserLogic.DeleteUserReport(workid))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.保存失败));
+        }
+
     }
 }

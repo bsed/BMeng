@@ -111,5 +111,57 @@ namespace BAMENG.LOGIC
             }
         }
 
+
+        /// <summary>
+        /// 修改工作汇报内容
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <param name="title">The title.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateWorkReport(int ID, string title)
+        {
+            using (var dal = FactoryDispatcher.SystemFactory())
+            {
+                return dal.UpdateWorkReport(ID, title);
+            }
+        }
+        /// <summary>
+        ///添加工作汇报内容
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>System.Int32.</returns>
+        public static int AddWorkReport(string title)
+        {
+            using (var dal = FactoryDispatcher.SystemFactory())
+            {
+                return dal.AddWorkReport(title);
+            }
+        }
+        /// <summary>
+        /// 获取工作汇报模板列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetWorkReportList(SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.SystemFactory())
+            {
+                return dal.GetWorkReportList(model);
+            }
+        }
+
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool DeleteWorkReport(int ID)
+        {
+            using (var dal = FactoryDispatcher.SystemFactory())
+            {
+                return dal.DeleteWorkReport(ID);
+            }
+        }
     }
 }

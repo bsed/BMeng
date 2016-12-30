@@ -103,6 +103,7 @@
     <Content Include="admin\cashcouponstaticpie.html" />
     <Content Include="admin\coupongetlist.html" />
     <Content Include="admin\customerstaticpie.html" />
+    <Content Include="admin\maildetail.html" />
     <Content Include="admin\usersignstatic.html" />
     <Content Include="admin\modifypassword.html" />
     <Content Include="admin\none.html" />
@@ -125,7 +126,15 @@
     <Content Include="admin\customerlist.html" />
     <Content Include="admin\managerlist.html" />
     <Content Include="admin\userlist.html" />
+    <Content Include="admin\userreportlist.html" />
+    <Content Include="admin\worktemplate.html" />
     <Content Include="app\couponshare.html" />
+    <Content Include="app\css\cmnt.min.css" />
+    <Content Include="app\css\online-min.css" />
+    <Content Include="app\css\weui.min-gggeren-diy.css" />
+    <Content Include="app\images\all.png" />
+    <Content Include="app\maildetails.html" />
+    <Content Include="admin\maillist.html" />
     <Content Include="app\getcoupon.html" />
     <Content Include="app\images\appShareCoupon.png" />
     <Content Include="app\images\appShareLogo.png" />
@@ -137,6 +146,8 @@
     <Content Include="app\details.html" />
     <Content Include="app\myqrcode.html" />
     <Content Include="app\agreement.html" />
+    <Content Include="app\reportdetail.html" />
+    <Content Include="app\workreport.html" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -162,13 +173,17 @@
     <Content Include="static\img\wechat.jpg" />
     <Content Include="static\img\ydll%403x.png" />
     <Content Include="static\js\.DS_Store" />
+    <Content Include="static\js\admin\appmail.js" />
     <Content Include="static\js\admin\apparticle.js" />
+    <Content Include="static\js\admin\maillist.js" />
     <Content Include="static\js\admin\cashcouponstatic.js" />
     <Content Include="static\js\admin\cashcouponstaticpie.js" />
     <Content Include="static\js\admin\coupongetlist.js" />
     <Content Include="static\js\admin\customerstatistics.js" />
     <Content Include="static\js\admin\Home.js" />
     <Content Include="static\js\admin\customerstaticpie.js" />
+    <Content Include="static\js\admin\userreportlist.js" />
+    <Content Include="static\js\admin\worktemplate.js" />
     <Content Include="static\js\admin\usersigntatistics.js" />
     <Content Include="static\js\admin\loginstatistics.js" />
     <Content Include="static\js\admin\messageedit.js" />
@@ -191,9 +206,11 @@
     <Content Include="static\js\admin\userlist.js" />
     <Content Include="static\js\admin\cashcouponlist.js" />
     <Content Include="static\js\demoLeftData.js" />
+    <Content Include="static\js\fastclick.js" />
     <Content Include="static\js\jQuery.asyncLoading.js" />
     <Content Include="static\js\plugins\CtiyPicker\css\cityPicker.css" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityList.js" />
+    <Content Include="handler\mailinfo.ashx" />
     <None Include="static\js\plugins\CtiyPicker\js\cityPickerbak" />
     <Content Include="static\js\plugins\CtiyPicker\js\cityPicker.js" />
     <Content Include="static\js\plugins\hot\bootstrap.hot.extra-validate.js" />
@@ -572,6 +589,10 @@
   <ItemGroup>
     <Compile Include="handler\app.ashx.cs">
       <DependentUpon>app.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="handler\mailinfo.ashx.cs">
+      <DependentUpon>mailinfo.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="handler\articleInfo.ashx.cs">

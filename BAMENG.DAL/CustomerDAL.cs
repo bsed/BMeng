@@ -23,7 +23,7 @@ namespace BAMENG.DAL
 {
     public class CustomerDAL : AbstractDAL, ICustomerDAL
     {
-        private const string APP_SELECT = @"select C.ID,C.BelongOne,C.BelongTwo,C.Status,C.InShop,C.Name,C.Mobile,C.Addr,C.Remark,C.ShopId,C.BelongOneShopId,C.CreateTime,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName,S.ShopName from BM_CustomerManage C 
+        private const string APP_SELECT = @"select C.ID,C.BelongOne,C.BelongTwo,C.Status,C.InShop,C.Name,C.Mobile,C.Addr,C.Remark,C.ShopId,C.BelongOneShopId,C.CreateTime,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName,S.ShopName,C.issave,C.DataImg from BM_CustomerManage C 
                                                 left join Hot_UserBaseInfo U with(nolock) on U.UB_UserID=C.BelongOne
                                                 left join Hot_UserBaseInfo UB with(nolock) on UB.UB_UserID=C.BelongTwo
                                                 left join BM_ShopManage S with(nolock) on  S.ShopID=C.ShopId
@@ -130,8 +130,39 @@ namespace BAMENG.DAL
                 new SqlParameter("@UserID",UserId),
             };
             //生成sql语句
-            return getPageData<CustomerModel>(pageSize, pageIndex, strSql, orderbyField, orderby, param);
+            return getPageData<CustomerModel>(pageSize, pageIndex, strSql, orderbyField, param, (items =>
+            {
+                items.ForEach(item =>
+                {
+                    item.DataImg = WebConfig.articleDetailsDomain() + item.DataImg;
+                });
+            }), orderby);
         }
+
+
+        /// <summary>
+        ///获取客户资源列表
+        /// </summary>
+        /// <param name="UserId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetAppCustomerResList(int UserId, int pageIndex, int pageSize)
+        {
+            string strSql = "select * from BM_CustomerRes where UserId=@UserId ";
+            string orderbyField = "CreateTime";
+            var param = new[] {
+                new SqlParameter("@UserID",UserId),
+            };
+            //生成sql语句
+            return getPageData<CustomerResModel>(pageSize, pageIndex, strSql, orderbyField, param,(items=> {
+                items.ForEach(item =>
+                {
+                    item.DataImg = WebConfig.articleDetailsDomain() + item.DataImg;
+                });
+            }));
+        }
+
 
 
 
@@ -159,7 +190,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public int InsertCustomerInfo(CustomerModel model)
         {
-            string strSql = "insert into BM_CustomerManage (BelongOne,BelongTwo,Status,Name,Mobile,Addr,Remark,ShopId,InShop,BelongOneShopId) values(@BelongOne,@BelongTwo,@Status,@Name,@Mobile,@Addr,@Remark,@ShopId,@InShop,@BelongOneShopId);select @@IDENTITY;";
+            string strSql = "insert into BM_CustomerManage (BelongOne,BelongTwo,Status,Name,Mobile,Addr,Remark,ShopId,InShop,BelongOneShopId,isSave,DataImg) values(@BelongOne,@BelongTwo,@Status,@Name,@Mobile,@Addr,@Remark,@ShopId,@InShop,@BelongOneShopId,@isSave,@DataImg);select @@IDENTITY;";
             var param = new[] {
                     new SqlParameter("@BelongOne",model.BelongOne),
                     new SqlParameter("@BelongTwo",model.BelongTwo),
@@ -170,7 +201,9 @@ namespace BAMENG.DAL
                     new SqlParameter("@Remark",model.Remark),
                     new SqlParameter("@ShopId",model.ShopId),
                     new SqlParameter("@InShop",model.InShop),
-                    new SqlParameter("@BelongOneShopId",model.BelongOneShopId)
+                    new SqlParameter("@BelongOneShopId",model.BelongOneShopId),
+                    new SqlParameter("@isSave",model.isSave),
+                    new SqlParameter("@DataImg",model.DataImg)
                 };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
 
@@ -178,6 +211,33 @@ namespace BAMENG.DAL
                 return Convert.ToInt32(obj);
             return 0;
         }
+
+        /// <summary>
+        /// 添加客户资源
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public int InsertCustomerRes(CustomerResModel model)
+        {
+            string strSql = "insert into BM_CustomerRes (UserId,Name,Mobile,Addr,Remark,DataImg,SubmitName,Type) values(@UserId,@Name,@Mobile,@Addr,@Remark,@DataImg,@SubmitName,@Type);select @@IDENTITY;";
+            var param = new[] {
+                    new SqlParameter("@UserId",model.UserId),
+                    new SqlParameter("@Name",model.Name),
+                    new SqlParameter("@Mobile",model.Mobile),
+                    new SqlParameter("@Addr",model.Addr),
+                    new SqlParameter("@Remark",model.Remark),
+                    new SqlParameter("@DataImg",model.DataImg),
+                    new SqlParameter("@SubmitName",model.SubmitName),
+                    new SqlParameter("@Type",model.Type)
+                };
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            return 0;
+        }
+
+
 
         /// <summary>
         /// 判断是否存在

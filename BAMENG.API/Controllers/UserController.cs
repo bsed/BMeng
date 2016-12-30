@@ -364,16 +364,17 @@ namespace BAMENG.API.Controllers
         /// <param name="creward">客户资料提交奖励</param>
         /// <param name="orderreward">订单成交奖励</param>
         /// <param name="shopreward">客户进店奖励</param>
+        /// <param name="extrareward">额外奖励</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult setallyRaward(decimal creward, decimal orderreward, decimal shopreward)
+        public ActionResult setallyRaward(decimal creward, decimal orderreward, decimal shopreward,string extrareward)
         {
             try
             {
                 var user = GetUserData();
                 if (user.UserIdentity == 1)
                 {
-                    bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward);
+                    bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward, extrareward);
                     return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败, flag ? "保存成功" : "保存失败"));
                 }
                 else
@@ -760,7 +761,7 @@ namespace BAMENG.API.Controllers
 
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
-                data["messageCount"] = ArticleLogic.GetNotReadMessageCount(user.UserId, user.UserIdentity == 1 ? 4 : 3);
+                data["messageCount"] = 0;// ArticleLogic.GetNotReadMessageCount(user.UserId, user.UserIdentity == 1 ? 4 : 3);
                 bool isbusiness = false;
                 if (user.UserIdentity == 1)
                 {
@@ -779,6 +780,28 @@ namespace BAMENG.API.Controllers
             catch (Exception ex)
             {
                 LogHelper.Log(string.Format("Remind user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
+        }
+
+        /// <summary>
+        /// 我的工作汇报列表 POST: user/reportlist
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ActionResult.</returns>
+        [ActionAuthorize]
+        public ActionResult reportlist(int pageIndex, int pageSize)
+        {
+            try
+            {
+                var userId = GetAuthUserId();
+                var data = UserLogic.GetAppUserReportList(userId, pageIndex, pageSize);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("reportlist:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
         }

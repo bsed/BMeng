@@ -307,8 +307,9 @@ namespace BAMENG.LOGIC
         /// <param name="creward">客户资料提交奖励</param>
         /// <param name="orderreward">订单成交奖励</param>
         /// <param name="shopreward">客户进店奖励.</param>
+        /// <param name="extrareward">额外奖励</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool SetAllyRaward(int userId, decimal creward, decimal orderreward, decimal shopreward)
+        public static bool SetAllyRaward(int userId, decimal creward, decimal orderreward, decimal shopreward, string extrareward)
         {
             using (var dal = FactoryDispatcher.UserFactory())
             {
@@ -317,7 +318,8 @@ namespace BAMENG.LOGIC
                     UserId = userId,
                     CustomerReward = creward,
                     OrderReward = orderreward,
-                    ShopReward = shopreward
+                    ShopReward = shopreward,
+                    ExtraReward = extrareward
                 };
                 if (dal.IsRewarExist(userId))
                     return dal.UpdateRewardSetting(model);
@@ -785,7 +787,7 @@ namespace BAMENG.LOGIC
         {
             int userId = user.UserId;
             try
-            {            
+            {
                 string outputMsg = string.Empty;
                 /**
                 * 输出签到积分，从区间中随机获取
@@ -1250,5 +1252,77 @@ namespace BAMENG.LOGIC
             model.url = WebConfig.articleDetailsDomain() + "/app/couponshare.html";
             return model;
         }
+
+
+
+        /// <summary>
+        /// 获取用户工作汇报列表
+        /// </summary>
+        /// <param name="UserId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetAppUserReportList(int UserId, int pageIndex, int pageSize)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetAppUserReportList(UserId, pageIndex, pageSize);
+            }
+        }
+
+
+        /// <summary>
+        /// 添加用户工作汇报
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public static int AddAppUserReport(UserReportModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.AddAppUserReport(model);
+            }
+        }
+
+        /// <summary>
+        /// 获取工作汇报实体
+        /// </summary>
+        /// <param name="workid">The workid.</param>
+        /// <returns>UserReportModel.</returns>
+        public static UserReportModel GetUserReportModel(int workid)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetUserReportModel(workid);
+            }
+        }
+
+        /// <summary>
+        /// 获取工作汇报
+        /// </summary>
+        /// <param name="shopId">The shop identifier.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetUserReportList(int shopId, SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.GetUserReportList(shopId, model);
+            }
+        }
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool DeleteUserReport(int ID)
+        {
+            using (var dal = FactoryDispatcher.UserFactory())
+            {
+                return dal.DeleteUserReport(ID);
+            }
+        }
+
     }
 }

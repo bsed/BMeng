@@ -19,7 +19,7 @@ namespace BAMENG.CONFIG
         /// <summary>
         /// 商户编号(对应商城的编号)
         /// </summary>
-        public const int storeId = 296;
+        public const int storeId = 88888;
 #else
         public const int storeId = 88888;
 #endif

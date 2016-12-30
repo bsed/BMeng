@@ -51,6 +51,57 @@ namespace BAMENG.LOGIC
                 return dal.GetAppArticleList(AuthorIdentity, pageindex, pageSize, userId, shopId, userIdentity);
             }
         }
+
+        /// <summary>
+        /// 获取站内消息
+        /// </summary>
+        /// <param name="AuthorIdentity">类型 1盟主和盟友，2系统反馈消息</param>
+        /// <param name="pageindex">The pageindex.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="isPush">是否获取推送的消息</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetAppMailList(int AuthorIdentity, int pageindex, int pageSize, int userId, bool isPush, bool isAll = false)
+        {
+            using (var dal = FactoryDispatcher.ArticleFactory())
+            {
+                return dal.GetAppMailList(AuthorIdentity, pageindex, pageSize, userId, isPush, isAll);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取留言列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetMailList(SearchModel model)
+        {
+            using (var dal = FactoryDispatcher.ArticleFactory())
+            {
+                return dal.GetMailList(model);
+            }
+
+        }
+
+
+        /// <summary>
+        /// 获取评论列表
+        /// </summary>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <param name="pageindex">The pageindex.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>ResultPageModel.</returns>
+        public static ResultPageModel GetReplyMailList(int mailId, int pageindex, int pageSize)
+        {
+            using (var dal = FactoryDispatcher.ArticleFactory())
+            {
+                return dal.GetReplyMailList(mailId, pageindex, pageSize);
+            }
+        }
+
+
+
         /// <summary>
         /// 获取置顶资讯数据
         /// </summary>
@@ -92,12 +143,25 @@ namespace BAMENG.LOGIC
 
 
         /// <summary>
+        /// 添加站内信息
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>System.Int32.</returns>
+        public static int AddMailInfo(MailModel model)
+        {
+            using (var dal = FactoryDispatcher.ArticleFactory())
+            {
+                return dal.AddMailInfo(model);
+            }
+        }
+
+        /// <summary>
         /// 设置资讯置顶状态
         /// </summary>
         /// <param name="articleId"></param>
         /// <param name="enable"></param>
         /// <returns></returns>
-        public static bool SetArticleEnableTop(int articleId, bool enable,int useridentity)
+        public static bool SetArticleEnableTop(int articleId, bool enable, int useridentity)
         {
             using (var dal = FactoryDispatcher.ArticleFactory())
             {
@@ -141,6 +205,21 @@ namespace BAMENG.LOGIC
                 return dal.GetModel(articleId);
             }
         }
+
+        /// <summary>
+        /// 获取信息实体
+        /// </summary>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>MailModel.</returns>
+        public static MailModel GetMailModel(int mailId)
+        {
+            using (var dal = FactoryDispatcher.ArticleFactory())
+            {
+                return dal.GetMailModel(mailId);
+            }
+        }
+
+
 
         /// <summary>
         /// 设置资讯审核状态

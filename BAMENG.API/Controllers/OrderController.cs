@@ -92,7 +92,7 @@ namespace BAMENG.API.Controllers
                 var user = GetUserData();
                 int userId = user.UserId;
 
-                string imgContent = string.Empty;
+                //string imgContent = string.Empty;
                 HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
                 if (oFile == null)
                 {

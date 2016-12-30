@@ -185,5 +185,66 @@ namespace BAMENG.DAL
         }
 
 
+
+
+        /// <summary>
+        /// 获取工作汇报模板列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        public ResultPageModel GetWorkReportList(SearchModel model)
+        {
+            string strSql = "select * from BM_WorkReport";
+            string orderbyField = "CreateTime";
+            //生成sql语句
+            return getPageData<WorkReportModel>(model.PageSize, model.PageIndex, strSql, orderbyField, true);
+        }
+
+
+        /// <summary>
+        ///添加工作汇报内容
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>System.Int32.</returns>
+        public int AddWorkReport(string title)
+        {
+            string strSql = "insert into BM_WorkReport(WorkTitle) values(@WorkTitle);select @@IDENTITY";
+
+            var param = new[] {
+                new SqlParameter("@WorkTitle",title),
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        }
+
+        /// <summary>
+        /// 修改工作汇报内容
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <param name="title">The title.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateWorkReport(int ID,string title)
+        {
+            string strSql = "update BM_WorkReport set WorkTitle=@WorkTitle where ID=@ID";
+
+            var param = new[] {
+                new SqlParameter("@WorkTitle",title),
+                new SqlParameter("@ID",ID)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param)>0;
+        }
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool DeleteWorkReport(int ID)
+        {
+            string strSql = "delete from BM_WorkReport where ID=@ID";
+            var param = new[] {                
+                new SqlParameter("@ID",ID)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
     }
 }

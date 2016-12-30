@@ -25,8 +25,19 @@ namespace BAMENG.IDAL
         /// <param name="logModel">The log model.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         bool AddReadLog(ReadLogModel logModel);
-
-
+        /// <summary>
+        /// 添加站内信阅读日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool AddMailReadLog(ReadLogModel logModel);
+        /// <summary>
+        /// 根据用户ID判断当前信息是否已阅读
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if [is mail read] [the specified user identifier]; otherwise, false.</returns>
+        bool IsMailRead(int userId, int mailId);
 
         /// <summary>
         /// 更新用户阅读状态
@@ -36,6 +47,21 @@ namespace BAMENG.IDAL
         /// <returns>true if XXXX, false otherwise.</returns>
         bool UpdateReadStatus(int userId, int articleId);
 
+        /// <summary>
+        /// 更新用户站内信阅读状态
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateMailReadStatus(int userId, int mailId);
+
+        /// <summary>
+        /// 根据条件，修改阅读状态为未读
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateMailNotReadStatus(int userId, int mailId);
 
         /// <summary>
         /// 根据用户ID判断当前资讯是否已阅读

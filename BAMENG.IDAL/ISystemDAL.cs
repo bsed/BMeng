@@ -72,5 +72,39 @@ namespace BAMENG.IDAL
         /// <param name="today">默认今天，否则昨天</param>
         /// <returns>System.Int32.</returns>
         int GetNewArticleCount(int shopId, int userIdentity, bool today = true);
+
+
+
+
+        /// <summary>
+        /// 获取工作汇报模板列表
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ResultPageModel.</returns>
+        ResultPageModel GetWorkReportList(SearchModel model);
+
+
+        /// <summary>
+        ///添加工作汇报内容
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>System.Int32.</returns>
+        int AddWorkReport(string title);
+
+        /// <summary>
+        /// 修改工作汇报内容
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <param name="title">The title.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool UpdateWorkReport(int ID, string title);
+
+
+        /// <summary>
+        /// 删除工作汇报
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        bool DeleteWorkReport(int ID);
     }
 }

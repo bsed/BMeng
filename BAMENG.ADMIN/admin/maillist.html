@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+
+    <title></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/css/animate.min.css" rel="stylesheet">
+    <link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="/static/css/style.min-1.0.2.css" rel="stylesheet">
+    <base target="_blank">
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeInRight tooltip-demo">
+        <!--search-->
+        <form role="form" class="search-panel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content p-m no-borders">
+                            <div class="form-inline">
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodName">名称：</label>
+                                    <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="关键字" />
+                                </div>
+                            </div>
+                            <p style="height: 8px;"></p>
+                            <div class="form-inline" style="max-width: 926px; text-align: right;">
+                                <button type="button" onclick="mailHelper.search()" class="btn btn-success">筛选</button>
+                                <button type="button" onclick="mailHelper.searchAll()" class="btn btn-success">显示全部</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--search-->
+        <!--list-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins m-b-none">
+                    <div class="ibox-content p-xxs no-top-border">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover table-center">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>头像</th>                                        
+                                        <th>姓名</th>
+                                        <th>标题</th>
+                                        <th>内容</th>
+                                        <th>时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listMode"></tbody>
+                            </table>
+                            <p style="float: left; margin: 20px 0;">共<span class="pagination_recordCount">0</span>条记录，当前第<span class="pagination_pageIndex">1</span> /<span class="pagination_pageCount">1</span>，每页<span class="pagination_pageSize">20</span>条记录</p>
+                            <ul style="float: right;" class="pagination pagination-split"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="templist">
+        <tr>
+            <td>{NO}</td>            
+            <td class="client-avatar"><img src="{CoverUrl}" width="60" height="60" onerror="this.src='/static/img/bg.png'" /></td>
+            <td>{AuthorName}</td>
+            <td>{Title}</td>            
+            <td>{BodyContent}</td>   
+            <td>{SendTime}</td>        
+            <td>
+                <span class="cursor-point" onclick="mailHelper.goPage('{ID}');">查看</span>                
+            </td>
+        </tr>
+    </template>
+
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/plugins/hot/Jquery.util.js"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/js/admin/maillist.js"></script>
+</body>
+</html>

@@ -38,6 +38,59 @@ namespace BAMENG.LOGIC
             }
         }
 
+        /// <summary>
+        /// 添加站内信阅读日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool AddMailReadLog(ReadLogModel logModel)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.AddMailReadLog(logModel);
+            }
+        }
+
+        /// <summary>
+        /// 根据用户ID判断当前信息是否已阅读
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if [is mail read] [the specified user identifier]; otherwise, false.</returns>
+        public static bool IsMailRead(int userId, int mailId)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.IsMailRead(userId, mailId);
+            }
+        }
+
+        /// <summary>
+        /// 更新用户站内信阅读状态
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateMailReadStatus(int userId, int mailId)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.UpdateMailReadStatus(userId, mailId);
+            }
+        }
+        /// <summary>
+        /// 根据条件，修改阅读状态为未读
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public static bool UpdateMailNotReadStatus(int userId, int mailId)
+        {
+            using (var dal = FactoryDispatcher.LogFactory())
+            {
+                return dal.UpdateMailNotReadStatus(userId, mailId);
+            }
+        }
 
         /// <summary>
         /// 更新用户资讯阅读状态

@@ -50,6 +50,43 @@ namespace BAMENG.DAL
         }
 
         /// <summary>
+        /// 添加站内信阅读日志
+        /// </summary>
+        /// <param name="logModel">The log model.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool AddMailReadLog(ReadLogModel logModel)
+        {
+            string strSql = "insert into BM_MailReadLog(UserId,MailId,IsRead,ClientIp,cookie,ReadTime) values(@UserId,@MailId,@IsRead,@ClientIp,@cookie,@ReadTime)";
+            var param = new[] {
+                new SqlParameter("@UserId",logModel.UserId),
+                new SqlParameter("@MailId",logModel.ArticleId),
+                new SqlParameter("@IsRead",logModel.IsRead),
+                new SqlParameter("@ClientIp",logModel.ClientIp),
+                new SqlParameter("@cookie",logModel.cookie),
+                new SqlParameter("@ReadTime",logModel.ReadTime)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+        }
+
+
+        /// <summary>
+        /// 根据用户ID判断当前信息是否已阅读
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if [is mail read] [the specified user identifier]; otherwise, false.</returns>
+        public bool IsMailRead(int userId, int mailId)
+        {
+            string strSql = "select COUNT(1) from BM_MailReadLog where MailId=@MailId and UserId=@UserId";
+            var param = new[] {
+                new SqlParameter("@MailId",mailId),
+                new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
+        }
+
+
+        /// <summary>
         /// 根据cookie判断当前资讯是否已阅读
         /// </summary>
         /// <param name="articleId">The article identifier.</param>
@@ -125,6 +162,38 @@ namespace BAMENG.DAL
             string strSql = "update BM_ReadLog set IsRead=1 where UserId=@UserId and ArticleId=@ArticleId";
             var param = new[] {
                 new SqlParameter("@ArticleId",articleId),
+                new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
+        }
+
+        /// <summary>
+        /// 更新用户站内信阅读状态
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateMailReadStatus(int userId, int mailId)
+        {
+            string strSql = "update BM_MailReadLog set IsRead=1 where UserId=@UserId and MailId=@MailId";
+            var param = new[] {
+                new SqlParameter("@MailId",mailId),
+                new SqlParameter("@UserId",userId)
+            };
+            return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
+        }
+
+        /// <summary>
+        /// 根据条件，修改阅读状态为未读
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="mailId">The mail identifier.</param>
+        /// <returns>true if XXXX, false otherwise.</returns>
+        public bool UpdateMailNotReadStatus(int userId, int mailId)
+        {
+            string strSql = "update BM_MailReadLog set IsRead=0 where UserId<>@UserId and MailId=@MailId and IsRead=1";
+            var param = new[] {
+                new SqlParameter("@MailId",mailId),
                 new SqlParameter("@UserId",userId)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
@@ -557,30 +626,55 @@ namespace BAMENG.DAL
         /// <returns>List&lt;StatisticsListModel&gt;.</returns>
         public List<StatisticsListModel> CustomerStatisticsPie(int shopid, int useridentity, string startTime, string endTime)
         {
-            string strSql = @"select shop.ShopName as xData,COUNT(1) as yData from BM_CustomerManage as c
+            if (useridentity != 2)
+            {
+                string strSql = @"select shop.ShopName as xData,COUNT(1) as yData from BM_CustomerManage as c
                             left join BM_ShopManage as shop on c.ShopId=shop.shopid
                             where 1=1  and c.Status=1 
                             and CONVERT(nvarchar(10), c.CreateTime, 121)>=@startTime
                             and CONVERT(nvarchar(10), c.CreateTime, 121)<=@endTime 
                             ";
 
-            if (useridentity == 0)
-                strSql += " and  shop.ShopType=1";
-            else if (useridentity == 1)
-                strSql += " and  (log.BelongOneShopId=@ShopId or log.ShopId=@ShopId)";
-            else if (useridentity == 1)
-                strSql += " and  shop.ShopId=@ShopId";
-            strSql += "group by shop.ShopName    order by count(1) desc";
-            var param = new[] {
-                new SqlParameter("@startTime",startTime),
-                new SqlParameter("@endTime",endTime),
-                new SqlParameter("@ShopId",shopid)
-            };
-            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+                if (useridentity == 0)
+                    strSql += " and  shop.ShopType=1";
+                else if (useridentity == 1)
+                    strSql += " and  (log.BelongOneShopId=@ShopId or log.ShopId=@ShopId)";
+                else if (useridentity == 2)
+                    strSql += " and  shop.ShopId=@ShopId";
+                strSql += "group by shop.ShopName    order by count(1) desc";
+                var param = new[] {
+                    new SqlParameter("@startTime",startTime),
+                    new SqlParameter("@endTime",endTime),
+                    new SqlParameter("@ShopId",shopid)
+                };
+                using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+                {
+                    return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+                }
+            }
+            else
             {
-                return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+                string strSql = @"select u.UB_UserRealName as xData,COUNT(1) as yData from BM_CustomerManage as c
+                            left join Hot_UserBaseInfo as u with(nolock) on c.BelongOne=u.UB_UserID
+                            where 1=1  and c.Status=1  and u.UB_UserType=1
+                            and CONVERT(nvarchar(10), c.CreateTime, 121)>=@startTime
+                            and CONVERT(nvarchar(10), c.CreateTime, 121)<=@endTime 
+                            ";
+                strSql += "group by u.UB_UserRealName    order by count(1) desc";
+                var param = new[] {
+                    new SqlParameter("@startTime",startTime),
+                    new SqlParameter("@endTime",endTime),
+                    new SqlParameter("@ShopId",shopid)
+                };
+                using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+                {
+                    return DbHelperSQLP.GetEntityList<StatisticsListModel>(dr);
+                }
             }
         }
+
+
+
 
     }
 }

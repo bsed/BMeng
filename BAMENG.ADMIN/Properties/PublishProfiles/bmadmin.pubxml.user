@@ -51,6 +51,12 @@
     <File Include="admin/loginstatic.html">
       <publishTime>12/23/2016 10:28:58</publishTime>
     </File>
+    <File Include="admin/maildetail.html">
+      <publishTime>12/29/2016 19:13:03</publishTime>
+    </File>
+    <File Include="admin/maillist.html">
+      <publishTime>12/29/2016 19:18:58</publishTime>
+    </File>
     <File Include="admin/managerlist.html">
       <publishTime>12/08/2016 09:11:32</publishTime>
     </File>
@@ -90,8 +96,14 @@
     <File Include="admin/userlist.html">
       <publishTime>12/15/2016 13:47:04</publishTime>
     </File>
+    <File Include="admin/userreportlist.html">
+      <publishTime>12/30/2016 15:59:36</publishTime>
+    </File>
     <File Include="admin/usersignstatic.html">
       <publishTime>12/23/2016 15:50:42</publishTime>
+    </File>
+    <File Include="admin/worktemplate.html">
+      <publishTime>12/30/2016 10:15:42</publishTime>
     </File>
     <File Include="app/about.html">
       <publishTime>12/06/2016 13:53:28</publishTime>
@@ -102,11 +114,26 @@
     <File Include="app/couponshare.html">
       <publishTime>12/15/2016 12:02:52</publishTime>
     </File>
+    <File Include="app/css/cmnt.min.css">
+      <publishTime>12/27/2016 15:56:47</publishTime>
+    </File>
+    <File Include="app/css/online-min.css">
+      <publishTime>12/27/2016 15:56:47</publishTime>
+    </File>
+    <File Include="app/css/weui.min-gggeren-diy.css">
+      <publishTime>12/27/2016 17:32:17</publishTime>
+    </File>
     <File Include="app/details.html">
       <publishTime>12/14/2016 14:49:21</publishTime>
     </File>
+    <File Include="app/feedback.html">
+      <publishTime>12/27/2016 15:10:58</publishTime>
+    </File>
     <File Include="app/getcoupon.html">
       <publishTime>12/15/2016 11:45:35</publishTime>
+    </File>
+    <File Include="app/images/all.png">
+      <publishTime>12/27/2016 15:56:49</publishTime>
     </File>
     <File Include="app/images/appShareCoupon.png">
       <publishTime>12/01/2016 09:31:43</publishTime>
@@ -120,6 +147,9 @@
     <File Include="app/images/none.png">
       <publishTime>12/06/2016 16:32:41</publishTime>
     </File>
+    <File Include="app/maildetails.html">
+      <publishTime>12/29/2016 19:27:50</publishTime>
+    </File>
     <File Include="app/myqrcode.html">
       <publishTime>12/22/2016 17:41:00</publishTime>
     </File>
@@ -132,6 +162,12 @@
     <File Include="app/register.html">
       <publishTime>12/19/2016 16:31:19</publishTime>
     </File>
+    <File Include="app/reportdetail.html">
+      <publishTime>12/30/2016 15:11:55</publishTime>
+    </File>
+    <File Include="app/workreport.html">
+      <publishTime>12/30/2016 14:46:06</publishTime>
+    </File>
     <File Include="ApplicationInsights.config">
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
@@ -139,22 +175,22 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>12/26/2016 20:05:18</publishTime>
+      <publishTime>12/30/2016 15:59:47</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>12/17/2016 10:37:21</publishTime>
+      <publishTime>12/29/2016 19:17:25</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>12/26/2016 20:05:14</publishTime>
+      <publishTime>12/30/2016 15:59:43</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>12/26/2016 20:05:14</publishTime>
+      <publishTime>12/30/2016 15:40:36</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>12/26/2016 20:05:15</publishTime>
+      <publishTime>12/30/2016 15:59:43</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>12/23/2016 15:57:52</publishTime>
+      <publishTime>12/30/2016 15:40:36</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
       <publishTime>12/09/2016 17:29:57</publishTime>
@@ -236,6 +272,9 @@
     </File>
     <File Include="handler/Logout.ashx">
       <publishTime>10/26/2016 14:48:58</publishTime>
+    </File>
+    <File Include="handler/mailinfo.ashx">
+      <publishTime>12/27/2016 14:32:27</publishTime>
     </File>
     <File Include="handler/UploadFileEidt.ashx">
       <publishTime>10/31/2016 17:38:29</publishTime>
@@ -654,6 +693,9 @@
     <File Include="static/js/admin/apparticle.js">
       <publishTime>12/14/2016 14:27:37</publishTime>
     </File>
+    <File Include="static/js/admin/appmail.js">
+      <publishTime>12/29/2016 18:55:37</publishTime>
+    </File>
     <File Include="static/js/admin/articleedit.js">
       <publishTime>12/12/2016 15:48:15</publishTime>
     </File>
@@ -696,6 +738,9 @@
     <File Include="static/js/admin/loginstatistics.js">
       <publishTime>12/23/2016 15:27:22</publishTime>
     </File>
+    <File Include="static/js/admin/maillist.js">
+      <publishTime>12/29/2016 19:18:37</publishTime>
+    </File>
     <File Include="static/js/admin/managerlist.js">
       <publishTime>12/06/2016 14:12:50</publishTime>
     </File>
@@ -735,8 +780,14 @@
     <File Include="static/js/admin/userlist.js">
       <publishTime>12/15/2016 14:54:48</publishTime>
     </File>
+    <File Include="static/js/admin/userreportlist.js">
+      <publishTime>12/30/2016 15:58:50</publishTime>
+    </File>
     <File Include="static/js/admin/usersigntatistics.js">
       <publishTime>12/23/2016 15:50:35</publishTime>
+    </File>
+    <File Include="static/js/admin/worktemplate.js">
+      <publishTime>12/30/2016 10:23:52</publishTime>
     </File>
     <File Include="static/js/bootstrap.min.js">
       <publishTime>06/16/2015 16:12:50</publishTime>
@@ -785,6 +836,9 @@
     </File>
     <File Include="static/js/demoLeftData.js">
       <publishTime>10/28/2016 16:32:39</publishTime>
+    </File>
+    <File Include="static/js/fastclick.js">
+      <publishTime>12/27/2016 17:22:24</publishTime>
     </File>
     <File Include="static/js/hplus.min.js">
       <publishTime>10/25/2016 16:28:57</publishTime>
@@ -1471,7 +1525,7 @@
       <publishTime>10/21/2015 10:40:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/15/2016 15:38:03</publishTime>
+      <publishTime>12/29/2016 19:17:30</publishTime>
     </File>
   </ItemGroup>
 </Project>
