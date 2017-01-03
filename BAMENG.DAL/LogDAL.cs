@@ -638,7 +638,7 @@ namespace BAMENG.DAL
                 if (useridentity == 0)
                     strSql += " and  shop.ShopType=1";
                 else if (useridentity == 1)
-                    strSql += " and  (log.BelongOneShopId=@ShopId or log.ShopId=@ShopId)";
+                    strSql += " and  (c.BelongOneShopId=@ShopId or c.ShopId=@ShopId)";
                 else if (useridentity == 2)
                     strSql += " and  shop.ShopId=@ShopId";
                 strSql += "group by shop.ShopName    order by count(1) desc";
