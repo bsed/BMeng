@@ -40,7 +40,7 @@ var mailHelper = {
                             var tempHtml =$("#templist").html();
                             tempHtml = tempHtml.replace("{NO}", i + 1);
                             tempHtml = tempHtml.replace("{Title}", item.Title);
-                            tempHtml = tempHtml.replace("{BodyContent}", item.BodyContent);
+                            tempHtml = tempHtml.replace("{BodyContent}", item.ShopName);
                             if (!hotUtil.isNullOrEmpty(item.CoverUrl))
                                 tempHtml = tempHtml.replace("{CoverUrl}", item.CoverUrl);
                             else

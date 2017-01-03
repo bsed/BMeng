@@ -32,7 +32,7 @@ var mailsHelper = {
                     $(".demos-title").text(ret.data.Title);
                     $("#articleTime").text(ret.data.time);
                     $("#articleInfo").html(ret.data.BodyContent);
-                    $(".authorName").text(ret.data.AuthorName);                    
+                    $(".authorName").text(ret.data.AuthorName);
                     mailsHelper.sendtype = ret.data.SendType;
                     $(".bodyContent").show();
                 }
@@ -111,7 +111,8 @@ var mailsHelper = {
             mailid: hotUtil.getQuery("articleId"),
             content: hotUtil.encode($("#j_cmnt_input").val()),
             sendtype: mailsHelper.sendtype,
-            title: hotUtil.encode($(".demos-title").text())
+            title: hotUtil.encode($(".demos-title").text()),
+            pm: hotUtil.encode(hotUtil.getQuery("pm", ""))
         };
         $.showLoading();
         hotUtil.ajaxCall("/handler/app.ashx", postData, function (ret, err) {
@@ -120,7 +121,7 @@ var mailsHelper = {
                 if (ret.status == 200) {
                     $.closePopup();
                     $("#j_cmnt_input").val("");
-                    $.toast("回复成功", function () {                        
+                    $.toast("回复成功", function () {
                         mailsHelper.replylist(1);
                     });
                 }
@@ -132,7 +133,7 @@ var mailsHelper = {
 }
 
 $(function () {
-    mailsHelper.load();    
+    mailsHelper.load();
     mailsHelper.replylist(1);
     FastClick.attach(document.body);
 });

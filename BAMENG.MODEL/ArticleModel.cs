@@ -193,6 +193,12 @@ namespace BAMENG.MODEL
         public string AuthorName { get; set; }
 
         /// <summary>
+        /// 所属门店名称
+        /// </summary>
+        /// <value>The name of the shop.</value>
+        public string ShopName { get; set; }
+
+        /// <summary>
         /// 发送类型 0盟主发给盟友，1盟友发给盟主，2发给霸盟
         /// </summary>
         /// <value>The type of the send.</value>
@@ -214,6 +220,12 @@ namespace BAMENG.MODEL
 
         public DateTime ReplyTime { get; set; }
 
+
+        /// <summary>
+        /// 手机型号
+        /// </summary>
+        /// <value>The phone model.</value>
+        public string PhoneModel { get; set; }
 
         public string time { get; set; }
 

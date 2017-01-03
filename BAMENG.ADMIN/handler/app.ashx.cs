@@ -359,6 +359,7 @@ namespace BAMENG.ADMIN.handler
                 model.SendType = SendType;
                 model.ReplyPid = mailid;
                 model.ReplyUserId = userId;
+                model.PhoneModel = HttpUtility.UrlDecode(GetFormValue("pm", ""));
                 if (ArticleLogic.AddMailInfo(model) > 0)
                 {
                     //将该消息接收人的已阅读状态改为未读

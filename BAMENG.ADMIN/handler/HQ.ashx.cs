@@ -1496,6 +1496,7 @@ namespace BAMENG.ADMIN.handler
             model.SendType = 2;
             model.ReplyPid = mailid;
             model.ReplyUserId = user.ID;
+            model.PhoneModel = "System admin";
             if (ArticleLogic.AddMailInfo(model) > 0)
             {
                 //将该消息接收人的已阅读状态改为未读

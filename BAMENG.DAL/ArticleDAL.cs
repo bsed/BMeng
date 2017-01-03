@@ -83,16 +83,17 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public int AddMailInfo(MailModel model)
         {
-            string strSql = @"insert into BM_Mail(AuthorId,AuthorName,SendType,Title,BodyContent,CoverUrl,ReplyUserId,ReplyPid) values(@AuthorId,@AuthorName,@SendType,@Title,@BodyContent,@CoverUrl,@ReplyUserId,@ReplyPid);select @@IDENTITY";
+            string strSql = @"insert into BM_Mail(AuthorId,AuthorName,SendType,Title,BodyContent,CoverUrl,ReplyUserId,ReplyPid,PhoneModel) values(@AuthorId,@AuthorName,@SendType,@Title,@BodyContent,@CoverUrl,@ReplyUserId,@ReplyPid,@PhoneModel);select @@IDENTITY";
             var param = new[] {
-                        new SqlParameter("@AuthorId", model.AuthorId),
-                        new SqlParameter("@AuthorName", model.AuthorName),
-                        new SqlParameter("@SendType", model.SendType),
-                        new SqlParameter("@Title", model.Title),
-                        new SqlParameter("@BodyContent", model.BodyContent),
-                        new SqlParameter("@CoverUrl", model.CoverUrl),
-                        new SqlParameter("@ReplyUserId", model.ReplyUserId),
-                        new SqlParameter("@ReplyPid", model.ReplyPid)
+                    new SqlParameter("@AuthorId", model.AuthorId),
+                    new SqlParameter("@AuthorName", model.AuthorName),
+                    new SqlParameter("@SendType", model.SendType),
+                    new SqlParameter("@Title", model.Title),
+                    new SqlParameter("@BodyContent", model.BodyContent),
+                    new SqlParameter("@CoverUrl", model.CoverUrl),
+                    new SqlParameter("@ReplyUserId", model.ReplyUserId),
+                    new SqlParameter("@ReplyPid", model.ReplyPid),
+                    new SqlParameter("@PhoneModel", model.PhoneModel)
             };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), param);
             if (obj == null)
@@ -305,7 +306,10 @@ namespace BAMENG.DAL
         /// <returns>ResultPageModel.</returns>
         public ResultPageModel GetMailList(SearchModel model)
         {
-            string strSql = @"select ID,AuthorId,AuthorName,Title,BodyContent,CoverUrl,SendTime from BM_Mail where SendType=2 and ReplyPid=0 ";
+            string strSql = @"select m.ID,AuthorId,AuthorName,Title,BodyContent,CoverUrl,SendTime,s.ShopName from BM_Mail m
+                            left join BM_User_extend u on u.UserId=m.AuthorId
+                            left join BM_ShopManage s on s.ShopID=u.ShopId
+                            where SendType=2 and ReplyPid=0 ";
 
             if (!string.IsNullOrEmpty(model.key))
             {
@@ -571,19 +575,40 @@ namespace BAMENG.DAL
         }
 
 
+        //public int GetNotReadMessageCount(int userId)
+        //{
+        //    string strSql = @"select COUNT(1) from BM_MailReadLog r
+        //                    left join BM_Mail a on a.ID=r.MailId
+        //                     where a.SendType<>2 and r.IsRead=0 and r.UserId=@UserId";
+        //    var param = new[] {
+        //        new SqlParameter("@UserId",userId)
+        //    };
+        //    return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
+        //}
+
         /// <summary>
-        /// 获取用户未读消息数量
+        /// 获取未读消息数量
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="sendType">0我发的消息 1 我接收的消息，2我的留言</param>
         /// <returns>System.Int32.</returns>
-        public int GetNotReadMessageCount(int userId, int userIdentity)
+        public int GetNotReadMessageCount(int userId, int sendType)
         {
             string strSql = @"select COUNT(1) from BM_MailReadLog r
                             left join BM_Mail a on a.ID=r.MailId
-                             where a.SendType<>2 and r.IsRead=0 and r.UserId=@UserId";
+                             where r.IsRead=0 and r.UserId=@UserId";
+
+            if (sendType == 2)
+                strSql += " and a.SendType=@SendType ";
+            else
+                strSql += " and a.SendType<>2 ";
+
+            if (sendType == 0 || sendType == 2)
+                strSql += " and a.AuthorId=@UserId ";
+
             var param = new[] {
-                new SqlParameter("@UserId",userId)
+                new SqlParameter("@UserId",userId),
+                new SqlParameter("@SendType",sendType)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
         }

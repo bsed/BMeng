@@ -761,7 +761,13 @@ namespace BAMENG.API.Controllers
 
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
-                data["messageCount"] = 0;// ArticleLogic.GetNotReadMessageCount(user.UserId, user.UserIdentity == 1 ? 4 : 3);
+                //我的留言未读数量
+                data["messageCount"] =ArticleLogic.GetNotReadMessageCount(user.UserId,2);
+                //我的消息-发送消息未读数量
+                data["messagePushCount"] = ArticleLogic.GetNotReadMessageCount(user.UserId, 0);
+                //我的消息-接收消息未读数量
+                data["messagePullCount"] = ArticleLogic.GetNotReadMessageCount(user.UserId, 1);
+
                 bool isbusiness = false;
                 if (user.UserIdentity == 1)
                 {

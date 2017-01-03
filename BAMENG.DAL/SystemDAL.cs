@@ -31,7 +31,7 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public List<SystemMenuModel> GetMenuList(int type)
         {
-            string strSql = "select ID,ItemType,ItemCode,ItemNavLabel,ItemSort,ItemParentCode,ItemUrl,ItemShow,ItemIcons,CreateTime from BM_MenuList  where ItemType=@ItemType   order by ItemCode,ItemSort";
+            string strSql = "select ID,ItemType,ItemCode,ItemNavLabel,ItemSort,ItemParentCode,ItemUrl,ItemShow,ItemIcons,CreateTime from BM_MenuList  where ItemType=@ItemType   order by ItemSort asc";
             var param = new[] {
                 new SqlParameter("@ItemType",type)
             };

@@ -251,16 +251,16 @@ namespace BAMENG.LOGIC
         }
 
         /// <summary>
-        /// 获取用户未读消息数量
+        /// 获取未读消息数量
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="userIdentity">The user identity.</param>
+        /// <param name="sendType">0我发的消息 1 我接收的消息，2我的留言</param>
         /// <returns>System.Int32.</returns>
-        public static int GetNotReadMessageCount(int userId, int userIdentity)
+        public static int GetNotReadMessageCount(int userId, int sendType)
         {
             using (var dal = FactoryDispatcher.ArticleFactory())
             {
-                return dal.GetNotReadMessageCount(userId, userIdentity);
+                return dal.GetNotReadMessageCount(userId, sendType);
             }
         }
     }
