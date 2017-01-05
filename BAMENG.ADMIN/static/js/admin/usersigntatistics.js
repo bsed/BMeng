@@ -45,7 +45,7 @@ var chartsHelper = {
                 }
             }],
             series: [{
-                name: "登录次数",
+                name: "签到次数",
                 type: "line",
                 data: yData,
                 markPoint: {

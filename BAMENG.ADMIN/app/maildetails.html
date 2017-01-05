@@ -7,15 +7,14 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="description" content="" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />    
+    <link rel="stylesheet" type="text/css" href="/static/css/weui.min-bm-diy.css" />
     <link rel="stylesheet" type="text/css" href="css/online-min.css">
     <link rel="stylesheet" type="text/css" href="css/cmnt.min.css">
     <link rel="stylesheet" type="text/css" href="css/weui.min-gggeren-diy.css">
     <title>详情</title>
     <style>
         html, body {
-            overflow-x: hidden;
-            height:100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -68,15 +67,15 @@
         </div>
     </div>
     <div class="f_hot_cmnt" style="display: none;border-bottom:none;">
-        <p style="text-align: center;color: #9c9c9c;">--------------&nbsp;&nbsp;留言区&nbsp;&nbsp;--------------</p>
+        <p style="color: #9c9c9c;border-left: 3px solid #F00;background-color: #fff;border-bottom: 1px solid #ddd;border-top: 1px solid #ECECEC;padding: 3px 0px;">&nbsp;&nbsp;&nbsp;留言区</p>
         <p style="height:14px; background-color:#fff"></p>
 
         <div class="cmnt_list" id="j_hotlist">
 
         </div>
-        <div class="weui-infinite-scroll" style="display:none;">
-            <div class="infinite-preloader"></div><!-- 菊花 -->
-            正在加载... <!-- 文案，可以自行修改 -->
+        <div class="f_hot_more" style="display:none;">
+            <p style="text-align:center;"><a class="open-popup" data-target="#fullall" style="color: #FB7400;font-size: 14px;" href="javascript:mailsHelper.showAll();">点击查看更多</a></p>
+            <p style="height:20px"></p>
         </div>
     </div>
 
@@ -102,6 +101,39 @@
 
     <!--end-->
     <p style="height:48px"></p>
+
+
+
+
+
+    <div id="fullall" class="weui-popup-container " style="z-index:100;display:none;">
+        <div class="weui-popup-overlay"></div>
+        <div class="weui-popup-modal v" id="alllist">
+            <!--<aside class="cmnt_wrap">
+                <div class="cmnt_tp">
+                    <span class="fl">
+                        <a href="javascript:void(0);" class="cmnt_cancel close-popup" id="j_cmnt_cancel" data-sudaclick="article_new_cms_send_cancel">取消</a>
+                    </span>
+                    <span class="fr">
+                        <a href="javascript:mailsHelper.addReply();" class="cmnt_smt" id="j_cmnt_smt" data-sudaclick="article_new_cms_send_cmnt">返回</a>
+                    </span>
+                </div>
+            </aside>-->
+            <div class="f_hot_cmnt" style="display: none;border-bottom:none;">
+                <div class="cmnt_list" id="j_hotlist2">
+
+                </div>
+                <div class="weui-infinite-scroll" style="display:none;">
+                    <div class="infinite-preloader"></div><!-- 菊花 -->
+                    正在加载... <!-- 文案，可以自行修改 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </body>
 </html>
 <link rel="stylesheet" type="text/css" href="http://resali.huobanplus.com/cdn/jquery-weui/0.8.2/weui.min.css">

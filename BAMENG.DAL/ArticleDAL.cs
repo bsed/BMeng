@@ -364,7 +364,7 @@ namespace BAMENG.DAL
                      if (string.IsNullOrEmpty(item.CoverUrl))
                          item.CoverUrl = WebConfig.articleDetailsDomain() + "/static/img/mz@3x.png";
                  });
-             }, true);
+             });
         }
 
 
@@ -605,6 +605,8 @@ namespace BAMENG.DAL
 
             if (sendType == 0 || sendType == 2)
                 strSql += " and a.AuthorId=@UserId ";
+            else
+                strSql += " and A.AuthorId<>@UserId ";
 
             var param = new[] {
                 new SqlParameter("@UserId",userId),

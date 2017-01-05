@@ -311,7 +311,7 @@ namespace BAMENG.DAL
                                 ";
 
             if (userIdentity == 1)
-                strSql += " and BelongOneShopId=@ShopId";
+                strSql += " and (BelongOneShopId=@ShopId or ShopId=@ShopId)";
             else if (userIdentity == 2)
                 strSql += " and ShopId=@ShopId";
 

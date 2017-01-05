@@ -44,7 +44,8 @@ var customerHelper = {
                             tempHtml = tempHtml.replace("{BelongOneName}", item.BelongOneName);
                             tempHtml = tempHtml.replace("{BelongTwoName}", item.BelongTwoName);
                             tempHtml = tempHtml.replace("{Mobile}", item.Mobile);
-                            tempHtml = tempHtml.replace("{Addr}", item.Addr + " " + item.ShopName);
+                            tempHtml = tempHtml.replace("{Addr}", item.Addr);
+                            tempHtml = tempHtml.replace("{ShopName}", item.ShopName);
                             tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);
                             tempHtml = tempHtml.replace("{StatusText}", item.Status == 1 ? "有效" : item.Status == 2 ? "无效" : "待审核");
                             

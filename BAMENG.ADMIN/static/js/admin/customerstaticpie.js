@@ -23,7 +23,7 @@ var chartsHelper = {
         var u = {
             title: {
                 text: "客户信息统计图",
-                subtext: "订单数：" + AxisData.total,
+                subtext: "有效客户总数：" + AxisData.total,
                 x: "center"
             },
             tooltip: {

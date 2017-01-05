@@ -15,7 +15,7 @@
 var mailsHelper = {
     idt: hotUtil.getQuery("idt"),
     pageIndex: 1,
-    pageSize: 20,
+    pageSize: 10,
     loading: false, //状态标记
     sendtype: 1,
     load: function () {
@@ -24,7 +24,7 @@ var mailsHelper = {
             auth: hotUtil.auth(),
             articleId: hotUtil.getQuery("articleId")
         }
-        $.showLoading();
+        //$.showLoading();
         hotUtil.ajaxCall("/handler/mailinfo.ashx", postData, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
@@ -39,26 +39,27 @@ var mailsHelper = {
                 else
                     $.alert(ret.statusText);
             }
-            $.hideLoading();
+            // $.hideLoading();
         });
     },
     replylist: function (page) {
-        this.pageIndex = page;
         var param = {
             action: "GetReplyMailList",
             pageIndex: page,
-            pageSize: this.pageSize,
+            pageSize: mailsHelper.pageSize,
             mailid: hotUtil.getQuery("articleId")
         }
+        $.showLoading();
         hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
             if (ret) {
                 if (ret.status == 200) {
                     if (ret.data) {
                         var listhtml = "";
-                        //var total = ret.data.Total;
+                        var total = ret.data.Total;
                         $.each(ret.data.Rows, function (i, item) {
                             listhtml += $("#templateList").html();
-                            listhtml = listhtml.replace("{NO}", page * mailsHelper.pageSize - mailsHelper.pageSize + (i + 1));
+                            //listhtml = listhtml.replace("{NO}", page * mailsHelper.pageSize - mailsHelper.pageSize + (i + 1));
+                            listhtml = listhtml.replace("{NO}", (total - ((page - 1) * mailsHelper.pageSize) - i));
                             listhtml = listhtml.replace("{url}", item.CoverUrl);
                             listhtml = listhtml.replace("{authorname}", item.AuthorName);
                             listhtml = listhtml.replace("{content}", item.BodyContent);
@@ -67,31 +68,78 @@ var mailsHelper = {
                         });
                         if (!hotUtil.isNullOrEmpty(listhtml)) {
                             if (page == 1)
-                                $("#j_hotlist").html(listhtml);
+                                $("#j_hotlist,#j_hotlist2").html(listhtml);
                             else
-                                $("#j_hotlist").append(listhtml);
+                                $("#j_hotlist,#j_hotlist2").append(listhtml);
 
-
+                            mailsHelper.pageIndex = page;
                             $(".f_hot_cmnt").show();
+                            if (page < ret.data.PageCount) {
+                                $(".f_hot_more").show();
+                            }
                         }
-                        mailsHelper.nextPage(page, ret.data.PageCount, mailsHelper.replylist);
+                        mailsHelper.nextPage(page, ret.data.PageCount, mailsHelper.replylistall);
                     }
                 }
                 else {
                     $.alert(ret.statusText);
                 }
+                $.hideLoading();
             }
         });
+    },
+    replylistall: function (page) {
+        var param = {
+            action: "GetReplyMailList",
+            pageIndex: page,
+            pageSize: mailsHelper.pageSize,
+            mailid: hotUtil.getQuery("articleId")
+        }
+        $.showLoading();
+        hotUtil.ajaxCall("/handler/app.ashx", param, function (ret, err) {
+            if (ret) {
+                if (ret.status == 200) {
+                    if (ret.data) {
+                        var listhtml = "";
+                        var total = ret.data.Total;
+                        $.each(ret.data.Rows, function (i, item) {
+                            listhtml += $("#templateList").html();
+                            listhtml = listhtml.replace("{NO}", (total - ((page - 1) * mailsHelper.pageSize) - i));
+                            listhtml = listhtml.replace("{url}", item.CoverUrl);
+                            listhtml = listhtml.replace("{authorname}", item.AuthorName);
+                            listhtml = listhtml.replace("{content}", item.BodyContent);
+                            listhtml = listhtml.replace("{time}", item.time);
+
+                        });
+                        if (!hotUtil.isNullOrEmpty(listhtml)) {
+                            if (page == 1)
+                                $("#j_hotlist2").html(listhtml);
+                            else
+                                $("#j_hotlist2").append(listhtml);
+                        }
+                        mailsHelper.nextPage(page, ret.data.PageCount, mailsHelper.replylistall);
+                    }
+                }
+                else {
+                    $.alert(ret.statusText);
+                }
+                $.hideLoading();
+            }
+        });
+    },
+    showAll: function () {
+        $(document.body).css({ "overflow": "hidden" });
+        //this.replylistall(2);
     },
     nextPage: function (currentPageIndex, PageCount, callback) {
         loading = false;
         if (currentPageIndex >= PageCount) {
-            $(document.body).destroyInfinite();
+            $("#alllist").destroyInfinite();
             $(".weui-infinite-scroll").hide();
         }
         else {
             $(".weui-infinite-scroll").show();
-            $(document.body).infinite().on("infinite", function () {
+            $("#alllist").infinite().on("infinite", function () {
                 if (loading) return;
                 loading = true;
                 callback(currentPageIndex + 1);
@@ -125,8 +173,8 @@ var mailsHelper = {
                         mailsHelper.replylist(1);
                     });
                 }
-                else
-                    $.toast(ret.statusText, "cancel");
+                else //if (ret.status == 70035)
+                    $.alert(ret.statusText);
             }
         });
     }
@@ -135,5 +183,5 @@ var mailsHelper = {
 $(function () {
     mailsHelper.load();
     mailsHelper.replylist(1);
-    FastClick.attach(document.body);
+    //FastClick.attach(document.body);
 });
