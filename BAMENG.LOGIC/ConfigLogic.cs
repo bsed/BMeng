@@ -56,7 +56,7 @@ namespace BAMENG.LOGIC
                 bool flag = dal.UpdateValue(model);
 
                 if (flag)
-                    WebCacheHelper.RefreshCache(cacheKey);
+                    WebCacheHelper.DeleteDepFile(cacheKey);
 
                 return flag;
             }
@@ -80,7 +80,7 @@ namespace BAMENG.LOGIC
                         Remark = item.Remark
                     });
                 }
-                WebCacheHelper.RefreshCache(cacheKey);
+                WebCacheHelper.DeleteDepFile(cacheKey);
                 return true;
             }
         }
