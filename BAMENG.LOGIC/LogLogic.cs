@@ -252,18 +252,18 @@ namespace BAMENG.LOGIC
             {
                 StatisticsModel data = new StatisticsModel();
                 List<StatisticsListModel> lst = null;
-                string cacheKey = string.Format("BMLOGIN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
-                if (type != 0)
-                {
-                    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
-                    if (lst == null)
-                    {
-                        lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
-                        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
-                    }
-                }
-                else
-                    lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                //string cacheKey = string.Format("BMLOGIN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
+                //if (type != 0)
+                //{
+                //    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
+                //    if (lst == null)
+                //    {
+                //        lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                //        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                //    }
+                //}
+                //else
+                lst = dal.LoginStatistics(user.ID, user.UserIndentity, startTime, endTime);
                 if (lst != null && lst.Count() > 0)
                 {
                     int len = lst.Count();
@@ -313,17 +313,17 @@ namespace BAMENG.LOGIC
             {
                 StatisticsModel data = new StatisticsModel();
                 List<StatisticsListModel> lst = null;
-                string cacheKey = string.Format("BMSIGN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
-                if (type != 0)
-                {
-                    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
-                    if (lst == null)
-                    {
-                        lst = dal.UserSignStatistics(user.ID, user.UserIndentity, startTime, endTime);
-                        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
-                    }
-                }
-                else
+                //string cacheKey = string.Format("BMSIGN{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
+                //if (type != 0)
+                //{
+                //    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
+                //    if (lst == null)
+                //    {
+                //        lst = dal.UserSignStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                //        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                //    }
+                //}
+                //else
                     lst = dal.UserSignStatistics(user.ID, user.UserIndentity, startTime, endTime);
                 if (lst != null && lst.Count() > 0)
                 {
@@ -370,17 +370,17 @@ namespace BAMENG.LOGIC
                 StatisticsModel data2 = new StatisticsModel();
                 StatisticsModel data3 = new StatisticsModel();
                 List<StatisticsListModel> lst = null;
-                string cacheKey = string.Format("BMCT{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
-                if (type != 0)
-                {
-                    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
-                    if (lst == null)
-                    {
-                        lst = dal.CustomerStatistics(user.ID, user.UserIndentity, startTime, endTime);
-                        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
-                    }
-                }
-                else
+                //string cacheKey = string.Format("BMCT{0}{1}{2}", user.UserIndentity, type, DateTime.Now.ToString("yyyyMMdd"));
+                //if (type != 0)
+                //{
+                //    lst = WebCacheHelper<List<StatisticsListModel>>.Get(cacheKey);
+                //    if (lst == null)
+                //    {
+                //        lst = dal.CustomerStatistics(user.ID, user.UserIndentity, startTime, endTime);
+                //        WebCacheHelper.Insert(cacheKey, lst, new System.Web.Caching.CacheDependency(WebCacheHelper.GetDepFile(cacheKey)));
+                //    }
+                //}
+                //else
                     lst = dal.CustomerStatistics(user.ID, user.UserIndentity, startTime, endTime);
                 if (lst != null && lst.Count() > 0)
                 {

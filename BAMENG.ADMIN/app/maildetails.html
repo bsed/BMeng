@@ -16,6 +16,9 @@
         html, body {
             height: 100%;
         }
+        .overflowEnable {
+            overflow:hidden;
+        }
     </style>
 </head>
 
@@ -43,7 +46,7 @@
             <aside class="cmnt_wrap">
                 <div class="cmnt_tp">
                     <span class="fl">
-                        <a href="javascript:void(0);" class="cmnt_cancel close-popup" id="j_cmnt_cancel" data-sudaclick="article_new_cms_send_cancel">取消</a>
+                        <a href="javascript:mailsHelper.closeReplyModal();" class="cmnt_cancel close-popup" id="j_cmnt_cancel" data-sudaclick="article_new_cms_send_cancel">取消</a>
                     </span><span class="fr">
                         <a href="javascript:mailsHelper.addReply();" class="cmnt_smt" id="j_cmnt_smt" data-sudaclick="article_new_cms_send_cmnt">发送</a>
                     </span>
@@ -63,7 +66,7 @@
             <!--别删-->
         </div>
         <div class="add-to-cart yuanjiaoo ">
-            <a class="open-popup" href="javascript:;" data-target="#full" style="z-index:99;display:block"> 编辑回复</a>
+            <a class="open-popup" href="javascript:mailsHelper.showReplyModal();" data-target="#full" style="z-index:99;display:block"> 编辑回复</a>
         </div>
     </div>
     <div class="f_hot_cmnt" style="display: none;border-bottom:none;">

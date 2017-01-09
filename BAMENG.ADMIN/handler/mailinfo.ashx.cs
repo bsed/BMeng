@@ -61,8 +61,8 @@ namespace BAMENG.ADMIN.handler
                     //判断是否已经阅读
                     if (!LogLogic.IsMailRead(articleId, userId))
                         LogLogic.UpdateMailReadStatus(userId, articleId);
-                    else
-                        LogLogic.AddMailReadLog(logModel);
+                    //else
+                    //LogLogic.AddMailReadLog(logModel);
 
                 }
                 goto Finish;

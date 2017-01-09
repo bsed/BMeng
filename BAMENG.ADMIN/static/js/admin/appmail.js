@@ -128,8 +128,14 @@ var mailsHelper = {
         });
     },
     showAll: function () {
-        $(document.body).css({ "overflow": "hidden" });
+        $("html").css({ "overflow": "hidden" });
         //this.replylistall(2);
+    },
+    showReplyModal: function () {
+        $("html").addClass("overflowEnable");
+    },
+    closeReplyModal: function () {
+        $("html").removeClass("overflowEnable");
     },
     nextPage: function (currentPageIndex, PageCount, callback) {
         loading = false;
@@ -168,6 +174,7 @@ var mailsHelper = {
             if (ret) {
                 if (ret.status == 200) {
                     $.closePopup();
+                    $("html").removeClass("overflowEnable");
                     $("#j_cmnt_input").val("");
                     $.toast("回复成功", function () {
                         mailsHelper.replylist(1);
