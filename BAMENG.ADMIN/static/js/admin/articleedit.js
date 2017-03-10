@@ -144,7 +144,7 @@ var articleHelper = {
                     }
                     else
                         swal("图片上传失败", "请检查图片格式是否正确", "warning");
-                }, null, 1);
+                }, null, 0);
             }
         }
         else {
