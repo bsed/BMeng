@@ -34,6 +34,15 @@ var loginHelper = {
                 loginType = $(this).val();
         });
 
+
+        var host = location.host;
+        if (host.indexOf("mellkit.com") > 0) {
+            if (host.indexOf("manager") >= 0)
+                loginType = 0;
+            else
+                loginType = 1;
+        }
+
         var postData = {
             loginName: $("#loginName").val(),
             password: $("#loginPassword").val(),
@@ -72,5 +81,10 @@ $(function () {
             $(this).attr("data-check", "true");
         }
     });
+    var host = location.host;
+    if (host.indexOf("mellkit.com") > 0) {
+        $(".radio-inline").hide();
+    }
+
     loginHelper.init();
 });
