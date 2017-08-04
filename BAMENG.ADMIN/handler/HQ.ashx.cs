@@ -308,6 +308,13 @@ namespace BAMENG.ADMIN.handler
                     case "GETUSERREPORTMODEL":
                         GetUserReportModel();
                         break;
+
+                    case "SETALLYREWARD":
+                        SetAllyReward();
+                        break;
+                    case "GETALLYREWARD":
+                        GetAllyReward();
+                        break;
                     default:
                         break;
                 }
@@ -1587,6 +1594,32 @@ namespace BAMENG.ADMIN.handler
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.保存失败));
+        }
+
+
+        /// <summary>
+        /// 设置盟友奖励
+        /// </summary>
+        private void SetAllyReward()
+        {
+            decimal creward = GetFormValue("creward", 0);
+            decimal orderreward = GetFormValue("orderreward", 0);
+            string extrareward = GetFormValue("extrareward", "");
+            if (UserLogic.SetAllyRaward(user.ID, creward, orderreward, 0, extrareward))
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.保存失败));
+        }
+        /// <summary>
+        /// 获取盟友奖励设置
+        /// </summary>
+        private void GetAllyReward()
+        {
+            RewardsSettingModel data = UserLogic.GetRewardModel(user.ID);
+            if (data != null)
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+            else
+                json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
         }
 
     }

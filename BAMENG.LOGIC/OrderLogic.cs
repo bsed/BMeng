@@ -149,6 +149,7 @@ namespace BAMENG.LOGIC
                     }
                 }
                 TempBeansRecordsModel model1 = null;
+                BeansRecordsModel model2 = null;
                 if (cashUserId > 0)
                 {
                     using (var dal = FactoryDispatcher.UserFactory())
@@ -158,8 +159,14 @@ namespace BAMENG.LOGIC
                         {
                             model.UserId = user.BelongOne;
                             model.Ct_BelongId = user.UserId;
-                            //获取盟友奖励
-                            RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(user.BelongOne);
+
+
+                            var shopData = ShopLogic.GetShopModel(model.ShopId);
+                            RewardsSettingModel rewardSettingModel = null;
+                            //判断当前客户是否所属分店
+                            if (shopData != null && shopData.ShopType == 2)
+                                rewardSettingModel = UserLogic.GetRewardModel(model.ShopId);
+
                             if (rewardSettingModel != null && rewardSettingModel.OrderReward > 0)
                             {
                                 //订单成交需付盟豆
@@ -179,6 +186,21 @@ namespace BAMENG.LOGIC
                         {
                             model.UserId = user.UserId;
                             model.Ct_BelongId = user.UserId;
+                        }
+
+                        //获取积分奖励配置
+                        ScoreConfigModel scoreCfg = ConfigLogic.GetScoreConfig();
+                        //添加盟主创建订单，奖励积分                    
+                        if (scoreCfg.CreateOrderScore > 0 && dal.addUserIntegral(userId, scoreCfg.CreateOrderScore) > 0)
+                        {
+                            model2 = new BeansRecordsModel();
+                            model2.Amount = scoreCfg.CreateOrderScore;
+                            model2.UserId = userId;
+                            model2.LogType = 1;
+                            model2.Income = 1;
+                            model2.Remark = "创建订单";
+                            model2.OrderId = "";
+                            model2.CreateTime = DateTime.Now;
                         }
                     }
                 }
@@ -206,11 +228,28 @@ namespace BAMENG.LOGIC
                     }
                     if (flag)
                     {
+
+                        //
+
+                        //根据手机号或地址，查找客户，修改客户状态为已生成订单
+                        CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
+                        if (customer != null)
+                        {
+                            using (var dal = FactoryDispatcher.CustomerFactory())
+                            {
+                                dal.UpdateStatus(customer.ID, 4);
+                            }
+
+                        }
                         //添加
                         using (var dald = FactoryDispatcher.UserFactory())
                         {
                             if (model1 != null)
                                 dald.AddTempBeansRecords(model1);
+
+                            //添加日志
+                            if (model2 != null)
+                                dald.AddBeansRecords(model2);
                         }
 
                         //添加优惠券使用记录

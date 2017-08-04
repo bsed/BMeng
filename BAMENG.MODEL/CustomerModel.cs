@@ -34,7 +34,7 @@ namespace BAMENG.MODEL
         /// </summary>
         public int BelongTwo { get; set; }
         /// <summary>
-        /// 0 审核中，1已同意  2已拒绝
+        /// 0 审核中，1已同意  2已拒绝，3未生成订单  4已生成订单，5已失效
         /// </summary>
         public int Status { get; set; }
         /// <summary>

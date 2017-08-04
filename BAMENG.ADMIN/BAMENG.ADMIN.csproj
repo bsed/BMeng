@@ -99,6 +99,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\allyrewardsetting.html" />
     <Content Include="admin\cashcouponstatic.html" />
     <Content Include="admin\cashcouponstaticpie.html" />
     <Content Include="admin\coupongetlist.html" />
@@ -175,6 +176,7 @@
     <Content Include="static\js\.DS_Store" />
     <Content Include="static\js\admin\appmail.js" />
     <Content Include="static\js\admin\apparticle.js" />
+    <Content Include="static\js\admin\allyrewardsetting.js" />
     <Content Include="static\js\admin\maillist.js" />
     <Content Include="static\js\admin\cashcouponstatic.js" />
     <Content Include="static\js\admin\cashcouponstaticpie.js" />

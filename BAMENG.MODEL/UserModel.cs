@@ -965,6 +965,11 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The create time.</value>
         public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 店铺ID
+        /// </summary>
+        public int ShopId { get; set; }
+
     }
 
 

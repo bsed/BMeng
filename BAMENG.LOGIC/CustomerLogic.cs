@@ -77,7 +77,33 @@ namespace BAMENG.LOGIC
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
             {
-                return dal.InsertCustomerInfo(model);
+                int flag = dal.InsertCustomerInfo(model);
+                BeansRecordsModel model2 = null;
+                if (flag > 0)
+                {
+                    //如果相等于，表示当前是盟主添加客户信息
+                    if (model.BelongOne == model.BelongTwo)
+                    {
+                        //获取积分奖励配置
+                        ScoreConfigModel scoreCfg = ConfigLogic.GetScoreConfig();
+                        using (var dal1 = FactoryDispatcher.UserFactory())
+                        {
+                            //盟友提交客户信息，盟主奖励
+                            if (scoreCfg.SubmitCustomerToMainScore2 > 0 && dal1.addUserIntegral(model.BelongOne, scoreCfg.SubmitCustomerToMainScore2) > 0)
+                            {
+                                model2 = new BeansRecordsModel();
+                                model2.Amount = scoreCfg.SubmitCustomerToMainScore1;
+                                model2.UserId = model.BelongTwo;
+                                model2.LogType = 1;
+                                model2.Income = 1;
+                                model2.Remark = "盟友提交客户信息，盟主奖励";
+                                model2.OrderId = "";
+                                model2.CreateTime = DateTime.Now;
+                            }
+                        }
+                    }
+                }
+                return flag;
             }
         }
 
@@ -129,7 +155,7 @@ namespace BAMENG.LOGIC
         /// 更新状态
         /// </summary>
         /// <param name="customerId"></param>
-        /// <param name="status">审核状态 1已同意  2已拒绝</param>
+        /// <param name="status">审核状态 1已同意  2已拒绝 3未生成订单  4已生成订单，5已失效</param>
         /// <param name="userId">操作人ID(此方法只有盟主操作)</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool UpdateStatus(int customerId, int status, int userId)
@@ -138,7 +164,7 @@ namespace BAMENG.LOGIC
             {
                 using (var dal = FactoryDispatcher.CustomerFactory())
                 {
-                    bool flag = dal.UpdateStatus(customerId, status, userId);
+                    bool flag = dal.UpdateStatus(customerId, status == 1 ? 3 : status, userId);
 
                     //如果客户审核同意
                     if (flag && status == 1)
@@ -151,22 +177,59 @@ namespace BAMENG.LOGIC
                             if (model.BelongOne != model.BelongTwo)
                                 UserLogic.AddUserCustomerAmount(model.BelongTwo);
 
-                            RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(model.BelongTwo);
 
-                            if (rewardSettingModel == null || rewardSettingModel.CustomerReward <= 0) return flag;
+                            var shopData = ShopLogic.GetShopModel(model.ShopId);
+                            RewardsSettingModel rewardSettingModel = null;
+                            //判断当前客户是否所属分店
+                            if (shopData != null && shopData.ShopType == 2)
+                                rewardSettingModel = UserLogic.GetRewardModel(model.ShopId);
+
                             using (var dal1 = FactoryDispatcher.UserFactory())
                             {
-                                //给盟友加盟豆
-                                UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.CustomerReward);
-                                BeansRecordsModel model2 = new BeansRecordsModel();
-                                model2.Amount = rewardSettingModel.CustomerReward;
-                                model2.UserId = model.BelongOne;
-                                model2.LogType = 0;
-                                model2.Income = 1;
-                                model2.Remark = "客户信息奖励";
-                                model2.OrderId = model.ID.ToString();
-                                model2.CreateTime = DateTime.Now;
-                                dal1.AddBeansRecords(model2);
+                                BeansRecordsModel model2 = null;
+                                if (rewardSettingModel != null && rewardSettingModel.CustomerReward > 0)
+                                {
+                                    //给盟友加盟豆
+                                    UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.CustomerReward);
+                                    model2 = new BeansRecordsModel();
+                                    model2.Amount = rewardSettingModel.CustomerReward;
+                                    model2.UserId = model.BelongOne;
+                                    model2.LogType = 0;
+                                    model2.Income = 1;
+                                    model2.Remark = "客户信息奖励";
+                                    model2.OrderId = model.ID.ToString();
+                                    model2.CreateTime = DateTime.Now;
+                                    dal1.AddBeansRecords(model2);
+                                }
+                                //获取积分奖励配置
+                                ScoreConfigModel scoreCfg = ConfigLogic.GetScoreConfig();
+                                //审核盟友提交的客户信息                  
+                                if (scoreCfg.SubmitCustomerToAllyScore > 0 && dal1.addUserIntegral(model.BelongOne, scoreCfg.SubmitCustomerToAllyScore) > 0)
+                                {
+                                    model2 = new BeansRecordsModel();
+                                    model2.Amount = scoreCfg.SubmitCustomerToAllyScore;
+                                    model2.UserId = model.BelongOne;
+                                    model2.LogType = 1;
+                                    model2.Income = 1;
+                                    model2.Remark = "盟友提交客户信息,盟友奖励";
+                                    model2.OrderId = "";
+                                    model2.CreateTime = DateTime.Now;
+                                    dal1.AddBeansRecords(model2);
+                                }
+                                //盟友提交客户信息，盟主奖励
+                                if (scoreCfg.SubmitCustomerToMainScore1 > 0 && dal1.addUserIntegral(model.BelongTwo, scoreCfg.SubmitCustomerToMainScore1) > 0)
+                                {
+                                    model2 = new BeansRecordsModel();
+                                    model2.Amount = scoreCfg.SubmitCustomerToMainScore1;
+                                    model2.UserId = model.BelongTwo;
+                                    model2.LogType = 1;
+                                    model2.Income = 1;
+                                    model2.Remark = "盟友提交客户信息，盟主奖励";
+                                    model2.OrderId = "";
+                                    model2.CreateTime = DateTime.Now;
+                                    dal1.AddBeansRecords(model2);
+                                }
+
                             }
                         }
                     }
@@ -179,6 +242,16 @@ namespace BAMENG.LOGIC
                 return false;
             }
         }
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// 判断客户是否存在
@@ -223,24 +296,24 @@ namespace BAMENG.LOGIC
                     var model = dal.GetModel(customerId);
                     if (model != null)
                     {
-                        RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(model.BelongTwo);
+                        //RewardsSettingModel rewardSettingModel = UserLogic.GetRewardModel(model.BelongTwo);
 
-                        if (rewardSettingModel == null || rewardSettingModel.ShopReward <= 0) return flag;
+                        //if (rewardSettingModel == null || rewardSettingModel.ShopReward <= 0) return flag;
 
-                        using (var dal1 = FactoryDispatcher.UserFactory())
-                        {
-                            //给盟友加盟豆
-                            UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.ShopReward);
-                            BeansRecordsModel model2 = new BeansRecordsModel();
-                            model2.Amount = rewardSettingModel.ShopReward;
-                            model2.UserId = model.BelongOne;
-                            model2.LogType = 0;
-                            model2.Income = 1;
-                            model2.Remark = "进店奖励";
-                            model2.OrderId = model.ID.ToString();
-                            model2.CreateTime = DateTime.Now;
-                            dal1.AddBeansRecords(model2);
-                        }
+                        //using (var dal1 = FactoryDispatcher.UserFactory())
+                        //{
+                        //    //给盟友加盟豆
+                        //    UserLogic.addUserMoney(model.BelongOne, rewardSettingModel.ShopReward);
+                        //    BeansRecordsModel model2 = new BeansRecordsModel();
+                        //    model2.Amount = rewardSettingModel.ShopReward;
+                        //    model2.UserId = model.BelongOne;
+                        //    model2.LogType = 0;
+                        //    model2.Income = 1;
+                        //    model2.Remark = "进店奖励";
+                        //    model2.OrderId = model.ID.ToString();
+                        //    model2.CreateTime = DateTime.Now;
+                        //    dal1.AddBeansRecords(model2);
+                        //}
                     }
                 }
                 return flag;

@@ -301,12 +301,12 @@ namespace BAMENG.LOGIC
         }
 
         /// <summary>
-        /// 设置盟友奖励
+        /// 设置盟友奖励,由盟主设置该为分店设置
         /// </summary>
         /// <param name="userId">当前用户ID</param>
         /// <param name="creward">客户资料提交奖励</param>
         /// <param name="orderreward">订单成交奖励</param>
-        /// <param name="shopreward">客户进店奖励.</param>
+        /// <param name="shopreward">客户进店奖励.废弃</param>
         /// <param name="extrareward">额外奖励</param>
         /// <returns>true if XXXX, false otherwise.</returns>
         public static bool SetAllyRaward(int userId, decimal creward, decimal orderreward, decimal shopreward, string extrareward)
@@ -315,11 +315,12 @@ namespace BAMENG.LOGIC
             {
                 RewardsSettingModel model = new RewardsSettingModel()
                 {
-                    UserId = userId,
+                    UserId = 0,
                     CustomerReward = creward,
                     OrderReward = orderreward,
                     ShopReward = shopreward,
-                    ExtraReward = extrareward
+                    ExtraReward = extrareward,
+                    ShopId = userId
                 };
                 if (dal.IsRewarExist(userId))
                     return dal.UpdateRewardSetting(model);

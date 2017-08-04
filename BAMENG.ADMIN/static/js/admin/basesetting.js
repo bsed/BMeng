@@ -100,6 +100,31 @@ var settingHelper = {
                 Code: "AppUpateContent",
                 Value: $("#AppUpateContent").val(),
                 Remark: "更新内容"
+            },
+            {
+                Code: "CreateOrderScore",
+                Value: $("#CreateOrderScore").val(),
+                Remark: "盟主创建订单,可获得n积分"
+            },
+            {
+                Code: "SubmitCustomerToAllyScore",
+                Value: $("#SubmitCustomerToAllyScore").val(),
+                Remark: "盟友提交客户信息并审核通过，盟友可获得n积分"
+            },
+            {
+                Code: "SubmitCustomerToMainScore1",
+                Value: $("#SubmitCustomerToMainScore1").val(),
+                Remark: "盟友提交客户信息并审核通过，盟主可获得n积分"
+            },
+            {
+                Code: "SubmitCustomerToMainScore2",
+                Value: $("#SubmitCustomerToMainScore2").val(),
+                Remark: "盟主提交客户信息，盟主可获得n积分"
+            },
+            {
+                Code: "InviteScore",
+                Value: $("#InviteScore").val(),
+                Remark: "盟主邀请盟友，可获得n积分"
             }
         ];
 
@@ -107,9 +132,6 @@ var settingHelper = {
             action: "EDITCONFIG",
             config: hotUtil.encode(JSON.stringify(configJson))
         }
-
-
-
 
 
         hotUtil.loading.show();

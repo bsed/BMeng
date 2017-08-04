@@ -367,24 +367,25 @@ namespace BAMENG.API.Controllers
         /// <param name="extrareward">额外奖励</param>
         /// <returns><![CDATA[{status:200,statusText:"OK",data:{}}]]></returns>
         [ActionAuthorize]
-        public ActionResult setallyRaward(decimal creward, decimal orderreward, decimal shopreward,string extrareward)
+        public ActionResult setallyRaward(decimal creward, decimal orderreward, decimal shopreward, string extrareward)
         {
-            try
-            {
-                var user = GetUserData();
-                if (user.UserIdentity == 1)
-                {
-                    bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward, extrareward);
-                    return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败, flag ? "保存成功" : "保存失败"));
-                }
-                else
-                    return Json(new ResultModel(ApiStatusCode.无操作权限));
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Log(string.Format("setallyRaward user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
-                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
-            }
+            return Json(new ResultModel(ApiStatusCode.无操作权限));
+            //try
+            //{
+            //    var user = GetUserData();
+            //    if (user.UserIdentity == 1)
+            //    {
+            //        bool flag = UserLogic.SetAllyRaward(user.UserId, creward, orderreward, shopreward, extrareward);
+            //        return Json(new ResultModel(flag ? ApiStatusCode.OK : ApiStatusCode.保存失败, flag ? "保存成功" : "保存失败"));
+            //    }
+            //    else
+            //        return Json(new ResultModel(ApiStatusCode.无操作权限));
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogHelper.Log(string.Format("setallyRaward user:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+            //    return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            //}
         }
 
         /// <summary>
@@ -396,11 +397,11 @@ namespace BAMENG.API.Controllers
         {
             try
             {
-                var user = GetUserData();
-                int userId = user.UserIdentity == 1 ? user.UserId : user.BelongOne;
-                var data = UserLogic.GetRewardModel(userId);
-                if (data == null)
-                    data = new RewardsSettingModel();
+                //var user = GetUserData();
+                //int userId = user.UserIdentity == 1 ? user.UserId : user.BelongOne;
+                //var data = UserLogic.GetRewardModel(userId);
+
+                RewardsSettingModel data = new RewardsSettingModel();
                 return Json(new ResultModel(ApiStatusCode.OK, data));
             }
             catch (Exception ex)
@@ -762,7 +763,7 @@ namespace BAMENG.API.Controllers
                 Dictionary<string, object> data = new Dictionary<string, object>();
 
                 //我的留言未读数量
-                data["messageCount"] =ArticleLogic.GetNotReadMessageCount(user.UserId,2);
+                data["messageCount"] = ArticleLogic.GetNotReadMessageCount(user.UserId, 2);
                 //我的消息-发送消息未读数量
                 data["messagePushCount"] = ArticleLogic.GetNotReadMessageCount(user.UserId, 0);
                 //我的消息-接收消息未读数量

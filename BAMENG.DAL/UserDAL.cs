@@ -1096,13 +1096,14 @@ namespace BAMENG.DAL
         /// <returns>System.Int32.</returns>
         public int AddRewardSetting(RewardsSettingModel model)
         {
-            string strSql = "insert into BM_RewardsSetting(UserId,CustomerReward,OrderReward,ShopReward,ExtraReward) values(@UserId,@CustomerReward,@OrderReward,@ShopReward,@ExtraReward)";
+            string strSql = "insert into BM_RewardsSetting(UserId,CustomerReward,OrderReward,ShopReward,ExtraReward,ShopId) values(@UserId,@CustomerReward,@OrderReward,@ShopReward,@ExtraReward,@ShopId)";
             SqlParameter[] param = {
                 new SqlParameter("@UserId", model.UserId),
                 new SqlParameter("@CustomerReward", model.CustomerReward),
                 new SqlParameter("@OrderReward", model.OrderReward),
                 new SqlParameter("@ShopReward", model.ShopReward),
-                new SqlParameter("@ExtraReward", model.ExtraReward)
+                new SqlParameter("@ExtraReward", model.ExtraReward),
+                new SqlParameter("@ShopId", model.ShopId)
             };
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
         }
@@ -1114,9 +1115,9 @@ namespace BAMENG.DAL
         /// <returns>true if XXXX, false otherwise.</returns>
         public bool UpdateRewardSetting(RewardsSettingModel model)
         {
-            string strSql = "update  BM_RewardsSetting set CustomerReward=@CustomerReward,OrderReward=@OrderReward,ShopReward=@ShopReward,ExtraReward=@ExtraReward,UpdateTime=@UpdateTime where UserId=@UserId";
+            string strSql = "update  BM_RewardsSetting set CustomerReward=@CustomerReward,OrderReward=@OrderReward,ShopReward=@ShopReward,ExtraReward=@ExtraReward,UpdateTime=@UpdateTime where ShopId=@ShopId";
             SqlParameter[] param = {
-                new SqlParameter("@UserId", model.UserId),
+                new SqlParameter("@ShopId", model.ShopId),
                 new SqlParameter("@CustomerReward", model.CustomerReward),
                 new SqlParameter("@OrderReward", model.OrderReward),
                 new SqlParameter("@ShopReward", model.ShopReward),
@@ -1133,9 +1134,9 @@ namespace BAMENG.DAL
         /// <returns>RewardsSettingModel.</returns>
         public RewardsSettingModel GetRewardModel(int userId)
         {
-            string strSql = "select top 1 UserId,CustomerReward,OrderReward,ShopReward,ExtraReward,UpdateTime,CreateTime from BM_RewardsSetting where UserId=@UserId";
+            string strSql = "select top 1 UserId,CustomerReward,OrderReward,ShopReward,ExtraReward,UpdateTime,CreateTime from BM_RewardsSetting where ShopId=@ShopId";
             SqlParameter[] param = {
-                new SqlParameter("@UserId", userId)
+                new SqlParameter("@ShopId", userId)
             };
 
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
@@ -1151,9 +1152,9 @@ namespace BAMENG.DAL
         /// <returns>true if [is rewar exist] [the specified user identifier]; otherwise, false.</returns>
         public bool IsRewarExist(int userId)
         {
-            string strSql = "select COUNT(1) from BM_RewardsSetting where UserId=@UserId";
+            string strSql = "select COUNT(1) from BM_RewardsSetting where ShopId=@ShopId";
             SqlParameter[] param = {
-                new SqlParameter("@UserId", userId)
+                new SqlParameter("@ShopId", userId)
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param)) > 0;
         }

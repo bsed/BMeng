@@ -292,6 +292,24 @@ namespace BAMENG.DAL
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
 
         }
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public bool UpdateStatus(int customerId, int status)
+        {
+            string strSql = "update BM_CustomerManage set Status=@Status where ID=@ID";
+            var param = new[] {
+                new SqlParameter("@Status",status),
+                new SqlParameter("@ID",customerId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+
+        }
+
+
 
         /// <summary>
         /// 更新客户进店状态

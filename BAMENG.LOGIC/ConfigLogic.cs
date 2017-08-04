@@ -155,5 +155,39 @@ namespace BAMENG.LOGIC
             return model;
 
         }
+
+
+        /// <summary>
+        /// 获取积分奖励配置
+        /// </summary>
+        /// <returns></returns>
+        public static ScoreConfigModel GetScoreConfig()
+        {
+            ScoreConfigModel result = new ScoreConfigModel();
+            List<ConfigModel> lst = GetConfigList();
+            if (lst == null)
+                return result;
+
+            foreach (var item in lst)
+            {
+                //
+                if (item.Code.Equals("CreateOrderScore"))
+                    result.CreateOrderScore = string.IsNullOrEmpty(item.Value) ? 0 : Convert.ToInt32(item.Value);
+
+                if (item.Code.Equals("InviteScore"))
+                    result.InviteScore = string.IsNullOrEmpty(item.Value) ? 0 : Convert.ToInt32(item.Value);
+
+                if (item.Code.Equals("SubmitCustomerToAllyScore"))
+                    result.SubmitCustomerToAllyScore = string.IsNullOrEmpty(item.Value) ? 0 : Convert.ToInt32(item.Value);
+
+                if (item.Code.Equals("SubmitCustomerToMainScore1"))
+                    result.SubmitCustomerToMainScore1 = string.IsNullOrEmpty(item.Value) ? 0 : Convert.ToInt32(item.Value);
+
+                if (item.Code.Equals("SubmitCustomerToMainScore2"))
+                    result.SubmitCustomerToMainScore2 = string.IsNullOrEmpty(item.Value) ? 0 : Convert.ToInt32(item.Value);
+            }
+            return result;
+        }
+
     }
 }

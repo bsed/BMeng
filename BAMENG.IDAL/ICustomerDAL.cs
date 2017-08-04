@@ -93,6 +93,13 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         bool UpdateStatus(int customerId, int status, int userId);
 
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        bool UpdateStatus(int customerId, int status);
 
         /// <summary>
         /// 更新客户进店状态

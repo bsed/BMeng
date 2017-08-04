@@ -60,6 +60,7 @@ var userHelper = {
                             tempHtml = tempHtml.replace("{ActiveStatus}", item.IsActive == 1 ? "<span style='color:red;'>激活</span>" : "已冻结")
 
                             tempHtml = tempHtml.replace("{RegTime}", item.CreateTime);
+                            tempHtml = tempHtml.replace("{Score}", item.Score - item.ScoreLocked);
 
                             listhtml += tempHtml;
                         });
@@ -77,6 +78,7 @@ var userHelper = {
                             });
                         });
                     }
+                    $(".dataTables-example").dataTable();
                 }
             }
             hotUtil.loading.close();
