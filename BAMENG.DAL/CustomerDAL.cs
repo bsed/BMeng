@@ -52,14 +52,18 @@ namespace BAMENG.DAL
         {
             ResultPageModel result = new ResultPageModel();
             string strSql = APP_SELECT;
-            if (isvalid)
-                strSql += " and C.Status= 1";
+            if (model.Status == -1)
+            {
+                if (isvalid)
+                    strSql += " and C.Status not in (0,2)";
+                else
+                    strSql += " and C.Status  in (0,2)";
+
+                if (model.UserId > 0)
+                    strSql += " and C.BelongTwo= @BelongOne";
+            }
             else
-                strSql += " and C.Status<>1";
-
-            if (model.UserId > 0)
-                strSql += " and C.BelongTwo= @BelongOne";
-
+                strSql += " and C.Status=" + model.Status;
             if (shopId > 0)
             {
                 if (model.type != 1)
@@ -155,7 +159,8 @@ namespace BAMENG.DAL
                 new SqlParameter("@UserID",UserId),
             };
             //生成sql语句
-            return getPageData<CustomerResModel>(pageSize, pageIndex, strSql, orderbyField, param,(items=> {
+            return getPageData<CustomerResModel>(pageSize, pageIndex, strSql, orderbyField, param, (items =>
+            {
                 items.ForEach(item =>
                 {
                     item.DataImg = WebConfig.articleDetailsDomain() + item.DataImg;
@@ -262,12 +267,13 @@ namespace BAMENG.DAL
         /// <returns></returns>
         public bool UpdateCustomerInfo(CustomerModel model)
         {
-            string strSql = "update BM_CustomerManage set Name=@Name,Mobile=@Mobile,Addr=@Addr,Remark=@Remark where ID=@ID";
+            string strSql = "update BM_CustomerManage set Name=@Name,Mobile=@Mobile,Addr=@Addr,Remark=@Remark,Status=@Status where ID=@ID";
             var param = new[] {
                 new SqlParameter("@Name",model.Name),
                 new SqlParameter("@Mobile",model.Mobile),
                 new SqlParameter("@Addr",model.Addr),
                 new SqlParameter("@Remark",model.Remark),
+                new SqlParameter("@Status",model.Status),
                 new SqlParameter("@ID",model.ID)
             };
 
@@ -372,5 +378,65 @@ namespace BAMENG.DAL
             };
             return Convert.ToInt32(DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param));
         }
+
+
+        /// <summary>
+        /// 获取客户的维护信息
+        /// </summary>
+        /// <param name="CID">客户ID</param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ResultPageModel GetCustomerAssertList(int CID, int pageIndex, int pageSize)
+        {
+            string strSql = "select ID,CID,UserId,AssertContent,CreateTime from BM_CustomerAssert where CID=@CID";
+            string orderbyField = "CreateTime";
+            bool orderby = false;
+            var param = new[] {
+                new SqlParameter("@CID",CID),
+            };
+            //生成sql语句
+            return getPageData<CustomerAssertModel>(pageSize, pageIndex, strSql, orderbyField, orderby, param);
+        }
+
+
+        /// <summary>
+        /// 获取客户最新的一条维护信息
+        /// </summary>
+        /// <param name="CID"></param>
+        /// <returns></returns>
+        public CustomerAssertModel GetCustomerAssertModel(int CID)
+        {
+            string strSql = "select top 1  ID,CID,UserId,AssertContent,CreateTime from BM_CustomerAssert where CID=@CID  order by CreateTime desc";
+            var param = new[] {
+                new SqlParameter("@CID",CID),
+            };
+            using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
+            {
+                return DbHelperSQLP.GetEntity<CustomerAssertModel>(dr);
+            }
+        }
+
+        /// <summary>
+        /// 添加客户维护信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public int AddCustomerAssert(CustomerAssertModel model)
+        {
+            string strSql = "insert into BM_CustomerAssert (CID,UserId,AssertContent) values(@CID,@UserId,@AssertContent);select @@IDENTITY;";
+            var param = new[] {
+                    new SqlParameter("@CID",model.CID),
+                    new SqlParameter("@UserId",model.UserId),
+                    new SqlParameter("@AssertContent",model.AssertContent)
+                };
+            object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            return 0;
+        }
+
+
     }
 }

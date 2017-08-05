@@ -452,5 +452,41 @@ namespace BAMENG.API.Controllers
                 return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
             }
         }
+
+        /// <summary>
+        /// 添加客户维护信息
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        [ActionAuthorize]
+        public ActionResult AddCustomerAssert(int cid, string content)
+        {
+            try
+            {
+                var user = GetUserData();
+
+                CustomerAssertModel model = new CustomerAssertModel()
+                {
+                    CID = cid,
+                    AssertContent = content,
+                    UserId = user.UserId
+                };
+
+                if (CustomerLogic.AddCustomerAssert(model) > 0)
+                    return Json(new ResultModel(ApiStatusCode.OK, "保存成功"));
+                else
+                    return Json(new ResultModel(ApiStatusCode.添加失败, "保存失败"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("AddCustomerAssert:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
+        }
+
+
+
+
     }
 }

@@ -130,4 +130,36 @@ namespace BAMENG.MODEL
 
         public DateTime CreateTime { get; set; }
     }
+
+
+    /// <summary>
+    /// 客户维系信息
+    /// </summary>
+    public class CustomerAssertModel
+    {
+        /// <summary>
+        /// 自增
+        /// </summary>
+        public int ID { get; set; }
+
+        /// <summary>
+        /// 维护客户ID
+        /// </summary>
+        public int CID { get; set; }
+
+        /// <summary>
+        /// 维护用户ID 
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 维护内容
+        /// </summary>
+        public string AssertContent { get; set; }
+
+        /// <summary>
+        /// 维护时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+    }
 }

@@ -536,7 +536,8 @@ namespace BAMENG.ADMIN.handler
                 endTime = GetFormValue("endTime", ""),
                 key = GetFormValue("key", ""),
                 searchType = GetFormValue("searchType", 0),
-                type = user.UserIndentity
+                type = user.UserIndentity,
+                Status = GetFormValue("status", -1)
             };
             var data = CustomerLogic.GetCustomerList(model, user.UserIndentity == 0 ? 0 : user.ID);
             json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
@@ -547,12 +548,20 @@ namespace BAMENG.ADMIN.handler
         /// </summary>
         private void EditCustomerInfo()
         {
+            int sltuserstatus = GetFormValue("sltuserstatus", 1);
+            int userdefaultstatus = GetFormValue("userdefaultstatus", 0);
+            int status = 0;
+            if (userdefaultstatus > 0)
+                status = userdefaultstatus;
+            else
+                status = sltuserstatus;
             CustomerModel model = new CustomerModel()
             {
                 ID = GetFormValue("customerid", 0),
                 Name = GetFormValue("username", ""),
                 Mobile = GetFormValue("usermobile", ""),
-                Addr = GetFormValue("useraddress", "")
+                Addr = GetFormValue("useraddress", ""),
+                Status = status
             };
 
             if (CustomerLogic.UpdateCustomerInfo(model))

@@ -344,5 +344,49 @@ namespace BAMENG.LOGIC
                 return dal.GetCustomerCount(userId, userIdentity, status);
             }
         }
+
+
+        /// <summary>
+        /// 添加客户维护信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int AddCustomerAssert(CustomerAssertModel model)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.AddCustomerAssert(model);
+            }
+        }
+
+        /// <summary>
+        /// 获取客户最新的一条维护信息
+        /// </summary>
+        /// <param name="CID"></param>
+        /// <returns></returns>
+        public static CustomerAssertModel GetCustomerAssertModel(int CID)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.GetCustomerAssertModel(CID);
+            }
+        }
+
+        /// <summary>
+        /// 获取客户的维护信息
+        /// </summary>
+        /// <param name="CID">客户ID</param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ResultPageModel GetCustomerAssertList(int CID, int pageIndex, int pageSize)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.GetCustomerAssertList(CID, pageIndex, pageSize);
+            }
+        }
+
+
     }
 }

@@ -24,10 +24,11 @@ var customerHelper = {
             action: "GetCustomerList",
             pageIndex: page,
             pageSize: 20,
-            key: $("#keyword").val(),
+            key: $("#keyword").val().trim(),
             searchType: $("#stdType").val(),
             startTime: "",
-            endTime: ""
+            endTime: "",
+            status: $("#sltStatus").val()
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, postData, function (ret, err) {
@@ -38,7 +39,7 @@ var customerHelper = {
                         self.loaclData = ret.data.Rows;
                         $.each(ret.data.Rows, function (i, item) {
                             var tempHtml = $("#templist").html();
-                            tempHtml = tempHtml.replace("{NO}", i+1);
+                            tempHtml = tempHtml.replace("{NO}", i + 1);
                             tempHtml = tempHtml.replace(/{ID}/gm, item.ID);
                             tempHtml = tempHtml.replace("{Name}", item.Name);
                             tempHtml = tempHtml.replace("{BelongOneName}", item.BelongOneName);
@@ -47,8 +48,8 @@ var customerHelper = {
                             tempHtml = tempHtml.replace("{Addr}", item.Addr);
                             tempHtml = tempHtml.replace("{ShopName}", item.ShopName);
                             tempHtml = tempHtml.replace("{CreateTime}", item.CreateTime);
-                            tempHtml = tempHtml.replace("{StatusText}", item.Status == 1 ? "有效" : item.Status == 2 ? "无效" : "待审核");
-                            
+                            tempHtml = tempHtml.replace("{StatusText}", self.getStatusText(item.Status));
+
                             listhtml += tempHtml;
                         });
                         $("#listMode").html(listhtml);
@@ -66,11 +67,38 @@ var customerHelper = {
             hotUtil.loading.close();
         });
     },
+
+    getStatusText: function (code) {
+        var text = "";
+        //审核状态 1已同意  2已拒绝 3未生成订单  4已生成订单，5已失效</
+        switch (code) {
+            case 1:
+                text = "有效";
+                break;
+            case 2:
+                text = "无效";
+                break;
+            case 3:
+                text = "未生成订单";
+                break;
+            case 4:
+                text = "已生成订单";
+                break;
+            case 5:
+                text = "已失效";
+                break;
+            case 0:
+                text = "待审核";
+                break;
+        }
+        return text;
+    },
     search: function () {
         customerHelper.loadList(1);
     },
     searchAll: function () {
         $("#keyword").val("");
+        $("#sltStatus").val(-1);
         customerHelper.loadList(1);
     },
     getModel: function (dataId) {
@@ -136,11 +164,21 @@ var customerHelper = {
         if (this.reset)
             this.reset.resetForm();
         var data = this.getModel(dataId);
-        if (data != null) {            
+        if (data != null) {
             $("#customerid").val(dataId);
             $("#username").val(data.Name);
             $("#useraddress").val(data.Addr);
             $("#usermobile").val(data.Mobile);
+
+            if (data.Status == 3 || data.Status == 5) {
+                $("#div_status").show();
+                $("#userdefaultstatus").val(0);
+            }
+            else {
+                $("#div_status").hide();
+                $("#userdefaultstatus").val(data.Status);
+            }
+
         }
     },
     pageInit: function () {

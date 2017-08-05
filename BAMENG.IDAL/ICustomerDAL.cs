@@ -88,7 +88,7 @@ namespace BAMENG.IDAL
         /// 更新状态
         /// </summary>
         /// <param name="customerId"></param>
-        /// <param name="status"></param>
+        /// <param name="status">审核状态 1已同意  2已拒绝 3未生成订单  4已生成订单，5已失效</param>
         /// <param name="userId">操作人ID(此方法只有盟主操作)</param>
         /// <returns></returns>
         bool UpdateStatus(int customerId, int status, int userId);
@@ -97,7 +97,7 @@ namespace BAMENG.IDAL
         /// 修改状态
         /// </summary>
         /// <param name="customerId"></param>
-        /// <param name="status"></param>
+        /// <param name="status">审核状态 1已同意  2已拒绝 3未生成订单  4已生成订单，5已失效</param>
         /// <returns></returns>
         bool UpdateStatus(int customerId, int status);
 
@@ -135,6 +135,31 @@ namespace BAMENG.IDAL
         /// <param name="status"> 0 审核中，1已同意  2已拒绝</param>
         /// <returns>System.Int32.</returns>
         int GetCustomerCount(int userId, int userIdentity, int status);
+
+
+
+        /// <summary>
+        /// 获取客户的维护信息
+        /// </summary>
+        /// <param name="CID">客户ID</param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        ResultPageModel GetCustomerAssertList(int CID, int pageIndex, int pageSize);
+
+        /// <summary>
+        /// 获取客户最新的一条维护信息
+        /// </summary>
+        /// <param name="CID"></param>
+        /// <returns></returns>
+        CustomerAssertModel GetCustomerAssertModel(int CID);
+
+        /// <summary>
+        /// 添加客户维护信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        int AddCustomerAssert(CustomerAssertModel model);
 
     }
 }

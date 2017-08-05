@@ -33,6 +33,17 @@
                                     </select>
                                     <input type="text" class="form-control input-sm mb10" id="keyword" name="keyword" placeholder="关键字" />
                                 </div>
+
+                                <div class="form-group m-r-sm">
+                                    <label class="control-label" for="goodName">状态：</label>
+                                    <select class="form-control input-sm" name="sltStatus" id="sltStatus">
+                                        <option value="-1">全部</option>
+                                        <option value="3">未生成订单</option>
+                                        <option value="4">已生成订单</option>
+                                        <option value="5">已失效</option>
+                                    </select>
+                                </div>
+
                             </div>
                             <p style="height: 8px;"></p>
                             <div class="form-inline" style="max-width: 926px; text-align: right;">
@@ -65,7 +76,7 @@
                                         <th>客户地址</th>
                                         <th>所属门店</th>
                                         <th>状态</th>
-                                        <th>录入时间</th>                                        
+                                        <th>录入时间</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -130,7 +141,16 @@
                                     <input id="useraddress" name="useraddress" class="form-control error" type="text" aria-required="true" aria-invalid="true">
                                 </div>
                             </div>
-
+                            <div class="form-group" id="div_status" style="display:none;">
+                                <label class="col-sm-3 control-label">状态：</label>
+                                <input type="hidden" class="form-control" id="userdefaultstatus" name="userdefaultstatus" value="0" />
+                                <div class="col-sm-8">
+                                    <select class="form-control input-sm" name="sltuserstatus" id="sltuserstatus">
+                                        <option value="3">未生成订单</option>
+                                        <option value="5">已失效</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-5">
                                     <button class="btn btn-success" type="submit">更新资料</button>
