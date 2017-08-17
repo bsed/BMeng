@@ -96,7 +96,7 @@ namespace BAMENG.LOGIC
                                 model2.UserId = model.BelongTwo;
                                 model2.LogType = 1;
                                 model2.Income = 1;
-                                model2.Remark = "盟友提交客户信息，盟主奖励";
+                                model2.Remark = "客户信息奖励";
                                 model2.OrderId = "";
                                 model2.CreateTime = DateTime.Now;
                             }
@@ -169,6 +169,9 @@ namespace BAMENG.LOGIC
                     //如果客户审核同意
                     if (flag && status == 1)
                     {
+                        //修改审核成功时间
+                        dal.UpdateAuditTime(customerId);
+
                         var model = dal.GetModel(customerId);
                         if (model != null && model.BelongOne > 0)
                         {
@@ -211,7 +214,7 @@ namespace BAMENG.LOGIC
                                     model2.UserId = model.BelongOne;
                                     model2.LogType = 1;
                                     model2.Income = 1;
-                                    model2.Remark = "盟友提交客户信息,盟友奖励";
+                                    model2.Remark = "客户信息奖励";
                                     model2.OrderId = "";
                                     model2.CreateTime = DateTime.Now;
                                     dal1.AddBeansRecords(model2);
@@ -224,7 +227,7 @@ namespace BAMENG.LOGIC
                                     model2.UserId = model.BelongTwo;
                                     model2.LogType = 1;
                                     model2.Income = 1;
-                                    model2.Remark = "盟友提交客户信息，盟主奖励";
+                                    model2.Remark = "客户信息奖励";
                                     model2.OrderId = "";
                                     model2.CreateTime = DateTime.Now;
                                     dal1.AddBeansRecords(model2);
@@ -319,7 +322,12 @@ namespace BAMENG.LOGIC
                 return flag;
             }
         }
-
+        /// <summary>
+        /// 根据手机号码和地址来查找客户信息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public static CustomerModel getCustomerModel(string mobile, string address)
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
@@ -327,6 +335,19 @@ namespace BAMENG.LOGIC
                 return dal.getCustomerModel(mobile, address);
             }
         }
+        /// <summary>
+        /// 获取客户信息(只是单纯的客户信息)
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <returns></returns>
+        public static CustomerModel getCustomerModel(int cid)
+        {
+            using (var dal = FactoryDispatcher.CustomerFactory())
+            {
+                return dal.getCustomerModel(cid);
+            }
+        }
+
 
 
         /// <summary>
@@ -379,7 +400,7 @@ namespace BAMENG.LOGIC
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ResultPageModel GetCustomerAssertList(int CID, int pageIndex, int pageSize)
+        public static ResultPageModel GetCustomerAssertList(int CID, int pageIndex, int pageSize)
         {
             using (var dal = FactoryDispatcher.CustomerFactory())
             {

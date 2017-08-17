@@ -103,6 +103,13 @@ namespace BAMENG.MODEL
         /// </summary>
         /// <value>The data img.</value>
         public string DataImg { get; set; }
+
+
+        /// <summary>
+        /// 是否提醒(用于提醒客户维护已过期，请及时维护客户信息)
+        /// </summary>
+        public int isTip { get; set; }
+
     }
 
 

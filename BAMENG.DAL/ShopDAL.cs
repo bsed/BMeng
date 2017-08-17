@@ -262,7 +262,7 @@ namespace BAMENG.DAL
         {
             string strSql = "select ShopID,ShopName,ShopType,ShopBelongId,ShopProv,ShopCity,ShopArea,ShopAddress,Contacts,ContactWay,LoginName,CreateTime,IsActive from BM_ShopManage where 1=1 and IsActive=1 ";
             strSql += " and ShopID=@ShopID";
-            var param = new[] {                        
+            var param = new[] {
                 new SqlParameter("@ShopID", shopId)
             };
             using (SqlDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql, param))
@@ -270,6 +270,52 @@ namespace BAMENG.DAL
                 return DbHelperSQLP.GetEntity<ShopModel>(dr);
             }
         }
+
+
+        /// <summary>
+        /// 获取门店客户维护提醒时间
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        public int GetShopTipHours(int shopId)
+        {
+            string strSql = "select TipHours from BM_ShopConfig where ShopId=@ShopId";
+            var param = new[] {
+                new SqlParameter("@ShopID", shopId)
+            };
+
+
+            var obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+            if (obj != null)
+                return Convert.ToInt32(obj);
+            else
+                return 0;
+
+        }
+
+        /// <summary>
+        /// 添加门店客户维护提醒时间
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="tipHours"></param>
+        /// <returns></returns>
+        public int AddShopTipHours(int shopId, int tipHours)
+        {
+            string strSql = @"IF EXISTS (SELECT * FROM BM_ShopConfig WHERE ShopId=@ShopId)  
+                                            BEGIN
+                                                UPDATE BM_ShopConfig set TipHours=@TipHours where ShopId=@ShopId
+                                            END
+                                            ELSE 
+                                            BEGIN
+                                                INSERT INTO BM_ShopConfig(TipHours,ShopId) VALUES(@TipHours,@ShopId)
+                                            END";
+            var param = new[] {
+                new SqlParameter("@ShopID", shopId),
+                new SqlParameter("@TipHours", tipHours)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
+        }
+
 
     }
 }

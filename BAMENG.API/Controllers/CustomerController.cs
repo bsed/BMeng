@@ -83,7 +83,7 @@ namespace BAMENG.API.Controllers
             {
                 var user = GetUserData();
                 if (CustomerLogic.UpdateStatus(cid, status, user.UserId))
-                {
+                {                    
                     //添加客户操作日志
                     LogLogic.AddCustomerLog(new LogBaseModel()
                     {
@@ -139,7 +139,7 @@ namespace BAMENG.API.Controllers
                         ShopId = user.ShopId,
                         Name = username,
                         Remark = remark,
-                        Status = user.UserIdentity == 1 ? 1 : 0,
+                        Status = user.UserIdentity == 1 ? 3 : 0,
                         BelongOneShopId = user.ShopBelongId
                     });
 
@@ -234,7 +234,7 @@ namespace BAMENG.API.Controllers
                         ShopId = user.ShopId,
                         Name = username,
                         Remark = remark,
-                        Status = user.UserIdentity == 1 ? 1 : 0,
+                        Status = user.UserIdentity == 1 ? 3 : 0,
                         BelongOneShopId = user.ShopBelongId,
                         isSave = 0
                     };
@@ -348,7 +348,7 @@ namespace BAMENG.API.Controllers
                     ShopId = user.ShopId,
                     Name = "",
                     Remark = remark,
-                    Status = user.UserIdentity == 1 ? 1 : 0,
+                    Status = user.UserIdentity == 1 ? 3 : 0,
                     BelongOneShopId = user.ShopBelongId,
                     isSave = 1,
                     DataImg = fileName
@@ -460,7 +460,7 @@ namespace BAMENG.API.Controllers
         /// <param name="content"></param>
         /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult AddCustomerAssert(int cid, string content)
+        public ActionResult addAssert(int cid, string content)
         {
             try
             {
@@ -486,7 +486,60 @@ namespace BAMENG.API.Controllers
         }
 
 
+        /// <summary>
+        /// 客户维护信息列表
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [ActionAuthorize]
+        public ActionResult assertList(int cid, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var user = GetUserData();
+                var data = CustomerLogic.GetCustomerAssertList(cid, pageIndex, pageSize);
+                return Json(new ResultModel(ApiStatusCode.OK, data));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("GetCustomerAssertList:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
+        }
 
+        /// <summary>
+        /// 修改客户状态(只有在客户信息“未生成订单”和“已失效”状态时，才能修改)
+        /// </summary>
+        /// <param name="cid">客户ＩＤ</param>
+        /// <param name="status">１＝已失效　２＝未生成订单</param>
+        /// <returns></returns>
+        [ActionAuthorize]
+        public ActionResult updateStatus(int cid, int status)
+        {
+            try
+            {
+                var user = GetUserData();
+                if (user != null && user.UserIdentity == 1)
+                {
+                    var data = CustomerLogic.GetModel(cid);
+                    if (data != null && (data.Status == 3 || data.Status == 5))
+                    {
+                        if (CustomerLogic.UpdateStatus(cid, status == 1 ? 5 : 3, user.UserId))
+                            return Json(new ResultModel(ApiStatusCode.OK, "保存成功"));
+                        else
+                            return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+                    }
+                }
+                return Json(new ResultModel(ApiStatusCode.无操作权限));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(string.Format("updateStatus:message:{0},StackTrace:{1}", ex.Message, ex.StackTrace), LogHelperTag.ERROR);
+                return Json(new ResultModel(ApiStatusCode.SERVICEERROR));
+            }
+        }
 
     }
 }

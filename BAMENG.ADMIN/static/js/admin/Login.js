@@ -36,8 +36,8 @@ var loginHelper = {
 
 
         var host = location.host;
-        if (host.indexOf("mellkit.com") > 0 || host.indexOf("fancat.cn") > 0) {
-            if (host.indexOf("manager") >= 0 || host.indexOf("bmadmin") >= 0)
+        if (host.indexOf("mellkit.com") > 0 || host.indexOf("fancat.cn") > 0 || host.indexOf("112.16.89.50")) {
+            if (host.indexOf("manager") >= 0 || host.indexOf("bmadmin") >= 0 || host.indexOf("112.16.89.50:25835") >= 0)
                 loginType = 0;
             else
                 loginType = 1;

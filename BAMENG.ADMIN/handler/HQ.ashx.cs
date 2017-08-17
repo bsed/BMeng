@@ -315,8 +315,15 @@ namespace BAMENG.ADMIN.handler
                     case "GETALLYREWARD":
                         GetAllyReward();
                         break;
+
+
+                    case "GETASSERTLIST"://获取维护列表
+                        GetAssertList();
+                        break;
                     default:
                         break;
+
+
                 }
             }
             catch (Exception ex)
@@ -1614,6 +1621,10 @@ namespace BAMENG.ADMIN.handler
             decimal creward = GetFormValue("creward", 0);
             decimal orderreward = GetFormValue("orderreward", 0);
             string extrareward = GetFormValue("extrareward", "");
+
+            int TipHours = GetFormValue("TipHours", 24);
+            ShopLogic.AddShopTipHours(user.ID, TipHours);
+
             if (UserLogic.SetAllyRaward(user.ID, creward, orderreward, 0, extrareward))
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
             else
@@ -1626,9 +1637,24 @@ namespace BAMENG.ADMIN.handler
         {
             RewardsSettingModel data = UserLogic.GetRewardModel(user.ID);
             if (data != null)
+            {
+                data.TipHours = ShopLogic.GetShopTipHours(user.ID);
+                if (data.TipHours == 0)
+                    data.TipHours = 24;
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
+            }
             else
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));
+        }
+
+        /// <summary>
+        /// 获取维护信息列表
+        /// </summary>
+        private void GetAssertList()
+        {
+            int cid = GetFormValue("cid", 0);
+            var data = CustomerLogic.GetCustomerAssertList(cid, 1, 100);
+            json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK, data));
         }
 
     }

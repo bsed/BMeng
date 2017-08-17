@@ -970,6 +970,17 @@ namespace BAMENG.MODEL
         /// </summary>
         public int ShopId { get; set; }
 
+
+        /// <summary>
+        /// 提醒时间
+        /// </summary>
+        public int TipHours { get; set; }
+
+        /// <summary>
+        /// 积分奖励
+        /// </summary>
+        public ScoreConfigModel scoreConfig { get; set; }
+
     }
 
 

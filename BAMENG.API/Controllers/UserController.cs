@@ -389,7 +389,7 @@ namespace BAMENG.API.Controllers
         }
 
         /// <summary>
-        /// 获取盟主的盟友奖励设置
+        /// 获取奖励设置
         /// </summary>
         /// <returns>ActionResult.</returns>
         [ActionAuthorize]
@@ -397,11 +397,12 @@ namespace BAMENG.API.Controllers
         {
             try
             {
-                //var user = GetUserData();
-                //int userId = user.UserIdentity == 1 ? user.UserId : user.BelongOne;
-                //var data = UserLogic.GetRewardModel(userId);
+                var user = GetUserData();
+                var data = UserLogic.GetRewardModel(user.ShopId);
 
-                RewardsSettingModel data = new RewardsSettingModel();
+                if (data == null)
+                    data = new RewardsSettingModel();
+                data.scoreConfig = ConfigLogic.GetScoreConfig();
                 return Json(new ResultModel(ApiStatusCode.OK, data));
             }
             catch (Exception ex)

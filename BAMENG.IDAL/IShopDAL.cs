@@ -82,5 +82,21 @@ namespace BAMENG.IDAL
         /// <param name="shopId">The shop identifier.</param>
         /// <returns>ShopModel.</returns>
         ShopModel GetShopModel(int shopId);
+
+
+        /// <summary>
+        /// 添加门店客户维护提醒时间
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="tipHours"></param>
+        /// <returns></returns>
+        int AddShopTipHours(int shopId, int tipHours);
+
+        /// <summary>
+        /// 获取门店客户维护提醒时间
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        int GetShopTipHours(int shopId);
     }
 }

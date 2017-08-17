@@ -74,9 +74,10 @@ namespace BAMENG.API.Controllers
         /// <param name="address">客户地址</param>
         /// <param name="cashNo">现金卷编号</param>
         /// <param name="memo">备注</param>
+        /// <param name="cid">客户ID</param>
         /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult create(string userName, string mobile, string address, string cashNo, string memo)
+        public ActionResult create(string userName, string mobile, string address, string cashNo, string memo, int cid=0)
         {
 
             try
@@ -107,7 +108,7 @@ namespace BAMENG.API.Controllers
                 if (FileUploadHelper.UploadFile(bytes, fileName))
                 {
                     ApiStatusCode apiCode = ApiStatusCode.OK;
-                    bool flag = OrderLogic.saveOrder(userId, user.ShopId, userName, mobile, address, cashNo, memo, fileName, ref apiCode);
+                    bool flag = OrderLogic.saveOrder(userId, user.ShopId, userName, mobile, address, cashNo, memo, fileName, cid, ref apiCode);
                     if (!flag)
                     {
                         System.IO.File.Delete(Server.MapPath(fileName));

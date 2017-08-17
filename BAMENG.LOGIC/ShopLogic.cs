@@ -147,5 +147,31 @@ namespace BAMENG.LOGIC
                 return dal.GetShopModel(shopId);
             }
         }
+
+        /// <summary>
+        /// 获取维护提醒时间
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        public static int GetShopTipHours(int shopId)
+        {
+            using (var dal = FactoryDispatcher.ShopFactory())
+            {
+                return dal.GetShopTipHours(shopId);
+            }
+        }
+        /// <summary>
+        /// 添加客户维护提醒时间
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <param name="tipHours"></param>
+        /// <returns></returns>
+        public static int AddShopTipHours(int shopId, int tipHours)
+        {
+            using (var dal = FactoryDispatcher.ShopFactory())
+            {
+                return dal.AddShopTipHours(shopId, tipHours);
+            }
+        }
     }
 }

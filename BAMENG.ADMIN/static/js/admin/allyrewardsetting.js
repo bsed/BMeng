@@ -26,6 +26,7 @@ var settingHelper = {
                     $("#creward").val(ret.data.CustomerReward);
                     $("#orderreward").val(ret.data.OrderReward);
                     $("#extrareward").val(ret.data.ExtraReward);
+                    $("#TipHours").val(ret.data.TipHours);
                 }
             }
             hotUtil.loading.close();
@@ -37,7 +38,8 @@ var settingHelper = {
             action: "SETALLYREWARD",
             creward: $("#creward").val(),
             orderreward: $("#orderreward").val(),
-            extrareward: $("#extrareward").val()
+            extrareward: $("#extrareward").val(),
+            TipHours: $("#TipHours").val()
         }
         hotUtil.loading.show();
         hotUtil.ajaxCall(this.ajaxUrl, postData, function (ret, err) {

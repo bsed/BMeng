@@ -24,7 +24,7 @@ var userHelper = {
         var postData = {
             action: "GetUserList",
             pageIndex: page,
-            pageSize: 20,
+            pageSize: 20000,
             key: $("#keyword").val(),
             searchType: $("#stdType").val(),
             ally: this.isAlly == 1 ? 0 : 1,
@@ -71,12 +71,12 @@ var userHelper = {
                         }
 
                         //初始化分页
-                        var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
-                        pageinate.init(function (p) {
-                            goTo(p, function (page) {
-                                userHelper.loadList(page);
-                            });
-                        });
+                        //var pageinate = new hotUtil.paging(".pagination", ret.data.PageIndex, ret.data.PageSize, ret.data.PageCount, ret.data.Total, 7);
+                        //pageinate.init(function (p) {
+                        //    goTo(p, function (page) {
+                        //        userHelper.loadList(page);
+                        //    });
+                        //});
                     }
                     $(".dataTables-example").dataTable();
                 }

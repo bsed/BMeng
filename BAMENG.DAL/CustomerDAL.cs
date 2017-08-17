@@ -110,7 +110,7 @@ namespace BAMENG.DAL
         public ResultPageModel GetAppCustomerList(int UserId, int identity, int type, int pageIndex, int pageSize)
         {
             string strSql = APP_SELECT;
-            //Status 0 审核中，1已同意  2已拒绝
+            //Status 0 审核中，1已同意  2已拒绝，3未生成订单  4已生成订单，5已失效
 
             if (type == 1)
                 strSql += " and C.Status= 0";
@@ -122,13 +122,13 @@ namespace BAMENG.DAL
             else
                 strSql += " and C.BelongOne= @UserID";
 
-            string orderbyField = "C.CreateTime";
+            string orderbyField = "C.isTip desc,C.CreateTime desc";
             bool orderby = false;
 
             if (type == 2)
             {
                 orderby = true;
-                orderbyField = "C.Status asc,C.InShopTime desc,C.CreateTime desc";
+                orderbyField = "C.isTip desc,C.Status asc,C.CreateTime desc";
             }
             var param = new[] {
                 new SqlParameter("@UserID",UserId),
@@ -299,6 +299,23 @@ namespace BAMENG.DAL
 
         }
         /// <summary>
+        /// 修改审核通过时间
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public bool UpdateAuditTime(int customerId)
+        {
+            string strSql = "update BM_CustomerManage set AuditTime=@AuditTime where ID=@ID";
+            var param = new[] {
+                new SqlParameter("@AuditTime",DateTime.Now),
+                new SqlParameter("@ID",customerId)
+            };
+            return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql, param) > 0;
+
+        }
+
+
+        /// <summary>
         /// 修改状态
         /// </summary>
         /// <param name="customerId"></param>
@@ -344,7 +361,7 @@ namespace BAMENG.DAL
         public CustomerModel getCustomerModel(string mobile, string address)
         {
             CustomerModel model = new CustomerModel();
-            string strSql = "select * from BM_CustomerManage where (Addr=@Addr or Mobile=@Mobile) and  IsDel=0 and Status=1";
+            string strSql = "select * from BM_CustomerManage where (Addr=@Addr or Mobile=@Mobile) and  IsDel=0 and Status in(1,3,4,5)";
             var parms = new[] {
                new SqlParameter("@Addr",address),
                new SqlParameter("@Mobile",mobile)
@@ -355,6 +372,28 @@ namespace BAMENG.DAL
             }
             return model;
         }
+
+        /// <summary>
+        /// 获得客户信息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public CustomerModel getCustomerModel(int cid)
+        {
+            //审核状态 1已同意  2已拒绝 3未生成订单  4已生成订单，5已失效
+            CustomerModel model = new CustomerModel();
+            string strSql = "select * from BM_CustomerManage where ID=@ID and  IsDel=0 and Status in(1,3,4,5)";
+            var parms = new[] {
+               new SqlParameter("@ID",cid)
+           };
+            using (IDataReader dr = DbHelperSQLP.ExecuteReader(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parms))
+            {
+                model = DbHelperSQLP.GetEntity<CustomerModel>(dr);
+            }
+            return model;
+        }
+
 
         /// <summary>
         /// 获取用户的客户数量

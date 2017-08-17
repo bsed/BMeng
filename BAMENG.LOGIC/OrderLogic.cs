@@ -79,7 +79,7 @@ namespace BAMENG.LOGIC
         /// <param name="filename">The filename.</param>
         /// <param name="apiCode">The API code.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool saveOrder(int userId, int shopId, string userName, string mobile, string address, string cashNo, string memo, string filename, ref ApiStatusCode apiCode)
+        public static bool saveOrder(int userId, int shopId, string userName, string mobile, string address, string cashNo, string memo, string filename, int cid, ref ApiStatusCode apiCode)
         {
 
             try
@@ -138,7 +138,7 @@ namespace BAMENG.LOGIC
                 if (cashUserId <= 0)
                 {
                     //根据手机号或地址，查找客户
-                    CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
+                    CustomerModel customer =cid>0?CustomerLogic.getCustomerModel(cid): CustomerLogic.getCustomerModel(mobile, address);
                     if (customer != null)
                     {
                         //设置订单归属用户
@@ -198,7 +198,7 @@ namespace BAMENG.LOGIC
                             model2.UserId = userId;
                             model2.LogType = 1;
                             model2.Income = 1;
-                            model2.Remark = "创建订单";
+                            model2.Remark = "创建订单奖励";
                             model2.OrderId = "";
                             model2.CreateTime = DateTime.Now;
                         }
@@ -232,7 +232,7 @@ namespace BAMENG.LOGIC
                         //
 
                         //根据手机号或地址，查找客户，修改客户状态为已生成订单
-                        CustomerModel customer = CustomerLogic.getCustomerModel(mobile, address);
+                        CustomerModel customer = cid > 0 ? CustomerLogic.getCustomerModel(cid) : CustomerLogic.getCustomerModel(mobile, address);
                         if (customer != null)
                         {
                             using (var dal = FactoryDispatcher.CustomerFactory())

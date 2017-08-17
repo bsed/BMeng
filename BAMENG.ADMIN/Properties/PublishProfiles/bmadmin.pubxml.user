@@ -9,14 +9,17 @@
     <_PublishTargetUrl>E:\publish\BM\bmadmin</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="admin/allyrewardsetting.html">
+      <publishTime>08/07/2017 14:12:41</publishTime>
+    </File>
     <File Include="admin/articleedit.html">
-      <publishTime>12/15/2016 15:27:36</publishTime>
+      <publishTime>03/10/2017 11:52:04</publishTime>
     </File>
     <File Include="admin/articlelist.html">
       <publishTime>12/08/2016 12:02:25</publishTime>
     </File>
     <File Include="admin/basesetting.html">
-      <publishTime>11/30/2016 19:58:12</publishTime>
+      <publishTime>08/04/2017 15:49:17</publishTime>
     </File>
     <File Include="admin/cashcouponlist.html">
       <publishTime>12/15/2016 11:33:45</publishTime>
@@ -36,8 +39,11 @@
     <File Include="admin/customerareastatic.html">
       <publishTime>12/07/2016 20:31:44</publishTime>
     </File>
+    <File Include="admin/customerassertlist.html">
+      <publishTime>08/07/2017 10:33:46</publishTime>
+    </File>
     <File Include="admin/customerlist.html">
-      <publishTime>01/04/2017 10:25:36</publishTime>
+      <publishTime>08/07/2017 10:32:16</publishTime>
     </File>
     <File Include="admin/customerstatic.html">
       <publishTime>12/07/2016 20:31:39</publishTime>
@@ -94,7 +100,7 @@
       <publishTime>11/28/2016 15:17:29</publishTime>
     </File>
     <File Include="admin/userlist.html">
-      <publishTime>12/15/2016 13:47:04</publishTime>
+      <publishTime>08/09/2017 14:01:45</publishTime>
     </File>
     <File Include="admin/userreportlist.html">
       <publishTime>12/30/2016 15:59:36</publishTime>
@@ -148,7 +154,7 @@
       <publishTime>12/06/2016 16:32:41</publishTime>
     </File>
     <File Include="app/maildetails.html">
-      <publishTime>01/05/2017 13:46:46</publishTime>
+      <publishTime>01/06/2017 14:17:25</publishTime>
     </File>
     <File Include="app/myqrcode.html">
       <publishTime>12/22/2016 17:41:00</publishTime>
@@ -175,22 +181,22 @@
       <publishTime>10/25/2016 14:30:11</publishTime>
     </File>
     <File Include="bin/BAMENG.ADMIN.dll">
-      <publishTime>01/05/2017 16:40:47</publishTime>
+      <publishTime>08/17/2017 16:22:21</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>01/03/2017 17:44:19</publishTime>
+      <publishTime>08/17/2017 16:22:14</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>01/05/2017 11:29:18</publishTime>
+      <publishTime>08/17/2017 16:22:15</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>01/03/2017 17:44:19</publishTime>
+      <publishTime>08/17/2017 16:22:15</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>01/05/2017 16:40:43</publishTime>
+      <publishTime>08/17/2017 16:22:16</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>01/03/2017 17:44:19</publishTime>
+      <publishTime>08/17/2017 16:22:14</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
       <publishTime>12/09/2016 17:29:57</publishTime>
@@ -283,7 +289,7 @@
       <publishTime>12/02/2016 15:36:51</publishTime>
     </File>
     <File Include="index.html">
-      <publishTime>11/30/2016 09:20:53</publishTime>
+      <publishTime>08/04/2017 15:33:54</publishTime>
     </File>
     <File Include="main.html">
       <publishTime>12/08/2016 15:15:17</publishTime>
@@ -690,20 +696,23 @@
     <File Include="static/js/.DS_Store">
       <publishTime>11/20/2015 08:40:00</publishTime>
     </File>
+    <File Include="static/js/admin/allyrewardsetting.js">
+      <publishTime>08/07/2017 14:32:57</publishTime>
+    </File>
     <File Include="static/js/admin/apparticle.js">
       <publishTime>12/14/2016 14:27:37</publishTime>
     </File>
     <File Include="static/js/admin/appmail.js">
-      <publishTime>01/05/2017 11:41:09</publishTime>
+      <publishTime>01/05/2017 19:55:13</publishTime>
     </File>
     <File Include="static/js/admin/articleedit.js">
-      <publishTime>12/12/2016 15:48:15</publishTime>
+      <publishTime>07/13/2017 14:36:15</publishTime>
     </File>
     <File Include="static/js/admin/articlelist.js">
       <publishTime>12/15/2016 15:28:10</publishTime>
     </File>
     <File Include="static/js/admin/basesetting.js">
-      <publishTime>12/02/2016 17:03:01</publishTime>
+      <publishTime>08/04/2017 11:48:13</publishTime>
     </File>
     <File Include="static/js/admin/cashcouponlist.js">
       <publishTime>12/15/2016 11:37:13</publishTime>
@@ -717,8 +726,11 @@
     <File Include="static/js/admin/coupongetlist.js">
       <publishTime>12/05/2016 20:09:50</publishTime>
     </File>
+    <File Include="static/js/admin/customerassertlist.js">
+      <publishTime>08/07/2017 10:36:39</publishTime>
+    </File>
     <File Include="static/js/admin/customerlist.js">
-      <publishTime>01/04/2017 10:26:01</publishTime>
+      <publishTime>08/07/2017 10:32:44</publishTime>
     </File>
     <File Include="static/js/admin/customerstaticpie.js">
       <publishTime>01/04/2017 11:05:53</publishTime>
@@ -733,7 +745,7 @@
       <publishTime>12/02/2016 16:49:34</publishTime>
     </File>
     <File Include="static/js/admin/Login.js">
-      <publishTime>11/07/2016 09:28:32</publishTime>
+      <publishTime>08/08/2017 17:47:50</publishTime>
     </File>
     <File Include="static/js/admin/loginstatistics.js">
       <publishTime>12/23/2016 15:27:22</publishTime>
@@ -778,7 +790,7 @@
       <publishTime>12/06/2016 14:14:09</publishTime>
     </File>
     <File Include="static/js/admin/userlist.js">
-      <publishTime>12/15/2016 14:54:48</publishTime>
+      <publishTime>08/09/2017 14:01:33</publishTime>
     </File>
     <File Include="static/js/admin/userreportlist.js">
       <publishTime>12/30/2016 15:58:50</publishTime>
@@ -1387,7 +1399,7 @@
       <publishTime>10/21/2015 10:40:50</publishTime>
     </File>
     <File Include="static/js/plugins/metisMenu/jquery.metisMenu.js">
-      <publishTime>10/25/2016 17:47:28</publishTime>
+      <publishTime>08/09/2017 14:16:58</publishTime>
     </File>
     <File Include="static/js/plugins/morris/morris.js">
       <publishTime>10/21/2015 10:40:50</publishTime>
@@ -1525,7 +1537,7 @@
       <publishTime>10/21/2015 10:40:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/29/2016 19:17:30</publishTime>
+      <publishTime>08/17/2017 16:22:22</publishTime>
     </File>
   </ItemGroup>
 </Project>

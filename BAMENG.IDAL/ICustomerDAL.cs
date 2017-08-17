@@ -93,6 +93,14 @@ namespace BAMENG.IDAL
         /// <returns></returns>
         bool UpdateStatus(int customerId, int status, int userId);
 
+
+        /// <summary>
+        /// 修改审核通过时间
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        bool UpdateAuditTime(int customerId);
+
         /// <summary>
         /// 修改状态
         /// </summary>
@@ -125,7 +133,13 @@ namespace BAMENG.IDAL
         /// <param name="address"></param>
         /// <returns></returns>
         CustomerModel getCustomerModel(string mobile, string address);
-
+        /// <summary>
+        /// 获得客户信息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        CustomerModel getCustomerModel(int cid);
 
         /// <summary>
         /// 获取用户的客户数量

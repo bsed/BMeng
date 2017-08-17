@@ -672,6 +672,23 @@ namespace BAMENG.LOGIC
                     if (dal.AddUserInfo(register) > 0)
                     {
                         masterUpdate(userId);
+
+                        //获取积分奖励配置
+                        ScoreConfigModel scoreCfg = ConfigLogic.GetScoreConfig();
+                        //添加盟主创建订单，奖励积分                    
+                        if (scoreCfg.CreateOrderScore > 0 && dal.addUserIntegral(userId, scoreCfg.CreateOrderScore) > 0)
+                        {
+                            BeansRecordsModel model2 = new BeansRecordsModel();
+                            model2.Amount = scoreCfg.CreateOrderScore;
+                            model2.UserId = userId;
+                            model2.LogType = 1;
+                            model2.Income = 1;
+                            model2.Remark = "邀请盟友奖励";
+                            model2.OrderId = "";
+                            model2.CreateTime = DateTime.Now;
+                            dal.AddBeansRecords(model2);
+                        }
+
                     }
                     //    scope.Complete();
                     //}

@@ -160,6 +160,9 @@ var customerHelper = {
             });
         });
     },
+    goLink:function(url){
+        window.location.href = url;
+    },
     dialog: function (dataId) {
         if (this.reset)
             this.reset.resetForm();
