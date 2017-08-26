@@ -310,7 +310,7 @@ namespace BAMENG.API.Controllers
         /// <returns>ActionResult.</returns>
         [ActionAuthorize]
         public ActionResult addImgInfo(string remark, int issave, string ids)
-        {
+        {            
             try
             {
                 var user = GetUserData();
