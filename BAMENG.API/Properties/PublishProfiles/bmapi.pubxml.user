@@ -10,22 +10,22 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/BAMENG.API.dll">
-      <publishTime>08/17/2017 16:23:25</publishTime>
+      <publishTime>09/04/2017 14:05:19</publishTime>
     </File>
     <File Include="bin/BAMENG.CONFIG.dll">
-      <publishTime>08/17/2017 16:22:14</publishTime>
+      <publishTime>09/04/2017 14:05:12</publishTime>
     </File>
     <File Include="bin/BAMENG.DAL.dll">
-      <publishTime>08/17/2017 16:22:15</publishTime>
+      <publishTime>09/04/2017 14:05:13</publishTime>
     </File>
     <File Include="bin/BAMENG.IDAL.dll">
-      <publishTime>08/17/2017 16:22:15</publishTime>
+      <publishTime>09/04/2017 14:05:13</publishTime>
     </File>
     <File Include="bin/BAMENG.LOGIC.dll">
-      <publishTime>08/17/2017 16:22:16</publishTime>
+      <publishTime>09/04/2017 14:05:13</publishTime>
     </File>
     <File Include="bin/BAMENG.MODEL.dll">
-      <publishTime>08/17/2017 16:22:14</publishTime>
+      <publishTime>09/04/2017 14:05:13</publishTime>
     </File>
     <File Include="bin/HotCoreUtils.dll">
       <publishTime>12/09/2016 17:29:57</publishTime>

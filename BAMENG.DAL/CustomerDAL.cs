@@ -23,7 +23,7 @@ namespace BAMENG.DAL
 {
     public class CustomerDAL : AbstractDAL, ICustomerDAL
     {
-        private const string APP_SELECT = @"select C.ID,C.BelongOne,C.BelongTwo,C.Status,C.InShop,C.Name,C.Mobile,C.Addr,C.Remark,C.ShopId,C.BelongOneShopId,C.CreateTime,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName,S.ShopName,C.issave,C.DataImg from BM_CustomerManage C 
+        private const string APP_SELECT = @"select C.ID,C.BelongOne,C.BelongTwo,C.Status,C.InShop,C.Name,C.Mobile,C.Addr,C.Remark,C.ShopId,C.BelongOneShopId,C.CreateTime,U.UB_UserRealName as BelongOneName,UB.UB_UserRealName as BelongTwoName,S.ShopName,C.issave,C.DataImg,C.isTip from BM_CustomerManage C 
                                                 left join Hot_UserBaseInfo U with(nolock) on U.UB_UserID=C.BelongOne
                                                 left join Hot_UserBaseInfo UB with(nolock) on UB.UB_UserID=C.BelongTwo
                                                 left join BM_ShopManage S with(nolock) on  S.ShopID=C.ShopId
