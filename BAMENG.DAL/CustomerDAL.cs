@@ -470,9 +470,11 @@ namespace BAMENG.DAL
                     new SqlParameter("@AssertContent",model.AssertContent)
                 };
             object obj = DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, strSql, param);
-
             if (obj != null)
+            {
+                DbHelperSQLP.ExecuteScalar(WebConfig.getConnectionString(), CommandType.Text, string.Format("update BM_CustomerManage set isTip=0 where ID={0}", model.CID));
                 return Convert.ToInt32(obj);
+            }
             return 0;
         }
 
