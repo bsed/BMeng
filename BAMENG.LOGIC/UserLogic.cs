@@ -53,6 +53,8 @@ namespace BAMENG.LOGIC
                     bool b = dal.UpdateUserInfo(model);
                     if (!b)
                         apiCode = ApiStatusCode.更新失败;
+                    else
+                        AdminAddUserMengBeans(model.UserId, model.mengBeans, model.currentMengBeans);
                     return b;
                 }
                 else
@@ -62,9 +64,47 @@ namespace BAMENG.LOGIC
                         apiCode = ApiStatusCode.账户已存在;
                     else if (flag == 0)
                         apiCode = ApiStatusCode.添加失败;
+                    else
+                        AdminAddUserMengBeans(flag, model.mengBeans, model.currentMengBeans);
 
                     return flag > 0;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 后台手工添加用户盟豆
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="mengBeans">调整后盟豆</param>
+        /// <param name="currentMengBeans">调整前盟豆</param>
+        static void AdminAddUserMengBeans(int userId, decimal mengBeans, decimal currentMengBeans)
+        {
+            try
+            {
+                //只有盟豆发生改变时
+                if (currentMengBeans != mengBeans)
+                {
+                    //给盟友加盟豆
+                    addUserMoney(userId, mengBeans);
+
+                    using (var dal1 = FactoryDispatcher.UserFactory())
+                    {
+                        BeansRecordsModel model2 = new BeansRecordsModel();
+                        model2.Amount = mengBeans;
+                        model2.UserId = userId;
+                        model2.LogType = 0;
+                        model2.Income = currentMengBeans > mengBeans ? 0 : 1;
+                        model2.Remark = string.Format("人工操作,调整前:{0},调整后:{1}", currentMengBeans, mengBeans);
+                        model2.OrderId = "";
+                        model2.CreateTime = DateTime.Now;
+                        dal1.AddBeansRecords(model2);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log("后台手工调整用户盟豆异常:" + ex.ToString(), LogHelperTag.ERROR);
             }
         }
 

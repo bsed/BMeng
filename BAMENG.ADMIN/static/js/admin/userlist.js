@@ -181,6 +181,9 @@ var userHelper = {
             $("#username").val(data.RealName);
             $("#usernickname").val(data.NickName);
             $("#usermobile").val(data.UserMobile);
+            $("#mengbeans").val(data.MengBeans - data.MengBeansLocked);
+            $("#currentmengbeans").val(data.MengBeans - data.MengBeansLocked);
+            
             if (!hotUtil.isNullOrEmpty(data.LoginName))
                 $("#userloginname").val(data.LoginName).attr("readonly", "readonly");
         }
@@ -229,6 +232,10 @@ var userHelper = {
                 usernickname: "required",
                 password: {
                     minlength: 6
+                },
+                mengbeans: {
+                    required: !0,
+                    number: true
                 }
             },
             messages: {
@@ -247,6 +254,9 @@ var userHelper = {
                 usernickname: e + "请输入昵称",
                 password: {
                     minlength: e + "密码必须6个字符以上"
+                },
+                mengbeans: {
+                    number: e +"盟豆必须是合法的数字"
                 }
             },
             submitHandler: function (form) {

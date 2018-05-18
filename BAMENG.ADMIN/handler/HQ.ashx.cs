@@ -474,7 +474,9 @@ namespace BAMENG.ADMIN.handler
                 ShopId = user.ID,
                 BelongShopId = user.ShopBelongId,
                 UserIdentity = GetFormValue("ally", 1),
-                UserId = UserId
+                UserId = UserId,
+                mengBeans=GetFormValue("mengbeans", 0),
+                currentMengBeans = GetFormValue("currentmengbeans", 0)
             }, ref apiCode);
             if (flag)
                 json = JsonHelper.JsonSerializer(new ResultModel(ApiStatusCode.OK));

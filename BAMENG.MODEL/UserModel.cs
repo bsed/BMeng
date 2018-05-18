@@ -257,6 +257,15 @@ namespace BAMENG.MODEL
         /// <value>The user gender.</value>
         public string userGender { get; set; }
 
+        /// <summary>
+        /// 盟豆
+        /// </summary>
+        public decimal mengBeans { get; set; }
+        /// <summary>
+        /// 当前盟豆
+        /// </summary>
+        public decimal currentMengBeans { get; set; }
+
     }
 
     /// <summary>
