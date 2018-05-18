@@ -77,7 +77,7 @@ namespace BAMENG.API.Controllers
         /// <param name="cid">客户ID</param>
         /// <returns></returns>
         [ActionAuthorize]
-        public ActionResult create(string userName, string mobile, string address, string cashNo, string memo, int cid=0)
+        public ActionResult create(string userName, string mobile, string address, string cashNo, string memo, int cid = 0)
         {
 
             try
@@ -94,24 +94,60 @@ namespace BAMENG.API.Controllers
                 int userId = user.UserId;
 
                 //string imgContent = string.Empty;
-                HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
-                if (oFile == null)
+
+
+
+
+                string fileName1 = string.Empty,
+                  fileName2 = string.Empty,
+                      fileName3 = string.Empty,
+                      fileName4 = string.Empty,
+                      fileName5 = string.Empty;
+                if (Request.Files.Count > 0 && Request.Files.Count <= 5)
                 {
-                    return Json(new ResultModel(ApiStatusCode.请上传图片));
+                    int c = 1;
+                    foreach (HttpPostedFileBase oFile in Request.Files)
+                    {
+                        if (oFile == null) continue;
+                        var fileName = GetUploadImagePath();
+                        Stream stream = oFile.InputStream;
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                        // 设置当前流的位置为流的开始
+                        stream.Seek(0, SeekOrigin.Begin);
+                        if (FileUploadHelper.UploadFile(bytes, fileName))
+                        {
+                            if (c == 1)
+                                fileName1 = fileName;
+                            if (c == 2)
+                                fileName2 = fileName;
+                            if (c == 3)
+                                fileName3 = fileName;
+                            if (c == 4)
+                                fileName4 = fileName;
+                            if (c == 5)
+                                fileName5 = fileName;
+                        }
+                        c++;
+                    }
                 }
-                string fileName = GetUploadImagePath();
-                Stream stream = oFile.InputStream;
-                byte[] bytes = new byte[stream.Length];
-                stream.Read(bytes, 0, bytes.Length);
-                // 设置当前流的位置为流的开始
-                stream.Seek(0, SeekOrigin.Begin);
-                if (FileUploadHelper.UploadFile(bytes, fileName))
+                if (!string.IsNullOrEmpty(fileName1))
                 {
                     ApiStatusCode apiCode = ApiStatusCode.OK;
-                    bool flag = OrderLogic.saveOrder(userId, user.ShopId, userName, mobile, address, cashNo, memo, fileName, cid, ref apiCode);
+                    bool flag = OrderLogic.saveOrder(userId, user.ShopId, userName, mobile, address, cashNo, memo, fileName1, fileName2, fileName3, fileName4, fileName5, cid, ref apiCode);
                     if (!flag)
                     {
-                        System.IO.File.Delete(Server.MapPath(fileName));
+                        if (!string.IsNullOrEmpty(fileName1))
+                            System.IO.File.Delete(Server.MapPath(fileName1));
+                        if (!string.IsNullOrEmpty(fileName2))
+                            System.IO.File.Delete(Server.MapPath(fileName2));
+                        if (!string.IsNullOrEmpty(fileName3))
+                            System.IO.File.Delete(Server.MapPath(fileName3));
+                        if (!string.IsNullOrEmpty(fileName4))
+                            System.IO.File.Delete(Server.MapPath(fileName4));
+                        if (!string.IsNullOrEmpty(fileName5))
+                            System.IO.File.Delete(Server.MapPath(fileName5));
+
                         if (apiCode == ApiStatusCode.OK)
                             return Json(new ResultModel(apiCode, "订单创建成功"));
                         else
@@ -120,8 +156,37 @@ namespace BAMENG.API.Controllers
                     else
                         return Json(new ResultModel(apiCode));
                 }
-                else
-                    return Json(new ResultModel(ApiStatusCode.请上传图片));
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
+
+
+                //HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
+                //if (oFile == null)
+                //{
+                //    return Json(new ResultModel(ApiStatusCode.请上传图片));
+                //}
+                //string fileName = GetUploadImagePath();
+                //Stream stream = oFile.InputStream;
+                //byte[] bytes = new byte[stream.Length];
+                //stream.Read(bytes, 0, bytes.Length);
+                //// 设置当前流的位置为流的开始
+                //stream.Seek(0, SeekOrigin.Begin);
+                //if (FileUploadHelper.UploadFile(bytes, fileName))
+                //{
+                //    ApiStatusCode apiCode = ApiStatusCode.OK;
+                //    bool flag = OrderLogic.saveOrder(userId, user.ShopId, userName, mobile, address, cashNo, memo, fileName, cid, ref apiCode);
+                //    if (!flag)
+                //    {
+                //        System.IO.File.Delete(Server.MapPath(fileName));
+                //        if (apiCode == ApiStatusCode.OK)
+                //            return Json(new ResultModel(apiCode, "订单创建成功"));
+                //        else
+                //            return Json(new ResultModel(apiCode));
+                //    }
+                //    else
+                //        return Json(new ResultModel(apiCode));
+                //}
+                //else
+                //    return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
             catch (Exception ex)
             {
@@ -175,25 +240,64 @@ namespace BAMENG.API.Controllers
 
 
                 string imgContent = string.Empty;
-                HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
-                if (oFile == null)
+                string fileName1 = string.Empty,
+                    fileName2 = string.Empty,
+                        fileName3 = string.Empty,
+                        fileName4 = string.Empty,
+                        fileName5 = string.Empty;                
+                if (Request.Files.Count > 0 && Request.Files.Count <= 5)
                 {
-                    return Json(new ResultModel(ApiStatusCode.请上传图片));
+                    int c = 1;
+                    foreach (HttpPostedFileBase oFile in Request.Files)
+                    {
+                        if (oFile == null) continue;
+                        var fileName = GetUploadImagePath();
+                        Stream stream = oFile.InputStream;
+                        byte[] bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                        // 设置当前流的位置为流的开始
+                        stream.Seek(0, SeekOrigin.Begin);
+                        if (FileUploadHelper.UploadFile(bytes, fileName))
+                        {
+                            if (c == 1)
+                                fileName1 = fileName;
+                            if (c == 2)
+                                fileName2 = fileName;
+                            if (c == 3)
+                                fileName3 = fileName;
+                            if (c == 4)
+                                fileName4 = fileName;
+                            if (c == 5)
+                                fileName5 = fileName;
+                        }
+                        c++;
+                    }
                 }
-                string fileName = GetUploadImagePath();
-                Stream stream = oFile.InputStream;
-                byte[] bytes = new byte[stream.Length];
-                stream.Read(bytes, 0, bytes.Length);
-                // 设置当前流的位置为流的开始
-                stream.Seek(0, SeekOrigin.Begin);
-                if (FileUploadHelper.UploadFile(bytes, fileName))
+                if (!string.IsNullOrEmpty(fileName1))
                 {
-
-                    OrderLogic.UploadVoucher(orderId, customer, mobile, price, memo, fileName);
+                    OrderLogic.UploadVoucher(orderId, customer, mobile, price, memo, fileName1, fileName2, fileName3, fileName4, fileName5);
                     return Json(new ResultModel(ApiStatusCode.OK));
                 }
-                else
-                    return Json(new ResultModel(ApiStatusCode.请上传图片));
+
+                //HttpPostedFileBase oFile = Request.Files.Count > 0 ? Request.Files[0] : null;
+                //if (oFile == null)
+                //{
+                //    return Json(new ResultModel(ApiStatusCode.请上传图片));
+                //}
+                //string fileName = GetUploadImagePath();
+                //Stream stream = oFile.InputStream;
+                //byte[] bytes = new byte[stream.Length];
+                //stream.Read(bytes, 0, bytes.Length);
+                //// 设置当前流的位置为流的开始
+                //stream.Seek(0, SeekOrigin.Begin);
+                //if (FileUploadHelper.UploadFile(bytes, fileName))
+                //{
+
+                //    OrderLogic.UploadVoucher(orderId, customer, mobile, price, memo, fileName, fileName2, fileName3, fileName4, fileName5);
+                //    return Json(new ResultModel(ApiStatusCode.OK));
+                //}
+                //else
+                return Json(new ResultModel(ApiStatusCode.请上传图片));
             }
             catch (Exception ex)
             {

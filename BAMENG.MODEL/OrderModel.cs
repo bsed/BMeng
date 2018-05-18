@@ -72,10 +72,19 @@ namespace BAMENG.MODEL
         /// 
         /// </summary>
         public string OrderImg { get; set; }
+        public string OrderImg2 { get; set; }
+        public string OrderImg3 { get; set; }
+        public string OrderImg4 { get; set; }
+        public string OrderImg5 { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         public string SuccessImg { get; set; }
+        public string SuccessImg2 { get; set; }
+        public string SuccessImg3 { get; set; }
+        public string SuccessImg4 { get; set; }
+        public string SuccessImg5 { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -193,11 +202,24 @@ namespace BAMENG.MODEL
         /// </summary>
         public string pictureUrl { get; set; }
 
+        public string pictureUrl2 { get; set; }
+
+        public string pictureUrl3 { get; set; }
+
+        public string pictureUrl4 { get; set; }
+
+        public string pictureUrl5 { get; set; }
+
         /// <summary>
         /// 成交凭证图片地址
         /// </summary>
         /// <value>The success URL.</value>
         public string successUrl { get; set; }
+
+        public string successUrl2 { get; set; }
+        public string successUrl3 { get; set; }
+        public string successUrl4 { get; set; }
+        public string successUrl5 { get; set; }
         /// <summary>
         /// 用户
         /// </summary>

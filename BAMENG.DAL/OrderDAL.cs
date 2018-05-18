@@ -114,9 +114,9 @@ namespace BAMENG.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into BM_Orders(");
-            strSql.Append("orderId,UserId,Ct_BelongId,ShopId,orderTime,Memo,OrderStatus,OrderImg,SuccessImg,Ct_Name,Ct_Mobile,Ct_Address,CashCouponAmount,CashCouponBn,FianlAmount,CreateTime,MengBeans,BelongOneShopId)");
+            strSql.Append("orderId,UserId,Ct_BelongId,ShopId,orderTime,Memo,OrderStatus,OrderImg,SuccessImg,Ct_Name,Ct_Mobile,Ct_Address,CashCouponAmount,CashCouponBn,FianlAmount,CreateTime,MengBeans,BelongOneShopId,OrderImg2,OrderImg3,OrderImg4,OrderImg5,SuccessImg2,SuccessImg3,SuccessImg4,SuccessImg5)");
             strSql.Append(" values (");
-            strSql.Append("@orderId,@UserId,@Ct_BelongId,@ShopId,@orderTime,@Memo,@OrderStatus,@OrderImg,@SuccessImg,@Ct_Name,@Ct_Mobile,@Ct_Address,@CashCouponAmount,@CashCouponBn,@FianlAmount,@CreateTime,@MengBeans,@BelongOneShopId)");
+            strSql.Append("@orderId,@UserId,@Ct_BelongId,@ShopId,@orderTime,@Memo,@OrderStatus,@OrderImg,@SuccessImg,@Ct_Name,@Ct_Mobile,@Ct_Address,@CashCouponAmount,@CashCouponBn,@FianlAmount,@CreateTime,@MengBeans,@BelongOneShopId,@OrderImg2,@OrderImg3,@OrderImg4,@OrderImg5,@SuccessImg2,@SuccessImg3,@SuccessImg4,@SuccessImg5)");
             SqlParameter[] parameters = {
                     new SqlParameter("@orderId", SqlDbType.NVarChar),
                     new SqlParameter("@UserId", SqlDbType.Int,4),
@@ -135,7 +135,15 @@ namespace BAMENG.DAL
                     new SqlParameter("@FianlAmount", SqlDbType.Decimal,9),
                     new SqlParameter("@CreateTime", SqlDbType.DateTime),
                     new SqlParameter("@MengBeans",model.MengBeans),
-                    new SqlParameter("@BelongOneShopId",model.BelongOneShopId)
+                    new SqlParameter("@BelongOneShopId",model.BelongOneShopId),
+                    new SqlParameter("@OrderImg2", model.OrderImg2),
+                    new SqlParameter("@OrderImg3", model.OrderImg3),
+                    new SqlParameter("@OrderImg4", model.OrderImg4),
+                    new SqlParameter("@OrderImg5", model.OrderImg5),
+                    new SqlParameter("@SuccessImg2", model.SuccessImg2),
+                    new SqlParameter("@SuccessImg3", model.SuccessImg3),
+                    new SqlParameter("@SuccessImg4", model.SuccessImg4),
+                    new SqlParameter("@SuccessImg5", model.SuccessImg5)
             };
             parameters[0].Value = model.orderId;
             parameters[1].Value = model.UserId;
@@ -193,19 +201,24 @@ namespace BAMENG.DAL
         /// <param name="fileName">Name of the file.</param>
         /// <returns>System.Int32.</returns>
         public int UploadVoucher(string orderId, string customer
-            , string mobile, decimal price, string note, string fileName)
+            , string mobile, decimal price, string note, string fileName, string fileName2, string fileName3, string fileName4, string fileName5)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update BM_Orders set ");
-            strSql.Append("Note=@Note,Ct_Mobile=@Ct_Mobile,Ct_Name=@Ct_Name,FianlAmount=@FianlAmount,SuccessImg=@SuccessImg");
+            strSql.Append("Note=@Note,Ct_Mobile=@Ct_Mobile,Ct_Name=@Ct_Name,FianlAmount=@FianlAmount,SuccessImg=@SuccessImg,SuccessImg2=@SuccessImg2,SuccessImg3=@SuccessImg3,SuccessImg4=@SuccessImg4,SuccessImg5=@SuccessImg5");
             strSql.Append(" where orderId=@orderId ");
             SqlParameter[] parameters = {
                     new SqlParameter("@Note", note),
                     new SqlParameter("@SuccessImg", fileName),
+                    new SqlParameter("@SuccessImg2", fileName2),
+                    new SqlParameter("@SuccessImg3", fileName3),
+                    new SqlParameter("@SuccessImg4", fileName4),
+                    new SqlParameter("@SuccessImg5", fileName5),
                     new SqlParameter("@Ct_Mobile", mobile),
                     new SqlParameter("@Ct_Name", customer),
                     new SqlParameter("@FianlAmount", price),
-                    new SqlParameter("@orderId", orderId)};
+                    new SqlParameter("@orderId", orderId)
+            };
 
             return DbHelperSQLP.ExecuteNonQuery(WebConfig.getConnectionString(), CommandType.Text, strSql.ToString(), parameters);
         }

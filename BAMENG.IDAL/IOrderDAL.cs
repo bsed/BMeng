@@ -73,7 +73,7 @@ namespace BAMENG.IDAL
         /// <param name="fileName">Name of the file.</param>
         /// <returns>System.Int32.</returns>
         int UploadVoucher(string orderId, string customer
-           , string mobile, decimal price, string note, string fileName);
+           , string mobile, decimal price, string note, string fileName, string fileName2, string fileName3, string fileName4, string fileName5);
 
         /// <summary>
         /// 获取订单完整详情

@@ -91,11 +91,11 @@ namespace BAMENG.LOGIC
                     using (var dal1 = FactoryDispatcher.UserFactory())
                     {
                         BeansRecordsModel model2 = new BeansRecordsModel();
-                        model2.Amount = mengBeans;
+                        model2.Amount = currentMengBeans > mengBeans ? currentMengBeans - mengBeans : mengBeans - currentMengBeans;
                         model2.UserId = userId;
                         model2.LogType = 0;
                         model2.Income = currentMengBeans > mengBeans ? 0 : 1;
-                        model2.Remark = string.Format("人工操作,调整前:{0},调整后:{1}", currentMengBeans, mengBeans);
+                        model2.Remark = "系统调整";
                         model2.OrderId = "";
                         model2.CreateTime = DateTime.Now;
                         dal1.AddBeansRecords(model2);

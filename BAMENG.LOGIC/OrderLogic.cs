@@ -79,7 +79,7 @@ namespace BAMENG.LOGIC
         /// <param name="filename">The filename.</param>
         /// <param name="apiCode">The API code.</param>
         /// <returns>true if XXXX, false otherwise.</returns>
-        public static bool saveOrder(int userId, int shopId, string userName, string mobile, string address, string cashNo, string memo, string filename, int cid, ref ApiStatusCode apiCode)
+        public static bool saveOrder(int userId, int shopId, string userName, string mobile, string address, string cashNo, string memo, string filename, string fileName2, string fileName3, string fileName4, string fileName5, int cid, ref ApiStatusCode apiCode)
         {
 
             try
@@ -92,7 +92,11 @@ namespace BAMENG.LOGIC
                 model.Memo = memo;
                 model.OrderStatus = 0;
                 model.OrderImg = filename;
-                model.SuccessImg = "";
+                model.OrderImg2 = fileName2;
+                model.OrderImg3 = fileName3;
+                model.OrderImg4 = fileName4;
+                model.OrderImg5 = fileName5;
+                model.SuccessImg = model.SuccessImg2 = model.SuccessImg3 = model.SuccessImg4 = model.SuccessImg5 = "";
                 model.Ct_Name = userName;
                 model.Ct_Mobile = mobile;
                 model.Ct_Address = address;
@@ -138,7 +142,7 @@ namespace BAMENG.LOGIC
                 if (cashUserId <= 0)
                 {
                     //根据手机号或地址，查找客户
-                    CustomerModel customer =cid>0?CustomerLogic.getCustomerModel(cid): CustomerLogic.getCustomerModel(mobile, address);
+                    CustomerModel customer = cid > 0 ? CustomerLogic.getCustomerModel(cid) : CustomerLogic.getCustomerModel(mobile, address);
                     if (customer != null)
                     {
                         //设置订单归属用户
@@ -306,6 +310,17 @@ namespace BAMENG.LOGIC
                 result.mobile = order.Ct_Mobile;
                 result.pictureUrl = WebConfig.reswebsite() + order.OrderImg;
                 result.successUrl = WebConfig.reswebsite() + order.SuccessImg;
+
+                result.pictureUrl2 = WebConfig.reswebsite() + order.OrderImg2;
+                result.successUrl2 = WebConfig.reswebsite() + order.SuccessImg2;
+                result.pictureUrl3 = WebConfig.reswebsite() + order.OrderImg3;
+                result.successUrl3 = WebConfig.reswebsite() + order.SuccessImg3;
+                result.pictureUrl4 = WebConfig.reswebsite() + order.OrderImg4;
+                result.successUrl4 = WebConfig.reswebsite() + order.SuccessImg4;
+                result.pictureUrl5 = WebConfig.reswebsite() + order.OrderImg5;
+                result.successUrl5 = WebConfig.reswebsite() + order.SuccessImg5;
+
+
                 result.status = order.OrderStatus;
                 result.orderId = order.orderId;
                 result.orderTime = StringHelper.GetUTCTime(order.orderTime);
@@ -513,12 +528,12 @@ namespace BAMENG.LOGIC
         /// <param name="fileName">Name of the file.</param>
         /// <returns>System.Int32.</returns>
         public static int UploadVoucher(string orderId, string customer
-            , string mobile, decimal price, string memo, string fileName)
+            , string mobile, decimal price, string memo, string fileName, string fileName2, string fileName3, string fileName4, string fileName5)
         {
             using (var dal = FactoryDispatcher.OrderFactory())
             {
                 return dal.UploadVoucher(orderId, customer
-            , mobile, price, memo, fileName);
+            , mobile, price, memo, fileName, fileName2, fileName3, fileName4, fileName5);
             }
         }
 
